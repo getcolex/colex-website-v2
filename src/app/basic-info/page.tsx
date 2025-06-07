@@ -1,5 +1,6 @@
 "use client";
 
+import { useAppStore } from "@/store/useAppStore";
 import {
   Box,
   Button,
@@ -12,7 +13,7 @@ import {
   Badge,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function BasicInfo() {
   const [firstName, setFirstName] = useState("");
@@ -27,6 +28,15 @@ export default function BasicInfo() {
   const isFormValid = firstName && lastName && /^[0-9]{10}$/.test(mobile);
 
   const router = useRouter();
+  const { user, loading } = useAppStore();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/");
+    }
+  }, [user, loading, router]);
+
+  if (loading || !user) return null;
 
   const validateFields = () => {
     const newErrors: { [key: string]: string } = {};

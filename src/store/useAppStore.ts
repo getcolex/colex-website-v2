@@ -7,6 +7,7 @@ type AppState = {
   loading: boolean;
   setUser: (user: User | null) => void;
   setLoading: (loading: boolean) => void;
+  logout: () => Promise<void>;
 };
 
 export const useAppStore = create<AppState>((set) => ({
