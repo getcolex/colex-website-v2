@@ -21,7 +21,8 @@ export const useVerifyEmailLogin = () =>
 
 export const useInitiateMobileLogin = () =>
   useMutation({
-    mutationFn: (mobile: string) => initiateMobileLogin(mobile),
+    mutationFn: ({ mobile, token }: { mobile: string; token: string }) =>
+      initiateMobileLogin(mobile, token),
   });
 
 export const useVerifyMobileLogin = () =>

@@ -13,8 +13,18 @@ export async function verifyEmailLogin(otp: string, token: string) {
   return response.data;
 }
 
-export async function initiateMobileLogin(mobile: string) {
-  const response = await api.post(API_ROUTES.MOBILE_INITIATE, { mobile });
+export async function initiateMobileLogin(mobile: string, token: string) {
+  const response = await api.post(
+    API_ROUTES.MOBILE_INITIATE,
+    { mobile },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    }
+  );
   return response.data;
 }
 
