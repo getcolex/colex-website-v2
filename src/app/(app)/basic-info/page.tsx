@@ -1,6 +1,12 @@
 "use client";
 
+import {
+  useInitiateMobileLogin,
+  useUpdateProfile,
+  useVerifyMobileLogin,
+} from "@/lib/hooks/useUserAuth";
 import { useAppStore } from "@/store/useAppStore";
+import { useAuthStore } from "@/store/useAuthStore";
 import {
   Box,
   Button,
@@ -28,11 +34,20 @@ export default function BasicInfo() {
   const isFormValid = firstName && lastName && /^[0-9]{10}$/.test(mobile);
 
   const router = useRouter();
+  const { token } = useAuthStore();
+  const { setProfileData } = useAppStore();
+  const { isPending: isUpdating } = useUpdateProfile();
+
+  const { mutate: initiateMobileLogin, isPending: isInitiating } =
+    useInitiateMobileLogin();
+  const { mutate: verifyMobileLogin, isPending: isVerifying } =
+    useVerifyMobileLogin();
+
   const { user, loading } = useAppStore();
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/");
+      router.push("/login");
     }
   }, [user, loading, router]);
 
@@ -54,12 +69,50 @@ export default function BasicInfo() {
   const handleContinue = () => {
     if (!otpSent) {
       if (validateFields()) {
-        setOtpSent(true);
+        initiateMobileLogin(
+          { mobile, token: token! },
+          {
+            onSuccess: () => {
+              setOtpSent(true);
+            },
+            onError: () => {
+              //     setErrors((prev) => ({
+              //       ...prev,
+              //       mobile: err.data.message,
+              //     }));
+            },
+          }
+        );
       }
     } else {
       if (validateFields()) {
-        setIsOTPVerified(true);
-        router.push("/dashboard");
+        verifyMobileLogin(
+          {
+            otp: phoneOtp.join(""),
+            token: token!,
+            mobile: mobile,
+            profileData: {
+              firstName: firstName,
+              lastName: lastName,
+              city: city,
+              areas: areas,
+              mobile: mobile,
+            },
+          },
+          {
+            onSuccess: () => {
+              setProfileData({
+                firstName: firstName,
+                lastName: lastName,
+                city: city,
+                areas: areas,
+                mobile: mobile,
+              });
+              setIsOTPVerified(true);
+              router.push("/dashboard");
+            },
+          }
+        );
       }
     }
   };
@@ -171,6 +224,7 @@ export default function BasicInfo() {
         )}
 
         <Button
+          loading={isVerifying || isInitiating || isUpdating}
           mt="4"
           colorScheme="blackAlpha"
           onClick={handleContinue}

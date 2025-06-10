@@ -76,6 +76,7 @@ export default function StepEmail() {
           console.log("data", data.data.token, "anc", data.token);
           try {
             setIsOTPVerified(true);
+            setToken(data.data.token);
             // await signInWithCustomToken(auth, data.data.token); // TODO: Uncomment this when firebase is ready
             setOtpError("");
             router.push("/basic-info");

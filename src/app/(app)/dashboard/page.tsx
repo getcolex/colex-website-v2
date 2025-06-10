@@ -16,8 +16,9 @@ import {
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { FaPlus, FaFileUpload, FaComments } from "react-icons/fa";
+import { FaPlus, FaComments } from "react-icons/fa";
 import DashboardLayout from "./dashboardLayout";
+import FileUploadCard from "@/components/Dashboard/FileUploadCard";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -25,12 +26,12 @@ export default function Dashboard() {
 
   const handleLogout = async () => {
     await signOut(auth);
-    router.push("/");
+    router.push("/login");
   };
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/");
+      router.push("/login");
     }
   }, [user, loading, router]);
 
@@ -59,11 +60,7 @@ export default function Dashboard() {
                 title="Create a note"
                 description="Add a case matter brief, note down your findings, client grievances"
               />
-              <ActionCard
-                icon={FaFileUpload}
-                title="Upload your case files"
-                description="Add supporting documents like Police evidence, any precedents you already found etc. in PDF"
-              />
+              <FileUploadCard />
               <ActionCard
                 icon={FaComments}
                 title="Looking for a starting point"

@@ -4,13 +4,13 @@ import { Box, Button, Heading, Stack } from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
 import { FaLinkedin, FaMicrosoft, FaEnvelope } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import EmailLayout from "./emailLayout";
+import EmailLayout from "../emailLayout";
 import { auth } from "@/lib/firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useEffect } from "react";
 import { useAppStore } from "@/store/useAppStore";
 
-export default function LandingPage() {
+export default function LoginPage() {
   const { user, loading } = useAppStore();
   const router = useRouter();
 
