@@ -6,7 +6,15 @@ import { Box, Button, Container, Flex, Heading } from "@chakra-ui/react";
 
 export default function LandingNavbar() {
   return (
-    <Box as="header" py={5} bg="white">
+    <Box
+      as="header"
+      py={5}
+      bg="white"
+      position={"sticky"}
+      top={0}
+      zIndex={100}
+      boxShadow={"sm"}
+    >
       <Container maxW="6xl">
         <Flex align="center" justifyContent={"space-between"}>
           <Heading fontSize="4xl" fontWeight="600" color={"#000"}>
