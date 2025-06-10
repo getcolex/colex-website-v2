@@ -18,12 +18,14 @@ export default function ActionCard({
       border="1px solid"
       borderColor="gray.200"
       cursor="pointer"
+      alignItems="center"
+      justifyContent="center"
       _hover={{ boxShadow: "md" }}
     >
-      <VStack align="start" gap={3}>
+      <VStack align="center" justify="center" gap={3}>
         <Icon as={icon} boxSize={6} />
         <Heading size="sm">{title}</Heading>
-        <Text color="gray.600" fontSize="sm">
+        <Text color="gray.600" fontSize="sm" textAlign="center">
           {description}
         </Text>
       </VStack>
