@@ -7,12 +7,18 @@ import { useRouter } from "next/navigation";
 import EmailLayout from "../emailLayout";
 import { auth } from "@/lib/firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppStore } from "@/store/useAppStore";
 
 export default function LoginPage() {
+  const [mounted, setMounted] = useState(false);
+
   const { user, loading } = useAppStore();
   const router = useRouter();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!loading && user) {
@@ -35,7 +41,7 @@ export default function LoginPage() {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (!mounted || loading) return <p>Loading...</p>;
 
   return (
     <EmailLayout>
