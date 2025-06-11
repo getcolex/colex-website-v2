@@ -46,65 +46,87 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <Box py={20}>
-      <Container maxW="6xl">
-        <Heading as="h2" size="xl" mb={10}>
+    <Box py={20} mt={20}>
+      <Container px={0}>
+        <Heading
+          fontSize={"4xl"}
+          color={"#000"}
+          fontWeight={"semibold"}
+          lineHeight={1.22}
+        >
           Designed with Legal Experts, <br /> for Legal Experts
         </Heading>
 
-        <SimpleGrid columns={[1, 2, 4]} gap={6} mb={10}>
+        <SimpleGrid h={420} flexShrink={0} columns={[1, 2, 4]} gap={5} my={20}>
           {testimonials.map((t, index) => (
-            <Box
+            <VStack
+              justifyContent={"space-between"}
               key={index}
-              bg="#FFF6EC"
-              p={6}
-              borderRadius="md"
-              boxShadow="sm"
-              display="flex"
-              flexDirection="column"
-              justifyContent="space-between"
+              bg="orange.50"
+              py={6}
+              px={7}
+              gap={0}
+              borderRadius={1}
             >
-              <Text fontSize="md" mb={20}>
+              <Text
+                fontSize="2xl"
+                color={"#000"}
+                lineHeight={1.33}
+                fontWeight={"normal"}
+              >
                 {t.quote}
               </Text>
-              <HStack gap={4} align="center">
-                <Avatar.Root size="sm">
+              <HStack alignSelf={"flex-start"} mt={5} gap={3}>
+                <Avatar.Root size="2xl">
                   <Avatar.Image src={t.image} />
                   <Avatar.Fallback name={t.name} />
                 </Avatar.Root>
                 <Box>
-                  <Text fontWeight="bold" fontSize="sm">
+                  <Text
+                    fontWeight="bold"
+                    fontSize="md"
+                    lineHeight={1.42}
+                    color={"#000"}
+                  >
                     {t.name}
                   </Text>
-                  <Text fontSize="xs" color="gray.600">
+                  <Text fontSize="sm" color="#52525B" lineHeight={1.42}>
                     {t.title}
                   </Text>
                 </Box>
               </HStack>
-            </Box>
+            </VStack>
           ))}
         </SimpleGrid>
 
-        <HStack>
-          <Flex flex={1} bg={"red.100"}></Flex>
-          <VStack flex={1} justifyContent={"flex-start"}>
-            <VStack p={4} pr={24}>
-              <Text maxW="2xl" textAlign={"left"} fontSize="sm">
-                We&apos;ve collaborated with seasoned legal professionals to
-                develop a tool that addresses real-world challenges, ensuring
-                relevance and practicality in every feature.
-              </Text>
-              <Button
-                alignSelf={"flex-start"}
-                size="sm"
-                mt={4}
-                bg="black"
-                color="white"
-                px={6}
-              >
-                &lt;Define the future with us&gt;
-              </Button>
-            </VStack>
+        <HStack gap={5}>
+          <Flex flex={1}></Flex>
+
+          <VStack flex={1} gap={0} justifyContent={"flex-start"}>
+            <Text
+              color={"#000"}
+              lineHeight={1.55}
+              fontWeight={"medium"}
+              mb={10}
+              fontSize="lg"
+            >
+              We&apos;ve collaborated with seasoned legal professionals to
+              develop a tool that addresses real-world challenges, ensuring
+              relevance and practicality in every feature.
+            </Text>
+            <Button
+              alignSelf={"flex-start"}
+              minW={44}
+              size="lg"
+              bg="black"
+              color="white"
+              px={5}
+              py={2}
+              w={"50%"}
+              fontWeight={"medium"}
+            >
+              &lt;Define the future with us&gt;
+            </Button>
           </VStack>
         </HStack>
       </Container>

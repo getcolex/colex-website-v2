@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { keyframes } from "@emotion/react";
 import {
   Box,
+  Container,
   Flex,
   Heading,
   VStack,
@@ -11,7 +12,7 @@ import {
   HStack,
   Collapsible,
 } from "@chakra-ui/react";
-import Image from "next/image";
+// import Image from "next/image";
 
 const FEATURES = [
   {
@@ -75,99 +76,101 @@ export default function FeatureShowcase() {
   };
 
   return (
-    <Box py={20} maxW="6xl" mx="auto" bg="white">
-      <Flex direction={["column", null, "row"]} gap={10} align="center">
-        {/* Left Feature List */}
-        <VStack align="stretch" gap={0} flex={1}>
-          <Heading textAlign="left" mb={40} px={[4, 8]}>
-            Key features
-          </Heading>
-          {FEATURES.map((item, idx) => {
-            const isActive = idx === activeIndex;
-            return (
-              <Box
-                key={idx}
-                px={2}
-                py={2}
-                cursor="pointer"
-                onClick={() => handleItemClick(idx)}
-              >
-                {isActive ? (
-                  <Box position="relative" h="2px" w="full" mb={2}>
-                    <Box position="absolute" h="2px" w="full" bg="gray.200" />
-                    <Box
-                      position="absolute"
-                      h="2px"
-                      w="full"
-                      bg="black"
-                      animation={`${progressAnimation} 5s linear`}
-                    />
-                  </Box>
-                ) : (
-                  <Box h="2px" w="full" bg="gray.200" mb={2} />
-                )}
-
-                <HStack align="start" gap={4}>
-                  <Text
-                    fontWeight="bold"
-                    color={isActive ? "black" : "gray.400"}
-                    minW="20px"
-                  >
-                    {idx + 1}.
-                  </Text>
-                  <Box>
-                    <Text
-                      fontWeight={isActive ? "semibold" : "normal"}
-                      color={isActive ? "black" : "gray.500"}
-                    >
-                      {item.title}
-                    </Text>
-                    <Collapsible.Root open={isActive}>
-                      <Collapsible.Content>
-                        <Text mt={1} fontSize="sm" color="gray.600">
-                          {item.description}
-                        </Text>
-                      </Collapsible.Content>
-                    </Collapsible.Root>
-                  </Box>
-                </HStack>
-              </Box>
-            );
-          })}
-        </VStack>
-
-        {/* Right Visual */}
-        <Box
-          flex={1}
-          minH={600}
-          w={"100%"}
-          minW={600}
-          bg="gray.100"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          borderRadius="md"
-          overflow="hidden"
+    <Box mt={20} py={20} mx={"auto"} bg="white">
+      <Container px={0}>
+        <Flex
+          justifyContent={"space-between"}
+          direction={["column", null, "row"]}
+          gap={40}
         >
-          <Image
+          {/* Left Feature List */}
+          <VStack justifyContent={"space-between"}>
+            <Heading
+              fontSize={"4xl"}
+              fontWeight={"semibold"}
+              alignSelf={"flex-start"}
+              lineHeight={1.22}
+            >
+              Key features
+            </Heading>
+            <Box maxW={405}>
+              {FEATURES.map((item, idx) => {
+                const isActive = idx === activeIndex;
+                return (
+                  <Box
+                    key={idx}
+                    mb={5}
+                    cursor="pointer"
+                    onClick={() => handleItemClick(idx)}
+                  >
+                    {isActive ? (
+                      <Box position="relative" h="2px" w="full" mb={5}>
+                        <Box
+                          position="absolute"
+                          h="2px"
+                          w="full"
+                          bg="gray.200"
+                        />
+                        <Box
+                          position="absolute"
+                          h="2px"
+                          w="full"
+                          bg="black"
+                          animation={`${progressAnimation} 5s linear`}
+                        />
+                      </Box>
+                    ) : (
+                      <Box h="2px" w="full" bg="gray.200" mb={5} />
+                    )}
+
+                    <HStack align="start" gap={4}>
+                      <Text
+                        fontWeight="bold"
+                        color={isActive ? "black" : "gray.400"}
+                      >
+                        {idx + 1}.
+                      </Text>
+                      <Box>
+                        <Text
+                          fontSize={"2xl"}
+                          lineHeight={1.33}
+                          fontWeight={"medium"}
+                          color={"#000"}
+                        >
+                          {item.title}
+                        </Text>
+                        <Collapsible.Root open={isActive}>
+                          <Collapsible.Content>
+                            <Text
+                              mt={3}
+                              fontSize="lg"
+                              lineHeight={1.55}
+                              color="#000"
+                            >
+                              {item.description}
+                            </Text>
+                          </Collapsible.Content>
+                        </Collapsible.Root>
+                      </Box>
+                    </HStack>
+                  </Box>
+                );
+              })}
+            </Box>
+          </VStack>
+
+          {/* Right Visual */}
+          <Box borderRadius={1} width={834} height={834} bg="gray.100">
+            {/* <Image
             src={`/images/feature1.avif`}
             alt={FEATURES[activeIndex].title}
-            width={600}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              borderRadius: 8,
-              maxWidth: 500,
-              maxHeight: 500,
-            }}
-            height={600}
             onError={(e) => {
               (e.target as HTMLImageElement).src = "/images/feature1.png";
             }}
-          />
-        </Box>
-      </Flex>
+          /> */}
+          </Box>
+        </Flex>
+      </Container>
     </Box>
   );
 }

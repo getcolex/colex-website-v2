@@ -14,74 +14,91 @@ import { FaArrowRight } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <Box bg="gray.200" p={20} borderTop={"1px solid gray"}>
-      <Container maxW="6xl">
-        <Flex
-          direction={["column", "column", "row"]}
-          justify="space-between"
-          align={["flex-start", "flex-start", "center"]}
-          gap={10}
-        >
+    <Box bg="gray.200" py={20} mt={20}>
+      <Container px={0}>
+        <Flex>
           <VStack align="flex-start" gap={6} flex={1}>
-            <Heading fontSize="4xl" fontWeight="bold">
+            <Heading
+              fontSize="4xl"
+              fontWeight="semibold"
+              lineHeight={1.22}
+              color={"#000"}
+            >
               Colex
             </Heading>
-            <HStack justifyContent={"space-between"} w={"100%"} flex={1}>
+            <HStack py={20} justifyContent={"space-between"} width={"100%"}>
               <Heading
-                fontSize="2xl"
-                lineHeight={"1.5"}
-                textAlign={"left"}
-                fontWeight="bold"
+                fontSize="4xl"
+                color={"#000"}
+                lineHeight={"1.22"}
+                fontWeight="semibold"
               >
                 An Integrated AI <br /> Workspace for Modern <br /> Legal
                 Professionals
               </Heading>
-              <HStack gap={5}>
+              <HStack gap={5} h={"100%"}>
                 <Button
-                  size="lg"
                   bg="white"
+                  flex={1}
+                  h={"100%"}
                   color="black"
-                  px={5}
-                  py={10}
-                  boxShadow="md"
-                  borderRadius="sm"
-                  _hover={{ bg: "gray.50" }}
-                  alignItems={"center"}
+                  borderRadius={1}
+                  px={8}
+                  py={5}
                   justifyContent={"center"}
+                  alignItems={"center"}
                 >
-                  <Box textAlign="left" flex="1">
+                  <Text
+                    alignSelf={"flex-end"}
+                    textAlign="left"
+                    fontSize={"2xl"}
+                    fontWeight={"medium"}
+                    lineHeight={1.33}
+                    color={"#000"}
+                  >
                     Schedule a 1:1 demo
-                  </Box>
-                  <Box ml={4}>
-                    <FaArrowRight />
+                  </Text>
+                  <Box display={"flex"} h={"100%"} alignItems={"flex-end"}>
+                    <FaArrowRight width={42} height={42} fontSize="42px" />
                   </Box>
                 </Button>
                 <Button
-                  size="lg"
+                  flex={1}
                   bg="black"
+                  h={"100%"}
                   color="white"
-                  px={5}
-                  boxShadow="md"
-                  borderRadius="sm"
-                  _hover={{ bg: "gray.800" }}
-                  alignItems={"center"}
-                  py={10}
+                  borderRadius={1}
+                  px={8}
+                  py={5}
                   justifyContent={"center"}
                 >
-                  <Text textAlign="left" flex="1">
+                  <Text
+                    textAlign="left"
+                    fontSize={"2xl"}
+                    alignSelf={"flex-end"}
+                    fontWeight={"medium"}
+                    lineHeight={1.33}
+                    color={"#fff"}
+                  >
                     Join Our <br /> Early Access Program
                   </Text>
-                  <Box ml={4}>
-                    <FaArrowRight />
+                  <Box display={"flex"} h={"100%"} alignItems={"flex-end"}>
+                    <FaArrowRight width={42} height={42} fontSize="42px" />
                   </Box>
                 </Button>
               </HStack>
             </HStack>
 
-            <VStack align="flex-start" gap={1} fontSize="sm" color="gray.600">
-              <Text>Company Address</Text>
-              <Text>Company Phone Number</Text>
-              <Text>© 2025 | ALL RIGHTS RESERVED by Colex.</Text>
+            <VStack align="flex-start" gap={3} fontSize="sm" color="#52525B">
+              <Text fontSize={"md"} fontWeight={"medium"} lineHeight={1.5}>
+                Company Address
+              </Text>
+              <Text fontSize={"md"} fontWeight={"medium"} lineHeight={1.5}>
+                Company Phone Number
+              </Text>
+              <Text fontSize={"md"} fontWeight={"medium"} lineHeight={1.5}>
+                © 2025 | ALL RIGHTS RESERVED by Colex.
+              </Text>
             </VStack>
           </VStack>
         </Flex>

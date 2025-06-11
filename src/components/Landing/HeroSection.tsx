@@ -3,21 +3,26 @@ import { Box, Container, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 export default function HeroSection() {
   return (
     <Box
-      py={[16, 20, 24]}
-      h={600}
+      py={20}
+      h={744}
       display={"flex"}
       alignItems={"flex-end"}
+      mx={"auto"}
       bg={"gray.100"}
     >
-      <Container maxW="6xl">
+      <Container px={0}>
         <Flex
           direction={["column", "column", "row"]}
-          align="center"
-          gap={6}
+          alignItems={"flex-end"}
           justifyContent={"space-between"}
         >
           <VStack align="start" flex="3">
-            <Heading as="h1" fontSize={["2xl", "3xl", "4xl"]} lineHeight="1.2">
+            <Heading
+              as="h1"
+              fontSize={"5xl"}
+              lineHeight={"1.25"}
+              fontWeight={"semibold"}
+            >
               Research, Draft, and Organize, <br />
               <Text as="span" color="blue.500">
                 Colex is an all-in-one <br />
@@ -27,7 +32,12 @@ export default function HeroSection() {
           </VStack>
 
           <Box flex="2">
-            <Text fontSize="md" color="gray.700">
+            <Text
+              fontSize="lg"
+              color="#000"
+              fontWeight={"medium"}
+              lineHeight={1.5}
+            >
               Experience a transformative approach to legal research and
               drafting. Our AI-powered platform is designed to enhance
               efficiency, accuracy, and collaboration.

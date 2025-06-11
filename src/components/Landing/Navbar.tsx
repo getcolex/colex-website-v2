@@ -7,7 +7,6 @@ import { Box, Button, Container, Flex, Heading } from "@chakra-ui/react";
 export default function LandingNavbar() {
   return (
     <Box
-      as="header"
       py={5}
       bg="white"
       position={"sticky"}
@@ -15,25 +14,36 @@ export default function LandingNavbar() {
       zIndex={100}
       boxShadow={"sm"}
     >
-      <Container maxW="6xl">
+      <Container px={0}>
         <Flex align="center" justifyContent={"space-between"}>
-          <Heading fontSize="4xl" fontWeight="600" color={"#000"}>
+          <Heading
+            fontSize="4xl"
+            fontWeight="600"
+            lineHeight={1.22}
+            color={"#000"}
+          >
             Colex
           </Heading>
-          <Flex gap={4}>
+          <Flex gap={5}>
             <Button
               variant="ghost"
               bg="gray.100"
-              p={4}
-              fontSize={"16px"}
+              fontSize={"md"}
+              fontWeight={"medium"}
+              px={5}
+              py={2.5}
+              lineHeight={1.5}
               textAlign={"center"}
             >
               Schedule a 1:1 demo
             </Button>
             <Button
               colorScheme="blackAlpha"
-              fontSize={"16px"}
-              p={4}
+              fontSize={"md"}
+              fontWeight={"medium"}
+              px={5}
+              py={2.5}
+              lineHeight={1.5}
               textAlign={"center"}
             >
               Get early access
