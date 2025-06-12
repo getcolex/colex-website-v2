@@ -26,23 +26,25 @@ export default function LandingNavbar() {
           </Heading>
           <Flex gap={5}>
             <Button
+              flex={1}
               variant="ghost"
               bg="gray.100"
               fontSize={"md"}
               fontWeight={"medium"}
               px={5}
-              py={2.5}
+              py={2}
               lineHeight={1.5}
               textAlign={"center"}
             >
               Schedule a 1:1 demo
             </Button>
             <Button
+              flex={1}
               colorScheme="blackAlpha"
               fontSize={"md"}
               fontWeight={"medium"}
               px={5}
-              py={2.5}
+              py={2}
               lineHeight={1.5}
               textAlign={"center"}
             >

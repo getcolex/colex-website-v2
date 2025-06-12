@@ -108,6 +108,7 @@ export default function TestimonialsSection() {
               lineHeight={1.55}
               fontWeight={"medium"}
               mb={10}
+              pr={154}
               fontSize="lg"
             >
               We&apos;ve collaborated with seasoned legal professionals to
@@ -115,15 +116,17 @@ export default function TestimonialsSection() {
               relevance and practicality in every feature.
             </Text>
             <Button
-              alignSelf={"flex-start"}
-              minW={44}
-              size="lg"
+              gap={3}
               bg="black"
               color="white"
+              minW={44}
+              alignSelf={"flex-start"}
               px={5}
               py={2}
-              w={"50%"}
-              fontWeight={"medium"}
+              fontSize={"md"}
+              textAlign={"center"}
+              lineHeight={1.5}
+              alignItems={"center"}
             >
               &lt;Define the future with us&gt;
             </Button>

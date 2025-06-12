@@ -42,7 +42,7 @@ export default function Footer() {
                   flex={1}
                   h={"100%"}
                   color="black"
-                  borderRadius={1}
+                  borderRadius={4}
                   px={8}
                   py={5}
                   justifyContent={"center"}
@@ -67,7 +67,7 @@ export default function Footer() {
                   bg="black"
                   h={"100%"}
                   color="white"
-                  borderRadius={1}
+                  borderRadius={4}
                   px={8}
                   py={5}
                   justifyContent={"center"}

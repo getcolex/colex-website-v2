@@ -12,6 +12,7 @@ import {
   HStack,
   Collapsible,
 } from "@chakra-ui/react";
+import { useInView } from "react-intersection-observer";
 // import Image from "next/image";
 
 const FEATURES = [
@@ -49,22 +50,31 @@ const FEATURES = [
   },
 ];
 
-const progressAnimation = keyframes`
-  from { width: 0% }
-  to { width: 100% }
-`;
-
 export default function FeatureShowcase() {
   const [activeIndex, setActiveIndex] = useState(0);
+
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
+  const { ref, inView } = useInView({
+    threshold: 0.3,
+    triggerOnce: true,
+  });
+
+  const progressAnimation = keyframes`
+  from { width: 0% }
+  to { width: ${inView ? "100%" : "0%"} }
+`;
+
+  console.log(inView);
+
   useEffect(() => {
+    if (!inView) return;
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % FEATURES.length);
     }, 5000);
     setTimer(interval);
     return () => clearInterval(interval);
-  }, []);
+  }, [inView]);
 
   const handleItemClick = (idx: number) => {
     if (timer) clearInterval(timer);
@@ -76,7 +86,7 @@ export default function FeatureShowcase() {
   };
 
   return (
-    <Box mt={20} py={20} mx={"auto"} bg="white">
+    <Box mt={20} py={20} mx={"auto"} bg="white" ref={ref}>
       <Container px={0}>
         <Flex
           justifyContent={"space-between"}
@@ -103,7 +113,7 @@ export default function FeatureShowcase() {
                     cursor="pointer"
                     onClick={() => handleItemClick(idx)}
                   >
-                    {isActive ? (
+                    {isActive && inView ? (
                       <Box position="relative" h="2px" w="full" mb={5}>
                         <Box
                           position="absolute"
@@ -125,8 +135,10 @@ export default function FeatureShowcase() {
 
                     <HStack align="start" gap={4}>
                       <Text
-                        fontWeight="bold"
-                        color={isActive ? "black" : "gray.400"}
+                        fontWeight="medium"
+                        fontSize={"2xl"}
+                        lineHeight={1.33}
+                        color={isActive ? "#000" : "#A1A1AA"}
                       >
                         {idx + 1}.
                       </Text>
@@ -160,7 +172,7 @@ export default function FeatureShowcase() {
           </VStack>
 
           {/* Right Visual */}
-          <Box borderRadius={1} width={834} height={834} bg="gray.100">
+          <Box borderRadius={4} width={834} height={834} bg="gray.100">
             {/* <Image
             src={`/images/feature1.avif`}
             alt={FEATURES[activeIndex].title}
