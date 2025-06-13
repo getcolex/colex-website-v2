@@ -10,10 +10,10 @@ export default function EmailLayout({ children }: { children: ReactNode }) {
       <Box flex="2" bg="gray.100" />
 
       {/* Right auth form side */}
-      <Flex flex="1" justify="center" align="center" bg="white" p={8}>
+      <Flex flex="1" justify="center" align="center" bg="white" px={10}>
         <Box
           w="full"
-          maxW="md"
+          h={484}
           border="1px solid"
           borderColor="gray.200"
           borderRadius="md"

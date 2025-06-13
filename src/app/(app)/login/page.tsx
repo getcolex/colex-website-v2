@@ -1,6 +1,15 @@
 "use client";
 
-import { Box, Button, Heading, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Container,
+  Text,
+  VStack,
+  Icon,
+} from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
 import { FaLinkedin, FaMicrosoft, FaEnvelope } from "react-icons/fa";
 import { useRouter } from "next/navigation";
@@ -45,43 +54,82 @@ export default function LoginPage() {
 
   return (
     <EmailLayout>
-      <Box w="full" maxW={"md"}>
-        <Heading fontSize={"36px"} mb={8} textAlign="left">
-          Get started on Colex
-        </Heading>
-
-        <Stack gap="4">
-          <Button
-            variant="outline"
-            justifyContent="flex-start"
-            onClick={handleGoogleLogin}
+      <Flex flexDirection={"column"} alignItems={"center"}>
+        <Container>
+          <Heading
+            fontSize="2xl"
+            mb={10}
+            lineHeight={1.33}
+            fontWeight={"semibold"}
+            textAlign={"center"}
+            color={"#000"}
           >
-            <FcGoogle />
-            Continue with Google
-          </Button>
+            Get started on Colex
+          </Heading>
 
-          <Button variant="outline" justifyContent="flex-start">
-            <FaLinkedin color="#0077b5" />
-            Continue with LinkedIn
-          </Button>
+          <VStack gap={4}>
+            <AuthButton
+              icon={FcGoogle}
+              label="Continue with Google"
+              onClick={handleGoogleLogin}
+            />
 
-          <Button variant="outline" justifyContent="flex-start">
-            <FaMicrosoft color="#00A4EF" />
-            Continue with Outlook
-          </Button>
+            <AuthButton
+              icon={FaLinkedin}
+              color="#0077b5"
+              label="Continue with Linkedin"
+              onClick={() => {}}
+            />
 
-          <Box h="1px" w="100%" bg="gray.200" />
-
-          <Button
-            variant="outline"
-            justifyContent="flex-start"
+            <AuthButton
+              icon={FaMicrosoft}
+              color="#00A4EF"
+              label="Continue with Outlook"
+              onClick={() => {}}
+            />
+          </VStack>
+          <Box my={8} h="1px" w="100%" bg="gray.200" />
+          <AuthButton
+            icon={FaEnvelope}
+            color="#000"
+            label="Continue with Email"
             onClick={() => router.push("/email")}
-          >
-            <FaEnvelope />
-            Continue with Email
-          </Button>
-        </Stack>
-      </Box>
+          />
+        </Container>
+      </Flex>
     </EmailLayout>
+  );
+}
+
+function AuthButton({
+  icon,
+  label,
+  color,
+  onClick,
+}: {
+  icon: React.ElementType;
+  label: string;
+  color?: string;
+  onClick?: () => void;
+}) {
+  return (
+    <Button
+      variant="outline"
+      color={"#27272A"}
+      textAlign={"center"}
+      fontSize={"sm"}
+      px={4}
+      py={2.5}
+      fontWeight={"semibold"}
+      justifyContent={"flex-start"}
+      lineHeight={1.42}
+      w="full"
+      onClick={onClick}
+    >
+      <Icon as={icon} h={20} w={20} boxSize={5} color={color} />
+      <Text flex={1} textAlign={"center"}>
+        {label}
+      </Text>
+    </Button>
   );
 }
