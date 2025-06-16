@@ -1,7 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { Box, Button, Field, Input, VStack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Field,
+  Input,
+  VStack,
+  Text,
+  Portal,
+  createListCollection,
+  Select,
+} from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 
 interface FormData {
@@ -13,6 +23,35 @@ interface FormData {
   mainArea: string;
   mainAreaOther?: string;
 }
+
+const currentRoleOptions = createListCollection({
+  items: [
+    { value: "Associate", label: "Associate" },
+    { value: "Partner", label: "Partner" },
+    { value: "General Counsel", label: "General Counsel" },
+    { value: "Other", label: "Other (please specify)..." },
+  ],
+});
+
+const organizationDescOptions = createListCollection({
+  items: [
+    { value: "Law firm", label: "Law firm" },
+    { value: "Consultancy", label: "Consultancy" },
+    { value: "Government", label: "Government" },
+    { value: "Other", label: "Other (please specify)..." },
+  ],
+});
+
+const mainAreaOptions = createListCollection({
+  items: [
+    { value: "Family law", label: "Family law" },
+    { value: "Audit and compliance", label: "Audit and compliance" },
+    { value: "Criminal law", label: "Criminal law" },
+    { value: "Contract law", label: "Contract law" },
+    { value: "Mediation", label: "Mediation" },
+    { value: "Other", label: "Other (please specify)..." },
+  ],
+});
 
 interface FormErrors {
   firmName?: string;
@@ -111,7 +150,7 @@ export default function BasicInfo2Page() {
       justifyContent={"center"}
     >
       <Box
-        p={10}
+        // p={10}
         mx={"auto"}
         w={450}
         h={626}
@@ -119,7 +158,7 @@ export default function BasicInfo2Page() {
         border={"1px solid #E4E4E7"}
         position={"relative"}
       >
-        <VStack overflowY={"scroll"} gap={5}>
+        <VStack overflowY={"scroll"} gap={5} p={10}>
           {submitStatus === "success" && (
             <Text color="green.500" fontWeight="medium">
               Form submitted successfully! Redirecting...
@@ -149,22 +188,43 @@ export default function BasicInfo2Page() {
             <Field.ErrorText>{errors.firmName}</Field.ErrorText>
           </Field.Root>
 
-          <Field.Root gap={1.5} required invalid={!!errors.currentRole}>
-            <Field.Label
+          <Select.Root
+            multiple
+            collection={currentRoleOptions}
+            gap={1.5}
+            required
+          >
+            <Select.HiddenSelect />
+            <Select.Label
               fontSize={"sm"}
               lineHeight={1.42}
               fontWeight={"semibold"}
             >
               What is your current role?
-            </Field.Label>
-            <Input
-              value={formData.currentRole}
-              py={2.5}
-              _placeholder={{ color: "#A1A1AA" }}
-              onChange={handleInputChange("currentRole")}
-              placeholder="Associate, Partner, General Counsel, etc."
-            />
-            {formData.currentRole.toLowerCase() === "other" && (
+            </Select.Label>
+            <Select.Control>
+              <Select.Trigger>
+                <Select.ValueText placeholder="Associate, Partner, General Counsel, etc." />
+              </Select.Trigger>
+              <Select.IndicatorGroup>
+                <Select.Indicator />
+              </Select.IndicatorGroup>
+            </Select.Control>
+            <Portal>
+              <Select.Positioner>
+                <Select.Content>
+                  {currentRoleOptions.items.map((option) => (
+                    <Select.Item item={option} key={option.value}>
+                      {option.label}
+                      <Select.ItemIndicator />
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select.Positioner>
+            </Portal>
+          </Select.Root>
+          <Field.Root gap={1.5} required invalid={!!errors.currentRole}>
+            {true && (
               <Input
                 value={formData.currentRoleOther}
                 py={2.5}
@@ -176,21 +236,43 @@ export default function BasicInfo2Page() {
             <Field.ErrorText>{errors.currentRole}</Field.ErrorText>
           </Field.Root>
 
-          <Field.Root gap={1.5} required invalid={!!errors.organizationDesc}>
-            <Field.Label
+          <Select.Root
+            multiple
+            collection={organizationDescOptions}
+            gap={1.5}
+            required
+          >
+            <Select.HiddenSelect />
+            <Select.Label
               fontSize={"sm"}
               lineHeight={1.42}
               fontWeight={"semibold"}
             >
               Which best describes your organization?
-            </Field.Label>
-            <Input
-              value={formData.organizationDesc}
-              py={2.5}
-              _placeholder={{ color: "#A1A1AA" }}
-              onChange={handleInputChange("organizationDesc")}
-              placeholder="Law Firm, Consultancy, Government, etc."
-            />
+            </Select.Label>
+            <Select.Control>
+              <Select.Trigger>
+                <Select.ValueText placeholder="Law Firm, Consultancy, Government, etc." />
+              </Select.Trigger>
+              <Select.IndicatorGroup>
+                <Select.Indicator />
+              </Select.IndicatorGroup>
+            </Select.Control>
+            <Portal>
+              <Select.Positioner>
+                <Select.Content>
+                  {organizationDescOptions.items.map((option) => (
+                    <Select.Item item={option} key={option.value}>
+                      {option.label}
+                      <Select.ItemIndicator />
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select.Positioner>
+            </Portal>
+          </Select.Root>
+
+          <Field.Root gap={1.5} required invalid={!!errors.organizationDesc}>
             {formData.organizationDesc.toLowerCase() === "other" && (
               <Input
                 value={formData.organizationDescOther}
@@ -203,21 +285,38 @@ export default function BasicInfo2Page() {
             <Field.ErrorText>{errors.organizationDesc}</Field.ErrorText>
           </Field.Root>
 
-          <Field.Root gap={1.5} required invalid={!!errors.mainArea}>
-            <Field.Label
+          <Select.Root multiple collection={mainAreaOptions} gap={1.5} required>
+            <Select.HiddenSelect />
+            <Select.Label
               fontSize={"sm"}
               lineHeight={1.42}
               fontWeight={"semibold"}
             >
               What are your main area(s) of practice?
-            </Field.Label>
-            <Input
-              value={formData.mainArea}
-              py={2.5}
-              _placeholder={{ color: "#A1A1AA" }}
-              onChange={handleInputChange("mainArea")}
-              placeholder="Family law, Audit and compliance, etc."
-            />
+            </Select.Label>
+            <Select.Control>
+              <Select.Trigger>
+                <Select.ValueText placeholder="Family law, Audit and compliance, etc." />
+              </Select.Trigger>
+              <Select.IndicatorGroup>
+                <Select.Indicator />
+              </Select.IndicatorGroup>
+            </Select.Control>
+            <Portal>
+              <Select.Positioner>
+                <Select.Content>
+                  {mainAreaOptions.items.map((option) => (
+                    <Select.Item item={option} key={option.value}>
+                      {option.label}
+                      <Select.ItemIndicator />
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select.Positioner>
+            </Portal>
+          </Select.Root>
+
+          <Field.Root gap={1.5} required invalid={!!errors.mainArea}>
             {formData.mainArea.toLowerCase() === "other" && (
               <Input
                 value={formData.mainAreaOther}
@@ -230,12 +329,11 @@ export default function BasicInfo2Page() {
             <Field.ErrorText>{errors.mainArea}</Field.ErrorText>
           </Field.Root>
         </VStack>
-
         <Button
-          mt={5}
+          // mx={10}
           position={"absolute"}
           bottom={10}
-          w={370}
+          w={"100%"}
           loading={isLoading}
           onClick={handleSubmit}
           disabled={isLoading}
