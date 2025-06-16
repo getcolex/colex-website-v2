@@ -22,13 +22,7 @@ import {
 } from "react-icons/fa";
 import { useAppStore } from "@/store/useAppStore";
 
-export default function Sidebar({
-  collapsed,
-  setCollapsed,
-}: {
-  collapsed: boolean;
-  setCollapsed: (collapsed: boolean) => void;
-}) {
+export default function Sidebar() {
   const { user, logout } = useAppStore();
   const { open: isCaseOpen, onToggle: toggleCase } = useDisclosure({
     defaultOpen: true,
@@ -37,8 +31,6 @@ export default function Sidebar({
   const { open: isArchiveOpen, onToggle: toggleArchive } = useDisclosure({
     defaultOpen: true,
   });
-
-  console.log(user);
 
   return (
     <Box
