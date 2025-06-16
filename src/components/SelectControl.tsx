@@ -36,19 +36,20 @@ export const SelectControl = ({
         focusRingColor="#000"
         isMulti
         closeMenuOnSelect={false}
-        value={value}
+        value={value as Option[]}
         onChange={onChange}
         onBlur={onBlur}
         options={options}
         placeholder={placeholder}
         components={{
           Option: (props) => {
-            const { isSelected, label } = props.data;
+            // const { isSelected, label } = props.data;
+            const { label } = props.data;
             return (
               <chakraComponents.Option {...props}>
                 <HStack gap={3}>
                   <Checkbox.Root
-                    checked={isSelected}
+                    checked={false}
                     pointerEvents="none"
                     readOnly
                     variant={"solid"}
@@ -69,7 +70,7 @@ export const SelectControl = ({
           },
         }}
         chakraStyles={{
-          option: (base, state) => ({
+          option: (base) => ({
             ...base,
             bg: "white",
             color: "black",
