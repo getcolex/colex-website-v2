@@ -1,43 +1,16 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  Field,
-  Input,
-  VStack,
-  Heading,
-  HStack,
-  Checkbox,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, Field, Input, VStack, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useForm, useController } from "react-hook-form";
-import { chakraComponents, Select as ChakraSelect } from "chakra-react-select";
-
-const ROLES = ["Associate", "Partner", "General Counsel", "Other"];
-const ORGANIZATIONS = ["Law firm", "Consultancy", "Government", "Other"];
-const PRACTICE_AREAS = [
-  "Family law",
-  "Audit and compliance",
-  "Criminal law",
-  "Contract law",
-  "Mediation",
-  "Other",
-];
-
-const toOptions = (arr: string[]) => arr.map((v) => ({ label: v, value: v }));
-type Option = { label: string; value: string };
-
-interface FormSchema {
-  firmName: string;
-  currentRole: Option[];
-  currentRoleOther: string;
-  organization: Option[];
-  organizationOther: string;
-  mainAreas: Option[];
-  mainAreaOther: string;
-}
+import { useForm } from "react-hook-form";
+import {
+  FormSchema,
+  ROLES,
+  ORGANIZATIONS,
+  PRACTICE_AREAS,
+  toOptions,
+} from "@/types/form";
+import { SelectControl } from "@/components/SelectControl";
 
 export default function BasicInfo2Page() {
   const router = useRouter();
@@ -60,17 +33,15 @@ export default function BasicInfo2Page() {
     mode: "onChange",
   });
 
-  const includesOther = (selected: Option[]) =>
+  const includesOther = (selected: { value: string }[]) =>
     selected?.some((o) => o.value.toLowerCase() === "other");
 
   const currentRole = watch("currentRole");
   const organization = watch("organization");
   const mainAreas = watch("mainAreas");
 
-  /* ---------- submit ---------- */
   const onSubmit = (data: FormSchema) => {
-    // Flatten option arrays → string[]
-    const flatten = (opts: Option[]) => opts.map((o) => o.value);
+    const flatten = (opts: { value: string }[]) => opts.map((o) => o.value);
 
     const payload = {
       firmName: data.firmName.trim(),
@@ -86,7 +57,6 @@ export default function BasicInfo2Page() {
     router.push("/dashboard");
   };
 
-  /* ──────────────────────────────────────────────────────────── */
   return (
     <Box display="flex" h="100vh" alignItems="center" justifyContent="center">
       <Box
@@ -117,7 +87,6 @@ export default function BasicInfo2Page() {
             align="stretch"
             pb={40}
           >
-            {/* Firm name */}
             <Field.Root required invalid={!!errors.firmName}>
               <Field.Label
                 fontSize="sm"
@@ -136,7 +105,6 @@ export default function BasicInfo2Page() {
               <Field.ErrorText>{errors.firmName?.message}</Field.ErrorText>
             </Field.Root>
 
-            {/* Current role */}
             <SelectControl
               name="currentRole"
               control={control}
@@ -156,7 +124,6 @@ export default function BasicInfo2Page() {
               />
             )}
 
-            {/* Organization */}
             <SelectControl
               name="organization"
               control={control}
@@ -176,7 +143,6 @@ export default function BasicInfo2Page() {
               />
             )}
 
-            {/* Main areas */}
             <SelectControl
               name="mainAreas"
               control={control}
@@ -213,102 +179,3 @@ export default function BasicInfo2Page() {
     </Box>
   );
 }
-
-const SelectControl = ({
-  name,
-  control,
-  label,
-  options,
-  placeholder,
-  rules,
-}: {
-  name: keyof FormSchema;
-  control: any;
-  label: string;
-  options: Option[];
-  placeholder: string;
-  rules?: any;
-}) => {
-  const {
-    field: { onChange, onBlur, value, ref },
-    fieldState: { error },
-  } = useController({ name, control, rules });
-
-  return (
-    <Field.Root required invalid={!!error}>
-      <Field.Label fontSize="sm" lineHeight={1.42} fontWeight="semibold">
-        {label}
-      </Field.Label>
-      <ChakraSelect
-        ref={ref}
-        focusRingColor="#000"
-        isMulti
-        closeMenuOnSelect={false}
-        value={value}
-        onChange={onChange}
-        onBlur={onBlur}
-        options={options}
-        placeholder={placeholder}
-        components={{
-          Option: (props) => {
-            const { isSelected, label } = props.data;
-            return (
-              <chakraComponents.Option {...props}>
-                <HStack gap={3}>
-                  <Checkbox.Root
-                    checked={isSelected}
-                    pointerEvents="none"
-                    readOnly
-                    variant={"solid"}
-                    size="sm"
-                    _checked={{
-                      "& .chakra-checkbox__control": {
-                        background: "black",
-                        borderColor: "black",
-                      },
-                    }}
-                  >
-                    <Checkbox.Control />
-                  </Checkbox.Root>
-                  <Text>{label}</Text>
-                </HStack>
-              </chakraComponents.Option>
-            );
-          },
-        }}
-        chakraStyles={{
-          option: (base, state) => ({
-            ...base,
-            bg: "white",
-            color: "black",
-            paddingY: 2,
-            paddingX: 4,
-          }),
-          multiValue: (base) => ({
-            ...base,
-            bg: "#fff",
-            borderRadius: 6,
-            padding: "4px 8px",
-            fontWeight: 500,
-            py: 1,
-            my: 2,
-          }),
-          multiValueLabel: (base) => ({
-            ...base,
-            color: "#000",
-          }),
-          multiValueRemove: (base) => ({
-            ...base,
-            color: "#000",
-            ":hover": {
-              bg: "transparent",
-              color: "gray.700",
-            },
-          }),
-        }}
-      />
-
-      <Field.ErrorText>{error?.message}</Field.ErrorText>
-    </Field.Root>
-  );
-};
