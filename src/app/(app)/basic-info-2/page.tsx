@@ -1,9 +1,19 @@
 "use client";
 
-import { Box, Button, Field, Input, VStack, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Field,
+  Input,
+  VStack,
+  Text,
+  Heading,
+  HStack,
+  Checkbox,
+} from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useForm, useController } from "react-hook-form";
-import { Select as ChakraSelect } from "chakra-react-select";
+import { chakraComponents, Select as ChakraSelect } from "chakra-react-select";
 
 const ROLES = ["Associate", "Partner", "General Counsel", "Other"];
 const ORGANIZATIONS = ["Law firm", "Consultancy", "Government", "Other"];
@@ -185,19 +195,83 @@ const ControlledSelect = ({
 
   return (
     <Field.Root required invalid={!!error}>
-      <Field.Label fontSize={"sm"} lineHeight={1.42} fontWeight={"semibold"}>
+      <Field.Label fontSize="sm" lineHeight={1.42} fontWeight="semibold">
         {label}
       </Field.Label>
       <ChakraSelect
         ref={ref}
         closeMenuOnSelect={false}
-        isMulti={true}
+        isMulti
         value={value}
         onChange={onChange}
         onBlur={onBlur}
         options={options}
         placeholder={placeholder}
+        components={{
+          Option: (props) => {
+            const { isSelected, label } = props.data;
+            return (
+              <chakraComponents.Option {...props}>
+                <HStack gap={3}>
+                  <Checkbox.Root
+                    colorPalette="black"
+                    checked={true}
+                    pointerEvents="none"
+                    readOnly
+                    variant={"solid"}
+                    size="sm"
+                    _checked={{
+                      "& .chakra-checkbox__control": {
+                        background: "black",
+                        borderColor: "black",
+                      },
+                    }}
+                    _hover={{
+                      bg: isSelected ? "black" : "gray.100",
+                    }}
+                  >
+                    <Checkbox.Control />
+                  </Checkbox.Root>
+                  <Text>{label}</Text>
+                </HStack>
+              </chakraComponents.Option>
+            );
+          },
+        }}
+        chakraStyles={{
+          option: (base, state) => ({
+            ...base,
+            bg: state.isFocused ? "gray.100" : "white",
+            color: "black",
+            cursor: "pointer",
+            _hover: { bg: "gray.100" },
+            paddingY: 2,
+            paddingX: 4,
+          }),
+          multiValue: (base) => ({
+            ...base,
+            bg: "#F4F4F5",
+            borderRadius: "6px",
+            padding: "4px 8px",
+            fontWeight: 500,
+            color: "#000",
+          }),
+          multiValueLabel: (base) => ({
+            ...base,
+            color: "#000",
+          }),
+          multiValueRemove: (base) => ({
+            ...base,
+            color: "#000",
+            ":hover": {
+              bg: "transparent",
+              color: "gray.700",
+            },
+          }),
+        }}
       />
+
+      <Field.ErrorText>{error?.message}</Field.ErrorText>
     </Field.Root>
   );
 };
