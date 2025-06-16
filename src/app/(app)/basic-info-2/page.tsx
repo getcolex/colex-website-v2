@@ -6,10 +6,10 @@ import {
   Field,
   Input,
   VStack,
-  Text,
   Heading,
   HStack,
   Checkbox,
+  Text,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useForm, useController } from "react-hook-form";
@@ -26,8 +26,18 @@ const PRACTICE_AREAS = [
   "Other",
 ];
 
-const toOptions = (items: string[]) =>
-  items.map((item) => ({ label: item, value: item }));
+const toOptions = (arr: string[]) => arr.map((v) => ({ label: v, value: v }));
+type Option = { label: string; value: string };
+
+interface FormSchema {
+  firmName: string;
+  currentRole: Option[];
+  currentRoleOther: string;
+  organization: Option[];
+  organizationOther: string;
+  mainAreas: Option[];
+  mainAreaOther: string;
+}
 
 export default function BasicInfo2Page() {
   const router = useRouter();
@@ -35,9 +45,9 @@ export default function BasicInfo2Page() {
     register,
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
     watch,
-  } = useForm({
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<FormSchema>({
     defaultValues: {
       firmName: "",
       currentRole: [],
@@ -47,22 +57,36 @@ export default function BasicInfo2Page() {
       mainAreas: [],
       mainAreaOther: "",
     },
+    mode: "onChange",
   });
 
-  const onSubmit = (data: any) => {
-    setTimeout(() => {
-      console.log(data);
-      router.push("/dashboard");
-    }, 1000);
-  };
+  const includesOther = (selected: Option[]) =>
+    selected?.some((o) => o.value.toLowerCase() === "other");
 
   const currentRole = watch("currentRole");
   const organization = watch("organization");
   const mainAreas = watch("mainAreas");
 
-  const includesOther = (arr: any[]) =>
-    arr?.some((item) => item?.value?.toLowerCase() === "other");
+  /* ---------- submit ---------- */
+  const onSubmit = (data: FormSchema) => {
+    // Flatten option arrays → string[]
+    const flatten = (opts: Option[]) => opts.map((o) => o.value);
 
+    const payload = {
+      firmName: data.firmName.trim(),
+      currentRole: flatten(data.currentRole),
+      currentRoleOther: data.currentRoleOther.trim(),
+      organization: flatten(data.organization),
+      organizationOther: data.organizationOther.trim(),
+      mainAreas: flatten(data.mainAreas),
+      mainAreaOther: data.mainAreaOther.trim(),
+    };
+
+    console.log("🚀 SUBMIT PAYLOAD", payload);
+    router.push("/dashboard");
+  };
+
+  /* ──────────────────────────────────────────────────────────── */
   return (
     <Box display="flex" h="100vh" alignItems="center" justifyContent="center">
       <Box
@@ -70,7 +94,8 @@ export default function BasicInfo2Page() {
         border="1px solid #E4E4E7"
         borderRadius={4}
         position="relative"
-        flexDirection={"column"}
+        display="flex"
+        flexDirection="column"
       >
         <Heading
           my={10}
@@ -82,112 +107,128 @@ export default function BasicInfo2Page() {
         >
           Tell us about your work
         </Heading>
-        <VStack
-          px={10}
-          h={585}
-          overflow="scroll"
-          gap={5}
-          align="stretch"
-          pb={40}
-        >
-          <Field.Root required invalid={!!errors.firmName}>
-            <Field.Label>Name of Your Firm or Organization</Field.Label>
-            <Input
-              {...register("firmName", { required: "Required" })}
-              placeholder="Enter your firm or organization name"
-            />
-          </Field.Root>
 
-          {/* --- Current Role --- */}
-          <ControlledSelect
-            name="currentRole"
-            control={control}
-            label="What is your current role?"
-            options={toOptions(ROLES)}
-            placeholder="Associate, Partner, General Counsel, etc."
-            rules={{ required: "Required" }}
-          />
-          {includesOther(currentRole) && (
-            <Input
-              py={2.5}
-              _placeholder={{ color: "#A1A1AA" }}
-              {...register("currentRoleOther", {
-                required: "Please specify your role",
-              })}
-              placeholder="Please specify your role"
-            />
-          )}
-
-          {/* --- Organization --- */}
-          <ControlledSelect
-            name="organization"
-            control={control}
-            label="Which best describes your organization?"
-            options={toOptions(ORGANIZATIONS)}
-            placeholder="Law Firm, Consultancy, Government, etc."
-            rules={{ required: "Required" }}
-          />
-          {includesOther(organization) && (
-            <Input
-              py={2.5}
-              _placeholder={{ color: "#A1A1AA" }}
-              {...register("organizationOther", {
-                required: "Please specify your organization",
-              })}
-              placeholder="Please specify your organization"
-            />
-          )}
-
-          <ControlledSelect
-            name="mainAreas"
-            control={control}
-            label="What are your main area(s) of practice?"
-            options={toOptions(PRACTICE_AREAS)}
-            placeholder="Family law, etc."
-            rules={{ required: "Required" }}
-          />
-          {includesOther(mainAreas) && (
-            <Input
-              py={2.5}
-              _placeholder={{ color: "#A1A1AA" }}
-              {...register("mainAreaOther", {
-                required: "Please specify your practice area",
-              })}
-              placeholder="Please specify your practice area"
-            />
-          )}
-        </VStack>
-
-        <Box
-          w="full"
-          justifyContent="center"
-          position="absolute"
-          bottom={0}
-          p={10}
-          bg="white"
-        >
-          <Button
-            w="full"
-            colorScheme="blackAlpha"
-            type="submit"
-            loading={isSubmitting}
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          <VStack
+            px={10}
+            h={585}
+            overflowY="auto"
+            gap={5}
+            align="stretch"
+            pb={40}
           >
-            Submit and join
-          </Button>
-        </Box>
+            {/* Firm name */}
+            <Field.Root required invalid={!!errors.firmName}>
+              <Field.Label
+                fontSize="sm"
+                lineHeight={1.42}
+                fontWeight="semibold"
+              >
+                Name of Your Firm or Organization
+              </Field.Label>
+              <Input
+                py={2.5}
+                borderColor="#000"
+                _placeholder={{ color: "#A1A1AA" }}
+                placeholder="Enter your firm or organization name"
+                {...register("firmName", { required: "Required" })}
+              />
+              <Field.ErrorText>{errors.firmName?.message}</Field.ErrorText>
+            </Field.Root>
+
+            {/* Current role */}
+            <SelectControl
+              name="currentRole"
+              control={control}
+              label="What is your current role?"
+              options={toOptions(ROLES)}
+              placeholder="Associate, Partner, General Counsel, etc."
+              rules={{ required: "Required" }}
+            />
+            {includesOther(currentRole) && (
+              <Input
+                py={2.5}
+                _placeholder={{ color: "#A1A1AA" }}
+                placeholder="Please specify your role"
+                {...register("currentRoleOther", {
+                  required: "Please specify your role",
+                })}
+              />
+            )}
+
+            {/* Organization */}
+            <SelectControl
+              name="organization"
+              control={control}
+              label="Which best describes your organization?"
+              options={toOptions(ORGANIZATIONS)}
+              placeholder="Law firm, Consultancy, etc."
+              rules={{ required: "Required" }}
+            />
+            {includesOther(organization) && (
+              <Input
+                py={2.5}
+                _placeholder={{ color: "#A1A1AA" }}
+                placeholder="Please specify your organization"
+                {...register("organizationOther", {
+                  required: "Please specify your organization",
+                })}
+              />
+            )}
+
+            {/* Main areas */}
+            <SelectControl
+              name="mainAreas"
+              control={control}
+              label="What are your main area(s) of practice?"
+              options={toOptions(PRACTICE_AREAS)}
+              placeholder="Family law, Audit and compliance, etc."
+              rules={{ required: "Required" }}
+            />
+            {includesOther(mainAreas) && (
+              <Input
+                py={2.5}
+                _placeholder={{ color: "#A1A1AA" }}
+                placeholder="Please specify your practice area"
+                {...register("mainAreaOther", {
+                  required: "Please specify your practice area",
+                })}
+              />
+            )}
+          </VStack>
+
+          <Box w="full" position="absolute" bottom={0} p={10} bg="white">
+            <Button
+              w="full"
+              colorScheme="blackAlpha"
+              type="submit"
+              loading={isSubmitting}
+              disabled={!isValid}
+            >
+              Submit and join
+            </Button>
+          </Box>
+        </form>
       </Box>
     </Box>
   );
 }
 
-const ControlledSelect = ({
+const SelectControl = ({
   name,
   control,
   label,
   options,
   placeholder,
   rules,
-}: any) => {
+}: {
+  name: keyof FormSchema;
+  control: any;
+  label: string;
+  options: Option[];
+  placeholder: string;
+  rules?: any;
+}) => {
   const {
     field: { onChange, onBlur, value, ref },
     fieldState: { error },
@@ -200,8 +241,9 @@ const ControlledSelect = ({
       </Field.Label>
       <ChakraSelect
         ref={ref}
-        closeMenuOnSelect={false}
+        focusRingColor="#000"
         isMulti
+        closeMenuOnSelect={false}
         value={value}
         onChange={onChange}
         onBlur={onBlur}
@@ -214,8 +256,7 @@ const ControlledSelect = ({
               <chakraComponents.Option {...props}>
                 <HStack gap={3}>
                   <Checkbox.Root
-                    colorPalette="black"
-                    checked={true}
+                    checked={isSelected}
                     pointerEvents="none"
                     readOnly
                     variant={"solid"}
@@ -225,9 +266,6 @@ const ControlledSelect = ({
                         background: "black",
                         borderColor: "black",
                       },
-                    }}
-                    _hover={{
-                      bg: isSelected ? "black" : "gray.100",
                     }}
                   >
                     <Checkbox.Control />
@@ -241,20 +279,19 @@ const ControlledSelect = ({
         chakraStyles={{
           option: (base, state) => ({
             ...base,
-            bg: state.isFocused ? "gray.100" : "white",
+            bg: "white",
             color: "black",
-            cursor: "pointer",
-            _hover: { bg: "gray.100" },
             paddingY: 2,
             paddingX: 4,
           }),
           multiValue: (base) => ({
             ...base,
-            bg: "#F4F4F5",
-            borderRadius: "6px",
+            bg: "#fff",
+            borderRadius: 6,
             padding: "4px 8px",
             fontWeight: 500,
-            color: "#000",
+            py: 1,
+            my: 2,
           }),
           multiValueLabel: (base) => ({
             ...base,
