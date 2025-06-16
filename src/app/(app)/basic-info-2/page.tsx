@@ -9,6 +9,7 @@ import {
   Portal,
   createListCollection,
   Select,
+  Heading,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -91,8 +92,32 @@ export default function BasicInfo2Page() {
 
   return (
     <Box display="flex" h="100vh" alignItems="center" justifyContent="center">
-      <Box w={450} h={626} border="1px solid #E4E4E7" borderRadius={4}>
-        <VStack flex={1} gap={5} p={10} overflowY="auto">
+      <Box
+        w={450}
+        border="1px solid #E4E4E7"
+        borderRadius={4}
+        position={"relative"}
+        flexDirection="column"
+      >
+        <Heading
+          my={10}
+          fontSize="2xl"
+          lineHeight={1.33}
+          fontWeight={"semibold"}
+          textAlign={"center"}
+          color={"#000"}
+        >
+          Tell us about your work
+        </Heading>
+        <VStack
+          px={10}
+          h={585}
+          overflow={"scroll"}
+          gap={5}
+          flex={1}
+          align="stretch"
+          pb={40}
+        >
           <Field.Root required invalid={!!errors.firmName}>
             <Field.Label>Name of Your Firm or Organization</Field.Label>
             <Input
@@ -233,17 +258,24 @@ export default function BasicInfo2Page() {
               <Field.ErrorText>{errors.mainAreaOther}</Field.ErrorText>
             </Field.Root>
           )}
-
+        </VStack>
+        <Box
+          w="full"
+          justifyContent={"center"}
+          position="absolute"
+          bottom={0}
+          p={10}
+          bg={"white"}
+        >
           <Button
-            colorScheme="blackAlpha"
             w="full"
-            alignSelf={"flex-end"}
+            colorScheme="blackAlpha"
             onClick={handleSubmit}
             loading={isSubmitting}
           >
             Submit and join
           </Button>
-        </VStack>
+        </Box>
       </Box>
     </Box>
   );
