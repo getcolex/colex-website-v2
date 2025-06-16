@@ -11,9 +11,9 @@ import {
   Text,
   HStack,
   Collapsible,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { useInView } from "react-intersection-observer";
-// import Image from "next/image";
 
 const FEATURES = [
   {
@@ -55,132 +55,124 @@ export default function FeatureShowcase() {
 
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
-  const { ref, inView } = useInView({
-    threshold: 0.3,
-    triggerOnce: true,
-  });
+  const { ref, inView } = useInView({ threshold: 0.3, triggerOnce: true });
+  const showRightView = useBreakpointValue({ base: false, md: true });
 
-  const progressAnimation = keyframes`
-  from { width: 0% }
-  to { width: ${inView ? "100%" : "0%"} }
-`;
-
-  console.log(inView);
+  const progress = keyframes`
+    from { width: 0% }
+    to ${inView ? "width: 100%" : "width: 0%"}
+  `;
 
   useEffect(() => {
     if (!inView) return;
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % FEATURES.length);
-    }, 5000);
+    const interval = setInterval(
+      () => setActiveIndex((prev) => (prev + 1) % FEATURES.length),
+      5000
+    );
     setTimer(interval);
     return () => clearInterval(interval);
   }, [inView]);
 
-  const handleItemClick = (idx: number) => {
+  const handleItemClick = (i: number) => {
     if (timer) clearInterval(timer);
-    setActiveIndex(idx);
-    const newTimer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % FEATURES.length);
-    }, 5000);
+    setActiveIndex(i);
+    const newTimer = setInterval(
+      () => setActiveIndex((prev) => (prev + 1) % FEATURES.length),
+      5000
+    );
     setTimer(newTimer);
   };
 
   return (
-    <Box mt={20} py={20} mx={"auto"} bg="white" ref={ref}>
-      <Container px={0}>
+    <Box
+      ref={ref}
+      bg="white"
+      mt={{ base: 10, md: 20 }}
+      py={{ base: 5, md: 20 }}
+    >
+      <Container maxW="container.xl" px={{ base: 4, md: 0 }}>
         <Flex
-          justifyContent={"space-between"}
-          direction={["column", null, "row"]}
-          gap={40}
+          direction={{ base: "column-reverse", md: "row" }}
+          gap={{ base: 10, lg: 16, xl: 40 }}
+          align="stretch"
         >
-          {/* Left Feature List */}
-          <VStack justifyContent={"space-between"}>
+          <VStack align="stretch" gap={8} flex={{ md: 1 }}>
             <Heading
-              fontSize={"4xl"}
-              fontWeight={"semibold"}
-              alignSelf={"flex-start"}
+              fontSize={{ base: "2xl", sm: "3xl", lg: "4xl" }}
+              fontWeight="semibold"
               lineHeight={1.22}
             >
               Key features
             </Heading>
-            <Box maxW={405}>
-              {FEATURES.map((item, idx) => {
-                const isActive = idx === activeIndex;
-                return (
-                  <Box
-                    key={idx}
-                    mb={5}
-                    cursor="pointer"
-                    onClick={() => handleItemClick(idx)}
-                  >
-                    {isActive && inView ? (
-                      <Box position="relative" h="2px" w="full" mb={5}>
-                        <Box
-                          position="absolute"
-                          h="2px"
-                          w="full"
-                          bg="gray.200"
-                        />
-                        <Box
-                          position="absolute"
-                          h="2px"
-                          w="full"
-                          bg="black"
-                          animation={`${progressAnimation} 5s linear`}
-                        />
-                      </Box>
-                    ) : (
-                      <Box h="2px" w="full" bg="gray.200" mb={5} />
-                    )}
 
-                    <HStack align="start" gap={4}>
-                      <Text
-                        fontWeight="medium"
-                        fontSize={"2xl"}
-                        lineHeight={1.33}
-                        color={isActive ? "#000" : "#A1A1AA"}
-                      >
-                        {idx + 1}.
-                      </Text>
-                      <Box>
-                        <Text
-                          fontSize={"2xl"}
-                          lineHeight={1.33}
-                          fontWeight={"medium"}
-                          color={"#000"}
-                        >
-                          {item.title}
-                        </Text>
-                        <Collapsible.Root open={isActive}>
-                          <Collapsible.Content>
-                            <Text
-                              mt={3}
-                              fontSize="lg"
-                              lineHeight={1.55}
-                              color="#000"
-                            >
-                              {item.description}
-                            </Text>
-                          </Collapsible.Content>
-                        </Collapsible.Root>
-                      </Box>
-                    </HStack>
+            {FEATURES.map((f, i) => {
+              const active = i === activeIndex;
+              return (
+                <Box
+                  key={f.title}
+                  cursor="pointer"
+                  onClick={() => handleItemClick(i)}
+                >
+                  <Box position="relative" h="2px" w="full" mb={4}>
+                    <Box pos="absolute" h="2px" w="full" bg="gray.200" />
+                    {active && inView && (
+                      <Box
+                        pos="absolute"
+                        h="2px"
+                        w="full"
+                        bg="black"
+                        animation={`${progress} 5s linear forwards`}
+                      />
+                    )}
                   </Box>
-                );
-              })}
-            </Box>
+
+                  <HStack align="start" gap={4}>
+                    <Text
+                      fontWeight="medium"
+                      fontSize={{ base: "lg", sm: "xl", lg: "2xl" }}
+                      color={active ? "black" : "gray.400"}
+                    >
+                      {i + 1}.
+                    </Text>
+
+                    <Box>
+                      <Text
+                        fontSize={{ base: "lg", sm: "xl", lg: "2xl" }}
+                        fontWeight="medium"
+                        lineHeight={1.33}
+                      >
+                        {f.title}
+                      </Text>
+
+                      <Collapsible.Root open={active}>
+                        <Collapsible.Content>
+                          <Text
+                            mt={3}
+                            fontSize={{ base: "md", sm: "lg" }}
+                            lineHeight={1.55}
+                          >
+                            {f.description}
+                          </Text>
+                        </Collapsible.Content>
+                      </Collapsible.Root>
+                    </Box>
+                  </HStack>
+                </Box>
+              );
+            })}
           </VStack>
 
-          {/* Right Visual */}
-          <Box borderRadius={4} width={834} height={834} bg="gray.100">
-            {/* <Image
+          {showRightView && (
+            <Box borderRadius={4} width={834} height={834} bg="gray.100">
+              {/* <Image
             src={`/images/feature1.avif`}
             alt={FEATURES[activeIndex].title}
             onError={(e) => {
               (e.target as HTMLImageElement).src = "/images/feature1.png";
             }}
           /> */}
-          </Box>
+            </Box>
+          )}
         </Flex>
       </Container>
     </Box>

@@ -10,6 +10,7 @@ import {
   SimpleGrid,
   Button,
   Container,
+  Stack,
   Flex,
 } from "@chakra-ui/react";
 
@@ -46,38 +47,44 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <Box py={20} mt={20}>
-      <Container px={0}>
+    <Box py={{ base: 5, md: 20 }} mt={{ base: 10, md: 20 }}>
+      <Container maxW="container.xl" px={{ base: 4, md: 0 }}>
         <Heading
-          fontSize={"4xl"}
+          fontSize={{ base: "2xl", sm: "3xl", lg: "4xl" }}
           color={"#000"}
-          fontWeight={"semibold"}
+          fontWeight="semibold"
           lineHeight={1.22}
         >
           Designed with Legal Experts, <br /> for Legal Experts
         </Heading>
 
-        <SimpleGrid h={420} flexShrink={0} columns={[1, 2, 4]} gap={5} my={20}>
-          {testimonials.map((t, index) => (
+        {/* ---------- Testimonial cards ---------- */}
+        <SimpleGrid
+          columns={{ base: 1, sm: 2, lg: 4 }}
+          gap={5}
+          my={{ base: 12, md: 20 }}
+        >
+          {testimonials.map((t) => (
             <VStack
-              justifyContent={"space-between"}
-              key={index}
+              key={t.name}
               bg="orange.50"
-              py={6}
-              px={7}
-              gap={0}
-              borderRadius={1}
+              borderRadius={4}
+              py={{ base: 6, md: 8 }}
+              px={{ base: 5, md: 7 }}
+              gap={20}
+              h="full"
+              align="stretch"
             >
               <Text
-                fontSize="2xl"
+                fontSize={{ base: "lg", sm: "xl", lg: "2xl" }}
                 color={"#000"}
                 lineHeight={1.33}
-                fontWeight={"normal"}
               >
                 {t.quote}
               </Text>
-              <HStack alignSelf={"flex-start"} mt={5} gap={3}>
-                <Avatar.Root size="2xl">
+
+              <HStack mt="auto" gap={3}>
+                <Avatar.Root size={{ base: "lg", md: "xl", lg: "2xl" }}>
                   <Avatar.Image src={t.image} />
                   <Avatar.Fallback name={t.name} />
                 </Avatar.Root>
@@ -99,39 +106,40 @@ export default function TestimonialsSection() {
           ))}
         </SimpleGrid>
 
-        <HStack gap={5}>
-          <Flex flex={1}></Flex>
+        {/* ---------- CTA block ---------- */}
+        <Stack
+          direction={{ base: "column", lg: "row" }}
+          gap={{ base: 8, lg: 5 }}
+          align={{ base: "stretch", lg: "flex-start" }}
+        >
+          {/* spacer on desktop, hidden on mobile */}
+          <Flex flex={1} display={{ base: "none", lg: "block" }} />
 
-          <VStack flex={1} gap={0} justifyContent={"flex-start"}>
+          <VStack flex={{ base: "unset", lg: 1 }} align="flex-start" gap={5}>
             <Text
-              color={"#000"}
+              fontSize={{ base: "md", sm: "lg" }}
               lineHeight={1.55}
-              fontWeight={"medium"}
-              mb={10}
-              pr={154}
-              fontSize="lg"
+              fontWeight="medium"
+              pr={{ base: 0, lg: 20 }}
             >
-              We&apos;ve collaborated with seasoned legal professionals to
-              develop a tool that addresses real-world challenges, ensuring
-              relevance and practicality in every feature.
+              We’ve collaborated with seasoned legal professionals to develop a
+              tool that addresses real-world challenges, ensuring relevance and
+              practicality in every feature.
             </Text>
+
             <Button
-              gap={3}
               bg="black"
               color="white"
-              minW={44}
-              alignSelf={"flex-start"}
-              px={5}
-              py={2}
-              fontSize={"md"}
-              textAlign={"center"}
-              lineHeight={1.5}
-              alignItems={"center"}
+              px={6}
+              py={3}
+              fontSize="md"
+              _hover={{ bg: "gray.800" }}
+              alignSelf="flex-start"
             >
               &lt;Define the future with us&gt;
             </Button>
           </VStack>
-        </HStack>
+        </Stack>
       </Container>
     </Box>
   );

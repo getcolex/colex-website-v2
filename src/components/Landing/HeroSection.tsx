@@ -3,25 +3,26 @@ import { Box, Container, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 export default function HeroSection() {
   return (
     <Box
-      py={20}
-      h={744}
+      py={{ base: 10, md: 20 }}
+      minH={{ base: "auto", md: "744px" }}
       display={"flex"}
       alignItems={"flex-end"}
       mx={"auto"}
       bg={"gray.100"}
     >
-      <Container px={0}>
+      <Container maxW="container.xl" px={{ base: 4, md: 0 }}>
         <Flex
-          direction={["column", "column", "row"]}
-          alignItems={"flex-end"}
-          justifyContent={"space-between"}
+          direction={{ base: "column", md: "row" }}
+          align={{ base: "flex-start", md: "flex-end" }}
+          justify="space-between"
+          gap={{ base: 6, md: 0 }}
         >
-          <VStack align="start" flex="3">
+          <VStack align="start" flex={{ md: 3 }} gap={6}>
             <Heading
               as="h1"
-              fontSize={"5xl"}
-              lineHeight={"1.25"}
-              fontWeight={"semibold"}
+              fontSize={{ base: "2xl", sm: "3xl", md: "4xl", lg: "5xl" }}
+              lineHeight={1.25}
+              fontWeight="semibold"
             >
               Research, Draft, and Organize, <br />
               <Text as="span" color="blue.500">
@@ -31,11 +32,11 @@ export default function HeroSection() {
             </Heading>
           </VStack>
 
-          <Box flex="2">
+          <Box flex={{ md: 2 }}>
             <Text
               fontSize="lg"
-              color="#000"
-              fontWeight={"medium"}
+              fontWeight="medium"
+              color="black"
               lineHeight={1.5}
             >
               Experience a transformative approach to legal research and
