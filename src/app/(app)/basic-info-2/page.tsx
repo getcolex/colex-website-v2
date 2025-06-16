@@ -1,207 +1,115 @@
 "use client";
 
-import { useState } from "react";
 import {
   Box,
   Button,
   Field,
   Input,
   VStack,
-  Text,
   Portal,
   createListCollection,
   Select,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-interface FormData {
-  firmName: string;
-  currentRole: string;
-  currentRoleOther?: string;
-  organizationDesc: string;
-  organizationDescOther?: string;
-  mainArea: string;
-  mainAreaOther?: string;
-}
+const ROLES = ["Associate", "Partner", "General Counsel", "Other"];
+const ORGANIZATIONS = ["Law firm", "Consultancy", "Government", "Other"];
+const PRACTICE_AREAS = [
+  "Family law",
+  "Audit and compliance",
+  "Criminal law",
+  "Contract law",
+  "Mediation",
+  "Other",
+];
 
-const currentRoleOptions = createListCollection({
-  items: [
-    { value: "Associate", label: "Associate" },
-    { value: "Partner", label: "Partner" },
-    { value: "General Counsel", label: "General Counsel" },
-    { value: "Other", label: "Other (please specify)..." },
-  ],
-});
+const createCollection = (items: string[]) =>
+  createListCollection({
+    items: items.map((v) => ({ value: v, label: v })),
+  });
 
-const organizationDescOptions = createListCollection({
-  items: [
-    { value: "Law firm", label: "Law firm" },
-    { value: "Consultancy", label: "Consultancy" },
-    { value: "Government", label: "Government" },
-    { value: "Other", label: "Other (please specify)..." },
-  ],
-});
-
-const mainAreaOptions = createListCollection({
-  items: [
-    { value: "Family law", label: "Family law" },
-    { value: "Audit and compliance", label: "Audit and compliance" },
-    { value: "Criminal law", label: "Criminal law" },
-    { value: "Contract law", label: "Contract law" },
-    { value: "Mediation", label: "Mediation" },
-    { value: "Other", label: "Other (please specify)..." },
-  ],
-});
-
-interface FormErrors {
-  firmName?: string;
-  currentRole?: string;
-  organizationDesc?: string;
-  mainArea?: string;
-}
-
-const validateForm = (formData: FormData): FormErrors => {
-  const errors: FormErrors = {};
-
-  if (!formData.firmName.trim()) {
-    errors.firmName = "Firm name is required";
-  }
-
-  if (!formData.currentRole.trim()) {
-    errors.currentRole = "Current role is required";
-  }
-
-  if (!formData.organizationDesc.trim()) {
-    errors.organizationDesc = "Organization description is required";
-  }
-
-  if (!formData.mainArea.trim()) {
-    errors.mainArea = "Main area of practice is required";
-  }
-
-  return errors;
-};
+const currentRoleOptions = createCollection(ROLES);
+const organizationDescOptions = createCollection(ORGANIZATIONS);
+const mainAreaOptions = createCollection(PRACTICE_AREAS);
 
 export default function BasicInfo2Page() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<
-    "idle" | "success" | "error"
-  >("idle");
-  const [formData, setFormData] = useState<FormData>({
+
+  const [form, setForm] = useState({
     firmName: "",
-    currentRole: "",
+    currentRole: [] as string[],
     currentRoleOther: "",
-    organizationDesc: "",
-    organizationDescOther: "",
-    mainArea: "",
+    organization: [] as string[],
+    organizationOther: "",
+    mainAreas: [] as string[],
     mainAreaOther: "",
   });
-  const [errors, setErrors] = useState<FormErrors>({});
 
-  const handleInputChange =
-    (field: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData((prev) => ({
-        ...prev,
-        [field]: e.target.value,
-      }));
-      // Clear error when user starts typing
-      if (errors[field as keyof FormErrors]) {
-        setErrors((prev) => ({ ...prev, [field]: undefined }));
-      }
-      // Reset submit status when user makes changes
-      if (submitStatus !== "idle") {
-        setSubmitStatus("idle");
-      }
-    };
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const includesOther = (arr: string[]) =>
+    arr.some((item) => item.toLowerCase() === "other");
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!form.firmName.trim()) newErrors.firmName = "Required";
+    if (!form.currentRole.length) newErrors.currentRole = "Required";
+    if (includesOther(form.currentRole) && !form.currentRoleOther.trim()) {
+      newErrors.currentRoleOther = "Please specify your role";
+    }
+    if (!form.organization.length) newErrors.organization = "Required";
+    if (includesOther(form.organization) && !form.organizationOther.trim()) {
+      newErrors.organizationOther = "Please specify your organization type";
+    }
+    if (!form.mainAreas.length) newErrors.mainAreas = "Required";
+    if (includesOther(form.mainAreas) && !form.mainAreaOther.trim()) {
+      newErrors.mainAreaOther = "Please specify your practice area";
+    }
+    return newErrors;
+  };
 
   const handleSubmit = async () => {
-    const validationErrors = validateForm(formData);
-    if (Object.keys(validationErrors).length > 0) {
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length) {
       setErrors(validationErrors);
       return;
     }
-
-    setIsLoading(true);
-    setSubmitStatus("idle");
-
+    setIsSubmitting(true);
     try {
-      // TODO: Implement form submission logic
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
-      setSubmitStatus("success");
-
-      // Redirect after a short delay to show success state
+      // TODO: API call
       setTimeout(() => {
         router.push("/dashboard");
-      }, 1500);
-    } catch (err: unknown) {
-      console.error("Error submitting form:", err);
-      setSubmitStatus("error");
+      }, 1000);
+    } catch (e) {
+      console.error("Submission failed", e);
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <Box
-      display={"flex"}
-      h={"100vh"}
-      alignItems={"center"}
-      justifyContent={"center"}
-    >
-      <Box
-        // p={10}
-        mx={"auto"}
-        w={450}
-        h={626}
-        borderRadius={4}
-        border={"1px solid #E4E4E7"}
-        position={"relative"}
-      >
-        <VStack overflowY={"scroll"} gap={5} p={10}>
-          {submitStatus === "success" && (
-            <Text color="green.500" fontWeight="medium">
-              Form submitted successfully! Redirecting...
-            </Text>
-          )}
-          {submitStatus === "error" && (
-            <Text color="red.500" fontWeight="medium">
-              Failed to submit form. Please try again.
-            </Text>
-          )}
-
-          <Field.Root gap={1.5} required invalid={!!errors.firmName}>
-            <Field.Label
-              fontSize={"sm"}
-              lineHeight={1.42}
-              fontWeight={"semibold"}
-            >
-              Name of Your Firm or Organization
-            </Field.Label>
+    <Box display="flex" h="100vh" alignItems="center" justifyContent="center">
+      <Box w={450} h={626} border="1px solid #E4E4E7" borderRadius={4}>
+        <VStack flex={1} gap={5} p={10} overflowY="auto">
+          <Field.Root required invalid={!!errors.firmName}>
+            <Field.Label>Name of Your Firm or Organization</Field.Label>
             <Input
-              value={formData.firmName}
-              py={2.5}
-              _placeholder={{ color: "#A1A1AA" }}
-              onChange={handleInputChange("firmName")}
+              value={form.firmName}
+              onChange={(e) => setForm({ ...form, firmName: e.target.value })}
               placeholder="Enter your firm or organization name"
             />
             <Field.ErrorText>{errors.firmName}</Field.ErrorText>
           </Field.Root>
 
+          {/* Current Role */}
           <Select.Root
             multiple
             collection={currentRoleOptions}
-            gap={1.5}
-            required
+            onValueChange={(e) => setForm({ ...form, currentRole: e.value })}
           >
-            <Select.HiddenSelect />
-            <Select.Label
-              fontSize={"sm"}
-              lineHeight={1.42}
-              fontWeight={"semibold"}
-            >
-              What is your current role?
-            </Select.Label>
+            <Select.Label>What is your current role?</Select.Label>
             <Select.Control>
               <Select.Trigger>
                 <Select.ValueText placeholder="Associate, Partner, General Counsel, etc." />
@@ -213,9 +121,9 @@ export default function BasicInfo2Page() {
             <Portal>
               <Select.Positioner>
                 <Select.Content>
-                  {currentRoleOptions.items.map((option) => (
-                    <Select.Item item={option} key={option.value}>
-                      {option.label}
+                  {currentRoleOptions.items.map((item) => (
+                    <Select.Item item={item} key={item.value}>
+                      {item.label}
                       <Select.ItemIndicator />
                     </Select.Item>
                   ))}
@@ -223,26 +131,25 @@ export default function BasicInfo2Page() {
               </Select.Positioner>
             </Portal>
           </Select.Root>
-          <Field.Root gap={1.5} required invalid={!!errors.currentRole}>
-            {true && (
+          {includesOther(form.currentRole) && (
+            <Field.Root invalid={!!errors.currentRoleOther}>
               <Input
-                value={formData.currentRoleOther}
-                py={2.5}
-                _placeholder={{ color: "#A1A1AA" }}
-                onChange={handleInputChange("currentRoleOther")}
-                placeholder="Please specify your role..."
+                value={form.currentRoleOther}
+                onChange={(e) =>
+                  setForm({ ...form, currentRoleOther: e.target.value })
+                }
+                placeholder="Please specify your role"
               />
-            )}
-            <Field.ErrorText>{errors.currentRole}</Field.ErrorText>
-          </Field.Root>
+              <Field.ErrorText>{errors.currentRoleOther}</Field.ErrorText>
+            </Field.Root>
+          )}
 
+          {/* Organization */}
           <Select.Root
             multiple
             collection={organizationDescOptions}
-            gap={1.5}
-            required
+            onValueChange={(e) => setForm({ ...form, organization: e.value })}
           >
-            <Select.HiddenSelect />
             <Select.Label
               fontSize={"sm"}
               lineHeight={1.42}
@@ -271,29 +178,26 @@ export default function BasicInfo2Page() {
               </Select.Positioner>
             </Portal>
           </Select.Root>
-
-          <Field.Root gap={1.5} required invalid={!!errors.organizationDesc}>
-            {formData.organizationDesc.toLowerCase() === "other" && (
+          {includesOther(form.organization) && (
+            <Field.Root invalid={!!errors.organizationOther}>
               <Input
-                value={formData.organizationDescOther}
-                py={2.5}
-                _placeholder={{ color: "#A1A1AA" }}
-                onChange={handleInputChange("organizationDescOther")}
-                placeholder="Please specify your organization type..."
+                value={form.organizationOther}
+                onChange={(e) =>
+                  setForm({ ...form, organizationOther: e.target.value })
+                }
+                placeholder="Please specify your organization"
               />
-            )}
-            <Field.ErrorText>{errors.organizationDesc}</Field.ErrorText>
-          </Field.Root>
+              <Field.ErrorText>{errors.organizationOther}</Field.ErrorText>
+            </Field.Root>
+          )}
 
-          <Select.Root multiple collection={mainAreaOptions} gap={1.5} required>
-            <Select.HiddenSelect />
-            <Select.Label
-              fontSize={"sm"}
-              lineHeight={1.42}
-              fontWeight={"semibold"}
-            >
-              What are your main area(s) of practice?
-            </Select.Label>
+          {/* Practice Areas */}
+          <Select.Root
+            multiple
+            collection={mainAreaOptions}
+            onValueChange={(e) => setForm({ ...form, mainAreas: e.value })}
+          >
+            <Select.Label>What are your main area(s) of practice?</Select.Label>
             <Select.Control>
               <Select.Trigger>
                 <Select.ValueText placeholder="Family law, Audit and compliance, etc." />
@@ -315,31 +219,31 @@ export default function BasicInfo2Page() {
               </Select.Positioner>
             </Portal>
           </Select.Root>
-
-          <Field.Root gap={1.5} required invalid={!!errors.mainArea}>
-            {formData.mainArea.toLowerCase() === "other" && (
+          {includesOther(form.mainAreas) && (
+            <Field.Root invalid={!!errors.mainAreaOther}>
               <Input
-                value={formData.mainAreaOther}
+                value={form.mainAreaOther}
                 py={2.5}
                 _placeholder={{ color: "#A1A1AA" }}
-                onChange={handleInputChange("mainAreaOther")}
-                placeholder="Please specify your practice area..."
+                onChange={(e) =>
+                  setForm({ ...form, mainAreaOther: e.target.value })
+                }
+                placeholder="Please specify your practice area"
               />
-            )}
-            <Field.ErrorText>{errors.mainArea}</Field.ErrorText>
-          </Field.Root>
+              <Field.ErrorText>{errors.mainAreaOther}</Field.ErrorText>
+            </Field.Root>
+          )}
+
+          <Button
+            colorScheme="blackAlpha"
+            w="full"
+            alignSelf={"flex-end"}
+            onClick={handleSubmit}
+            loading={isSubmitting}
+          >
+            Submit and join
+          </Button>
         </VStack>
-        <Button
-          // mx={10}
-          position={"absolute"}
-          bottom={10}
-          w={"100%"}
-          loading={isLoading}
-          onClick={handleSubmit}
-          disabled={isLoading}
-        >
-          Submit and join
-        </Button>
       </Box>
     </Box>
   );
