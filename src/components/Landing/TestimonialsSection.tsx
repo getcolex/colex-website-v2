@@ -136,7 +136,7 @@ export default function TestimonialsSection() {
               _hover={{ bg: "gray.800" }}
               alignSelf="flex-start"
             >
-              &lt;Define the future with us&gt;
+              Define the future with us
             </Button>
           </VStack>
         </Stack>

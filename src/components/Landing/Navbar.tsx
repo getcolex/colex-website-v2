@@ -1,3 +1,5 @@
+// src/components/LandingNavbar.tsx
+
 "use client";
 
 import {
@@ -6,50 +8,60 @@ import {
   Container,
   Flex,
   Heading,
-  IconButton,
+  useBreakpointValue,
 } from "@chakra-ui/react";
-import { FiMenu } from "react-icons/fi";
 
 export default function LandingNavbar() {
+  const isMobile = useBreakpointValue({ base: true, md: false });
   return (
     <Box
-      py={{ base: 3, md: 5 }}
+      py={5}
       bg="white"
-      position="sticky"
+      position={"sticky"}
       top={0}
       zIndex={100}
-      boxShadow="sm"
+      boxShadow={"sm"}
     >
-      <Container maxW="container.xl" px={{ base: 4, md: 0 }}>
-        <Flex align="center" justify="space-between">
+      <Container px={{ base: 5, md: 0 }}>
+        <Flex align="center" justifyContent={"space-between"}>
           <Heading
-            fontSize={{ base: "2xl", sm: "3xl", md: "4xl" }}
-            fontWeight={600}
-            lineHeight={1.22}
-            color="black"
+            fontSize={{ base: "2xl", md: "4xl" }}
+            fontWeight="600"
+            lineHeight={{ base: 1.33, md: 1.22 }}
+            color={"#000"}
           >
             Colex
           </Heading>
-
-          {/* desktop buttons */}
-          <Flex gap={5} display={{ base: "none", md: "flex" }}>
-            <Button variant="ghost" bg="gray.100" fontWeight="medium" px={5}>
-              Schedule a 1:1 demo
+          <Flex gap={{ base: 2, md: 5 }}>
+            <Button
+              flex={1}
+              variant="ghost"
+              bg="gray.100"
+              fontSize={{ base: "14px", md: "16px" }}
+              minW={{ base: "36px", md: "44px" }}
+              fontWeight={"medium"}
+              px={{ base: 3.5, md: 5 }}
+              py={{ base: 0.5, md: 2.5 }}
+              lineHeight={{ base: 1.42, md: 1.5 }}
+              textAlign={"center"}
+              borderRadius={4}
+            >
+              {isMobile ? "Schedule demo" : "Schedule a 1:1 demo"}
             </Button>
-            <Button colorScheme="blackAlpha" fontWeight="medium" px={5}>
+            <Button
+              flex={1}
+              fontSize={{ base: "14px", md: "16px" }}
+              minW={{ base: "36px", md: "44px" }}
+              fontWeight={"medium"}
+              px={{ base: 3.5, md: 5 }}
+              py={{ base: 0.5, md: 2.5 }}
+              lineHeight={{ base: 1.42, md: 1.5 }}
+              textAlign={"center"}
+              borderRadius={4}
+            >
               Get early access
             </Button>
           </Flex>
-
-          <IconButton
-            onClick={() => {}}
-            aria-label="Open menu"
-            size="md"
-            variant="ghost"
-            display={{ base: "flex", md: "none" }}
-          >
-            <FiMenu />
-          </IconButton>
         </Flex>
       </Container>
     </Box>
