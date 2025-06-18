@@ -23,7 +23,7 @@ const FEATURES = [
     image: "/images/All-in-One Workspace.png",
   },
   {
-    title: "Context-Aware AI",
+    title: "Context-aware AI",
     description:
       "The platform remembers your case and improves suggestions as you work—like a junior that never forgets.",
     image: "/images/Context-Aware AI.png",
@@ -38,7 +38,7 @@ const FEATURES = [
     title: "Collaboration That Works",
     description:
       "Senior and junior lawyers stay in sync with real-time sharing, version control, and shared notes.",
-    image: "/images/Collaboration That Works.png",
+    image: "/images/Collaboration that works.png",
   },
   {
     title: "Built-In Court Integration",
@@ -50,7 +50,7 @@ const FEATURES = [
     title: "Secure & Compliant",
     description:
       "Your data is encrypted and securely stored. Client confidentiality is our top priority.",
-    image: "/images/Secure and Compliant.png",
+    image: "/images/Secure and compliant.png",
   },
 ];
 
