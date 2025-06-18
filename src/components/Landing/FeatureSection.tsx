@@ -12,43 +12,45 @@ import {
   Collapsible,
   useBreakpointValue,
 } from "@chakra-ui/react";
+import Image from "next/image";
+import { motion } from "motion/react";
 
 const FEATURES = [
   {
     title: "All-in-One Workspace",
     description:
       "Search, draft, annotate, and organize your case in one place. Organize research with folders, tags, and notes.",
-    image: "/features/feature1.png",
+    image: "/images/All-in-One Workspace.png",
   },
   {
     title: "Context-Aware AI",
     description:
       "The platform remembers your case and improves suggestions as you work—like a junior that never forgets.",
-    image: "/features/feature2.png",
+    image: "/images/Context-Aware AI.png",
   },
   {
     title: "Smart Drafting",
     description:
       "Write faster with AI-suggested clauses, memos, and summaries tailored to your matter.",
-    image: "/features/feature3.png",
+    image: "/images/Smart Drafting.png",
   },
   {
     title: "Collaboration That Works",
     description:
       "Senior and junior lawyers stay in sync with real-time sharing, version control, and shared notes.",
-    image: "/features/feature4.png",
+    image: "/images/Collaboration That Works.png",
   },
   {
     title: "Built-In Court Integration",
     description:
       "Get orders, FIRs, and judgments directly from court websites—ready for analysis.",
-    image: "/features/feature5.png",
+    image: "/images/Built in court integration.png",
   },
   {
     title: "Secure & Compliant",
     description:
       "Your data is encrypted and securely stored. Client confidentiality is our top priority.",
-    image: "/features/feature6.png",
+    image: "/images/Secure and Compliant.png",
   },
 ];
 
@@ -113,7 +115,7 @@ export default function FeatureShowcase() {
     >
       <Box
         position={isDesktop && isPinned ? "sticky" : "static"}
-        top={0}
+        top={10}
         zIndex={1}
         bg="white"
       >
@@ -176,7 +178,40 @@ export default function FeatureShowcase() {
                   </Box>
                 </VStack>
 
-                <Box borderRadius={4} width={834} height={834} bg="gray.100" />
+                <Box
+                  borderRadius={4}
+                  width={834}
+                  height={834}
+                  bg="gray.100"
+                  position="relative"
+                  overflow="hidden"
+                >
+                  <motion.div /* ✨ fades in/out on index change */
+                    key={activeIndex} /* a new MotionBox for every image */
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                    }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                      delay: 0.05,
+                    }}
+                  >
+                    <Image
+                      src={FEATURES[activeIndex].image}
+                      alt={FEATURES[activeIndex].title}
+                      layout="fill"
+                      objectFit="cover"
+                      style={{ borderRadius: 4 }}
+                      priority
+                    />
+                  </motion.div>
+                </Box>
               </Flex>
             ) : (
               <Box>
@@ -190,14 +225,16 @@ export default function FeatureShowcase() {
                 </Heading>
 
                 {FEATURES.map((f, idx) => (
-                  <Box key={f.title} mb={10}>
-                    <Box
-                      borderRadius={4}
-                      width="full"
-                      height={372}
-                      bg="gray.100"
-                      mb={5}
-                    />
+                  <Box key={f.title} mb={10} position="relative">
+                    <Box height={372} width="100%" mb={10} position="relative">
+                      <Image
+                        src={f.image}
+                        alt={f.title}
+                        layout="fill"
+                        objectFit="cover"
+                        style={{ borderRadius: 4 }}
+                      />
+                    </Box>
                     <HStack align="start" gap={2}>
                       <Text fontSize="xl" fontWeight="medium">
                         {idx + 1}.
