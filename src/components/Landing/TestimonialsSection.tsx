@@ -47,51 +47,57 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <Box py={{ base: 5, md: 20 }} mt={{ base: 10, md: 20 }}>
-      <Container maxW="container.xl" px={{ base: 4, md: 0 }}>
+    <Box
+      py={{ base: 0, md: 20 }}
+      mt={{ base: 16, md: 20 }}
+      bg="white"
+      overflow={"hidden"}
+    >
+      <Container maxW={"container.xl"} px={0}>
         <Heading
-          fontSize={{ base: "2xl", sm: "3xl", lg: "4xl" }}
+          px={{ base: 5, md: 0 }}
+          fontSize={{ base: "2xl", md: "4xl" }}
           color={"#000"}
           fontWeight="semibold"
-          lineHeight={1.22}
+          lineHeight={{ base: 1.33, md: 1.22 }}
         >
           Designed with Legal Experts, <br /> for Legal Experts
         </Heading>
 
-        {/* ---------- Testimonial cards ---------- */}
         <SimpleGrid
-          columns={{ base: 1, sm: 2, lg: 4 }}
+          gridAutoFlow={"column"}
+          gridTemplateRows={{ base: "1fr", md: "auto" }}
+          gridAutoColumns={{ base: "294px", md: "auto" }}
           gap={5}
-          my={{ base: 12, md: 20 }}
+          my={{ base: 10, md: 20 }}
+          px={{ base: 5, md: 0 }}
+          overflowX={"scroll"}
+          _scrollbar={{ display: "none" }}
         >
           {testimonials.map((t) => (
             <VStack
               key={t.name}
               bg="orange.50"
               borderRadius={4}
-              py={{ base: 6, md: 8 }}
-              px={{ base: 5, md: 7 }}
+              py={6}
+              px={{ base: 6, md: 7 }}
               gap={20}
               h={420}
               align="stretch"
             >
-              <Text
-                fontSize={{ base: "lg", sm: "xl", lg: "2xl" }}
-                color={"#000"}
-                lineHeight={1.33}
-              >
+              <Text fontSize={"2xl"} color={"#000"} lineHeight={1.33}>
                 {t.quote}
               </Text>
 
               <HStack mt="auto" gap={3}>
-                <Avatar.Root size={{ base: "lg", md: "xl", lg: "2xl" }}>
+                <Avatar.Root size={"2xl"} variant={"solid"} shape={"full"}>
                   <Avatar.Image src={t.image} />
                   <Avatar.Fallback name={t.name} />
                 </Avatar.Root>
                 <Box>
                   <Text
-                    fontWeight="bold"
-                    fontSize="md"
+                    fontWeight="semibold"
+                    fontSize="sm"
                     lineHeight={1.42}
                     color={"#000"}
                   >
@@ -108,19 +114,21 @@ export default function TestimonialsSection() {
 
         {/* ---------- CTA block ---------- */}
         <Stack
-          direction={{ base: "column", lg: "row" }}
-          gap={{ base: 8, lg: 5 }}
-          align={{ base: "stretch", lg: "flex-start" }}
+          direction={{ base: "column", md: "row" }}
+          gap={{ base: 0, md: 5 }}
+          px={{ base: 5, md: 0 }}
+          align={"flex-start"}
+          mt={{ base: 0, md: 20 }}
         >
           {/* spacer on desktop, hidden on mobile */}
-          <Flex flex={1} display={{ base: "none", lg: "block" }} />
+          <Flex flex={1} display={"block"} />
 
-          <VStack flex={{ base: "unset", lg: 1 }} align="flex-start" gap={5}>
+          <VStack flex={1} align="flex-start" gap={{ base: 10, md: 5 }}>
             <Text
-              fontSize={{ base: "md", sm: "lg" }}
+              fontSize={{ base: "md", md: "lg" }}
               lineHeight={1.55}
               fontWeight="medium"
-              mr={36}
+              mr={{ base: 0, md: 36 }}
             >
               We’ve collaborated with seasoned legal professionals to develop a
               tool that addresses real-world challenges, ensuring relevance and
