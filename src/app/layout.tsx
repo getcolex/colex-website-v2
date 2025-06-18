@@ -5,6 +5,7 @@ import Providers from "./providers";
 import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase";
+import { getLenis } from "@/lib/lenis";
 
 export default function RootLayout({
   children,
@@ -13,6 +14,10 @@ export default function RootLayout({
 }) {
   const setUser = useAppStore((state) => state.setUser);
   const setLoading = useAppStore((state) => state.setLoading);
+
+  useEffect(() => {
+    getLenis();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
