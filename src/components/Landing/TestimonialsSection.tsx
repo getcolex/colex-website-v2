@@ -10,6 +10,7 @@ import {
   SimpleGrid,
   Button,
   Container,
+  Stack,
   Flex,
 } from "@chakra-ui/react";
 
@@ -46,45 +47,57 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <Box py={20} mt={20}>
-      <Container px={0}>
+    <Box
+      py={{ base: 0, md: 20 }}
+      mt={{ base: 16, md: 20 }}
+      bg="white"
+      overflow={"hidden"}
+    >
+      <Container maxW={"container.xl"} px={0}>
         <Heading
-          fontSize={"4xl"}
+          px={{ base: 5, md: 0 }}
+          fontSize={{ base: "2xl", md: "4xl" }}
           color={"#000"}
-          fontWeight={"semibold"}
-          lineHeight={1.22}
+          fontWeight="semibold"
+          lineHeight={{ base: 1.33, md: 1.22 }}
         >
           Designed with Legal Experts, <br /> for Legal Experts
         </Heading>
 
-        <SimpleGrid h={420} flexShrink={0} columns={[1, 2, 4]} gap={5} my={20}>
-          {testimonials.map((t, index) => (
+        <SimpleGrid
+          gridAutoFlow={"column"}
+          gridTemplateRows={{ base: "1fr", md: "auto" }}
+          gridAutoColumns={{ base: "294px", md: "auto" }}
+          gap={5}
+          my={{ base: 10, md: 20 }}
+          px={{ base: 5, md: 0 }}
+          overflowX={"scroll"}
+          _scrollbar={{ display: "none" }}
+        >
+          {testimonials.map((t) => (
             <VStack
-              justifyContent={"space-between"}
-              key={index}
+              key={t.name}
               bg="orange.50"
+              borderRadius={4}
               py={6}
-              px={7}
-              gap={0}
-              borderRadius={1}
+              px={{ base: 6, md: 7 }}
+              gap={20}
+              h={420}
+              align="stretch"
             >
-              <Text
-                fontSize="2xl"
-                color={"#000"}
-                lineHeight={1.33}
-                fontWeight={"normal"}
-              >
+              <Text fontSize={"2xl"} color={"#000"} lineHeight={1.33}>
                 {t.quote}
               </Text>
-              <HStack alignSelf={"flex-start"} mt={5} gap={3}>
-                <Avatar.Root size="2xl">
+
+              <HStack mt="auto" gap={3}>
+                <Avatar.Root size={"2xl"} variant={"solid"} shape={"full"}>
                   <Avatar.Image src={t.image} />
                   <Avatar.Fallback name={t.name} />
                 </Avatar.Root>
                 <Box>
                   <Text
-                    fontWeight="bold"
-                    fontSize="md"
+                    fontWeight="semibold"
+                    fontSize="sm"
                     lineHeight={1.42}
                     color={"#000"}
                   >
@@ -99,39 +112,43 @@ export default function TestimonialsSection() {
           ))}
         </SimpleGrid>
 
-        <HStack gap={5}>
-          <Flex flex={1}></Flex>
+        {/* ---------- CTA block ---------- */}
+        <Stack
+          direction={{ base: "column", md: "row" }}
+          gap={{ base: 0, md: 5 }}
+          px={{ base: 5, md: 0 }}
+          align={"flex-start"}
+          mt={{ base: 0, md: 20 }}
+        >
+          {/* spacer on desktop, hidden on mobile */}
+          <Flex flex={1} display={"block"} />
 
-          <VStack flex={1} gap={0} justifyContent={"flex-start"}>
+          <VStack flex={1} align="flex-start" gap={{ base: 10, md: 5 }}>
             <Text
-              color={"#000"}
+              fontSize={{ base: "md", md: "lg" }}
               lineHeight={1.55}
-              fontWeight={"medium"}
-              mb={10}
-              pr={154}
-              fontSize="lg"
+              fontWeight="medium"
+              mr={{ base: 0, md: 36 }}
             >
-              We&apos;ve collaborated with seasoned legal professionals to
-              develop a tool that addresses real-world challenges, ensuring
-              relevance and practicality in every feature.
+              We’ve collaborated with seasoned legal professionals to develop a
+              tool that addresses real-world challenges, ensuring relevance and
+              practicality in every feature.
             </Text>
+
             <Button
-              gap={3}
               bg="black"
+              size={"lg"}
               color="white"
-              minW={44}
-              alignSelf={"flex-start"}
-              px={5}
-              py={2}
-              fontSize={"md"}
-              textAlign={"center"}
-              lineHeight={1.5}
-              alignItems={"center"}
+              px={6}
+              py={3}
+              fontSize="md"
+              _hover={{ bg: "gray.800" }}
+              alignSelf="flex-start"
             >
-              &lt;Define the future with us&gt;
+              Define the future with us
             </Button>
           </VStack>
-        </HStack>
+        </Stack>
       </Container>
     </Box>
   );

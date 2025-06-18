@@ -3,27 +3,29 @@ import { Box, Container, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 export default function HeroSection() {
   return (
     <Box
-      py={20}
-      h={744}
+      py={{ base: 0, md: 20 }}
+      minH={{ base: "684px", md: "744px" }}
       display={"flex"}
       alignItems={"flex-end"}
       mx={"auto"}
       bg={"gray.100"}
     >
-      <Container px={0}>
+      <Container maxW="container.xl" px={{ base: 5, md: 0 }} py={{ base: 5 }}>
         <Flex
-          direction={["column", "column", "row"]}
-          alignItems={"flex-end"}
-          justifyContent={"space-between"}
+          direction={{ base: "column", md: "row" }}
+          align={{ base: "flex-start", md: "flex-end" }}
+          justify="space-between"
+          gap={{ base: 10, md: 0 }}
         >
-          <VStack align="start" flex="3">
+          <VStack align="start" flex={{ md: 3 }} gap={{ base: 10, md: 6 }}>
             <Heading
               as="h1"
-              fontSize={"5xl"}
-              lineHeight={"1.25"}
-              fontWeight={"semibold"}
+              fontSize={{ base: "3xl", md: "5xl" }}
+              lineHeight={1.25}
+              fontWeight="semibold"
+              color={"#000"}
             >
-              Research, Draft, and Organize, <br />
+              Research, Draft, and Organize. <br />
               <Text as="span" color="blue.500">
                 Colex is an all-in-one <br />
                 AI-Powered Legal Workspace.
@@ -31,12 +33,12 @@ export default function HeroSection() {
             </Heading>
           </VStack>
 
-          <Box flex="2">
+          <Box flex={{ md: 2 }}>
             <Text
               fontSize="lg"
-              color="#000"
-              fontWeight={"medium"}
-              lineHeight={1.5}
+              fontWeight="medium"
+              color="black"
+              lineHeight={1.55}
             >
               Experience a transformative approach to legal research and
               drafting. Our AI-powered platform is designed to enhance

@@ -4,104 +4,142 @@ import {
   Box,
   Button,
   Container,
-  Flex,
   Heading,
-  HStack,
+  Stack,
   Text,
   VStack,
+  useBreakpointValue,
 } from "@chakra-ui/react";
-import { FaArrowRight } from "react-icons/fa";
+import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 
 export default function Footer() {
+  const isMobile = useBreakpointValue({ base: true, md: false });
   return (
-    <Box bg="gray.200" py={20} mt={20}>
-      <Container px={0}>
-        <Flex>
+    <Box bg="gray.200" py={{ base: 10, md: 20 }} mt={{ base: 16, md: 20 }}>
+      <Container maxW="container.xl" px={{ base: 5, md: 0 }}>
+        <Stack
+          direction={{ base: "column", md: "row" }}
+          gap={{ base: 12, md: 0 }}
+        >
           <VStack align="flex-start" gap={6} flex={1}>
             <Heading
-              fontSize="4xl"
+              lineHeight={{ base: 1.33, md: 1.22 }}
+              fontSize={"2xl"}
               fontWeight="semibold"
-              lineHeight={1.22}
               color={"#000"}
             >
               Colex
             </Heading>
-            <HStack py={20} justifyContent={"space-between"} width={"100%"}>
+
+            <Stack
+              direction={{ base: "column", md: "row" }}
+              justifyContent={"space-between"}
+              gap={{ base: 10, md: 12 }}
+              py={{ base: 0, md: 20 }}
+              w="full"
+            >
               <Heading
-                fontSize="4xl"
-                color={"#000"}
-                lineHeight={"1.22"}
+                fontSize={{ base: "2xl", md: "4xl" }}
                 fontWeight="semibold"
+                lineHeight={{ base: 1.33, md: 1.22 }}
               >
-                An Integrated AI <br /> Workspace for Modern <br /> Legal
-                Professionals
+                An Integrated AI {isMobile ? "" : <br />}
+                Workspace for Modern {isMobile ? "" : <br />}
+                Legal Professionals
               </Heading>
-              <HStack gap={5} h={"100%"}>
+
+              <Stack
+                h={"100%"}
+                direction={{ base: "column", md: "row" }}
+                gap={5}
+                w={{ base: "full", md: "auto" }}
+              >
                 <Button
                   bg="white"
                   flex={1}
                   h={"100%"}
+                  minH={{ base: "124px", md: "auto" }}
                   color="black"
                   borderRadius={4}
-                  px={8}
+                  px={{ base: 5, md: 8 }}
                   py={5}
-                  justifyContent={"center"}
-                  alignItems={"center"}
+                  w={{ base: "full", md: "auto" }}
+                  justifyContent={{
+                    base: "space-between",
+                    md: "center",
+                  }}
+                  gap={5}
                 >
                   <Text
                     alignSelf={"flex-end"}
                     textAlign="left"
-                    fontSize={"2xl"}
-                    fontWeight={"medium"}
-                    lineHeight={1.33}
+                    fontSize={{ base: "lg", md: "2xl" }}
+                    fontWeight={{ base: "semibold", md: "medium" }}
+                    lineHeight={{ base: 1.55, md: 1.33 }}
                     color={"#000"}
                   >
                     Schedule a 1:1 demo
                   </Text>
-                  <Box display={"flex"} h={"100%"} alignItems={"flex-end"}>
-                    <FaArrowRight width={42} height={42} fontSize="42px" />
-                  </Box>
+                  <ArrowRightIcon
+                    style={{
+                      width: 44,
+                      height: 44,
+                      color: "black",
+                      alignSelf: "flex-end",
+                    }}
+                  />
                 </Button>
                 <Button
                   flex={1}
                   bg="black"
                   h={"100%"}
+                  minH={{ base: "124px", md: "auto" }}
                   color="white"
                   borderRadius={4}
-                  px={8}
+                  px={{ base: 5, md: 8 }}
                   py={5}
-                  justifyContent={"center"}
+                  gap={5}
+                  justifyContent={{
+                    base: "space-between",
+                    md: "center",
+                  }}
+                  w={{ base: "full", md: "auto" }}
                 >
                   <Text
+                    fontSize={{ base: "lg", md: "2xl" }}
                     textAlign="left"
-                    fontSize={"2xl"}
                     alignSelf={"flex-end"}
-                    fontWeight={"medium"}
-                    lineHeight={1.33}
+                    fontWeight={{ base: "semibold", md: "medium" }}
+                    lineHeight={{ base: 1.55, md: 1.33 }}
                     color={"#fff"}
                   >
                     Join Our <br /> Early Access Program
                   </Text>
-                  <Box display={"flex"} h={"100%"} alignItems={"flex-end"}>
-                    <FaArrowRight width={42} height={42} fontSize="42px" />
-                  </Box>
+                  <ArrowRightIcon
+                    style={{
+                      width: 44,
+                      height: 44,
+                      color: "white",
+                      alignSelf: "flex-end",
+                    }}
+                  />
                 </Button>
-              </HStack>
-            </HStack>
+              </Stack>
+            </Stack>
 
-            <VStack align="flex-start" gap={3} fontSize="sm" color="#52525B">
-              <Text fontSize={"md"} fontWeight={"medium"} lineHeight={1.5}>
-                Company Address
-              </Text>
-              <Text fontSize={"md"} fontWeight={"medium"} lineHeight={1.5}>
-                Company Phone Number
-              </Text>
-              <Text fontSize={"md"} fontWeight={"medium"} lineHeight={1.5}>
-                © 2025 | ALL RIGHTS RESERVED by Colex.
-              </Text>
+            <VStack
+              align="flex-start"
+              fontSize={{ base: "sm", md: "md" }}
+              gap={3}
+              fontWeight={{ base: "semibold", md: "medium" }}
+              lineHeight={{ base: 1.42, md: 1.5 }}
+            >
+              <Text>Company Address</Text>
+              <Text>Company Phone Number</Text>
+              <Text>© 2025&nbsp;|&nbsp;ALL RIGHTS RESERVED by Colex.</Text>
             </VStack>
           </VStack>
-        </Flex>
+        </Stack>
       </Container>
     </Box>
   );
