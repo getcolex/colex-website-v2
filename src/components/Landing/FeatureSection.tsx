@@ -26,7 +26,7 @@ const FEATURES = [
     title: "Context-aware AI",
     description:
       "The platform remembers your case and improves suggestions as you work—like a junior that never forgets.",
-    image: "/images/Context-Aware AI.png",
+    image: "/images/Context-aware AI.png",
   },
   {
     title: "Smart Drafting",
