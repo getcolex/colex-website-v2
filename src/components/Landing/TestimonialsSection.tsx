@@ -72,7 +72,7 @@ export default function TestimonialsSection() {
               py={{ base: 6, md: 8 }}
               px={{ base: 5, md: 7 }}
               gap={20}
-              h="full"
+              h={420}
               align="stretch"
             >
               <Text
@@ -120,7 +120,7 @@ export default function TestimonialsSection() {
               fontSize={{ base: "md", sm: "lg" }}
               lineHeight={1.55}
               fontWeight="medium"
-              pr={{ base: 0, lg: 20 }}
+              mr={36}
             >
               We’ve collaborated with seasoned legal professionals to develop a
               tool that addresses real-world challenges, ensuring relevance and
@@ -129,6 +129,7 @@ export default function TestimonialsSection() {
 
             <Button
               bg="black"
+              size={"lg"}
               color="white"
               px={6}
               py={3}

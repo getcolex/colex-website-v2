@@ -14,14 +14,7 @@ import {
 export default function LandingNavbar() {
   const isMobile = useBreakpointValue({ base: true, md: false });
   return (
-    <Box
-      py={5}
-      bg="white"
-      position={"sticky"}
-      top={0}
-      zIndex={100}
-      boxShadow={"sm"}
-    >
+    <Box py={5} bg="white" position={"sticky"} top={0} zIndex={100}>
       <Container px={{ base: 5, md: 0 }}>
         <Flex align="center" justifyContent={"space-between"}>
           <Heading
@@ -34,6 +27,7 @@ export default function LandingNavbar() {
           </Heading>
           <Flex gap={{ base: 2, md: 5 }}>
             <Button
+              size={"lg"}
               flex={1}
               variant="ghost"
               bg="gray.100"
@@ -49,6 +43,7 @@ export default function LandingNavbar() {
               {isMobile ? "Schedule demo" : "Schedule a 1:1 demo"}
             </Button>
             <Button
+              size={"lg"}
               flex={1}
               fontSize={{ base: "14px", md: "16px" }}
               minW={{ base: "36px", md: "44px" }}

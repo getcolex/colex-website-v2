@@ -113,7 +113,7 @@ export default function FeatureShowcase() {
                   return (
                     <Box
                       key={f.title}
-                      mb={5}
+                      mt={5}
                       cursor="pointer"
                       onClick={() => handleItemClick(idx)}
                     >
