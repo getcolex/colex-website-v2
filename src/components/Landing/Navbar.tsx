@@ -53,6 +53,12 @@ export default function LandingNavbar() {
               lineHeight={{ base: 1.42, md: 1.5 }}
               textAlign={"center"}
               borderRadius={4}
+              onClick={() => {
+                window.open(
+                  "https://verdant-spinach-db6.notion.site/20af6271dbc381c9b9a4c688f2eb8503?pvs=105",
+                  "_blank"
+                );
+              }}
             >
               Get early access
             </Button>
