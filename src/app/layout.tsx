@@ -1,5 +1,7 @@
 "use client";
 
+import "@fontsource-variable/inter";
+
 import { useAppStore } from "@/store/useAppStore";
 import Providers from "./providers";
 import { useEffect } from "react";

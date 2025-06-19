@@ -9,20 +9,12 @@ const customConfig = defineConfig({
   theme: {
     tokens: {
       fonts: {
-        heading: {
-          value: "InterVariable, sans-serif",
-        },
-        body: {
-          value: "InterVariable, sans-serif",
-        },
+        heading: { value: `"Inter Variable", sans-serif` },
+        body: { value: `"Inter Variable", sans-serif` },
       },
       colors: {
-        heading: {
-          value: "#000000",
-        },
-        text: {
-          value: "#000000",
-        },
+        heading: { value: "#000000" },
+        text: { value: "#000000" },
       },
     },
   },

@@ -13,7 +13,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 
 const FEATURES = [
   {
@@ -122,7 +122,7 @@ export default function FeatureShowcase() {
         <Box py={{ base: 0, md: 20 }} mt={{ base: 16, md: 20 }}>
           <Container
             maxW="container.xl"
-            px={{ base: 4, sm: 6, md: 8, lg: 12, xl: 16 }}
+            px={{ base: 5, md: 8, lg: 12, xl: 16 }}
           >
             {isDesktop ? (
               <Flex
@@ -189,31 +189,33 @@ export default function FeatureShowcase() {
                   position="relative"
                   overflow="hidden"
                 >
-                  <motion.div /* ✨ fades in/out on index change */
-                    key={activeIndex} /* a new MotionBox for every image */
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                    }}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{
-                      delay: 0.05,
-                    }}
-                  >
-                    <Image
-                      src={FEATURES[activeIndex].image}
-                      alt={FEATURES[activeIndex].title}
-                      layout="fill"
-                      objectFit="cover"
-                      style={{ borderRadius: 4 }}
-                      priority
-                    />
-                  </motion.div>
+                  <AnimatePresence initial={false}>
+                    <motion.div
+                      key={activeIndex}
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                      }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{
+                        delay: 0.3,
+                      }}
+                    >
+                      <Image
+                        src={FEATURES[activeIndex].image}
+                        alt={FEATURES[activeIndex].title}
+                        layout="fill"
+                        objectFit="cover"
+                        style={{ borderRadius: 4 }}
+                        priority
+                      />
+                    </motion.div>
+                  </AnimatePresence>
                 </Box>
               </Flex>
             ) : (
@@ -228,8 +230,8 @@ export default function FeatureShowcase() {
                 </Heading>
 
                 {FEATURES.map((f, idx) => (
-                  <Box key={f.title} mb={10} position="relative">
-                    <Box height={372} width="100%" mb={10} position="relative">
+                  <Box key={f.title} mb={14} position="relative">
+                    <Box height={372} width="100%" mb={5} position="relative">
                       <Image
                         src={f.image}
                         alt={f.title}

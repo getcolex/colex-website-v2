@@ -16,25 +16,22 @@ export default function Footer() {
   const isMobile = useBreakpointValue({ base: true, md: false });
   return (
     <Box bg="gray.200" py={{ base: 10, md: 20 }} mt={{ base: 16, md: 20 }}>
-      <Container
-        maxW="container.xl"
-        px={{ base: 4, sm: 6, md: 8, lg: 12, xl: 16 }}
-      >
+      <Container maxW="container.xl" px={{ base: 5, md: 8, lg: 12, xl: 16 }}>
         <Stack
-          direction={{ base: "column", md: "row" }}
+          direction={{ base: "column", lg: "row" }}
           gap={{ base: 12, md: 0 }}
         >
           <VStack align="flex-start" gap={6} flex={1}>
             <Heading
               lineHeight={{ base: 1.33, md: 1.22 }}
-              fontSize={"2xl"}
+              fontSize={"4xl"}
               fontWeight="semibold"
             >
               Colex
             </Heading>
 
             <Stack
-              direction={{ base: "column", md: "row" }}
+              direction={{ base: "column", xl: "row" }}
               justifyContent={"space-between"}
               gap={{ base: 10, md: 12 }}
               py={{ base: 0, md: 20 }}
@@ -54,13 +51,13 @@ export default function Footer() {
                 h={"100%"}
                 direction={{ base: "column", md: "row" }}
                 gap={5}
-                w={{ base: "full", md: "auto" }}
+                w={{ base: "full", lg: "auto" }}
               >
                 <Button
                   bg="white"
                   flex={1}
                   h={"100%"}
-                  minH={{ base: "124px", md: "auto" }}
+                  minH={{ base: "124px", xl: "auto" }}
                   color="black"
                   borderRadius={4}
                   px={{ base: 5, md: 8 }}
@@ -68,7 +65,7 @@ export default function Footer() {
                   w={{ base: "full", md: "auto" }}
                   justifyContent={{
                     base: "space-between",
-                    md: "center",
+                    xl: "center",
                   }}
                   gap={5}
                 >
@@ -94,7 +91,7 @@ export default function Footer() {
                   flex={1}
                   bg="black"
                   h={"100%"}
-                  minH={{ base: "124px", md: "auto" }}
+                  minH={{ base: "124px", xl: "auto" }}
                   color="white"
                   borderRadius={4}
                   px={{ base: 5, md: 8 }}
@@ -102,7 +99,7 @@ export default function Footer() {
                   gap={5}
                   justifyContent={{
                     base: "space-between",
-                    md: "center",
+                    xl: "center",
                   }}
                   w={{ base: "full", md: "auto" }}
                 >

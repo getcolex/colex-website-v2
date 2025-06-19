@@ -12,7 +12,7 @@ export default function HeroSection() {
     >
       <Container
         maxW="container.xl"
-        px={{ base: 4, sm: 6, md: 8, lg: 12, xl: 16 }}
+        px={{ base: 5, md: 8, lg: 12, xl: 16 }}
         py={{ base: 5 }}
       >
         <Flex
