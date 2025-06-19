@@ -53,7 +53,10 @@ export default function TestimonialsSection() {
       bg="white"
       overflow={"hidden"}
     >
-      <Container maxW={"container.xl"} px={0}>
+      <Container
+        maxW={"container.xl"}
+        px={{ base: 4, sm: 6, md: 8, lg: 12, xl: 16 }}
+      >
         <Heading
           px={{ base: 5, md: 0 }}
           fontSize={{ base: "2xl", md: "4xl" }}
@@ -65,13 +68,16 @@ export default function TestimonialsSection() {
         </Heading>
 
         <SimpleGrid
-          gridAutoFlow={"column"}
-          gridTemplateRows={{ base: "1fr", md: "auto" }}
-          gridAutoColumns={{ base: "294px", md: "auto" }}
+          gridAutoFlow="column"
+          gridTemplateRows="1fr"
+          gridAutoColumns={{
+            base: "294px",
+            xl: "auto",
+          }}
           gap={5}
           my={{ base: 10, md: 20 }}
-          px={{ base: 5, md: 0 }}
-          overflowX={"scroll"}
+          px={{ base: 5, md: 6, lg: 0 }}
+          overflowX="auto"
           _scrollbar={{ display: "none" }}
         >
           {testimonials.map((t) => (

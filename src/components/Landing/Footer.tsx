@@ -16,7 +16,10 @@ export default function Footer() {
   const isMobile = useBreakpointValue({ base: true, md: false });
   return (
     <Box bg="gray.200" py={{ base: 10, md: 20 }} mt={{ base: 16, md: 20 }}>
-      <Container maxW="container.xl" px={{ base: 5, md: 0 }}>
+      <Container
+        maxW="container.xl"
+        px={{ base: 4, sm: 6, md: 8, lg: 12, xl: 16 }}
+      >
         <Stack
           direction={{ base: "column", md: "row" }}
           gap={{ base: 12, md: 0 }}

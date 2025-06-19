@@ -120,7 +120,10 @@ export default function FeatureShowcase() {
         bg="white"
       >
         <Box py={{ base: 0, md: 20 }} mt={{ base: 16, md: 20 }}>
-          <Container maxW="container.xl" px={{ base: 5, md: 0 }}>
+          <Container
+            maxW="container.xl"
+            px={{ base: 4, sm: 6, md: 8, lg: 12, xl: 16 }}
+          >
             {isDesktop ? (
               <Flex
                 justifyContent="space-between"

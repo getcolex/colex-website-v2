@@ -10,7 +10,11 @@ export default function HeroSection() {
       mx={"auto"}
       bg={"gray.100"}
     >
-      <Container maxW="container.xl" px={{ base: 5, md: 0 }} py={{ base: 5 }}>
+      <Container
+        maxW="container.xl"
+        px={{ base: 4, sm: 6, md: 8, lg: 12, xl: 16 }}
+        py={{ base: 5 }}
+      >
         <Flex
           direction={{ base: "column", md: "row" }}
           align={{ base: "flex-start", md: "flex-end" }}
