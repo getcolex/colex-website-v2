@@ -13,7 +13,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useMotionValue } from "motion/react";
 
 const FEATURES = [
   {
@@ -63,16 +63,16 @@ const DESKTOP_MIN_BP = "md"; // breakpoint that enables the effect
 
 export default function FeatureShowcase() {
   const isDesktop = useBreakpointValue({ base: false, [DESKTOP_MIN_BP]: true });
+  const sliceProgress = useMotionValue(0);
 
   /* state --------------------------------------------------------- */
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPinned, setIsPinned] = useState(false);
-  const [playedOnce, setPlayedOnce] = useState(false);
   const phantomRef = useRef<HTMLDivElement>(null);
 
   /* scroll logic -------------------------------------------------- */
   useEffect(() => {
-    if (!isDesktop || playedOnce) return; // run only once, on desktop
+    if (!isDesktop) return;
     const phantom = phantomRef.current;
     if (!phantom) return;
 
@@ -87,24 +87,27 @@ export default function FeatureShowcase() {
       setIsPinned(inside);
 
       if (inside) {
-        const progress = y - startTop; // 0 … 1700
+        const progress = y - startTop;
         const idx = Math.floor(progress / FEATURE_HEIGHT_PX);
+        const withinIdx = progress % FEATURE_HEIGHT_PX;
+        const lastIndex = FEATURES.length - 1;
+        const progressWidth = withinIdx / FEATURE_HEIGHT_PX;
 
-        if (idx === FEATURES.length - 1 && y >= endTop) {
-          setPlayedOnce(true);
+        if (idx < lastIndex) {
+          sliceProgress.set(progressWidth);
+        } else {
+          sliceProgress.set(1);
         }
         setActiveIndex(Math.min(idx, FEATURES.length - 1));
       }
-
-      // if (y >= endTop && !playedOnce) setPlayedOnce(true);
     };
 
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
-  }, [isDesktop, playedOnce]);
+  }, [isDesktop]);
 
   /* ‼️ phantom height collapses to 0 after first run --------------- */
-  const phantomHeight = playedOnce ? "834px" : SCROLL_SPAN_PX + "px";
+  const phantomHeight = SCROLL_SPAN_PX + "px";
 
   /* render -------------------------------------------------------- */
   return (
@@ -149,8 +152,26 @@ export default function FeatureShowcase() {
                             h="2px"
                             w="full"
                             mb={5}
-                            bg={isActive ? "black" : "gray.200"}
-                          ></Box>
+                            bg="gray.200"
+                            overflow="hidden"
+                          >
+                            {isActive && (
+                              <motion.div
+                                style={{
+                                  height: "100%",
+                                  background: "black",
+                                  scaleX: sliceProgress,
+                                  transformOrigin: "left",
+                                }}
+                                initial={false}
+                                transition={{
+                                  type: "tween",
+                                  ease: "linear",
+                                  duration: 0.1,
+                                }}
+                              />
+                            )}
+                          </Box>
 
                           <HStack align="start" gap={4}>
                             <Text

@@ -14,7 +14,7 @@ import {
 import { useState } from "react";
 
 export default function LandingNavbar() {
-  const phone = "+91 99450 75889";
+  const phone = "+91 9945 075 889";
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   const isRealMobile =
