@@ -24,7 +24,7 @@ export default function LandingNavbar() {
 
   return (
     <Box py={5} bg="white" position="sticky" top={0} zIndex={100}>
-      <Container maxW="container.xl" px={{ base: 5, md: 8, lg: 12 }}>
+      <Container maxW="container.xl" px={{ base: 5, md: 8, lg: 12, xl: 16 }}>
         <Flex align="center" justify="space-between">
           <Heading
             fontSize={{ base: "2xl", md: "4xl" }}
