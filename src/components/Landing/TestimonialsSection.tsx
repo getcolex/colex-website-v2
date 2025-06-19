@@ -60,7 +60,6 @@ export default function TestimonialsSection() {
         <Heading
           px={{ base: 5, md: 0 }}
           fontSize={{ base: "2xl", md: "4xl" }}
-          color={"#000"}
           fontWeight="semibold"
           lineHeight={{ base: 1.33, md: 1.22 }}
         >
@@ -91,7 +90,7 @@ export default function TestimonialsSection() {
               h={420}
               align="stretch"
             >
-              <Text fontSize={"2xl"} color={"#000"} lineHeight={1.33}>
+              <Text fontSize={"2xl"} lineHeight={1.33}>
                 {t.quote}
               </Text>
 
@@ -101,12 +100,7 @@ export default function TestimonialsSection() {
                   <Avatar.Fallback name={t.name} />
                 </Avatar.Root>
                 <Box>
-                  <Text
-                    fontWeight="semibold"
-                    fontSize="sm"
-                    lineHeight={1.42}
-                    color={"#000"}
-                  >
+                  <Text fontWeight="semibold" fontSize="sm" lineHeight={1.42}>
                     {t.name}
                   </Text>
                   <Text fontSize="sm" color="#52525B" lineHeight={1.42}>

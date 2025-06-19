@@ -62,7 +62,6 @@ export default function LoginPage() {
             lineHeight={1.33}
             fontWeight={"semibold"}
             textAlign={"center"}
-            color={"#000"}
           >
             Get started on Colex
           </Heading>

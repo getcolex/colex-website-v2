@@ -76,7 +76,6 @@ export default function StepEmail() {
             lineHeight={1.33}
             alignContent={"center"}
             fontWeight={"semibold"}
-            color={"#000"}
           >
             Get started on Colex
           </Heading>

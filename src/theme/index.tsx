@@ -3,6 +3,7 @@ import {
   defaultBaseConfig,
   defineConfig,
 } from "@chakra-ui/react";
+import "@fontsource-variable/inter";
 
 const customConfig = defineConfig({
   theme: {
@@ -13,6 +14,14 @@ const customConfig = defineConfig({
         },
         body: {
           value: "InterVariable, sans-serif",
+        },
+      },
+      colors: {
+        heading: {
+          value: "#000000",
+        },
+        text: {
+          value: "#000000",
         },
       },
     },

@@ -29,7 +29,6 @@ export default function Footer() {
               lineHeight={{ base: 1.33, md: 1.22 }}
               fontSize={"2xl"}
               fontWeight="semibold"
-              color={"#000"}
             >
               Colex
             </Heading>
@@ -79,7 +78,6 @@ export default function Footer() {
                     fontSize={{ base: "lg", md: "2xl" }}
                     fontWeight={{ base: "semibold", md: "medium" }}
                     lineHeight={{ base: 1.55, md: 1.33 }}
-                    color={"#000"}
                   >
                     Schedule a 1:1 demo
                   </Text>

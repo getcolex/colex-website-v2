@@ -165,7 +165,6 @@ export default function BasicInfo1Page() {
           fontSize="2xl"
           lineHeight={1.33}
           fontWeight={"semibold"}
-          color={"#000"}
         >
           Tell us about you
         </Heading>

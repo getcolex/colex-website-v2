@@ -73,7 +73,6 @@ export default function BasicInfo2Page() {
           lineHeight={1.33}
           fontWeight="semibold"
           textAlign="center"
-          color="#000"
         >
           Tell us about your work
         </Heading>

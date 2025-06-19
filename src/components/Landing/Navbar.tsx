@@ -21,7 +21,6 @@ export default function LandingNavbar() {
             fontSize={{ base: "2xl", md: "4xl" }}
             fontWeight="600"
             lineHeight={{ base: 1.33, md: 1.22 }}
-            color={"#000"}
           >
             Colex
           </Heading>
