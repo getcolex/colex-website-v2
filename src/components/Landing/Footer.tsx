@@ -102,6 +102,12 @@ export default function Footer() {
                     xl: "center",
                   }}
                   w={{ base: "full", md: "auto" }}
+                  onClick={() => {
+                    window.open(
+                      "https://verdant-spinach-db6.notion.site/20af6271dbc381c9b9a4c688f2eb8503?pvs=105",
+                      "_blank"
+                    );
+                  }}
                 >
                   <Text
                     fontSize={{ base: "lg", md: "2xl" }}

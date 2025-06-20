@@ -17,12 +17,6 @@ import { AnimatePresence, motion, useMotionValue } from "motion/react";
 
 const FEATURES = [
   {
-    title: "All-in-One Workspace",
-    description:
-      "Search, draft, annotate, and organize your case in one place. Organize research with folders, tags, and notes.",
-    image: "/images/All-in-One Workspace.png",
-  },
-  {
     title: "Context-aware AI",
     description:
       "The platform remembers your case and improves suggestions as you work—like a junior that never forgets.",
@@ -56,8 +50,8 @@ const FEATURES = [
 
 /* ---------------------------------------------------------------- */
 /* constants you may want to tweak                                  */
-const FEATURE_HEIGHT_PX = 140; // per-feature slice
-const SCROLL_SPAN_PX = 834 * 2; // artificial scroll range
+const FEATURE_HEIGHT_PX = 200; // per-feature slice
+const SCROLL_SPAN_PX = 1900; // artificial scroll range
 const DESKTOP_MIN_BP = "md"; // breakpoint that enables the effect
 /* ---------------------------------------------------------------- */
 

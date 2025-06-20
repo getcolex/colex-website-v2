@@ -64,7 +64,7 @@ export default function TestimonialsSection() {
                 lineHeight={{ base: 1.33, md: 1.22 }}
                 justifySelf={"flex-start"}
                 maxW="833px"
-                pr={40}
+                pr={{ base: 0, xl: 20 }}
               >
                 We are co-designing with Legal Experts, for Legal Experts
               </Heading>
@@ -74,6 +74,7 @@ export default function TestimonialsSection() {
                 h={"100%"}
                 minH={{ base: "124px", xl: "auto" }}
                 color="black"
+                maxW={{ base: "100%", xl: "407px" }}
                 borderRadius={4}
                 px={8}
                 py={5}
