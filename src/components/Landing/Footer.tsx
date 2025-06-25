@@ -90,30 +90,16 @@ export default function Footer() {
                     px={{ base: 5, md: 8 }}
                     py={5}
                     border={"3px solid #fafafa"}
-                    w={{ base: "full", md: "auto" }}
-                    justifyContent={{
-                      base: "space-between",
-                      xl: "center",
-                    }}
-                    gap={5}
+                    alignItems={"flex-end"}
+                    w={{ base: "full", lg: 370 }}
                   >
                     <Text
-                      alignSelf={"flex-end"}
-                      textAlign="left"
                       fontSize={{ base: "lg", md: "2xl" }}
                       fontWeight={{ base: "semibold", md: "medium" }}
                       lineHeight={{ base: 1.55, md: 1.33 }}
                     >
                       Call us at <br /> {PHONE_NUMBER}
                     </Text>
-                    <PhoneIcon
-                      style={{
-                        width: 44,
-                        height: 44,
-                        color: "black",
-                        alignSelf: "flex-end",
-                      }}
-                    />
                   </HStack>
                 ) : (
                   <Button
@@ -125,7 +111,7 @@ export default function Footer() {
                     borderRadius={4}
                     px={{ base: 5, md: 8 }}
                     py={5}
-                    w={{ base: "full", md: "auto" }}
+                    w={{ base: "full", lg: 370 }}
                     justifyContent={{
                       base: "space-between",
                       xl: "center",

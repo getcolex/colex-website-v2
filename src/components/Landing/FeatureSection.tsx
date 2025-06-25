@@ -86,7 +86,6 @@ export default function FeatureShowcase() {
               <Flex
                 justifyContent="space-between"
                 direction={["column", null, "row"]}
-                gap={40}
               >
                 <VStack justifyContent="space-between" maxW={427}>
                   <Heading

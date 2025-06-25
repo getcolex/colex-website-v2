@@ -38,7 +38,14 @@ export default function LandingNavbar() {
   };
 
   return (
-    <Box py={5} bg="white" position="sticky" top={0} zIndex={100}>
+    <Box
+      py={5}
+      bg="white"
+      position="sticky"
+      border={"1px solid #e4e4e7"}
+      top={0}
+      zIndex={100}
+    >
       <Container maxW="container.xl" px={{ base: 5, md: 8, lg: 12, xl: 16 }}>
         <Flex align="center" justify="space-between">
           <Heading
@@ -71,7 +78,7 @@ export default function LandingNavbar() {
                 // flex={1}
                 variant="ghost"
                 bg="gray.100"
-                w={260}
+                w={{ base: "auto", lg: 260 }}
                 fontSize={{ base: "14px", md: "16px" }}
                 minW={{ base: "36px", md: "44px" }}
                 fontWeight={"medium"}
@@ -87,7 +94,7 @@ export default function LandingNavbar() {
             )}
             <Button
               size={"lg"}
-              flex={1}
+              w={{ base: "auto", lg: 260 }}
               fontSize={{ base: "14px", md: "16px" }}
               minW={{ base: "36px", md: "44px" }}
               fontWeight={"medium"}

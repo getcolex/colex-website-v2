@@ -34,7 +34,7 @@ export default function TestimonialsSection() {
           <VStack gap={10}>
             <HStack justifyContent={"space-between"} w={"100%"}>
               <Heading
-                fontSize={{ base: "2xl", md: "4xl", xl: "5xl" }}
+                fontSize={{ base: "2xl", md: "3xl", xl: "4xl" }}
                 fontWeight="semibold"
                 lineHeight={{ base: 1.33, md: 1.22 }}
                 justifySelf={"flex-start"}
