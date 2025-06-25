@@ -50,7 +50,7 @@ const FEATURES = [
     title: "Security is Our Top Priority",
     description:
       "Your files are completely private and not visible to Colex or any third party. We are working towards ISO 270001 and SOC 1 & 2 certification.",
-    image: "/images/Secure and compliant.png",
+    image: "/images/Security is our top priority.png",
   },
 ];
 

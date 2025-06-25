@@ -5,15 +5,20 @@ import {
   Button,
   Container,
   Heading,
+  HStack,
   Stack,
   Text,
   useBreakpointValue,
   VStack,
 } from "@chakra-ui/react";
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
+import PhoneIcon from "@/assets/icons/phone-forwarded.svg";
+import { useState } from "react";
 
 export default function Footer() {
   const isDesktop = useBreakpointValue({ base: false, lg: true });
+  const phone = "+91 9945 075 889";
+  const [showPhone, setShowPhone] = useState(false);
 
   return (
     <Box bg="gray.200" py={{ base: 10, md: 20 }} mt={{ base: 16, xl: 0 }}>
@@ -53,40 +58,84 @@ export default function Footer() {
                 gap={5}
                 w={{ base: "full", lg: "auto" }}
               >
-                <Button
-                  bg="white"
-                  flex={1}
-                  h={"100%"}
-                  minH={{ base: "124px", xl: "auto" }}
-                  color="black"
-                  borderRadius={4}
-                  px={{ base: 5, md: 8 }}
-                  py={5}
-                  w={{ base: "full", md: "auto" }}
-                  justifyContent={{
-                    base: "space-between",
-                    xl: "center",
-                  }}
-                  gap={5}
-                >
-                  <Text
-                    alignSelf={"flex-end"}
-                    textAlign="left"
-                    fontSize={{ base: "lg", md: "2xl" }}
-                    fontWeight={{ base: "semibold", md: "medium" }}
-                    lineHeight={{ base: 1.55, md: 1.33 }}
-                  >
-                    Schedule a 1:1 demo
-                  </Text>
-                  <ArrowRightIcon
-                    style={{
-                      width: 44,
-                      height: 44,
-                      color: "black",
-                      alignSelf: "flex-end",
+                {isDesktop && showPhone ? (
+                  <HStack
+                    flex={1}
+                    h={"100%"}
+                    minH={{ base: "124px", xl: "auto" }}
+                    color="black"
+                    borderRadius={4}
+                    px={{ base: 5, md: 8 }}
+                    py={5}
+                    border={"3px solid #fafafa"}
+                    w={{ base: "full", md: "auto" }}
+                    justifyContent={{
+                      base: "space-between",
+                      xl: "center",
                     }}
-                  />
-                </Button>
+                    gap={5}
+                  >
+                    <Text
+                      alignSelf={"flex-end"}
+                      textAlign="left"
+                      fontSize={{ base: "lg", md: "2xl" }}
+                      fontWeight={{ base: "semibold", md: "medium" }}
+                      lineHeight={{ base: 1.55, md: 1.33 }}
+                    >
+                      Call us at <br /> {phone}
+                    </Text>
+                    <PhoneIcon
+                      style={{
+                        width: 44,
+                        height: 44,
+                        color: "black",
+                        alignSelf: "flex-end",
+                      }}
+                    />
+                  </HStack>
+                ) : (
+                  <Button
+                    bg="white"
+                    flex={1}
+                    h={"100%"}
+                    minH={{ base: "124px", xl: "auto" }}
+                    color="black"
+                    borderRadius={4}
+                    px={{ base: 5, md: 8 }}
+                    py={5}
+                    w={{ base: "full", md: "auto" }}
+                    justifyContent={{
+                      base: "space-between",
+                      xl: "center",
+                    }}
+                    gap={5}
+                    onClick={() => {
+                      if (isDesktop) {
+                        setShowPhone(true);
+                      } else {
+                        window.open(`tel:${phone}`);
+                      }
+                    }}
+                  >
+                    <Text
+                      alignSelf={"flex-end"}
+                      textAlign="left"
+                      fontSize={{ base: "lg", md: "2xl" }}
+                      fontWeight={{ base: "semibold", md: "medium" }}
+                      lineHeight={{ base: 1.55, md: 1.33 }}
+                    >
+                      Schedule a 1:1 demo
+                    </Text>
+                    <ArrowRightIcon
+                      style={{
+                        width: 44,
+                        height: 44,
+                        color: "black",
+                        alignSelf: "flex-end",
+                      }}
+                    />
+                  </Button>
+                )}
                 <Button
                   flex={1}
                   bg="black"

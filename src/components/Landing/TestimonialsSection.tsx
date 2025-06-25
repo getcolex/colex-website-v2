@@ -48,7 +48,7 @@ const testimonials = [
 export default function TestimonialsSection() {
   const isMobile = useBreakpointValue({ base: true, xl: false });
   return (
-    <Box py={{ base: 0, md: 20 }} mt={20} bg="white" overflow={"hidden"}>
+    <Box py={{ base: 0, md: 20 }} bg="white" overflow={"hidden"}>
       <Container maxW={"container.xl"} px={{ base: 5, md: 8, lg: 12, xl: 16 }}>
         {!isMobile ? (
           <VStack gap={10}>
@@ -58,10 +58,10 @@ export default function TestimonialsSection() {
                 fontWeight="semibold"
                 lineHeight={{ base: 1.33, md: 1.22 }}
                 justifySelf={"flex-start"}
-                maxW="833px"
+                // maxW="833px"
                 pr={{ base: 0, xl: 20 }}
               >
-                We are co-designing with legal experts
+                We are co-designing with <br /> legal experts
               </Heading>
               <Button
                 bg="black"
@@ -108,7 +108,7 @@ export default function TestimonialsSection() {
           </VStack>
         ) : (
           <Heading fontSize={"2xl"} fontWeight="semibold" lineHeight={1.33}>
-            We are co-designing with Legal Experts, for Legal Experts
+            We are co-designing with legal experts
           </Heading>
         )}
 
