@@ -13,9 +13,19 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
-import { TESTIMONIALS } from "@/lib/constants";
+import { NOTION_LINK, TESTIMONIALS } from "@/lib/constants";
+import { event } from "@/lib/gtag";
 
 export default function TestimonialsSection() {
+  const partnerWithUs = () => {
+    event({
+      action: "click_partner_with_us_button",
+      category: "engagement",
+      label: "Partner with us Clicked",
+    });
+    window.open(NOTION_LINK, "_blank");
+  };
+
   const isMobile = useBreakpointValue({ base: true, xl: false });
   return (
     <Box py={{ base: 0, md: 20 }} bg="white" overflow={"hidden"}>
@@ -46,6 +56,7 @@ export default function TestimonialsSection() {
                 alignSelf="flex-end"
                 gap={5}
                 justifyContent={"space-between"}
+                onClick={partnerWithUs}
               >
                 <Text
                   color={"white"}
