@@ -6,7 +6,7 @@ export const FEATURES = [
   {
     title: "Context-Aware",
     description:
-      "The platform remembers your case and improves suggestions as you work, like a junior that never forgets.",
+      "Colex understands your matter inside out and assists you through out your workflow.",
     image: "/images/Context-Aware.png",
   },
   {
@@ -44,30 +44,30 @@ export const FEATURES = [
 export const TESTIMONIALS = [
   {
     quote:
-      "I spend less time switching between tools and more time building strong arguments.",
-    name: "Rishabh",
-    title: "Associate at a Tier-1 Law Firm",
+      "Finding the right judgement takes hours. I keep jumping between databases, physical files, and my own notes. A system that connects everything would save me a lot of time.",
+    name: "Shiva",
+    title: "Litigator, High courts",
     image: "/avatars/user1.png",
   },
   {
     quote:
-      "Research is a continuous process. This platform feels like it’s built for the way we actually work.",
-    name: "Ananya",
-    title: "Senior Associate at a Litigation Practice",
+      "There's a huge opportunity in helping junior lawyers learn faster through smarter systems. Right now, there's no structure.",
+    name: "Sambeet",
+    title: "Senior Partner",
     image: "/avatars/user2.png",
   },
   {
     quote:
-      "Finally, something that understands the Indian legal ecosystem. I’d use this every day if it keeps improving.",
-    name: "Lovesh",
-    title: "Corporate Counsel",
+      "My research spans multiple jurisdictions and it's exhausting to do it all manually. If something could retain context across matters, that's a game-changer.",
+    name: "Rishabh",
+    title: "Privacy & Compliance Lawyer",
     image: "/avatars/user3.png",
   },
   {
     quote:
-      "I’ve used ChatGPT and other AI tools. They’re good, but this platform knows my context and never loses track.",
-    name: "Sameer",
-    title: "Independent Litigator",
+      "We end up using five tools just to draft one document. there needs to be a single place for everything.",
+    name: "Lovesh",
+    title: "Corporate Lawyer",
     image: "/avatars/user4.png",
   },
 ];
