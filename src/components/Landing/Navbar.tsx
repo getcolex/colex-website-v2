@@ -11,9 +11,9 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { PHONE_NUMBER } from "@/lib/constants";
 
 export default function LandingNavbar() {
-  const phone = "+91 9945 075 889";
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   const [showPhone, setShowPhone] = useState(false);
@@ -42,7 +42,7 @@ export default function LandingNavbar() {
               >
                 Call us at&nbsp;
                 <Text as="span" fontWeight="semibold">
-                  {phone}
+                  {PHONE_NUMBER}
                 </Text>
               </Box>
             ) : (

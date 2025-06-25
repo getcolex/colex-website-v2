@@ -13,37 +13,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
-
-const testimonials = [
-  {
-    quote:
-      "I spend less time switching between tools and more time building strong arguments.",
-    name: "Rishabh",
-    title: "Associate at a Tier-1 Law Firm",
-    image: "/avatars/user1.png",
-  },
-  {
-    quote:
-      "Research is a continuous process. This platform feels like it’s built for the way we actually work.",
-    name: "Ananya",
-    title: "Senior Associate at a Litigation Practice",
-    image: "/avatars/user2.png",
-  },
-  {
-    quote:
-      "Finally, something that understands the Indian legal ecosystem. I’d use this every day if it keeps improving.",
-    name: "Lovesh",
-    title: "Corporate Counsel",
-    image: "/avatars/user3.png",
-  },
-  {
-    quote:
-      "I’ve used ChatGPT and other AI tools. They’re good, but this platform knows my context and never loses track.",
-    name: "Sameer",
-    title: "Independent Litigator",
-    image: "/avatars/user4.png",
-  },
-];
+import { TESTIMONIALS } from "@/lib/constants";
 
 export default function TestimonialsSection() {
   const isMobile = useBreakpointValue({ base: true, xl: false });
@@ -124,7 +94,7 @@ export default function TestimonialsSection() {
           overflowX="auto"
           _scrollbar={{ display: "none" }}
         >
-          {testimonials.map((t) => (
+          {TESTIMONIALS.map((t) => (
             <VStack
               key={t.name}
               backgroundImage="url('/images/TestimonialBg.png')"

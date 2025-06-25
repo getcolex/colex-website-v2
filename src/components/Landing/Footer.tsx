@@ -14,10 +14,10 @@ import {
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import PhoneIcon from "@/assets/icons/phone-forwarded.svg";
 import { useState } from "react";
+import { PHONE_NUMBER } from "@/lib/constants";
 
 export default function Footer() {
   const isDesktop = useBreakpointValue({ base: false, lg: true });
-  const phone = "+91 9945 075 889";
   const [showPhone, setShowPhone] = useState(false);
 
   return (
@@ -82,7 +82,7 @@ export default function Footer() {
                       fontWeight={{ base: "semibold", md: "medium" }}
                       lineHeight={{ base: 1.55, md: 1.33 }}
                     >
-                      Call us at <br /> {phone}
+                      Call us at <br /> {PHONE_NUMBER}
                     </Text>
                     <PhoneIcon
                       style={{
@@ -113,7 +113,7 @@ export default function Footer() {
                       if (isDesktop) {
                         setShowPhone(true);
                       } else {
-                        window.open(`tel:${phone}`);
+                        window.open(`tel:${PHONE_NUMBER}`);
                       }
                     }}
                   >

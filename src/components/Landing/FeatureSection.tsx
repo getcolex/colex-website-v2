@@ -14,45 +14,7 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { AnimatePresence, motion, useMotionValue } from "motion/react";
-
-const FEATURES = [
-  {
-    title: "Context-Aware",
-    description:
-      "The platform remembers your case and improves suggestions as you work, like a junior that never forgets.",
-    image: "/images/Context-Aware.png",
-  },
-  {
-    title: "Collaboration That Works",
-    description:
-      "Stay in sync with clients, colleagues and other stakeholders in real time.",
-    image: "/images/Collaboration that works.png",
-  },
-  {
-    title: "Analyse at Lightspeed",
-    description:
-      "Use LLMs to automate administrative and tedious tasks like reviewing large documents, discovering facts and comparing information",
-    image: "/images/Analyse at lightspeed.png",
-  },
-  {
-    title: "Built-in Court Integration",
-    description:
-      "Search past judgements from eCourts and other trusted databases. Get orders and updates directly from courts as your matters progress.",
-    image: "/images/Built in court integration.png",
-  },
-  {
-    title: "Smart Drafting",
-    description:
-      "Draft with AI and use OCRed templates from courts to file in the correct format. Reduce gaps in your case file and make stronger arguments with AI.",
-    image: "/images/Smart Drafting.png",
-  },
-  {
-    title: "Security is Our Top Priority",
-    description:
-      "Your files are completely private and not visible to Colex or any third party. We are working towards ISO 270001 and SOC 1 & 2 certification.",
-    image: "/images/Security is our top priority.png",
-  },
-];
+import { FEATURES } from "@/lib/constants";
 
 /* ---------------------------------------------------------------- */
 /* constants you may want to tweak                                  */
