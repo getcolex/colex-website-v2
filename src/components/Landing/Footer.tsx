@@ -12,13 +12,12 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
-import PhoneIcon from "@/assets/icons/phone-forwarded.svg";
 import { useState } from "react";
 import { NOTION_LINK, PHONE_NUMBER } from "@/lib/constants";
 import { event } from "@/lib/gtag";
 
 export default function Footer() {
-  const isDesktop = useBreakpointValue({ base: false, lg: true });
+  const isDesktop = useBreakpointValue({ base: false, xl: true });
   const [showPhone, setShowPhone] = useState(false);
 
   const scheduleDemo = () => {
@@ -77,9 +76,9 @@ export default function Footer() {
 
               <Stack
                 h={"100%"}
-                direction={{ base: "column", md: "row" }}
+                direction={{ base: "column", xl: "row" }}
                 gap={5}
-                w={{ base: "full", lg: "auto" }}
+                w={{ base: "full", xl: "auto" }}
               >
                 {isDesktop && showPhone ? (
                   <HStack
@@ -91,7 +90,7 @@ export default function Footer() {
                     py={5}
                     border={"3px solid #fafafa"}
                     alignItems={"flex-end"}
-                    w={{ base: "full", lg: 370 }}
+                    w={{ base: "full", xl: 370 }}
                   >
                     <Text
                       fontSize={{ base: "lg", md: "2xl" }}
@@ -111,12 +110,13 @@ export default function Footer() {
                     borderRadius={4}
                     px={{ base: 5, md: 8 }}
                     py={5}
-                    w={{ base: "full", lg: 370 }}
+                    w={{ base: "full", xl: 370 }}
                     justifyContent={{
                       base: "space-between",
                       xl: "center",
                     }}
                     gap={5}
+                    flex={1}
                     onClick={scheduleDemo}
                   >
                     <Text
@@ -151,7 +151,8 @@ export default function Footer() {
                     base: "space-between",
                     xl: "center",
                   }}
-                  w={{ base: "full", md: "auto" }}
+                  flex={1}
+                  w={{ base: "full", xl: 370 }}
                   onClick={getEarlyAccess}
                 >
                   <Text

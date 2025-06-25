@@ -49,7 +49,7 @@ export default function TestimonialsSection() {
                 h={"100%"}
                 minH={{ base: "124px", xl: "auto" }}
                 color="black"
-                maxW={{ base: "100%", xl: "407px" }}
+                maxW={407}
                 borderRadius={4}
                 px={8}
                 py={5}
@@ -150,11 +150,11 @@ export default function TestimonialsSection() {
             <Button
               bg="black"
               w={"100%"}
+              maxW={360}
               flex={1}
               color="black"
               borderRadius={4}
               p={5}
-              alignSelf="flex-end"
               gap={5}
               justifyContent={"space-between"}
             >

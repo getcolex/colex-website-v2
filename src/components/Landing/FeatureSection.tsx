@@ -20,7 +20,7 @@ import { FEATURES } from "@/lib/constants";
 /* constants you may want to tweak                                  */
 const FEATURE_HEIGHT_PX = 220; // per-feature slice
 const SCROLL_SPAN_PX = 2200; // artificial scroll range
-const DESKTOP_MIN_BP = "md"; // breakpoint that enables the effect
+const DESKTOP_MIN_BP = "xl"; // breakpoint that enables the effect
 /* ---------------------------------------------------------------- */
 
 export default function FeatureShowcase() {
