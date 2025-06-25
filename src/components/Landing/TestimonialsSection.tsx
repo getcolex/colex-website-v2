@@ -117,7 +117,7 @@ export default function TestimonialsSection() {
               h={420}
               align="stretch"
             >
-              <Text fontSize={"2xl"} lineHeight={1.33}>
+              <Text fontSize={"xl"} lineHeight={1.33}>
                 {t.quote}
               </Text>
 
