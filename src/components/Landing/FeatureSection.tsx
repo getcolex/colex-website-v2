@@ -31,6 +31,11 @@ export default function FeatureShowcase() {
   const [activeIndex, setActiveIndex] = useState(0);
   const phantomRef = useRef<HTMLDivElement>(null);
 
+  const handleFeatureClick = (idx: number) => {
+    setActiveIndex(idx);
+    sliceProgress.set(1);
+  };
+
   /* scroll logic -------------------------------------------------- */
   useEffect(() => {
     if (!isDesktop) return;
@@ -100,7 +105,13 @@ export default function FeatureShowcase() {
                     {FEATURES.map((f, idx) => {
                       const isActive = idx === activeIndex;
                       return (
-                        <Box key={f.title} mt={5}>
+                        <Box
+                          key={f.title}
+                          mt={5}
+                          onClick={() => {
+                            handleFeatureClick(idx);
+                          }}
+                        >
                           <Box
                             position="relative"
                             h="2px"
