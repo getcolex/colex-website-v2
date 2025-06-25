@@ -13,7 +13,7 @@ export default function HeroSection() {
   return (
     <Box
       position="relative"
-      minH={{ base: "744px", xl: "660px" }}
+      minH={"660px"}
       display={"flex"}
       alignItems={"flex-end"}
       mx={"auto"}

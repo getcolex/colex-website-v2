@@ -14,11 +14,34 @@ import {
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import PhoneIcon from "@/assets/icons/phone-forwarded.svg";
 import { useState } from "react";
-import { PHONE_NUMBER } from "@/lib/constants";
+import { NOTION_LINK, PHONE_NUMBER } from "@/lib/constants";
+import { event } from "@/lib/gtag";
 
 export default function Footer() {
   const isDesktop = useBreakpointValue({ base: false, lg: true });
   const [showPhone, setShowPhone] = useState(false);
+
+  const scheduleDemo = () => {
+    event({
+      action: "click_demo_footer_button",
+      category: "engagement",
+      label: "Schedule Demo Footer Clicked",
+    });
+    if (isDesktop) {
+      setShowPhone(true);
+    } else {
+      window.open(`tel:${PHONE_NUMBER}`);
+    }
+  };
+
+  const getEarlyAccess = () => {
+    event({
+      action: "click_early_access_footer_button",
+      category: "engagement",
+      label: "Get Early Access Footer Clicked",
+    });
+    window.open(NOTION_LINK, "_blank");
+  };
 
   return (
     <Box bg="gray.200" py={{ base: 10, md: 20 }} mt={{ base: 16, xl: 0 }}>
@@ -47,9 +70,9 @@ export default function Footer() {
                 fontWeight="semibold"
                 lineHeight={{ base: 1.33, md: 1.22 }}
               >
-                An Integrated AI {isDesktop ? <br /> : ""}
-                Workspace for Modern {isDesktop ? <br /> : ""}
-                Legal Professionals
+                Your AI powered {isDesktop ? <br /> : ""}
+                collaborative legal {isDesktop ? <br /> : ""}
+                workspace
               </Heading>
 
               <Stack
@@ -63,7 +86,6 @@ export default function Footer() {
                     flex={1}
                     h={"100%"}
                     minH={{ base: "124px", xl: "auto" }}
-                    color="black"
                     borderRadius={4}
                     px={{ base: 5, md: 8 }}
                     py={5}
@@ -96,9 +118,9 @@ export default function Footer() {
                 ) : (
                   <Button
                     bg="white"
-                    flex={1}
                     h={"100%"}
                     minH={{ base: "124px", xl: "auto" }}
+                    border={"3px solid transparent"}
                     color="black"
                     borderRadius={4}
                     px={{ base: 5, md: 8 }}
@@ -109,13 +131,7 @@ export default function Footer() {
                       xl: "center",
                     }}
                     gap={5}
-                    onClick={() => {
-                      if (isDesktop) {
-                        setShowPhone(true);
-                      } else {
-                        window.open(`tel:${PHONE_NUMBER}`);
-                      }
-                    }}
+                    onClick={scheduleDemo}
                   >
                     <Text
                       alignSelf={"flex-end"}
@@ -137,7 +153,6 @@ export default function Footer() {
                   </Button>
                 )}
                 <Button
-                  flex={1}
                   bg="black"
                   h={"100%"}
                   minH={{ base: "124px", xl: "auto" }}
@@ -151,12 +166,7 @@ export default function Footer() {
                     xl: "center",
                   }}
                   w={{ base: "full", md: "auto" }}
-                  onClick={() => {
-                    window.open(
-                      "https://verdant-spinach-db6.notion.site/20af6271dbc381c9b9a4c688f2eb8503?pvs=105",
-                      "_blank"
-                    );
-                  }}
+                  onClick={getEarlyAccess}
                 >
                   <Text
                     fontSize={{ base: "lg", md: "2xl" }}

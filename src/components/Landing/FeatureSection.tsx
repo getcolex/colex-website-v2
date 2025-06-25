@@ -19,7 +19,7 @@ import { FEATURES } from "@/lib/constants";
 /* ---------------------------------------------------------------- */
 /* constants you may want to tweak                                  */
 const FEATURE_HEIGHT_PX = 220; // per-feature slice
-const SCROLL_SPAN_PX = 2000; // artificial scroll range
+const SCROLL_SPAN_PX = 2200; // artificial scroll range
 const DESKTOP_MIN_BP = "md"; // breakpoint that enables the effect
 /* ---------------------------------------------------------------- */
 
@@ -29,7 +29,6 @@ export default function FeatureShowcase() {
 
   /* state --------------------------------------------------------- */
   const [activeIndex, setActiveIndex] = useState(0);
-  // const [isPinned, setIsPinned] = useState(false);
   const phantomRef = useRef<HTMLDivElement>(null);
 
   /* scroll logic -------------------------------------------------- */
@@ -46,7 +45,6 @@ export default function FeatureShowcase() {
       const y = window.scrollY;
 
       const inside = y >= startTop && y < endTop;
-      // setIsPinned(inside);
 
       if (inside) {
         const progress = y - startTop;
@@ -90,7 +88,7 @@ export default function FeatureShowcase() {
                 direction={["column", null, "row"]}
                 gap={40}
               >
-                <VStack justifyContent="space-between" maxW={405}>
+                <VStack justifyContent="space-between" maxW={427}>
                   <Heading
                     fontSize="4xl"
                     fontWeight="semibold"
@@ -203,7 +201,7 @@ export default function FeatureShowcase() {
                   lineHeight={1.33}
                   mb={16}
                 >
-                  Designed to enhance efficiency and accuracy
+                  Designed to enhance <br /> efficiency and accuracy
                 </Heading>
 
                 {FEATURES.map((f, idx) => (

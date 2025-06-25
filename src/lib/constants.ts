@@ -18,7 +18,7 @@ export const FEATURES = [
   {
     title: "Analyse at Lightspeed",
     description:
-      "Use LLMs to automate administrative and tedious tasks like reviewing large documents, discovering facts and comparing information",
+      "Use LLMs to automate administrative and tedious tasks like reviewing large documents, discovering facts and comparing information.",
     image: "/images/Analyse at lightspeed.png",
   },
   {
@@ -71,3 +71,6 @@ export const TESTIMONIALS = [
     image: "/avatars/user4.png",
   },
 ];
+
+export const NOTION_LINK =
+  "https://verdant-spinach-db6.notion.site/20af6271dbc381c9b9a4c688f2eb8503?pvs=105";

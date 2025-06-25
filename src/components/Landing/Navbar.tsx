@@ -11,12 +11,31 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { PHONE_NUMBER } from "@/lib/constants";
+import { NOTION_LINK, PHONE_NUMBER } from "@/lib/constants";
+import { event } from "@/lib/gtag";
 
 export default function LandingNavbar() {
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   const [showPhone, setShowPhone] = useState(false);
+
+  const scheduleDemo = () => {
+    event({
+      action: "click_demo_button",
+      category: "engagement",
+      label: "Schedule Demo Clicked",
+    });
+    setShowPhone(true);
+  };
+
+  const getEarlyAccess = () => {
+    event({
+      action: "click_early_access_button",
+      category: "engagement",
+      label: "Get Early Access Clicked",
+    });
+    window.open(NOTION_LINK, "_blank");
+  };
 
   return (
     <Box py={5} bg="white" position="sticky" top={0} zIndex={100}>
@@ -49,9 +68,10 @@ export default function LandingNavbar() {
               /* -------- Desktop (initial): reveal-on-click ------- */
               <Button
                 size={"lg"}
-                flex={1}
+                // flex={1}
                 variant="ghost"
                 bg="gray.100"
+                w={260}
                 fontSize={{ base: "14px", md: "16px" }}
                 minW={{ base: "36px", md: "44px" }}
                 fontWeight={"medium"}
@@ -60,7 +80,7 @@ export default function LandingNavbar() {
                 lineHeight={{ base: 1.42, md: 1.5 }}
                 textAlign={"center"}
                 borderRadius={4}
-                onClick={() => setShowPhone(true)}
+                onClick={scheduleDemo}
               >
                 Schedule a 1:1 demo
               </Button>
@@ -76,12 +96,7 @@ export default function LandingNavbar() {
               lineHeight={{ base: 1.42, md: 1.5 }}
               textAlign={"center"}
               borderRadius={4}
-              onClick={() => {
-                window.open(
-                  "https://verdant-spinach-db6.notion.site/20af6271dbc381c9b9a4c688f2eb8503?pvs=105",
-                  "_blank"
-                );
-              }}
+              onClick={getEarlyAccess}
             >
               Get early access
             </Button>

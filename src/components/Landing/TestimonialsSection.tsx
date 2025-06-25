@@ -31,7 +31,7 @@ export default function TestimonialsSection() {
                 // maxW="833px"
                 pr={{ base: 0, xl: 20 }}
               >
-                We are co-designing with <br /> legal experts
+                We are co-designing <br /> with legal experts
               </Heading>
               <Button
                 bg="black"
