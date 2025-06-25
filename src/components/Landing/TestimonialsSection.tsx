@@ -112,8 +112,8 @@ export default function TestimonialsSection() {
               borderRadius={4}
               border="1px solid #E4E4E7"
               py={6}
+              justifyContent={"space-between"}
               px={{ base: 6, md: 7 }}
-              gap={20}
               h={420}
               align="stretch"
             >
