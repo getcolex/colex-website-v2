@@ -48,12 +48,7 @@ const testimonials = [
 export default function TestimonialsSection() {
   const isMobile = useBreakpointValue({ base: true, xl: false });
   return (
-    <Box
-      py={{ base: 0, md: 20 }}
-      mt={{ base: 16, md: 20 }}
-      bg="white"
-      overflow={"hidden"}
-    >
+    <Box py={{ base: 0, md: 20 }} mt={20} bg="white" overflow={"hidden"}>
       <Container maxW={"container.xl"} px={{ base: 5, md: 8, lg: 12, xl: 16 }}>
         {!isMobile ? (
           <VStack gap={10}>
@@ -66,7 +61,7 @@ export default function TestimonialsSection() {
                 maxW="833px"
                 pr={{ base: 0, xl: 20 }}
               >
-                We are co-designing with Legal Experts, for Legal Experts
+                We are co-designing with legal experts
               </Heading>
               <Button
                 bg="black"
@@ -106,9 +101,9 @@ export default function TestimonialsSection() {
               fontWeight="medium"
               maxW={"548px"}
             >
-              We’ve collaborated with seasoned legal professionals to develop a
-              tool that addresses real-world challenges, ensuring relevance and
-              practicality in every feature.
+              We want to collaborate with seasoned legal professionals to
+              develop a tool that addresses real-world challenges, ensuring
+              relevance and practicality in every feature.
             </Text>
           </VStack>
         ) : (
@@ -132,8 +127,9 @@ export default function TestimonialsSection() {
           {testimonials.map((t) => (
             <VStack
               key={t.name}
-              bg="orange.50"
+              backgroundImage="url('/images/TestimonialBg.png')"
               borderRadius={4}
+              border="1px solid #E4E4E7"
               py={6}
               px={{ base: 6, md: 7 }}
               gap={20}
@@ -165,9 +161,9 @@ export default function TestimonialsSection() {
         {isMobile ? (
           <VStack flex={1} align="flex-start" gap={10}>
             <Text fontSize={"lg"} lineHeight={1.55} fontWeight="medium">
-              We’ve collaborated with seasoned legal professionals to develop a
-              tool that addresses real-world challenges, ensuring relevance and
-              practicality in every feature.
+              We want to collaborate with seasoned legal professionals to
+              develop a tool that addresses real-world challenges, ensuring
+              relevance and practicality in every feature.
             </Text>
 
             <Button

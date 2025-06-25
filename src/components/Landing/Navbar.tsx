@@ -7,7 +7,6 @@ import {
   Container,
   Flex,
   Heading,
-  Link,
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
@@ -17,9 +16,6 @@ export default function LandingNavbar() {
   const phone = "+91 9945 075 889";
   const isMobile = useBreakpointValue({ base: true, md: false });
 
-  const isRealMobile =
-    typeof window !== "undefined" &&
-    /iPhone|Android/i.test(window.navigator.userAgent);
   const [showPhone, setShowPhone] = useState(false);
 
   return (
@@ -34,30 +30,7 @@ export default function LandingNavbar() {
             Colex
           </Heading>
           <Flex gap={{ base: 2, md: 5 }}>
-            {isMobile ? (
-              <Link
-                flex={1}
-                href={isRealMobile ? `tel:${phone}` : undefined}
-                _hover={{ textDecoration: "none" }}
-              >
-                <Button
-                  size={"lg"}
-                  flex={1}
-                  variant="ghost"
-                  bg="gray.100"
-                  fontSize={{ base: "14px", md: "16px" }}
-                  minW={{ base: "36px", md: "44px" }}
-                  fontWeight={"medium"}
-                  px={{ base: 3.5, md: 5 }}
-                  py={{ base: 0.5, md: 2.5 }}
-                  lineHeight={{ base: 1.42, md: 1.5 }}
-                  textAlign={"center"}
-                  borderRadius={4}
-                >
-                  Schedule demo
-                </Button>
-              </Link>
-            ) : showPhone ? (
+            {isMobile ? null : showPhone ? (
               /* -------- Desktop & clicked: show phone text ------ */
               <Box
                 bg="gray.100"

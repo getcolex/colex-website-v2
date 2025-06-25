@@ -7,21 +7,22 @@ import {
   Heading,
   Stack,
   Text,
-  VStack,
   useBreakpointValue,
+  VStack,
 } from "@chakra-ui/react";
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 
 export default function Footer() {
-  const isMobile = useBreakpointValue({ base: true, md: false });
+  const isDesktop = useBreakpointValue({ base: false, lg: true });
+
   return (
-    <Box bg="gray.200" py={{ base: 10, md: 20 }} mt={{ base: 16, md: 20 }}>
+    <Box bg="gray.200" py={{ base: 10, md: 20 }} mt={{ base: 16, xl: 0 }}>
       <Container maxW="container.xl" px={{ base: 5, md: 8, lg: 12, xl: 16 }}>
         <Stack
           direction={{ base: "column", lg: "row" }}
           gap={{ base: 12, md: 0 }}
         >
-          <VStack align="flex-start" gap={6} flex={1}>
+          <VStack align="flex-start" gap={{ base: 10, xl: 20 }} flex={1}>
             <Heading
               lineHeight={{ base: 1.33, md: 1.22 }}
               fontSize={"4xl"}
@@ -34,16 +35,15 @@ export default function Footer() {
               direction={{ base: "column", xl: "row" }}
               justifyContent={"space-between"}
               gap={{ base: 10, md: 12 }}
-              py={{ base: 0, md: 20 }}
               w="full"
             >
               <Heading
-                fontSize={{ base: "2xl", md: "4xl" }}
+                fontSize={{ base: "2xl", lg: "3xl", xl: "4xl" }}
                 fontWeight="semibold"
                 lineHeight={{ base: 1.33, md: 1.22 }}
               >
-                An Integrated AI {isMobile ? "" : <br />}
-                Workspace for Modern {isMobile ? "" : <br />}
+                An Integrated AI {isDesktop ? <br /> : ""}
+                Workspace for Modern {isDesktop ? <br /> : ""}
                 Legal Professionals
               </Heading>
 
@@ -130,17 +130,14 @@ export default function Footer() {
                 </Button>
               </Stack>
             </Stack>
-
-            <VStack
-              align="flex-start"
-              fontSize={{ base: "sm", md: "md" }}
-              gap={3}
-              fontWeight={{ base: "semibold", md: "medium" }}
-              lineHeight={{ base: 1.42, md: 1.5 }}
-            >
-              <Text>Company Address</Text>
-              <Text>Company Phone Number</Text>
-              <Text>© 2025&nbsp;|&nbsp;ALL RIGHTS RESERVED by Colex.</Text>
+            <VStack>
+              <Text
+                fontSize={{ base: "sm", md: "md" }}
+                fontWeight={{ base: "semibold", md: "medium" }}
+                lineHeight={{ base: 1.42, md: 1.5 }}
+              >
+                © 2025 | ALL RIGHTS RESERVED by Colex.
+              </Text>
             </VStack>
           </VStack>
         </Stack>

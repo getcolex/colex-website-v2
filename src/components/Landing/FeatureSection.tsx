@@ -17,41 +17,47 @@ import { AnimatePresence, motion, useMotionValue } from "motion/react";
 
 const FEATURES = [
   {
-    title: "Context-aware AI",
+    title: "Context-Aware",
     description:
-      "The platform remembers your case and improves suggestions as you work—like a junior that never forgets.",
-    image: "/images/Context-aware AI.png",
-  },
-  {
-    title: "Smart Drafting",
-    description:
-      "Write faster with AI-suggested clauses, memos, and summaries tailored to your matter.",
-    image: "/images/Smart Drafting.png",
+      "The platform remembers your case and improves suggestions as you work, like a junior that never forgets.",
+    image: "/images/Context-Aware.png",
   },
   {
     title: "Collaboration That Works",
     description:
-      "Senior and junior lawyers stay in sync with real-time sharing, version control, and shared notes.",
+      "Stay in sync with clients, colleagues and other stakeholders in real time.",
     image: "/images/Collaboration that works.png",
   },
   {
-    title: "Built-In Court Integration",
+    title: "Analyse at Lightspeed",
     description:
-      "Get orders, FIRs, and judgments directly from court websites—ready for analysis.",
+      "Use LLMs to automate administrative and tedious tasks like reviewing large documents, discovering facts and comparing information",
+    image: "/images/Analyse at lightspeed.png",
+  },
+  {
+    title: "Built-in Court Integration",
+    description:
+      "Search past judgements from eCourts and other trusted databases. Get orders and updates directly from courts as your matters progress.",
     image: "/images/Built in court integration.png",
   },
   {
-    title: "Secure & Compliant",
+    title: "Smart Drafting",
     description:
-      "Your data is encrypted and securely stored. Client confidentiality is our top priority.",
+      "Draft with AI and use OCRed templates from courts to file in the correct format. Reduce gaps in your case file and make stronger arguments with AI.",
+    image: "/images/Smart Drafting.png",
+  },
+  {
+    title: "Security is Our Top Priority",
+    description:
+      "Your files are completely private and not visible to Colex or any third party. We are working towards ISO 270001 and SOC 1 & 2 certification.",
     image: "/images/Secure and compliant.png",
   },
 ];
 
 /* ---------------------------------------------------------------- */
 /* constants you may want to tweak                                  */
-const FEATURE_HEIGHT_PX = 200; // per-feature slice
-const SCROLL_SPAN_PX = 1900; // artificial scroll range
+const FEATURE_HEIGHT_PX = 220; // per-feature slice
+const SCROLL_SPAN_PX = 2000; // artificial scroll range
 const DESKTOP_MIN_BP = "md"; // breakpoint that enables the effect
 /* ---------------------------------------------------------------- */
 
@@ -61,7 +67,7 @@ export default function FeatureShowcase() {
 
   /* state --------------------------------------------------------- */
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isPinned, setIsPinned] = useState(false);
+  // const [isPinned, setIsPinned] = useState(false);
   const phantomRef = useRef<HTMLDivElement>(null);
 
   /* scroll logic -------------------------------------------------- */
@@ -78,7 +84,7 @@ export default function FeatureShowcase() {
       const y = window.scrollY;
 
       const inside = y >= startTop && y < endTop;
-      setIsPinned(inside);
+      // setIsPinned(inside);
 
       if (inside) {
         const progress = y - startTop;
@@ -110,13 +116,8 @@ export default function FeatureShowcase() {
       h={isDesktop ? phantomHeight : "auto"}
       position="relative"
     >
-      <Box
-        position={isDesktop && isPinned ? "sticky" : "static"}
-        top={10}
-        zIndex={1}
-        bg="white"
-      >
-        <Box py={{ base: 0, md: 20 }} mt={{ base: 16, md: 20 }}>
+      <Box top={10} zIndex={1} position={"sticky"} bg="white">
+        <Box py={{ base: 0, md: 20 }} mt={20}>
           <Container
             maxW="container.xl"
             px={{ base: 5, md: 8, lg: 12, xl: 16 }}
@@ -127,16 +128,16 @@ export default function FeatureShowcase() {
                 direction={["column", null, "row"]}
                 gap={40}
               >
-                <VStack justifyContent="space-between">
+                <VStack justifyContent="space-between" maxW={405}>
                   <Heading
                     fontSize="4xl"
                     fontWeight="semibold"
                     alignSelf="flex-start"
                     lineHeight={1.22}
                   >
-                    Key features
+                    Designed to enhance efficiency and accuracy
                   </Heading>
-                  <Box maxW={405}>
+                  <Box alignSelf={"flex-start"}>
                     {FEATURES.map((f, idx) => {
                       const isActive = idx === activeIndex;
                       return (
@@ -167,7 +168,7 @@ export default function FeatureShowcase() {
                             )}
                           </Box>
 
-                          <HStack align="start" gap={4}>
+                          <HStack align="start" gap={5}>
                             <Text
                               fontSize="2xl"
                               fontWeight="medium"
@@ -198,9 +199,8 @@ export default function FeatureShowcase() {
 
                 <Box
                   borderRadius={4}
-                  width={834}
-                  height={834}
-                  bg="gray.100"
+                  width={760}
+                  height={760}
                   position="relative"
                   overflow="hidden"
                 >
@@ -238,15 +238,26 @@ export default function FeatureShowcase() {
                 <Heading
                   fontSize="2xl"
                   fontWeight="semibold"
-                  mb={10}
                   lineHeight={1.33}
+                  mb={16}
                 >
-                  Key features
+                  Designed to enhance efficiency and accuracy
                 </Heading>
 
                 {FEATURES.map((f, idx) => (
-                  <Box key={f.title} mb={14} position="relative">
-                    <Box height={372} width="100%" mb={5} position="relative">
+                  <Box key={f.title} mb={16} position="relative">
+                    <HStack align="start" gap={2}>
+                      <Text fontSize="xl" fontWeight="medium">
+                        {idx + 1}.
+                      </Text>
+                      <Box>
+                        <Text fontSize="xl" fontWeight="medium" mb={1}>
+                          {f.title}
+                        </Text>
+                        <Text fontSize="lg">{f.description}</Text>
+                      </Box>
+                    </HStack>
+                    <Box height={372} width="100%" mt={5} position="relative">
                       <Image
                         src={f.image}
                         alt={f.title}
@@ -255,17 +266,6 @@ export default function FeatureShowcase() {
                         style={{ borderRadius: 4 }}
                       />
                     </Box>
-                    <HStack align="start" gap={2}>
-                      <Text fontSize="xl" fontWeight="medium">
-                        {idx + 1}.
-                      </Text>
-                      <Box>
-                        <Text fontSize="xl" fontWeight="medium" mb={2}>
-                          {f.title}
-                        </Text>
-                        <Text fontSize="lg">{f.description}</Text>
-                      </Box>
-                    </HStack>
                   </Box>
                 ))}
               </Box>
