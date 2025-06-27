@@ -29,9 +29,9 @@ export default function TestimonialsSection() {
   const isMobile = useBreakpointValue({ base: true, xl: false });
   return (
     <Box py={{ base: 0, xl: 20 }} bg="white" overflow={"hidden"}>
-      <Container maxW={"container.xl"} px={{ base: 5, md: 8, lg: 12, xl: 16 }}>
+      <Container maxW={"container.xl"} px={0}>
         {!isMobile ? (
-          <VStack gap={10}>
+          <VStack gap={10} px={16}>
             <HStack justifyContent={"space-between"} w={"100%"}>
               <Heading
                 fontSize={{ base: "2xl", md: "3xl", xl: "4xl" }}
@@ -88,7 +88,12 @@ export default function TestimonialsSection() {
             </Text>
           </VStack>
         ) : (
-          <Heading fontSize={"2xl"} fontWeight="semibold" lineHeight={1.33}>
+          <Heading
+            px={{ base: 5, md: 8, lg: 12 }}
+            fontSize={"2xl"}
+            fontWeight="semibold"
+            lineHeight={1.33}
+          >
             We are co-designing with legal experts
           </Heading>
         )}
@@ -101,6 +106,7 @@ export default function TestimonialsSection() {
             xl: "auto",
           }}
           gap={5}
+          px={{ base: 5, md: 8, lg: 12 }}
           my={{ base: 10, xl: 20 }}
           overflowX="auto"
           _scrollbar={{ display: "none" }}
@@ -140,7 +146,12 @@ export default function TestimonialsSection() {
         </SimpleGrid>
 
         {isMobile ? (
-          <VStack flex={1} align="flex-start" gap={10}>
+          <VStack
+            flex={1}
+            align="flex-start"
+            gap={10}
+            px={{ base: 5, md: 8, lg: 12 }}
+          >
             <Text fontSize={"lg"} lineHeight={1.55} fontWeight="medium">
               We want to collaborate with seasoned legal professionals to
               develop a tool that addresses real-world challenges, ensuring
