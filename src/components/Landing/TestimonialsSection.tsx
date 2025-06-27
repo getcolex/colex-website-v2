@@ -156,6 +156,7 @@ export default function TestimonialsSection() {
               borderRadius={4}
               p={5}
               gap={5}
+              onClick={partnerWithUs}
               justifyContent={"space-between"}
             >
               <Text

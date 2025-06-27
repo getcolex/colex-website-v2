@@ -6,7 +6,7 @@ export const FEATURES = [
   {
     title: "Context-Aware",
     description:
-      "Colex understands your matter inside out and assists you through out your workflow.",
+      "Colex understands your matter inside out and assists you throughout your workflow.",
     image: "/images/Context-Aware.png",
   },
   {
