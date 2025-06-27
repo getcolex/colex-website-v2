@@ -43,7 +43,7 @@ export default function Footer() {
   };
 
   return (
-    <Box bg="gray.200" py={{ base: 10, md: 20 }} mt={{ base: 16, xl: 0 }}>
+    <Box bg="gray.200" py={{ base: 10, xl: 20 }} mt={{ base: 16, xl: 0 }}>
       <Container maxW="container.xl" px={{ base: 5, md: 8, lg: 12, xl: 16 }}>
         <Stack
           direction={{ base: "column", lg: "row" }}
@@ -61,7 +61,7 @@ export default function Footer() {
             <Stack
               direction={{ base: "column", xl: "row" }}
               justifyContent={"space-between"}
-              gap={{ base: 10, md: 12 }}
+              gap={{ base: 10, xl: 12 }}
               w="full"
             >
               <Heading

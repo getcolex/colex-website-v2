@@ -13,9 +13,11 @@ import {
 import { useState } from "react";
 import { NOTION_LINK, PHONE_NUMBER } from "@/lib/constants";
 import { event } from "@/lib/gtag";
+import { useHasMounted } from "@/lib/hooks/useHasMounted";
 
 export default function LandingNavbar() {
   const isMobile = useBreakpointValue({ base: true, md: false });
+  const hasMounted = useHasMounted();
 
   const [showPhone, setShowPhone] = useState(false);
 
@@ -42,7 +44,7 @@ export default function LandingNavbar() {
       py={5}
       bg="white"
       position="sticky"
-      border={"1px solid #e4e4e7"}
+      borderBottom={"1px solid #e4e4e7"}
       top={0}
       zIndex={100}
     >
@@ -71,7 +73,7 @@ export default function LandingNavbar() {
                   {PHONE_NUMBER}
                 </Text>
               </Box>
-            ) : (
+            ) : hasMounted ? (
               /* -------- Desktop (initial): reveal-on-click ------- */
               <Button
                 size={"lg"}
@@ -91,7 +93,7 @@ export default function LandingNavbar() {
               >
                 Schedule a 1:1 demo
               </Button>
-            )}
+            ) : null}
             <Button
               size={"lg"}
               w={{ base: "auto", lg: 260 }}

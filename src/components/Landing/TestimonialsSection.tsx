@@ -28,7 +28,7 @@ export default function TestimonialsSection() {
 
   const isMobile = useBreakpointValue({ base: true, xl: false });
   return (
-    <Box py={{ base: 0, md: 20 }} bg="white" overflow={"hidden"}>
+    <Box py={{ base: 0, xl: 20 }} bg="white" overflow={"hidden"}>
       <Container maxW={"container.xl"} px={{ base: 5, md: 8, lg: 12, xl: 16 }}>
         {!isMobile ? (
           <VStack gap={10}>
@@ -101,7 +101,7 @@ export default function TestimonialsSection() {
             xl: "auto",
           }}
           gap={5}
-          my={{ base: 10, md: 20 }}
+          my={{ base: 10, xl: 20 }}
           overflowX="auto"
           _scrollbar={{ display: "none" }}
         >

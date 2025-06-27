@@ -13,13 +13,18 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import { AnimatePresence, motion, useMotionValue } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useTransform,
+} from "motion/react";
 import { FEATURES } from "@/lib/constants";
 
 /* ---------------------------------------------------------------- */
 /* constants you may want to tweak                                  */
-const FEATURE_HEIGHT_PX = 220; // per-feature slice
-const SCROLL_SPAN_PX = 2200; // artificial scroll range
+const FEATURE_HEIGHT_PX = 260; // per-feature slice
+const SCROLL_SPAN_PX = 2400; // artificial scroll range
 const DESKTOP_MIN_BP = "xl"; // breakpoint that enables the effect
 /* ---------------------------------------------------------------- */
 
@@ -35,6 +40,8 @@ export default function FeatureShowcase() {
     setActiveIndex(idx);
     sliceProgress.set(1);
   };
+
+  const translateY = useTransform(sliceProgress, [0, 1], [50, 0]);
 
   /* scroll logic -------------------------------------------------- */
   useEffect(() => {
@@ -82,7 +89,7 @@ export default function FeatureShowcase() {
       position="relative"
     >
       <Box top={10} zIndex={1} position={"sticky"} bg="white">
-        <Box py={{ base: 0, md: 20 }} mt={20}>
+        <Box py={{ base: 0, xl: 20 }} mt={20}>
           <Container
             maxW="container.xl"
             px={{ base: 5, md: 8, lg: 12, xl: 16 }}
@@ -183,12 +190,15 @@ export default function FeatureShowcase() {
                         left: 0,
                         width: "100%",
                         height: "100%",
+                        translateY: translateY,
+                        // opacity: 1,
                       }}
-                      initial={{ opacity: 0 }}
+                      initial={{ opacity: 0.5 }}
                       animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
                       transition={{
-                        delay: 0.3,
+                        type: "tween",
+                        ease: "easeOut",
+                        duration: 0.2,
                       }}
                     >
                       <Image
@@ -234,6 +244,7 @@ export default function FeatureShowcase() {
                         layout="fill"
                         objectFit="cover"
                         style={{ borderRadius: 4 }}
+                        priority
                       />
                     </Box>
                   </Box>
