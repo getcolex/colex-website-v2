@@ -35,6 +35,19 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <title>Colex | workspace for lawyers</title>
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="images/favicon-32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="images/favicon-16.png"
+        />
+        <link rel="icon" href="images/favicon.ico" />
         <Script
           strategy="afterInteractive"
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
