@@ -1,28 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
-import { useAppStore } from "@/store/useAppStore";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/lib/firebase";
 import { getLenis } from "@/lib/lenis";
 import Script from "next/script";
 
 export default function LayoutClient() {
-  const setUser = useAppStore((state) => state.setUser);
-  const setLoading = useAppStore((state) => state.setLoading);
-
   useEffect(() => {
     getLenis();
   }, []);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, [setUser, setLoading]);
 
   return (
     <>
