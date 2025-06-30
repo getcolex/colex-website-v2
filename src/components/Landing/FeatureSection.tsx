@@ -13,66 +13,39 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import { motion } from "motion/react";
-
-const FEATURES = [
-  {
-    title: "All-in-One Workspace",
-    description:
-      "Search, draft, annotate, and organize your case in one place. Organize research with folders, tags, and notes.",
-    image: "/images/All-in-One Workspace.png",
-  },
-  {
-    title: "Context-Aware AI",
-    description:
-      "The platform remembers your case and improves suggestions as you work—like a junior that never forgets.",
-    image: "/images/Context-Aware AI.png",
-  },
-  {
-    title: "Smart Drafting",
-    description:
-      "Write faster with AI-suggested clauses, memos, and summaries tailored to your matter.",
-    image: "/images/Smart Drafting.png",
-  },
-  {
-    title: "Collaboration That Works",
-    description:
-      "Senior and junior lawyers stay in sync with real-time sharing, version control, and shared notes.",
-    image: "/images/Collaboration That Works.png",
-  },
-  {
-    title: "Built-In Court Integration",
-    description:
-      "Get orders, FIRs, and judgments directly from court websites—ready for analysis.",
-    image: "/images/Built in court integration.png",
-  },
-  {
-    title: "Secure & Compliant",
-    description:
-      "Your data is encrypted and securely stored. Client confidentiality is our top priority.",
-    image: "/images/Secure and Compliant.png",
-  },
-];
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useTransform,
+} from "motion/react";
+import { FEATURES } from "@/lib/constants";
 
 /* ---------------------------------------------------------------- */
 /* constants you may want to tweak                                  */
-const FEATURE_HEIGHT_PX = 140; // per-feature slice
-const SCROLL_SPAN_PX = 834 * 2; // artificial scroll range
-const DESKTOP_MIN_BP = "md"; // breakpoint that enables the effect
+const FEATURE_HEIGHT_PX = 260; // per-feature slice
+const SCROLL_SPAN_PX = 2400; // artificial scroll range
+const DESKTOP_MIN_BP = "xl"; // breakpoint that enables the effect
 /* ---------------------------------------------------------------- */
 
 export default function FeatureShowcase() {
   const isDesktop = useBreakpointValue({ base: false, [DESKTOP_MIN_BP]: true });
+  const sliceProgress = useMotionValue(0);
 
   /* state --------------------------------------------------------- */
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isPinned, setIsPinned] = useState(false);
-  const [playedOnce, setPlayedOnce] = useState(false);
   const phantomRef = useRef<HTMLDivElement>(null);
+
+  const handleFeatureClick = (idx: number) => {
+    setActiveIndex(idx);
+    sliceProgress.set(1);
+  };
+
+  const translateY = useTransform(sliceProgress, [0, 1], [50, 0]);
 
   /* scroll logic -------------------------------------------------- */
   useEffect(() => {
-    if (!isDesktop || playedOnce) return; // run only once, on desktop
+    if (!isDesktop) return;
     const phantom = phantomRef.current;
     if (!phantom) return;
 
@@ -84,27 +57,29 @@ export default function FeatureShowcase() {
       const y = window.scrollY;
 
       const inside = y >= startTop && y < endTop;
-      setIsPinned(inside);
 
       if (inside) {
-        const progress = y - startTop; // 0 … 1700
+        const progress = y - startTop;
         const idx = Math.floor(progress / FEATURE_HEIGHT_PX);
+        const withinIdx = progress % FEATURE_HEIGHT_PX;
+        const lastIndex = FEATURES.length - 1;
+        const progressWidth = withinIdx / FEATURE_HEIGHT_PX;
 
-        if (idx === FEATURES.length - 1 && y >= endTop) {
-          setPlayedOnce(true);
+        if (idx < lastIndex) {
+          sliceProgress.set(progressWidth);
+        } else {
+          sliceProgress.set(1);
         }
         setActiveIndex(Math.min(idx, FEATURES.length - 1));
       }
-
-      // if (y >= endTop && !playedOnce) setPlayedOnce(true);
     };
 
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
-  }, [isDesktop, playedOnce]);
+  }, [isDesktop]);
 
   /* ‼️ phantom height collapses to 0 after first run --------------- */
-  const phantomHeight = playedOnce ? "834px" : SCROLL_SPAN_PX + "px";
+  const phantomHeight = SCROLL_SPAN_PX + "px";
 
   /* render -------------------------------------------------------- */
   return (
@@ -113,43 +88,64 @@ export default function FeatureShowcase() {
       h={isDesktop ? phantomHeight : "auto"}
       position="relative"
     >
-      <Box
-        position={isDesktop && isPinned ? "sticky" : "static"}
-        top={10}
-        zIndex={1}
-        bg="white"
-      >
-        <Box py={{ base: 0, md: 20 }} mt={{ base: 16, md: 20 }}>
-          <Container maxW="container.xl" px={{ base: 5, md: 0 }}>
+      <Box top={10} zIndex={1} position={"sticky"} bg="white">
+        <Box py={{ base: 0, xl: 20 }} mt={20}>
+          <Container
+            maxW="container.xl"
+            px={{ base: 5, md: 8, lg: 12, xl: 16 }}
+          >
             {isDesktop ? (
               <Flex
                 justifyContent="space-between"
                 direction={["column", null, "row"]}
-                gap={40}
               >
-                <VStack justifyContent="space-between">
+                <VStack justifyContent="space-between" maxW={427}>
                   <Heading
                     fontSize="4xl"
                     fontWeight="semibold"
                     alignSelf="flex-start"
                     lineHeight={1.22}
                   >
-                    Key features
+                    Designed to enhance efficiency and accuracy
                   </Heading>
-                  <Box maxW={405}>
+                  <Box alignSelf={"flex-start"}>
                     {FEATURES.map((f, idx) => {
                       const isActive = idx === activeIndex;
                       return (
-                        <Box key={f.title} mt={5}>
+                        <Box
+                          key={f.title}
+                          mt={5}
+                          onClick={() => {
+                            handleFeatureClick(idx);
+                          }}
+                        >
                           <Box
                             position="relative"
                             h="2px"
                             w="full"
                             mb={5}
-                            bg={isActive ? "black" : "gray.200"}
-                          ></Box>
+                            bg="gray.200"
+                            overflow="hidden"
+                          >
+                            {isActive && (
+                              <motion.div
+                                style={{
+                                  height: "100%",
+                                  background: "black",
+                                  scaleX: sliceProgress,
+                                  transformOrigin: "left",
+                                }}
+                                initial={false}
+                                transition={{
+                                  type: "tween",
+                                  ease: "linear",
+                                  duration: 0.1,
+                                }}
+                              />
+                            )}
+                          </Box>
 
-                          <HStack align="start" gap={4}>
+                          <HStack align="start" gap={5}>
                             <Text
                               fontSize="2xl"
                               fontWeight="medium"
@@ -180,37 +176,41 @@ export default function FeatureShowcase() {
 
                 <Box
                   borderRadius={4}
-                  width={834}
-                  height={834}
-                  bg="gray.100"
+                  width={760}
+                  height={760}
                   position="relative"
                   overflow="hidden"
                 >
-                  <motion.div /* ✨ fades in/out on index change */
-                    key={activeIndex} /* a new MotionBox for every image */
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                    }}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{
-                      delay: 0.05,
-                    }}
-                  >
-                    <Image
-                      src={FEATURES[activeIndex].image}
-                      alt={FEATURES[activeIndex].title}
-                      layout="fill"
-                      objectFit="cover"
-                      style={{ borderRadius: 4 }}
-                      priority
-                    />
-                  </motion.div>
+                  <AnimatePresence initial={false}>
+                    <motion.div
+                      key={activeIndex}
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        translateY: translateY,
+                        // opacity: 1,
+                      }}
+                      initial={{ opacity: 0.5 }}
+                      animate={{ opacity: 1 }}
+                      transition={{
+                        type: "tween",
+                        ease: "easeOut",
+                        duration: 0.2,
+                      }}
+                    >
+                      <Image
+                        src={FEATURES[activeIndex].image}
+                        alt={FEATURES[activeIndex].title}
+                        layout="fill"
+                        objectFit="cover"
+                        style={{ borderRadius: 4 }}
+                        priority
+                      />
+                    </motion.div>
+                  </AnimatePresence>
                 </Box>
               </Flex>
             ) : (
@@ -218,34 +218,35 @@ export default function FeatureShowcase() {
                 <Heading
                   fontSize="2xl"
                   fontWeight="semibold"
-                  mb={10}
                   lineHeight={1.33}
+                  mb={16}
                 >
-                  Key features
+                  Designed to enhance <br /> efficiency and accuracy
                 </Heading>
 
                 {FEATURES.map((f, idx) => (
-                  <Box key={f.title} mb={10} position="relative">
-                    <Box height={372} width="100%" mb={10} position="relative">
+                  <Box key={f.title} mb={16} position="relative">
+                    <HStack align="start" gap={2}>
+                      <Text fontSize="xl" fontWeight="medium">
+                        {idx + 1}.
+                      </Text>
+                      <Box>
+                        <Text fontSize="xl" fontWeight="medium" mb={1}>
+                          {f.title}
+                        </Text>
+                        <Text fontSize="lg">{f.description}</Text>
+                      </Box>
+                    </HStack>
+                    <Box height={372} width="100%" mt={5} position="relative">
                       <Image
                         src={f.image}
                         alt={f.title}
                         layout="fill"
                         objectFit="cover"
                         style={{ borderRadius: 4 }}
+                        priority
                       />
                     </Box>
-                    <HStack align="start" gap={2}>
-                      <Text fontSize="xl" fontWeight="medium">
-                        {idx + 1}.
-                      </Text>
-                      <Box>
-                        <Text fontSize="xl" fontWeight="medium" mb={2}>
-                          {f.title}
-                        </Text>
-                        <Text fontSize="lg">{f.description}</Text>
-                      </Box>
-                    </HStack>
                   </Box>
                 ))}
               </Box>

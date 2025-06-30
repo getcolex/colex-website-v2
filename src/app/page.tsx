@@ -8,16 +8,17 @@ import FeatureSection from "@/components/Landing/FeatureSection";
 import TestimonialsSection from "@/components/Landing/TestimonialsSection";
 import Footer from "@/components/Landing/Footer";
 import HeroSection from "@/components/Landing/HeroSection";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { event } from "@/lib/gtag";
 
 export default function LandingPage() {
-  const [mounted, setMounted] = useState(false);
-
   useEffect(() => {
-    setMounted(true);
+    event({
+      action: "landing_page_viewed",
+      category: "page_view",
+      label: "Landing page viewed",
+    });
   }, []);
-
-  if (!mounted) return <p>Loading...</p>;
 
   return (
     <Box bg="white">
