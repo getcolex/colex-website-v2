@@ -175,9 +175,10 @@ export default function FeatureShowcase() {
                 </VStack>
 
                 <Box
+                  width={"100%"}
+                  maxWidth="760px"
+                  aspectRatio={1}
                   borderRadius={4}
-                  width={{ lg: 540, xl: 760 }}
-                  height={{ lg: 540, xl: 760 }}
                   position="relative"
                   overflow="hidden"
                 >
