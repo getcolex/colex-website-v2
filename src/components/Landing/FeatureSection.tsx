@@ -176,8 +176,8 @@ export default function FeatureShowcase() {
 
                 <Box
                   borderRadius={4}
-                  width={760}
-                  height={760}
+                  width={{ lg: 540, xl: 760 }}
+                  height={{ lg: 540, xl: 760 }}
                   position="relative"
                   overflow="hidden"
                 >
