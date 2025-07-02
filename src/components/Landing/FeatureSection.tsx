@@ -182,8 +182,8 @@ export default function FeatureShowcase() {
                 </VStack>
 
                 <Box
-                  height={{ xl: "580px", "2xl": "760px" }}
-                  width={{ base: "580px", "2xl": "760px" }}
+                  height={{ xl: "600px", "2xl": "760px" }}
+                  width={{ base: "600px", "2xl": "760px" }}
                   borderRadius={4}
                   position="relative"
                   overflow="hidden"
