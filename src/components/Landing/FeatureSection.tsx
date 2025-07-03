@@ -24,7 +24,7 @@ import { FEATURES } from "@/lib/constants";
 /* ---------------------------------------------------------------- */
 /* constants you may want to tweak                                  */
 const FEATURE_HEIGHT_PX = 1200; // per-feature slice
-const SCROLL_SPAN_PX = 8000; // artificial scroll range
+const SCROLL_SPAN_PX = 7800; // artificial scroll range
 const DESKTOP_MIN_BP = "xl"; // breakpoint that enables the effect
 /* ---------------------------------------------------------------- */
 
