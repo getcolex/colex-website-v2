@@ -1,9 +1,4 @@
-import {
-  createSystem,
-  defaultBaseConfig,
-  defineConfig,
-} from "@chakra-ui/react";
-import "@fontsource-variable/inter";
+import { createSystem, defaultConfig, defineConfig } from "@chakra-ui/react";
 
 const customBreakpoints = {
   sm: "30em", // 480px
@@ -20,8 +15,8 @@ const customConfig = defineConfig({
     },
     tokens: {
       fonts: {
-        heading: { value: `"Inter Variable", sans-serif` },
-        body: { value: `"Inter Variable", sans-serif` },
+        heading: { value: `"Open Sans Variable", sans-serif` },
+        body: { value: `"Open Sans Variable", sans-serif` },
       },
       colors: {
         heading: { value: "#000000" },
@@ -31,4 +26,4 @@ const customConfig = defineConfig({
   },
 });
 
-export const system = createSystem(defaultBaseConfig, customConfig);
+export const system = createSystem(defaultConfig, customConfig);
