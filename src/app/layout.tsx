@@ -1,4 +1,4 @@
-import "@fontsource-variable/inter";
+import "@fontsource-variable/open-sans";
 import { ReactNode } from "react";
 import Providers from "./providers";
 import LayoutClient from "./LayoutClient";
