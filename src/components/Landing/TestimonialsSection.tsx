@@ -41,7 +41,7 @@ export default function TestimonialsSection() {
                 // maxW="833px"
                 pr={{ base: 0, xl: 20 }}
               >
-                We are co-designing <br /> with legal experts
+                We are co-designing with <br /> in-house lawyers
               </Heading>
               <Button
                 bg="black"
@@ -82,9 +82,9 @@ export default function TestimonialsSection() {
               fontWeight="medium"
               maxW={"548px"}
             >
-              We want to collaborate with seasoned legal professionals to
-              develop a tool that addresses real-world challenges, ensuring
-              relevance and practicality in every feature.
+              We’ve collaborated with seasoned legal professionals to develop a
+              tool that addresses real-world challenges, aiming at relevance and
+              practicality in every feature.
             </Text>
           </VStack>
         ) : (
@@ -94,7 +94,7 @@ export default function TestimonialsSection() {
             fontWeight="semibold"
             lineHeight={1.33}
           >
-            We are co-designing with legal experts
+            We are co-designing with in-house lawyers
           </Heading>
         )}
 
@@ -153,9 +153,9 @@ export default function TestimonialsSection() {
             px={{ base: 5, md: 8, lg: 12 }}
           >
             <Text fontSize={"lg"} lineHeight={1.55} fontWeight="medium">
-              We want to collaborate with seasoned legal professionals to
-              develop a tool that addresses real-world challenges, ensuring
-              relevance and practicality in every feature.
+              We’ve collaborated with seasoned legal professionals to develop a
+              tool that addresses real-world challenges, aiming at relevance and
+              practicality in every feature.
             </Text>
 
             <Button

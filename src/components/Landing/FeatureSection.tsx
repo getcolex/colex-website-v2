@@ -24,7 +24,7 @@ import { FEATURES } from "@/lib/constants";
 /* ---------------------------------------------------------------- */
 /* constants you may want to tweak                                  */
 const FEATURE_HEIGHT_PX = 1200; // per-feature slice
-const SCROLL_SPAN_PX = 7800; // artificial scroll range
+const SCROLL_SPAN_PX = 5200; // artificial scroll range
 const DESKTOP_MIN_BP = "xl"; // breakpoint that enables the effect
 /* ---------------------------------------------------------------- */
 
@@ -106,8 +106,7 @@ export default function FeatureShowcase() {
                     alignSelf="flex-start"
                     lineHeight={1.22}
                   >
-                    Designed to enhance
-                    <br /> efficiency and accuracy
+                    Key features
                   </Heading>
                   <Box alignSelf={"flex-start"}>
                     {FEATURES.map((f, idx) => {
@@ -228,7 +227,7 @@ export default function FeatureShowcase() {
                   lineHeight={1.33}
                   mb={16}
                 >
-                  Designed to enhance <br /> efficiency and accuracy
+                  Key features
                 </Heading>
 
                 {FEATURES.map((f, idx) => (
