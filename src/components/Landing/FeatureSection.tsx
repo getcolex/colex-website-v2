@@ -23,8 +23,8 @@ import { FEATURES } from "@/lib/constants";
 
 /* ---------------------------------------------------------------- */
 /* constants you may want to tweak                                  */
-const FEATURE_HEIGHT_PX = 260; // per-feature slice
-const SCROLL_SPAN_PX = 2400; // artificial scroll range
+const FEATURE_HEIGHT_PX = 1200; // per-feature slice
+const SCROLL_SPAN_PX = 5200; // artificial scroll range
 const DESKTOP_MIN_BP = "xl"; // breakpoint that enables the effect
 /* ---------------------------------------------------------------- */
 
@@ -101,12 +101,12 @@ export default function FeatureShowcase() {
               >
                 <VStack justifyContent="space-between" maxW={427}>
                   <Heading
-                    fontSize="4xl"
+                    fontSize={{ xl: "3xl", "2xl": "4xl" }}
                     fontWeight="semibold"
                     alignSelf="flex-start"
                     lineHeight={1.22}
                   >
-                    Designed to enhance efficiency and accuracy
+                    Key features
                   </Heading>
                   <Box alignSelf={"flex-start"}>
                     {FEATURES.map((f, idx) => {
@@ -147,7 +147,7 @@ export default function FeatureShowcase() {
 
                           <HStack align="start" gap={5}>
                             <Text
-                              fontSize="2xl"
+                              fontSize={{ xl: "xl", "2xl": "2xl" }}
                               fontWeight="medium"
                               lineHeight={1.33}
                               color={isActive ? "black" : "gray.400"}
@@ -155,13 +155,19 @@ export default function FeatureShowcase() {
                               {idx + 1}.
                             </Text>
                             <Box>
-                              <Text fontSize="2xl" fontWeight="medium">
+                              <Text
+                                fontSize={{ xl: "xl", "2xl": "2xl" }}
+                                fontWeight="medium"
+                              >
                                 {f.title}
                               </Text>
 
                               <Collapsible.Root open={isActive}>
                                 <Collapsible.Content>
-                                  <Text mt={3} fontSize="lg">
+                                  <Text
+                                    mt={3}
+                                    fontSize={{ xl: "md", "2xl": "lg" }}
+                                  >
                                     {f.description}
                                   </Text>
                                 </Collapsible.Content>
@@ -175,9 +181,9 @@ export default function FeatureShowcase() {
                 </VStack>
 
                 <Box
+                  height={{ xl: "600px", "2xl": "760px" }}
+                  width={{ base: "600px", "2xl": "760px" }}
                   borderRadius={4}
-                  width={760}
-                  height={760}
                   position="relative"
                   overflow="hidden"
                 >
@@ -221,7 +227,7 @@ export default function FeatureShowcase() {
                   lineHeight={1.33}
                   mb={16}
                 >
-                  Designed to enhance <br /> efficiency and accuracy
+                  Key features
                 </Heading>
 
                 {FEATURES.map((f, idx) => (
