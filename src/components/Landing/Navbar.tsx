@@ -89,13 +89,15 @@ export default function LandingNavbar() {
                     >
                       Book a demo
                     </Text>
-                    <ArrowRightIcon
-                      style={{
-                        width: 24,
-                        height: 24,
-                        color: "white",
-                      }}
-                    />
+                    {!isMobile && (
+                      <ArrowRightIcon
+                        style={{
+                          width: 24,
+                          height: 24,
+                          color: "white",
+                        }}
+                      />
+                    )}
                   </Button>
                 </Flex>
               </Flex>

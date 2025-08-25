@@ -10,24 +10,12 @@ import {
   SimpleGrid,
   Button,
   Container,
-  useBreakpointValue,
 } from "@chakra-ui/react";
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
-import { NOTION_LINK, TESTIMONIALS } from "@/lib/constants";
-import { event } from "@/lib/gtag";
+import { TESTIMONIALS } from "@/lib/constants";
 import { getEarlyAccess } from "@/lib/utils";
 
 export default function TestimonialsSection() {
-  const partnerWithUs = () => {
-    event({
-      action: "click_partner_with_us_button",
-      category: "engagement",
-      label: "Partner with us Clicked",
-    });
-    window.open(NOTION_LINK, "_blank");
-  };
-
-  const isMobile = useBreakpointValue({ base: true, xl: false });
   return (
     <Box
       pt={{ base: 10, xl: 32 }}
