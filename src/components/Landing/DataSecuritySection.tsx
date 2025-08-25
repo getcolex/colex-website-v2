@@ -7,44 +7,34 @@ import {
   HStack,
   VStack,
   Text,
+  useBreakpointValue,
 } from "@chakra-ui/react";
-
-const SECURITY_FEATURES = [
-  {
-    title: "Secure by Design",
-    description:
-      "Your data is hosted securely on AWS. SOC 2 compliance is a key milestone on our roadmap.",
-    logos: ["/images/aws.png", "/images/soc2.png"],
-  },
-  {
-    title: "Access Control",
-    description:
-      "Single Sign-On (SSO) support ensures only authorized users can access your workspace.",
-    logos: ["/images/sso.png"],
-  },
-];
+import AWS from "@/assets/icons/aws.svg";
+import SOC2 from "@/assets/icons/soc2.svg";
+import SSO from "@/assets/icons/sso.svg";
 
 export default function DataSecuritySection() {
+  const isMobile = useBreakpointValue({ base: true, xl: false });
   return (
-    <Box pt={{ base: 0, xl: 40 }} pb={{ base: 0, xl: 32 }} bg={"white"}>
+    <Box pt={{ base: 20, xl: 40 }} pb={{ base: 10, xl: 32 }} bg={"white"}>
       <Container maxW="container.xl" px={{ base: 5, md: 8, lg: 12, xl: 16 }}>
         <HStack
           justify="space-evenly"
           align="center"
-          gap={8}
+          gap={{ base: 10, xl: 0 }}
           flexDir={{ base: "column", lg: "row" }}
         >
           {/* Headline */}
 
           <Heading
-            fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
+            fontSize={{ base: "2xl", md: "4xl" }}
             fontWeight="600"
             color="brand.primary"
             lineHeight="1.22"
-            w={{ md: "476px" }}
-            alignSelf={"flex-end"}
+            w={{ base: "full", md: "476px" }}
+            alignSelf={{ base: "flex-start", md: "flex-end" }}
           >
-            Your data is <br /> safe with us
+            Your data is {isMobile ? "" : <br />} safe with us
           </Heading>
 
           <HStack
@@ -52,55 +42,48 @@ export default function DataSecuritySection() {
             justify="space-between"
             flexDir={{ base: "column", md: "row" }}
             flex={1}
+            gap={5}
           >
-            {SECURITY_FEATURES.map((feature) => (
-              <VStack
-                key={feature.title}
-                align="start"
-                gap={3}
-                // maxW="406px"
-                // w="full"
+            <VStack align="start" gap={5}>
+              <HStack gap={5} align="center">
+                <AWS style={{ width: 111, height: 66 }} />
+                <SOC2 style={{ width: 95, height: 95 }} />
+              </HStack>
+
+              <Text
+                fontSize="2xl"
+                fontWeight="600"
+                color="#000"
+                lineHeight="1.33"
               >
-                {/* Logos */}
-                <HStack gap={5} align="center">
-                  {feature.logos.map((logo, logoIndex) => (
-                    <Box
-                      key={logoIndex}
-                      w="122px"
-                      h="122px"
-                      position="relative"
-                      bg="gray.50"
-                      borderRadius="md"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                    >
-                      <Text fontSize="sm" color="gray.500" textAlign="center">
-                        {logo
-                          .split("/")
-                          .pop()
-                          ?.replace(".png", "")
-                          .toUpperCase()}
-                      </Text>
-                    </Box>
-                  ))}
-                </HStack>
+                Secure by Design
+              </Text>
 
-                <Text
-                  fontSize="2xl"
-                  fontWeight="600"
-                  color="#000"
-                  lineHeight="1.33"
-                >
-                  {feature.title}
-                </Text>
+              <Text fontSize="2xl" color="#A1A1AA" lineHeight="1.33">
+                Your data is hosted securely on AWS. SOC 2 compliance is a key
+                milestone on our roadmap.
+              </Text>
+            </VStack>
+            <VStack align="start" gap={3}>
+              <HStack gap={5} align="center">
+                <SSO style={{ width: 149, height: 112 }} />
+              </HStack>
 
-                {/* Description */}
-                <Text fontSize="2xl" color="#A1A1AA" lineHeight="1.33">
-                  {feature.description}
-                </Text>
-              </VStack>
-            ))}
+              <Text
+                fontSize="2xl"
+                fontWeight="600"
+                color="#000"
+                lineHeight="1.33"
+              >
+                Access Control
+              </Text>
+
+              {/* Description */}
+              <Text fontSize="2xl" color="#A1A1AA" lineHeight="1.33">
+                Single Sign-On (SSO) support ensures only authorized users can
+                access your workspace.
+              </Text>
+            </VStack>
           </HStack>
         </HStack>
       </Container>

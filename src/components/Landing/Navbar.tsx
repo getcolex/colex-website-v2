@@ -1,7 +1,14 @@
 // src/components/LandingNavbar.tsx
 "use client";
 
-import { Box, Button, Container, Flex, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Text,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import { motion, AnimatePresence } from "motion/react";
 import { getEarlyAccess } from "@/lib/utils";
 import { useScrollPosition } from "@/lib/hooks/useScrollPosition";
@@ -10,9 +17,10 @@ import ColexBrandLogo from "@/assets/icons/ColexBrandLogo.svg";
 
 export default function LandingNavbar() {
   const { scrollY } = useScrollPosition();
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
-  // Show navbar after scrolling past hero section (approximately 580px)
-  const shouldShowNavbar = scrollY > 580;
+  // Show navbar always on mobile, or after scrolling past hero section on desktop
+  const shouldShowNavbar = isMobile || scrollY > 580;
 
   return (
     <AnimatePresence>
@@ -81,13 +89,15 @@ export default function LandingNavbar() {
                     >
                       Book a demo
                     </Text>
-                    <ArrowRightIcon
-                      style={{
-                        width: 24,
-                        height: 24,
-                        color: "white",
-                      }}
-                    />
+                    {!isMobile && (
+                      <ArrowRightIcon
+                        style={{
+                          width: 24,
+                          height: 24,
+                          color: "white",
+                        }}
+                      />
+                    )}
                   </Button>
                 </Flex>
               </Flex>
