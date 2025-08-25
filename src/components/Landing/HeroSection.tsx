@@ -16,7 +16,7 @@ export default function HeroSection() {
   return (
     <Box
       position="relative"
-      minH={{ base: "540px", xl: "660px" }}
+      minH={{ base: "745px", xl: "660px" }}
       display={"flex"}
       alignItems={"flex-end"}
       mx={"auto"}
@@ -52,8 +52,8 @@ export default function HeroSection() {
         <VStack gap={10} align="start" maxW={"740px"}>
           <ColexBrandLogo
             style={{
-              width: 264,
-              height: 92,
+              width: 263,
+              height: 91,
               aspectRatio: "222/77",
             }}
             alt="Colex Logo"
@@ -73,7 +73,7 @@ export default function HeroSection() {
             lineHeight={{ base: 1.55, md: 1.26 }}
           >
             AI-Powered Workspace for In-House Legal
-            <br /> & Compliance Teams
+            {!isMobile && <br />} & Compliance Teams
           </Text>
           <Button
             size={"2xl"}

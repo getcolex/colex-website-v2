@@ -89,7 +89,7 @@ export default function FeatureShowcase() {
       position="relative"
     >
       <Box top={10} zIndex={1} position={"sticky"}>
-        <Box py={{ base: 0, xl: 32 }}>
+        <Box pt={{ base: 20, xl: 32 }} pb={{ base: 10, xl: 32 }}>
           <Container
             maxW="container.xl"
             px={{ base: 5, md: 8, lg: 12, xl: 16 }}

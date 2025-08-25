@@ -7,20 +7,24 @@ import {
   Heading,
   Text,
   VStack,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import { getEarlyAccess } from "@/lib/utils";
 
 export default function Footer() {
-  // const isDesktop = useBreakpointValue({ base: false, xl: true });
+  const isMobile = useBreakpointValue({ base: true, xl: false });
 
   return (
     <Box
       bg="ui.surface"
-      h={{ base: "auto", xl: "645px" }}
+      h={{ base: "726px", xl: "645px" }}
       py={{ base: 10, xl: 40 }}
-      mt={{ base: 16, xl: 0 }}
-      backgroundImage="url('/images/FooterBg.png')"
+      backgroundImage={
+        isMobile
+          ? "url('/images/FooterBgMobile.png')"
+          : "url('/images/FooterBg.png')"
+      }
       alignContent={"center"}
     >
       <Container maxW="container.xl" px={{ base: 5, md: 8, lg: 12, xl: 16 }}>
