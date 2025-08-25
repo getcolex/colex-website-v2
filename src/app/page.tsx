@@ -10,6 +10,9 @@ import Footer from "@/components/Landing/Footer";
 import HeroSection from "@/components/Landing/HeroSection";
 import { useEffect } from "react";
 import { event } from "@/lib/gtag";
+import AnalysisToolsSection from "@/components/Landing/AnalysisToolsSection";
+import DataSecuritySection from "@/components/Landing/DataSecuritySection";
+import FooterLogo from "@/components/Landing/FooterLogo";
 
 export default function LandingPage() {
   useEffect(() => {
@@ -21,14 +24,17 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <Box bg="white">
+    <Box bg="#F8F7F5">
       <LandingNavbar />
       <HeroSection />
       <FeatureSection />
+      <AnalysisToolsSection />
+      <DataSecuritySection />
 
       <TestimonialsSection />
 
       <Footer />
+      <FooterLogo />
     </Box>
   );
 }

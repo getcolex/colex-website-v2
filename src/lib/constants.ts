@@ -32,17 +32,24 @@ export const FEATURES = [
 export const TESTIMONIALS = [
   {
     quote:
-      "I spend less time switching between tools and more time building strong arguments.",
-    name: "Ananya",
-    title: "Senior Associate at a Litigation Practice",
-    image: "/avatars/user1.png",
+      "Ability to look at all requests for the legal team in a single place, will save a lot of time for my team to prioratise tasks.",
+    name: "Ananya Rao",
+    title: "Senior Associate, Litigation Practice",
+    image: "/images/user1.png",
   },
   {
     quote:
-      "Finally, something that understands in-house lawyers. I'd use this every day if it keeps improving.",
-    name: "Lovesh",
+      "Analyser tools help me reduce risk of missing critical information buried in long documents.",
+    name: "Lovesh Mohanty",
     title: "Corporate Counsel",
-    image: "/avatars/user2.png",
+    image: "/images/user2.png",
+  },
+  {
+    quote:
+      "Research is a continuous process. This platform feels like it’s built for the way we actually work.",
+    name: "Rishabh Mehra",
+    title: "Associate at a Tier-1 Law Firm  ",
+    image: "/images/user3.png",
   },
 ];
 

@@ -76,7 +76,7 @@ export default function FeatureShowcase() {
 
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
-  }, [isDesktop]);
+  }, [isDesktop, sliceProgress]);
 
   /* ‼️ phantom height collapses to 0 after first run --------------- */
   const phantomHeight = SCROLL_SPAN_PX + "px";
@@ -88,8 +88,8 @@ export default function FeatureShowcase() {
       h={isDesktop ? phantomHeight : "auto"}
       position="relative"
     >
-      <Box top={10} zIndex={1} position={"sticky"} bg="white">
-        <Box py={{ base: 0, xl: 20 }} mt={20}>
+      <Box top={10} zIndex={1} position={"sticky"}>
+        <Box py={{ base: 0, xl: 32 }}>
           <Container
             maxW="container.xl"
             px={{ base: 5, md: 8, lg: 12, xl: 16 }}
@@ -102,11 +102,14 @@ export default function FeatureShowcase() {
                 <VStack justifyContent="space-between" maxW={427}>
                   <Heading
                     fontSize={{ xl: "3xl", "2xl": "4xl" }}
-                    fontWeight="semibold"
+                    fontWeight="600"
                     alignSelf="flex-start"
                     lineHeight={1.22}
+                    color="brand.primary"
+                    mt={12}
                   >
-                    Key features
+                    Reduce Errors.
+                    <br /> Optimize Resources.
                   </Heading>
                   <Box alignSelf={"flex-start"}>
                     {FEATURES.map((f, idx) => {
@@ -124,7 +127,7 @@ export default function FeatureShowcase() {
                             h="2px"
                             w="full"
                             mb={5}
-                            bg="gray.200"
+                            bg="ui.borderLight"
                             overflow="hidden"
                           >
                             {isActive && (
@@ -150,7 +153,7 @@ export default function FeatureShowcase() {
                               fontSize={{ xl: "xl", "2xl": "2xl" }}
                               fontWeight="medium"
                               lineHeight={1.33}
-                              color={isActive ? "black" : "gray.400"}
+                              color={isActive ? "text.primary" : "text.muted"}
                             >
                               {idx + 1}.
                             </Text>
@@ -181,8 +184,8 @@ export default function FeatureShowcase() {
                 </VStack>
 
                 <Box
-                  height={{ xl: "600px", "2xl": "760px" }}
-                  width={{ base: "600px", "2xl": "760px" }}
+                  height={{ xl: "600px", "2xl": "834px" }}
+                  width={{ base: "600px", "2xl": "834px" }}
                   borderRadius={4}
                   position="relative"
                   overflow="hidden"
@@ -223,11 +226,13 @@ export default function FeatureShowcase() {
               <Box>
                 <Heading
                   fontSize="2xl"
-                  fontWeight="semibold"
                   lineHeight={1.33}
                   mb={16}
+                  color="brand.primary"
+                  fontWeight="600"
                 >
-                  Key features
+                  Reduce Errors.
+                  <br /> Optimize Resources.
                 </Heading>
 
                 {FEATURES.map((f, idx) => (
