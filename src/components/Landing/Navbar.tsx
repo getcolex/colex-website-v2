@@ -79,7 +79,7 @@ export default function LandingNavbar() {
                     _active={{
                       bg: "button.primaryActive",
                     }}
-                    onClick={() => getEarlyAccess("Navbar")}
+                    onClick={() => getEarlyAccess("header")}
                   >
                     <Text
                       textAlign={"center"}

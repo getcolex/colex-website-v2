@@ -34,21 +34,21 @@ export const TESTIMONIALS = [
     quote:
       "Ability to look at all requests for the legal team in a single place, will save a lot of time for my team to prioratise tasks.",
     name: "Ananya Rao",
-    title: "Senior Associate, Litigation Practice",
+    title: "General Counsel, Fintech",
     image: "/images/user1.png",
   },
   {
     quote:
       "Analyser tools help me reduce risk of missing critical information buried in long documents.",
     name: "Lovesh Mohanty",
-    title: "Corporate Counsel",
+    title: "In-house lawyer, Insurance company",
     image: "/images/user2.png",
   },
   {
     quote:
-      "Research is a continuous process. This platform feels like it’s built for the way we actually work.",
+      "I would love keep a single source of truth for all my documents, the Knowledge Base will help me achieve exactly that",
     name: "Rishabh Mehra",
-    title: "Associate at a Tier-1 Law Firm  ",
+    title: "Policy Officer, Lending company",
     image: "/images/user3.png",
   },
 ];

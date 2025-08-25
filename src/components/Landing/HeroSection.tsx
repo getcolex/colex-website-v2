@@ -85,7 +85,7 @@ export default function HeroSection() {
             justifyContent={"center"}
             borderRadius={4}
             gap={3}
-            onClick={() => getEarlyAccess("Hero")}
+            onClick={() => getEarlyAccess("hero_section")}
           >
             <Text
               textAlign={"center"}

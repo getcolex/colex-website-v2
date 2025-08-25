@@ -40,8 +40,8 @@ export default function Footer() {
             lineHeight={{ base: 1.33, md: 1.22 }}
             color={"white"}
           >
-            Ready to see it in action? <br /> Triage, auto reply, AI search, and
-            contracts.
+            Want to see it in action? <br /> Streamline legal operations, reduce
+            manual tasks, and boost efficiency.
             <br /> Start in minutes.
           </Heading>
           <Button
@@ -56,7 +56,7 @@ export default function Footer() {
             gap={3}
             borderColor={"white"}
             borderWidth={1}
-            onClick={() => getEarlyAccess("Footer")}
+            onClick={() => getEarlyAccess("footer")}
           >
             <Text
               textAlign={"center"}

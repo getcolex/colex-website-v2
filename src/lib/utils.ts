@@ -1,11 +1,7 @@
-import { event } from "./gtag";
+import { trackButtonClick } from "./gtag";
 
-export const getEarlyAccess = (source?: string) => {
-  event({
-    action: "click_early_access_button",
-    category: "engagement",
-    label: `Get Early Access Clicked${source ? ` - ${source}` : ""}`,
-  });
+export const getEarlyAccess = (location: string) => {
+  trackButtonClick("Book a demo", location.toLowerCase());
   
   const phoneNumber = "+919945075889";
   const message = "Hello! I would like to inquire about your product.";
