@@ -15,6 +15,7 @@ import {
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import { NOTION_LINK, TESTIMONIALS } from "@/lib/constants";
 import { event } from "@/lib/gtag";
+import { getEarlyAccess } from "@/lib/utils";
 
 export default function TestimonialsSection() {
   const partnerWithUs = () => {
@@ -28,73 +29,62 @@ export default function TestimonialsSection() {
 
   const isMobile = useBreakpointValue({ base: true, xl: false });
   return (
-    <Box py={{ base: 0, xl: 20 }} bg="white" overflow={"hidden"}>
+    <Box
+      py={{ base: 0, xl: 32 }}
+      bg="ui.background"
+      background="linear-gradient(180deg, var(--gray-contrast, #FFF) 0%, var(--bg-emphasized, #E4E4E7) 100%)"
+    >
       <Container maxW={"container.xl"} px={0}>
         {!isMobile ? (
-          <VStack gap={10} px={16}>
-            <HStack justifyContent={"space-between"} w={"100%"}>
-              <Heading
-                fontSize={{ base: "2xl", md: "3xl", xl: "4xl" }}
-                fontWeight="semibold"
-                lineHeight={{ base: 1.33, md: 1.22 }}
-                justifySelf={"flex-start"}
-                // maxW="833px"
-                pr={{ base: 0, xl: 20 }}
-              >
-                We are co-designing with <br /> in-house lawyers
-              </Heading>
-              <Button
-                bg="black"
-                flex={1}
-                h={"100%"}
-                minH={{ base: "124px", xl: "auto" }}
-                color="black"
-                maxW={407}
-                borderRadius={4}
-                px={8}
-                py={5}
-                alignSelf="flex-end"
-                gap={5}
-                justifyContent={"space-between"}
-                onClick={partnerWithUs}
-              >
-                <Text
-                  color={"white"}
-                  fontSize={"2xl"}
-                  fontWeight={"medium"}
-                  lineHeight={1.33}
-                >
-                  Partner with us
-                </Text>
-                <ArrowRightIcon
-                  style={{
-                    width: 44,
-                    height: 44,
-                    color: "white",
-                  }}
-                />
-              </Button>
-            </HStack>
-            <Text
-              fontSize={{ base: "md", md: "lg" }}
-              lineHeight={1.55}
-              alignSelf={"flex-start"}
-              fontWeight="medium"
-              maxW={"548px"}
+          <HStack justifyContent={"space-between"} w={"100%"} px={16}>
+            <Heading
+              fontSize={{ base: "2xl", md: "4xl" }}
+              fontWeight="semibold"
+              lineHeight={{ base: 1.33, md: 1.22 }}
+              justifySelf={"flex-start"}
+              color={"brand.primary"}
+              pr={{ base: 0, xl: 20 }}
             >
-              We’ve collaborated with seasoned legal professionals to develop a
-              tool that addresses real-world challenges, aiming at relevance and
-              practicality in every feature.
-            </Text>
-          </VStack>
+              Co-designed with <br /> seasoned lawyers like you
+            </Heading>
+            <Button
+              size={"2xl"}
+              w={{ base: "auto", lg: 264 }}
+              px={7}
+              py={0.5}
+              lineHeight={1.5}
+              alignItems={"center"}
+              justifyContent={"center"}
+              borderRadius={4}
+              gap={3}
+              onClick={() => getEarlyAccess("Testimonials")}
+            >
+              <Text
+                textAlign={"center"}
+                w={"100%"}
+                fontSize={"lg"}
+                fontWeight={"medium"}
+              >
+                Book a demo
+              </Text>
+              <ArrowRightIcon
+                style={{
+                  width: 24,
+                  height: 24,
+                  color: "white",
+                }}
+              />
+            </Button>
+          </HStack>
         ) : (
           <Heading
             px={{ base: 5, md: 8, lg: 12 }}
             fontSize={"2xl"}
             fontWeight="semibold"
             lineHeight={1.33}
+            color={"brand.primary"}
           >
-            We are co-designing with in-house lawyers
+            Co-designed with <br /> seasoned lawyers like you
           </Heading>
         )}
 
@@ -114,29 +104,27 @@ export default function TestimonialsSection() {
           {TESTIMONIALS.map((t) => (
             <VStack
               key={t.name}
-              backgroundImage="url('/images/TestimonialBg.png')"
               borderRadius={4}
-              border="1px solid #E4E4E7"
-              py={6}
               justifyContent={"space-between"}
-              px={{ base: 6, md: 7 }}
+              p={7}
               h={420}
               align="stretch"
+              bg={"white"}
             >
-              <Text fontSize={"xl"} lineHeight={1.33}>
+              <Text fontSize={"2xl"} lineHeight={1.33}>
                 {t.quote}
               </Text>
 
               <HStack mt="auto" gap={3}>
-                <Avatar.Root size={"2xl"} variant={"solid"} shape={"full"}>
-                  <Avatar.Image src={t.image} />
+                <Avatar.Root shape="full" size="2xl">
                   <Avatar.Fallback name={t.name} />
+                  <Avatar.Image src={t.image} />
                 </Avatar.Root>
                 <Box>
-                  <Text fontWeight="semibold" fontSize="sm" lineHeight={1.42}>
+                  <Text fontWeight="semibold" fontSize="lg" lineHeight={1.42}>
                     {t.name}
                   </Text>
-                  <Text fontSize="sm" color="#52525B" lineHeight={1.42}>
+                  <Text fontSize="md" color="text.secondary" lineHeight={1.42}>
                     {t.title}
                   </Text>
                 </Box>
@@ -159,11 +147,11 @@ export default function TestimonialsSection() {
             </Text>
 
             <Button
-              bg="black"
+              bg="button.primary"
               w={"100%"}
               maxW={360}
               flex={1}
-              color="black"
+              color="text.primary"
               borderRadius={4}
               p={5}
               gap={5}
