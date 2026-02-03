@@ -61,16 +61,13 @@ export default function LandingNavbar() {
                 />
                 <Flex gap={{ base: 2, md: 5 }}>
                   <Button
-                    size={"lg"}
+                    size="lg"
                     w={{ base: "auto", lg: 260 }}
-                    fontSize={{ base: "14px", md: "16px" }}
-                    minW={{ base: "36px", md: "44px" }}
-                    fontWeight={"medium"}
+                    fontSize="md"
+                    fontWeight="500"
                     px={5}
                     py={0.5}
                     borderRadius={4}
-                    alignItems={"center"}
-                    justifyContent={"center"}
                     bg="button.primary"
                     color="white"
                     _hover={{
@@ -81,19 +78,13 @@ export default function LandingNavbar() {
                     }}
                     onClick={() => getEarlyAccess("header")}
                   >
-                    <Text
-                      textAlign={"center"}
-                      w={"100%"}
-                      fontSize={"lg"}
-                      fontWeight={"medium"}
-                    >
-                      Book a demo
-                    </Text>
+                    Book a demo
                     {!isMobile && (
                       <ArrowRightIcon
                         style={{
-                          width: 24,
-                          height: 24,
+                          width: 20,
+                          height: 20,
+                          marginLeft: 8,
                           color: "white",
                         }}
                       />

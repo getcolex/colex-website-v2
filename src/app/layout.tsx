@@ -1,7 +1,9 @@
 import "@fontsource-variable/open-sans";
+import "lenis/dist/lenis.css";
 import { ReactNode } from "react";
 import Providers from "./providers";
 import LayoutClient from "./LayoutClient";
+import LenisProvider from "@/lib/contexts/LenisProvider";
 
 export const metadata = {
   title: "Colex | workspace for lawyers",
@@ -54,8 +56,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <Providers>
-          <LayoutClient />
-          {children}
+          <LenisProvider>
+            <LayoutClient />
+            {children}
+          </LenisProvider>
         </Providers>
       </body>
     </html>

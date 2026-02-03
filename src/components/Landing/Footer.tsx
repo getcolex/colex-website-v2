@@ -2,80 +2,50 @@
 
 import {
   Box,
-  Button,
   Container,
-  Heading,
-  Text,
+  HStack,
   VStack,
+  Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
-import { getEarlyAccess } from "@/lib/utils";
+import Image from "next/image";
 
 export default function Footer() {
-  const isMobile = useBreakpointValue({ base: true, xl: false });
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
-    <Box
-      bg="ui.surface"
-      h={{ base: "726px", xl: "645px" }}
-      py={{ base: 10, xl: 40 }}
-      backgroundImage={
-        isMobile
-          ? "url('/images/FooterBgMobile.png')"
-          : "url('/images/FooterBg.png')"
-      }
-      alignContent={"center"}
-    >
+    <Box as="footer" bg="ui.surface" pt={20} borderTop="1px solid" borderColor="ui.border">
       <Container maxW="container.xl" px={{ base: 5, md: 8, lg: 12, xl: 16 }}>
-        <VStack
-          align="flex-start"
-          alignSelf={"center"}
-          justifyContent={"center"}
-          gap={{ base: 10, xl: 20 }}
-        >
-          <Heading
-            fontSize={{ base: "2xl", lg: "3xl", xl: "4xl" }}
-            fontWeight="semibold"
-            lineHeight={{ base: 1.33, md: 1.22 }}
-            color={"white"}
-          >
-            Want to see it in action? <br /> Streamline legal operations, reduce
-            manual tasks, and boost efficiency.
-            <br /> Start in minutes.
-          </Heading>
-          <Button
-            size={"2xl"}
-            w={{ base: "auto", lg: 264 }}
-            px={7}
-            py={0.5}
-            lineHeight={1.5}
-            alignItems={"center"}
-            justifyContent={"center"}
-            borderRadius={4}
-            gap={3}
-            borderColor={"white"}
-            borderWidth={1}
-            onClick={() => getEarlyAccess("footer")}
-          >
-            <Text
-              textAlign={"center"}
-              w={"100%"}
-              fontSize={"lg"}
-              fontWeight={"medium"}
-              color={"#fff"}
-            >
-              Book a demo
-            </Text>
-            <ArrowRightIcon
-              style={{
-                width: 24,
-                height: 24,
-                color: "white",
-              }}
+        {isMobile ? (
+          <VStack gap={10} align="center">
+            <Image
+              width={350}
+              height={120}
+              src="/images/ColexLogo.png"
+              alt="Colex Logo"
             />
-          </Button>
-        </VStack>
+            <Text
+              fontSize="sm"
+              color="text.secondary"
+              textAlign="center"
+              w="full"
+            >
+              © 2025 | ALL RIGHTS RESERVED by Colex.
+            </Text>
+          </VStack>
+        ) : (
+          <HStack justifyContent="space-between" alignItems="flex-end">
+            <Image
+              width={550}
+              height={190}
+              src="/images/ColexLogo.png"
+              alt="Colex Logo"
+            />
+            <Text fontSize="sm" color="text.secondary" mb={2}>
+              © 2025 | ALL RIGHTS RESERVED by Colex.
+            </Text>
+          </HStack>
+        )}
       </Container>
     </Box>
   );
