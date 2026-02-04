@@ -10,7 +10,7 @@ const failures = [
   {
     id: 1,
     title: "SaaS is too rigid",
-    subtitle: "The team is still on whatapp",
+    subtitle: "The team is still on WhatsApp",
   },
   {
     id: 2,
