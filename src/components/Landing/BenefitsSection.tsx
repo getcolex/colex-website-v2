@@ -95,7 +95,7 @@ export default function BenefitsSection() {
           </BentoCell>
 
           <BentoCell
-            label="Human review built in"
+            label="Built-in human review"
             index={2}
             isInView={isInView}
           >

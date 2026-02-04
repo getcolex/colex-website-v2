@@ -6,13 +6,13 @@ import LayoutClient from "./LayoutClient";
 import LenisProvider from "@/lib/contexts/LenisProvider";
 
 export const metadata = {
-  title: "Colex | workspace for lawyers",
+  title: "Colex | Simple workflows",
   description:
-    "Research, draft, and collaborate in one secure legal workspace.",
+    "Give your teams extra hands. Purpose-built to automate your team reliably.",
   openGraph: {
-    title: "Colex | workspace for lawyers",
+    title: "Colex | Simple workflows",
     description:
-      "Research, draft, and collaborate in one secure legal workspace.",
+      "Give your teams extra hands. Purpose-built to automate your team reliably.",
     url: "https://getcolex.com/",
     siteName: "Colex",
     images: [
@@ -20,7 +20,7 @@ export const metadata = {
         url: "http://13.200.75.41/images/getcolex_landing.png",
         width: 1200,
         height: 630,
-        alt: "Colex - AI-powered legal workspace",
+        alt: "Colex - Simple workflow automation",
       },
     ],
     locale: "en_US",
@@ -28,9 +28,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Colex | Workspace for lawyers",
+    title: "Colex | Simple workflows",
     description:
-      "Research, organise, analyse and draft in one secure workspace.",
+      "Give your teams extra hands. Purpose-built to automate your team reliably.",
     images: ["http://13.200.75.41/images/getcolex_landing.png"],
   },
   metadataBase: new URL("https://getcolex.com"),

@@ -57,7 +57,7 @@ export default function HowItWorksSection() {
           {/* Header */}
           <Box
             position="absolute"
-            top="5%"
+            top={{ base: "80px", md: "100px" }}
             left="50%"
             transform="translateX(-50%)"
             zIndex={2}
@@ -79,7 +79,7 @@ export default function HowItWorksSection() {
           <MotionBox
             style={{ opacity: contentOpacity, y: contentY }}
             position="absolute"
-            top={{ base: "100px", md: "120px" }}
+            top={{ base: "140px", md: "180px" }}
             left={0}
             right={0}
             bottom={0}
@@ -126,38 +126,38 @@ function EvolvingVisual({
   scrollProgress: ReturnType<typeof useTransform<number, number>>;
 }) {
   // Stage timing - with 350vh section height for comfortable pacing
-  // Header done at ~0.20, stages run from 0.22 to 0.65
-  // Stage 1: 0.22 - 0.32
-  // Stage 2: 0.30 - 0.42
-  // Stage 3: 0.40 - 0.52
-  // Stage 4: 0.50 - 0.65
+  // Spread stages out more for slower transitions
+  // Stage 1: 0.15 - 0.30
+  // Stage 2: 0.28 - 0.45
+  // Stage 3: 0.43 - 0.60
+  // Stage 4: 0.58 - 0.75
 
   const stage1Opacity = useTransform(
     scrollProgress,
-    [0.22, 0.25, 0.29, 0.32],
+    [0.15, 0.18, 0.27, 0.30],
     [0, 1, 1, 0]
   );
   const stage2Opacity = useTransform(
     scrollProgress,
-    [0.30, 0.34, 0.39, 0.42],
+    [0.28, 0.32, 0.42, 0.45],
     [0, 1, 1, 0]
   );
   const stage3Opacity = useTransform(
     scrollProgress,
-    [0.40, 0.44, 0.49, 0.52],
+    [0.43, 0.47, 0.57, 0.60],
     [0, 1, 1, 0]
   );
-  const stage4Opacity = useTransform(scrollProgress, [0.50, 0.55, 0.65], [0, 1, 1]);
+  const stage4Opacity = useTransform(scrollProgress, [0.58, 0.63, 0.75], [0, 1, 1]);
 
   // Growth animations
   const chatScale = useTransform(
     scrollProgress,
-    [0.22, 0.25, 0.29, 0.32],
+    [0.15, 0.18, 0.27, 0.30],
     [0.95, 1, 1, 0.95]
   );
-  const uiHeight = useTransform(scrollProgress, [0.32, 0.38], ["0%", "100%"]);
-  const teamY = useTransform(scrollProgress, [0.42, 0.47], [30, 0]);
-  const liveScale = useTransform(scrollProgress, [0.52, 0.57], [0.9, 1]);
+  const uiHeight = useTransform(scrollProgress, [0.30, 0.38], ["0%", "100%"]);
+  const teamY = useTransform(scrollProgress, [0.45, 0.52], [30, 0]);
+  const liveScale = useTransform(scrollProgress, [0.60, 0.67], [0.9, 1]);
 
   return (
     <Box
@@ -488,8 +488,8 @@ function StepTextSide({
   // Stage 2: 0.30 - 0.42
   // Stage 3: 0.40 - 0.52
   // Stage 4: 0.50 - 0.65
-  const stepStart = 0.22 + index * 0.10;
-  const stepEnd = stepStart + 0.12;
+  const stepStart = 0.15 + index * 0.15;
+  const stepEnd = stepStart + 0.17;
   const transitionDuration = 0.03;
 
   const opacity = useTransform(
