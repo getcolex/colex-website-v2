@@ -19,7 +19,7 @@ export const event = ({
   category: string;
   label: string;
   value?: number;
-  custom_parameters?: Record<string, any>;
+  custom_parameters?: Record<string, unknown>;
 }) => {
   window.gtag("event", action, {
     event_category: category,

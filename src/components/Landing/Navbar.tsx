@@ -6,7 +6,6 @@ import {
   Button,
   Container,
   Flex,
-  Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { motion, AnimatePresence } from "motion/react";

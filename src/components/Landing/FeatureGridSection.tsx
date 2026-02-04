@@ -1,8 +1,9 @@
 "use client";
 
 import { Box, Container, Text, Grid, Flex } from "@chakra-ui/react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useTransform } from "motion/react";
 import { useRef } from "react";
+import { useSectionScroll } from "@/hooks/useSectionScroll";
 
 const MotionBox = motion.create(Box);
 
@@ -28,8 +29,7 @@ const features = [
 export default function FeatureGridSection() {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
+  const { scrollYProgress } = useSectionScroll(containerRef, {
     offset: ["start start", "end end"],
   });
 

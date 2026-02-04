@@ -77,6 +77,7 @@ function DebugControls({
 }
 
 // Generate noise texture on a small canvas, then tile it
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function generateNoiseCanvas(size: number, grainSize: number): HTMLCanvasElement {
   const canvas = document.createElement("canvas");
   canvas.width = size;

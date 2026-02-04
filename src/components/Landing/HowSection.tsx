@@ -5,7 +5,6 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 
 const MotionBox = motion.create(Box);
-const MotionText = motion.create(Text);
 
 // Step data
 const steps = [
@@ -69,7 +68,6 @@ function EvolvingVisual({
   const uiHeight = useTransform(scrollProgress, [0.20, 0.30], ["0%", "100%"]);
   const teamY = useTransform(scrollProgress, [0.45, 0.52], [30, 0]);
   const liveScale = useTransform(scrollProgress, [0.70, 0.78], [0.9, 1]);
-  const livePulse = useTransform(scrollProgress, [0.80, 0.90], [0, 1]);
 
   return (
     <Box
