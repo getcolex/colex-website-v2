@@ -34,80 +34,62 @@ const failures = [
 export default function WhySection() {
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Track section as it travels through viewport
+  // Progress 0 = section top enters viewport bottom
+  // Progress 0.5 = section centered in viewport
+  // Progress 1 = section bottom exits viewport top
   const { scrollYProgress } = useSectionScroll(containerRef, {
-    offset: ["start start", "end end"],
+    offset: ["start end", "end start"],
   });
 
-  // Header transforms: starts big centered, shrinks and moves to top as user scrolls
-  // Animation uses more of the scroll range (0 -> 0.6) so less "dead" scroll time
-  const headerScale = useTransform(scrollYProgress, [0, 0.6], [1, 0.4]);
-  const headerTop = useTransform(scrollYProgress, [0, 0.6], ["50%", "10%"]);
+  // Header shrinks as section enters viewport (0 to 0.35 progress)
+  const headerScale = useTransform(scrollYProgress, [0.05, 0.35], [1.2, 0.5]);
+  const headerY = useTransform(scrollYProgress, [0.05, 0.35], ["20vh", "0vh"]);
 
-  // Content fades in SIMULTANEOUSLY as header shrinks
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.6], [0.2, 1]);
-  const contentY = useTransform(scrollYProgress, [0, 0.6], [40, 0]);
+  // Content fades in after header starts shrinking
+  const contentOpacity = useTransform(scrollYProgress, [0.15, 0.4], [0, 1]);
+  const contentY = useTransform(scrollYProgress, [0.15, 0.4], [60, 0]);
 
   return (
     <Box
       ref={containerRef}
       position="relative"
-      height="115vh"
+      py={{ base: 20, md: 28 }}
       bg="transparent"
     >
-      {/* Sticky container */}
-      <Box position="sticky" top={0} height="100vh" overflow="hidden">
-        <Container maxW="container.xl" h="full" position="relative">
-          {/* Animated header - starts big and centered, shrinks and moves to top */}
-          <MotionBox
-            style={{
-              scale: headerScale,
-              top: headerTop,
-              x: "-50%",
-            }}
-            position="absolute"
-            left="50%"
-            transformOrigin="center center"
-            zIndex={2}
+      <Container maxW="container.xl" px={{ base: 4, md: 8 }}>
+        {/* Section header - shrinks as you scroll */}
+        <MotionBox
+          style={{ scale: headerScale, y: headerY }}
+          transformOrigin="center top"
+          mb={{ base: 6, md: 11 }}
+        >
+          <Text
+            fontFamily="heading"
+            fontSize={{ base: "10vw", md: "6vw", lg: "5vw" }}
+            fontWeight="700"
+            color="text.primary"
+            letterSpacing="-0.03em"
+            textAlign="center"
           >
-            <Text
-              fontFamily="heading"
-              fontSize={{ base: "10vw", md: "7vw", lg: "5vw" }}
-              fontWeight="700"
-              color="text.primary"
-              letterSpacing="-0.03em"
-              textAlign="center"
-              whiteSpace="nowrap"
-            >
-              You have tried this before
-            </Text>
-          </MotionBox>
+            You have tried this before
+          </Text>
+        </MotionBox>
 
-          {/* Content area - 2x2 grid of failure cards */}
-          <MotionBox
-            style={{ opacity: contentOpacity, y: contentY }}
-            position="absolute"
-            top="18%"
-            left={0}
-            right={0}
-            bottom={0}
-            px={{ base: 4, md: 8 }}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
+        {/* Content area - 2x2 grid of failure cards */}
+        <MotionBox style={{ opacity: contentOpacity, y: contentY }}>
+          <Grid
+            templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
+            gap={{ base: 4, md: 6 }}
+            maxW="900px"
+            mx="auto"
           >
-            <Grid
-              templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
-              gap={{ base: 4, md: 6 }}
-              maxW="900px"
-              w="full"
-            >
-              {failures.map((failure) => (
-                <FailureCard key={failure.id} failure={failure} />
-              ))}
-            </Grid>
-          </MotionBox>
-        </Container>
-      </Box>
+            {failures.map((failure) => (
+              <FailureCard key={failure.id} failure={failure} />
+            ))}
+          </Grid>
+        </MotionBox>
+      </Container>
     </Box>
   );
 }

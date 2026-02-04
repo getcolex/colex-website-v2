@@ -1,6 +1,11 @@
 "use client";
 
 import { Box, Container, Text, Grid, Flex } from "@chakra-ui/react";
+import { motion, useTransform } from "motion/react";
+import { useRef } from "react";
+import { useSectionScroll } from "@/hooks/useSectionScroll";
+
+const MotionBox = motion.create(Box);
 
 // Benefit cards data
 const benefits = [
@@ -32,23 +37,57 @@ const benefits = [
 ];
 
 export default function BenefitsSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Track section as it travels through viewport
+  const { scrollYProgress } = useSectionScroll(containerRef, {
+    offset: ["start end", "end start"],
+  });
+
+  // Header shrinks as section enters viewport
+  const headerScale = useTransform(scrollYProgress, [0.05, 0.35], [1.2, 0.5]);
+  const headerY = useTransform(scrollYProgress, [0.05, 0.35], ["20vh", "0vh"]);
+
+  // Content fades in after header starts shrinking
+  const contentOpacity = useTransform(scrollYProgress, [0.15, 0.4], [0, 1]);
+  const contentY = useTransform(scrollYProgress, [0.15, 0.4], [60, 0]);
+
   return (
-    <Box py={{ base: 16, md: 24 }} bg="white" position="relative" zIndex={10}>
+    <Box
+      ref={containerRef}
+      py={{ base: 20, md: 28 }}
+      bg="transparent"
+      position="relative"
+      zIndex={10}
+    >
       <Container maxW="container.xl" px={{ base: 4, md: 8 }}>
-        {/* Centered content wrapper - matches FeatureGridSection */}
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
+        {/* Section header - shrinks as you scroll */}
+        <MotionBox
+          style={{ scale: headerScale, y: headerY }}
+          transformOrigin="center top"
+          mb={{ base: 6, md: 11 }}
         >
+          <Text
+            fontFamily="heading"
+            fontSize={{ base: "10vw", md: "6vw", lg: "5vw" }}
+            fontWeight="700"
+            color="text.primary"
+            letterSpacing="-0.03em"
+            textAlign="center"
+          >
+            We have got your back
+          </Text>
+        </MotionBox>
+
+        {/* Content area - fades in as header shrinks */}
+        <MotionBox style={{ opacity: contentOpacity, y: contentY }}>
           {/* 2x2 Grid */}
           <Grid
             templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
             gap={{ base: 4, md: 6 }}
             mb={{ base: 4, md: 6 }}
             maxW="1100px"
-            w="full"
+            mx="auto"
           >
             {benefits.slice(0, 4).map((benefit) => (
               <BenefitCard key={benefit.id} benefit={benefit} />
@@ -56,10 +95,10 @@ export default function BenefitsSection() {
           </Grid>
 
           {/* Full-width bottom card */}
-          <Box maxW="1100px" w="full">
+          <Box maxW="1100px" mx="auto">
             <BenefitCard benefit={benefits[4]} isFullWidth />
           </Box>
-        </Box>
+        </MotionBox>
       </Container>
     </Box>
   );

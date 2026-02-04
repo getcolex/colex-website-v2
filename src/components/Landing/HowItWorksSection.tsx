@@ -34,24 +34,26 @@ const steps = [
 export default function HowItWorksSection() {
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Track from when section enters viewport to when it exits
+  // This gives ~300vh of scroll range (100vh section + 200vh travel through viewport)
   const { scrollYProgress } = useSectionScroll(containerRef, {
-    offset: ["start start", "end end"],
+    offset: ["start end", "end start"],
   });
 
-  // Header transforms: starts big centered, shrinks and moves to top as user scrolls
-  // Header is always visible (opacity 1), just transforms position and scale
-  const headerScale = useTransform(scrollYProgress, [0, 0.12], [1, 0.4]);
-  const headerTop = useTransform(scrollYProgress, [0, 0.12], ["50%", "10%"]);
+  // Header transforms: shrinks as section enters viewport
+  // Starts at 5% (top) - no movement, only scale
+  const headerScale = useTransform(scrollYProgress, [0.05, 0.25], [1, 0.4]);
+  const headerTop = "5%";
 
-  // Content fades in SIMULTANEOUSLY as header shrinks
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.12], [0.2, 1]);
-  const contentY = useTransform(scrollYProgress, [0, 0.12], [40, 0]);
+  // Content fades in as header shrinks
+  const contentOpacity = useTransform(scrollYProgress, [0.22, 0.35], [0, 1]);
+  const contentY = useTransform(scrollYProgress, [0.22, 0.35], [40, 0]);
 
   return (
     <Box
       ref={containerRef}
       position="relative"
-      height="350vh"
+      height="180vh"
       bg="transparent"
     >
       {/* Sticky container */}
@@ -86,7 +88,7 @@ export default function HowItWorksSection() {
           <MotionBox
             style={{ opacity: contentOpacity, y: contentY }}
             position="absolute"
-            top="18%"
+            top={{ base: "70px", md: "80px" }}
             left={0}
             right={0}
             bottom={0}
@@ -99,7 +101,6 @@ export default function HowItWorksSection() {
               h="full"
               maxW="1400px"
               mx="auto"
-              pt={{ base: 8, lg: 12 }}
             >
               {/* Left side - Evolving Visual */}
               <Box flex="1.5" w="full">
@@ -133,38 +134,39 @@ function EvolvingVisual({
 }: {
   scrollProgress: ReturnType<typeof useTransform<number, number>>;
 }) {
-  // Stage timing - content visible from 0.15 onwards (400vh total)
-  // Stage 1: 0.15 - 0.35
-  // Stage 2: 0.35 - 0.55
-  // Stage 3: 0.55 - 0.75
-  // Stage 4: 0.75 - 1.00
+  // Stage timing with viewport-based tracking (180vh section + viewport = ~280vh range)
+  // Header done at ~0.35, stages run from 0.38 to 0.88
+  // Stage 1: 0.38 - 0.50
+  // Stage 2: 0.50 - 0.62
+  // Stage 3: 0.62 - 0.75
+  // Stage 4: 0.75 - 0.88
 
   const stage1Opacity = useTransform(
     scrollProgress,
-    [0.15, 0.18, 0.32, 0.35],
+    [0.38, 0.42, 0.46, 0.50],
     [0, 1, 1, 0]
   );
   const stage2Opacity = useTransform(
     scrollProgress,
-    [0.32, 0.38, 0.52, 0.55],
+    [0.46, 0.54, 0.58, 0.62],
     [0, 1, 1, 0]
   );
   const stage3Opacity = useTransform(
     scrollProgress,
-    [0.52, 0.58, 0.72, 0.75],
+    [0.58, 0.66, 0.71, 0.75],
     [0, 1, 1, 0]
   );
-  const stage4Opacity = useTransform(scrollProgress, [0.72, 0.78, 1], [0, 1, 1]);
+  const stage4Opacity = useTransform(scrollProgress, [0.71, 0.78, 0.88], [0, 1, 1]);
 
   // Growth animations
   const chatScale = useTransform(
     scrollProgress,
-    [0.15, 0.18, 0.32, 0.35],
+    [0.38, 0.42, 0.46, 0.50],
     [0.95, 1, 1, 0.95]
   );
-  const uiHeight = useTransform(scrollProgress, [0.35, 0.45], ["0%", "100%"]);
-  const teamY = useTransform(scrollProgress, [0.55, 0.62], [30, 0]);
-  const liveScale = useTransform(scrollProgress, [0.75, 0.82], [0.9, 1]);
+  const uiHeight = useTransform(scrollProgress, [0.50, 0.58], ["0%", "100%"]);
+  const teamY = useTransform(scrollProgress, [0.62, 0.68], [30, 0]);
+  const liveScale = useTransform(scrollProgress, [0.75, 0.80], [0.9, 1]);
 
   return (
     <Box
@@ -490,14 +492,14 @@ function StepTextSide({
   index: number;
   scrollProgress: ReturnType<typeof useTransform<number, number>>;
 }) {
-  // Match the visual stage timing
-  // Stage 1: 0.15 - 0.35
-  // Stage 2: 0.35 - 0.55
-  // Stage 3: 0.55 - 0.75
-  // Stage 4: 0.75 - 1.00
-  const stepStart = 0.15 + index * 0.2;
-  const stepEnd = stepStart + 0.2;
-  const transitionDuration = 0.03;
+  // Match the visual stage timing (viewport-based, 180vh section)
+  // Stage 1: 0.38 - 0.50
+  // Stage 2: 0.50 - 0.62
+  // Stage 3: 0.62 - 0.75
+  // Stage 4: 0.75 - 0.88
+  const stepStart = 0.38 + index * 0.125;
+  const stepEnd = stepStart + 0.125;
+  const transitionDuration = 0.04;
 
   const opacity = useTransform(
     scrollProgress,
