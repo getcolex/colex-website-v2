@@ -72,7 +72,7 @@ export default function WhySection() {
             letterSpacing="-0.03em"
             textAlign="center"
           >
-            You have tried this before
+            You have tried to solve this before
           </Text>
         </MotionBox>
 

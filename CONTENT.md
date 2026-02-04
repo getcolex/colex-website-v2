@@ -34,12 +34,12 @@ Edit this file to update website copy. Organized by section in page order.
 - **Subtitle:** "Don't like something? Just say so."
 
 ### Step 3
-- **Title:** "We create the connections"
-- **Subtitle:** "All tasks connect to your data automatically"
-
-### Step 4
 - **Title:** "Review each output"
 - **Subtitle:** "Each task asks for approval when done"
+
+### Step 4
+- **Title:** "We create the connections"
+- **Subtitle:** "All tasks connect to your data automatically"
 
 ### Visual Elements (Mockup Content)
 - **User Message Example:** "I need a workflow that takes quote requests from email, matches them to our rate sheet, and sends proposals"

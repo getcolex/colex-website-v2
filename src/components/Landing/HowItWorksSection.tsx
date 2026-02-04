@@ -21,13 +21,13 @@ const steps = [
   },
   {
     id: 3,
-    title: "We create the connections",
-    subtitle: "All tasks connect to your data automatically",
+    title: "Review each output",
+    subtitle: "Each task asks for approval when done",
   },
   {
     id: 4,
-    title: "Review each output",
-    subtitle: "Each task asks for approval when done",
+    title: "We create the connections",
+    subtitle: "All tasks connect to your data automatically",
   },
 ];
 
@@ -53,7 +53,7 @@ export default function HowItWorksSection() {
     <Box
       ref={containerRef}
       position="relative"
-      height="180vh"
+      height="350vh"
       bg="transparent"
     >
       {/* Sticky container */}
@@ -134,39 +134,39 @@ function EvolvingVisual({
 }: {
   scrollProgress: ReturnType<typeof useTransform<number, number>>;
 }) {
-  // Stage timing with viewport-based tracking (180vh section + viewport = ~280vh range)
-  // Header done at ~0.35, stages run from 0.38 to 0.88
-  // Stage 1: 0.38 - 0.50
-  // Stage 2: 0.50 - 0.62
-  // Stage 3: 0.62 - 0.75
-  // Stage 4: 0.75 - 0.88
+  // Stage timing - with 350vh section height for comfortable pacing
+  // Header done at ~0.20, stages run from 0.22 to 0.65
+  // Stage 1: 0.22 - 0.32
+  // Stage 2: 0.30 - 0.42
+  // Stage 3: 0.40 - 0.52
+  // Stage 4: 0.50 - 0.65
 
   const stage1Opacity = useTransform(
     scrollProgress,
-    [0.38, 0.42, 0.46, 0.50],
+    [0.22, 0.25, 0.29, 0.32],
     [0, 1, 1, 0]
   );
   const stage2Opacity = useTransform(
     scrollProgress,
-    [0.46, 0.54, 0.58, 0.62],
+    [0.30, 0.34, 0.39, 0.42],
     [0, 1, 1, 0]
   );
   const stage3Opacity = useTransform(
     scrollProgress,
-    [0.58, 0.66, 0.71, 0.75],
+    [0.40, 0.44, 0.49, 0.52],
     [0, 1, 1, 0]
   );
-  const stage4Opacity = useTransform(scrollProgress, [0.71, 0.78, 0.88], [0, 1, 1]);
+  const stage4Opacity = useTransform(scrollProgress, [0.50, 0.55, 0.65], [0, 1, 1]);
 
   // Growth animations
   const chatScale = useTransform(
     scrollProgress,
-    [0.38, 0.42, 0.46, 0.50],
+    [0.22, 0.25, 0.29, 0.32],
     [0.95, 1, 1, 0.95]
   );
-  const uiHeight = useTransform(scrollProgress, [0.50, 0.58], ["0%", "100%"]);
-  const teamY = useTransform(scrollProgress, [0.62, 0.68], [30, 0]);
-  const liveScale = useTransform(scrollProgress, [0.75, 0.80], [0.9, 1]);
+  const uiHeight = useTransform(scrollProgress, [0.32, 0.38], ["0%", "100%"]);
+  const teamY = useTransform(scrollProgress, [0.42, 0.47], [30, 0]);
+  const liveScale = useTransform(scrollProgress, [0.52, 0.57], [0.9, 1]);
 
   return (
     <Box
@@ -492,14 +492,14 @@ function StepTextSide({
   index: number;
   scrollProgress: ReturnType<typeof useTransform<number, number>>;
 }) {
-  // Match the visual stage timing (viewport-based, 180vh section)
-  // Stage 1: 0.38 - 0.50
-  // Stage 2: 0.50 - 0.62
-  // Stage 3: 0.62 - 0.75
-  // Stage 4: 0.75 - 0.88
-  const stepStart = 0.38 + index * 0.125;
-  const stepEnd = stepStart + 0.125;
-  const transitionDuration = 0.04;
+  // Match the visual stage timing - 350vh section
+  // Stage 1: 0.22 - 0.32
+  // Stage 2: 0.30 - 0.42
+  // Stage 3: 0.40 - 0.52
+  // Stage 4: 0.50 - 0.65
+  const stepStart = 0.22 + index * 0.10;
+  const stepEnd = stepStart + 0.12;
+  const transitionDuration = 0.03;
 
   const opacity = useTransform(
     scrollProgress,

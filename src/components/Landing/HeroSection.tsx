@@ -42,7 +42,7 @@ export default function HeroSection() {
               fontWeight="500"
               mt={{ base: 4, md: 6 }}
             >
-              Colex is purpose built to automate your team reliably
+              Colex is purpose-built to automate your team reliably
             </Text>
 
             {/* CTA + Trust */}
