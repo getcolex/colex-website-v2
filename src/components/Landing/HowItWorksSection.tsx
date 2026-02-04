@@ -16,18 +16,18 @@ const steps = [
   },
   {
     id: 2,
-    title: "We build the workflow",
-    subtitle: "Just talk to tweak. Don't like something? Just say so.",
+    title: "Our agents build the workflow",
+    subtitle: "Don't like something? Just say so.",
   },
   {
     id: 3,
-    title: "Your team reviews",
-    subtitle: "Nothing ships without approval",
+    title: "We create the connections",
+    subtitle: "All tasks connect to your data automatically",
   },
   {
     id: 4,
-    title: "Colex handles the rest",
-    subtitle: "We handle the engineering. You just use it.",
+    title: "Review each output",
+    subtitle: "Each task asks for approval when done",
   },
 ];
 
@@ -329,7 +329,7 @@ function EvolvingVisual({
                 fontSize={{ base: "sm", md: "md" }}
                 fontWeight="500"
               >
-                Save workflow
+                Run workflow
               </Box>
             </Box>
           </MotionBox>

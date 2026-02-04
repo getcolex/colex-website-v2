@@ -11,22 +11,22 @@ const MotionBox = motion.create(Box);
 const failures = [
   {
     id: 1,
-    title: "Tried SaaS",
-    subtitle: "team is still on whatsapp",
+    title: "SaaS is too rigid",
+    subtitle: "The team is still on whatapp",
   },
   {
     id: 2,
-    title: "Tried no-code",
+    title: "No-code is a lot of code",
     subtitle: "Became the maintenance guy.",
   },
   {
     id: 3,
-    title: "Tried vibe coding",
-    subtitle: "Cool demo. Never shipped.",
+    title: "Vibe coding dosen't ship",
+    subtitle: "Cool demo. Never shared.",
   },
   {
     id: 4,
-    title: "Hired devs",
+    title: "Devs are expensive",
     subtitle: "Three months later, 'almost done.'",
   },
 ];
@@ -149,7 +149,7 @@ function FailureMockup({ type }: { type: number }) {
             alignSelf="flex-start"
             boxShadow="xs"
           >
-            <Text fontSize="xs" color="gray.600">did you update the CRM?</Text>
+            <Text fontSize="xs" color="gray.600">did you add the inquiry?</Text>
           </Box>
           <Box
             bg="white"

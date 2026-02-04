@@ -11,13 +11,13 @@ const MotionBox = motion.create(Box);
 const features = [
   {
     id: 1,
-    title: "Simple UI",
-    description: "We generate UI for all your tasks",
+    title: "Each task has a interface",
+    description: "No more fighting google sheets",
   },
   {
     id: 2,
-    title: "Automated Reviews",
-    description: "The system asks for reviews when needed",
+    title: "Reviews where needed",
+    description: "The system notifies for reviews automatically",
   },
   {
     id: 3,
