@@ -38,14 +38,14 @@ export default function FeatureGridSection() {
   const headerTop = useTransform(scrollYProgress, [0, 0.15], ["50%", "10%"]);
 
   // Content fades in SIMULTANEOUSLY as header shrinks
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.15], [0, 1]);
-  const contentY = useTransform(scrollYProgress, [0, 0.15], [60, 0]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.15], [0.2, 1]);
+  const contentY = useTransform(scrollYProgress, [0, 0.15], [40, 0]);
 
   return (
     <Box
       ref={containerRef}
       position="relative"
-      height="200vh"
+      height="150vh"
       bg="transparent"
     >
       {/* Sticky container */}
@@ -65,7 +65,7 @@ export default function FeatureGridSection() {
           >
             <Text
               fontFamily="heading"
-              fontSize={{ base: "8vw", md: "6vw", lg: "4vw" }}
+              fontSize={{ base: "10vw", md: "7vw", lg: "5vw" }}
               fontWeight="700"
               color="text.primary"
               letterSpacing="-0.03em"

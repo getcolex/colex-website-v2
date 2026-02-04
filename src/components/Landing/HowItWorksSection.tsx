@@ -44,14 +44,14 @@ export default function HowItWorksSection() {
   const headerTop = useTransform(scrollYProgress, [0, 0.12], ["50%", "10%"]);
 
   // Content fades in SIMULTANEOUSLY as header shrinks
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.12], [0, 1]);
-  const contentY = useTransform(scrollYProgress, [0, 0.12], [60, 0]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.12], [0.2, 1]);
+  const contentY = useTransform(scrollYProgress, [0, 0.12], [40, 0]);
 
   return (
     <Box
       ref={containerRef}
       position="relative"
-      height="400vh"
+      height="350vh"
       bg="transparent"
     >
       {/* Sticky container */}

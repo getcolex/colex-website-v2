@@ -1,52 +1,30 @@
 "use client";
 
 import { Box, Container, Text, Button, HStack } from "@chakra-ui/react";
-import { motion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
 import { getEarlyAccess } from "@/lib/utils";
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 
-const MotionBox = motion.create(Box);
-const MotionText = motion.create(Text);
-
 export default function HeroSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  // CTA and trust signals fade in on scroll
-  const ctaOpacity = useTransform(scrollYProgress, [0.2, 0.4], [0, 1]);
-  const ctaY = useTransform(scrollYProgress, [0.2, 0.4], [30, 0]);
-
   return (
     <Box
-      ref={containerRef}
       position="relative"
-      height="140vh"
+      minH="100vh"
       bg="transparent"
     >
-      {/* Sticky container */}
-      <Box position="sticky" top={0} height="100vh" overflow="hidden">
-        <Container maxW="container.lg" h="full" position="relative">
-          {/* Content centered */}
-          <Box
-            position="absolute"
-            inset={0}
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-            textAlign="center"
-            px={{ base: 4, md: 8 }}
-          >
+      <Container maxW="container.lg" h="full" position="relative">
+        {/* Content centered */}
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          textAlign="center"
+          px={{ base: 4, md: 8 }}
+          py={{ base: 24, md: 32 }}
+          minH="100vh"
+        >
             {/* Headline */}
-            <MotionText
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            <Text
               fontFamily="heading"
               fontSize={{ base: "10vw", md: "7vw", lg: "5.5vw" }}
               lineHeight={1.1}
@@ -55,24 +33,20 @@ export default function HeroSection() {
               letterSpacing="-0.03em"
             >
               Give your teams extra hands
-            </MotionText>
+            </Text>
 
             {/* Subtitle */}
-            <MotionText
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
+            <Text
               fontSize={{ base: "md", md: "lg", lg: "xl" }}
               color="text.primary"
               fontWeight="500"
               mt={{ base: 4, md: 6 }}
             >
               Colex is purpose built to automate your team reliably
-            </MotionText>
+            </Text>
 
-            {/* CTA + Trust - fades in on scroll */}
-            <MotionBox
-              style={{ opacity: ctaOpacity, y: ctaY }}
+            {/* CTA + Trust */}
+            <Box
               mt={{ base: 8, md: 10 }}
             >
               {/* CTA Button */}
@@ -119,10 +93,9 @@ export default function HeroSection() {
                   </Text>
                 </HStack>
               </Box>
-            </MotionBox>
           </Box>
-        </Container>
-      </Box>
+        </Box>
+      </Container>
     </Box>
   );
 }

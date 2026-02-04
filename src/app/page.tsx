@@ -21,7 +21,7 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <Box bg="transparent" position="relative">
+    <Box bg="white" position="relative" minH="100vh">
       <AsciiBackground opacity={0.06} showControls={true} />
       <Box position="relative" zIndex={1}>
         <LandingNavbar />
