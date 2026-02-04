@@ -1,11 +1,6 @@
 "use client";
 
 import { Box, Container, Text, Grid, Flex, Image } from "@chakra-ui/react";
-import { motion, useTransform } from "motion/react";
-import { useRef } from "react";
-import { useSectionScroll } from "@/hooks/useSectionScroll";
-
-const MotionBox = motion.create(Box);
 
 // Feature cards data
 const features = [
@@ -27,60 +22,38 @@ const features = [
 ];
 
 export default function FeatureGridSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  // Track section as it travels through viewport
-  const { scrollYProgress } = useSectionScroll(containerRef, {
-    offset: ["start end", "end start"],
-  });
-
-  // Header shrinks as section enters viewport
-  const headerScale = useTransform(scrollYProgress, [0.05, 0.35], [1.2, 0.5]);
-  const headerY = useTransform(scrollYProgress, [0.05, 0.35], ["20vh", "0vh"]);
-
-  // Content fades in after header starts shrinking
-  const contentOpacity = useTransform(scrollYProgress, [0.15, 0.4], [0, 1]);
-  const contentY = useTransform(scrollYProgress, [0.15, 0.4], [60, 0]);
-
   return (
     <Box
-      ref={containerRef}
       position="relative"
       py={{ base: 20, md: 28 }}
       bg="transparent"
     >
       <Container maxW="container.xl" px={{ base: 4, md: 8 }}>
-        {/* Section header - shrinks as you scroll */}
-        <MotionBox
-          style={{ scale: headerScale, y: headerY }}
-          transformOrigin="center top"
-          mb={{ base: 6, md: 11 }}
-        >
+        {/* Section header */}
+        <Box mb={{ base: 10, md: 14 }}>
           <Text
             fontFamily="heading"
-            fontSize={{ base: "8vw", md: "5vw", lg: "4vw" }}
+            fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
             fontWeight="700"
             color="text.primary"
-            letterSpacing="-0.03em"
+            letterSpacing="-0.02em"
             textAlign="center"
           >
             Colex gives the control back to you
           </Text>
-        </MotionBox>
+        </Box>
 
         {/* Content area - 3 feature cards in a row */}
-        <MotionBox style={{ opacity: contentOpacity, y: contentY }}>
-          <Grid
-            templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }}
-            gap={{ base: 4, md: 6 }}
-            maxW="1100px"
-            mx="auto"
-          >
-            {features.map((feature) => (
-              <FeatureCard key={feature.id} feature={feature} />
-            ))}
-          </Grid>
-        </MotionBox>
+        <Grid
+          templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }}
+          gap={{ base: 4, md: 6 }}
+          maxW="1100px"
+          mx="auto"
+        >
+          {features.map((feature) => (
+            <FeatureCard key={feature.id} feature={feature} />
+          ))}
+        </Grid>
       </Container>
     </Box>
   );

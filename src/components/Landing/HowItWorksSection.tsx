@@ -40,14 +40,9 @@ export default function HowItWorksSection() {
     offset: ["start end", "end start"],
   });
 
-  // Header transforms: shrinks as section enters viewport
-  // Starts at 5% (top) - no movement, only scale
-  const headerScale = useTransform(scrollYProgress, [0.05, 0.25], [1, 0.4]);
-  const headerTop = "5%";
-
-  // Content fades in as header shrinks
-  const contentOpacity = useTransform(scrollYProgress, [0.22, 0.35], [0, 1]);
-  const contentY = useTransform(scrollYProgress, [0.22, 0.35], [40, 0]);
+  // Content fades in
+  const contentOpacity = useTransform(scrollYProgress, [0.15, 0.25], [0, 1]);
+  const contentY = useTransform(scrollYProgress, [0.15, 0.25], [40, 0]);
 
   return (
     <Box
@@ -59,36 +54,32 @@ export default function HowItWorksSection() {
       {/* Sticky container */}
       <Box position="sticky" top={0} height="100vh" overflow="hidden">
         <Container maxW="container.xl" h="full" position="relative">
-          {/* Animated header - starts big and centered, shrinks and moves to top */}
-          <MotionBox
-            style={{
-              scale: headerScale,
-              top: headerTop,
-              x: "-50%",
-            }}
+          {/* Header */}
+          <Box
             position="absolute"
+            top="5%"
             left="50%"
-            transformOrigin="center center"
+            transform="translateX(-50%)"
             zIndex={2}
           >
             <Text
               fontFamily="heading"
-              fontSize={{ base: "12vw", md: "8vw", lg: "6vw" }}
+              fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
               fontWeight="700"
               color="text.primary"
-              letterSpacing="-0.03em"
+              letterSpacing="-0.02em"
               textAlign="center"
               whiteSpace="nowrap"
             >
               How it works
             </Text>
-          </MotionBox>
+          </Box>
 
           {/* Content area - fades in after header shrinks */}
           <MotionBox
             style={{ opacity: contentOpacity, y: contentY }}
             position="absolute"
-            top={{ base: "70px", md: "80px" }}
+            top={{ base: "100px", md: "120px" }}
             left={0}
             right={0}
             bottom={0}

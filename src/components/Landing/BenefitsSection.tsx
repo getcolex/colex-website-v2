@@ -29,7 +29,7 @@ export default function BenefitsSection() {
           align={{ base: "flex-start", md: "center" }}
           justify="space-between"
           gap={{ base: 4, md: 6 }}
-          mb={{ base: 6, md: 11 }}
+          mb={{ base: 10, md: 14 }}
           maxW="900px"
           mx="auto"
         >
