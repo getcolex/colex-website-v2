@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Container, Text, Button, HStack } from "@chakra-ui/react";
+import { Box, Container, Text, Button } from "@chakra-ui/react";
 import { getEarlyAccess } from "@/lib/utils";
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 
@@ -67,7 +67,7 @@ export default function HeroSection() {
                   transition="all 0.2s"
                   onClick={() => getEarlyAccess("hero_section")}
                 >
-                  Let&apos;s build yours
+                  See it work in 30 minutes
                   <ArrowRightIcon
                     style={{
                       width: 20,
@@ -78,21 +78,10 @@ export default function HeroSection() {
                 </Button>
               </Box>
 
-              {/* Trust signals */}
-              <Box>
-                <Text fontSize="sm" color="text.muted" mb={3}>
-                  Trusted by teams at
-                </Text>
-                <HStack gap={8} justify="center">
-                  <Text fontSize="md" color="text.primary" fontWeight="500">
-                    Mellow Designs
-                  </Text>
-                  <Box w="1px" h="20px" bg="gray.300" />
-                  <Text fontSize="md" color="text.primary" fontWeight="500">
-                    SC Lines
-                  </Text>
-                </HStack>
-              </Box>
+              {/* Micro-copy */}
+              <Text fontSize="sm" color="text.muted">
+                No code. No consultants.
+              </Text>
           </Box>
         </Box>
       </Container>

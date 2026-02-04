@@ -1,4 +1,6 @@
-import "@fontsource-variable/open-sans";
+import "@fontsource-variable/inter";
+import "@fontsource-variable/fraunces";
+import "./globals.css";
 import "lenis/dist/lenis.css";
 import { ReactNode } from "react";
 import Providers from "./providers";
