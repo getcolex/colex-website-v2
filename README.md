@@ -1,85 +1,65 @@
-# Colex - AI-Powered Legal Workspace
+# Colex - Workflow Automation for Teams
 
-Colex is an AI-powered legal workspace built specifically for in-house legal teams dealing with increasingly complex business challenges. The platform helps legal professionals cut through busywork and reclaim hours for strategic planning.
+Colex is a workflow automation platform that gives your teams extra hands. Purpose-built to automate team workflows reliably with human-in-the-loop review and approval.
 
-## 🌟 Overview
+## Overview
 
-Colex provides a comprehensive solution for legal teams to manage contracts, analyze documents with AI assistance, handle intake processes, and collaborate effectively on legal matters. The platform serves as a centralized hub that consolidates various legal workflows into a single, intuitive interface.
+Colex helps teams automate repetitive workflows without the complexity of no-code tools or the cost of custom development. Describe what you need in plain English, and our agents build and connect everything automatically.
 
-## ✨ Key Features
+## How It Works
 
-### 1. Secure Knowledge-Base
-- Centralize all contracts and policies to align your team
-- Share securely with authorized stakeholders
-- Maintain organized documentation with proper access controls
+1. **Describe what you need** - Tell us your workflow in plain English
+2. **Our agents build the workflow** - Don't like something? Just say so.
+3. **Review each output** - Each task asks for approval when done
+4. **We create the connections** - All tasks connect to your data automatically
 
-### 2. AI-Powered Analysis
-- Platform remembers your cases and improves suggestions as you work
-- Functions like a junior associate that never forgets
-- Contextual AI assistance for legal document review
+## Key Features
 
-### 3. Seamless Intake Triage
-- Consolidate requests from all channels in a single list
-- Track requests and let AI deliver instant answers to queries
-- Streamlined workflow for handling legal inquiries
+### Task Interfaces
+Each workflow task gets its own interface - no more fighting with spreadsheets.
 
-### 4. Collaborative Contract Management
-- Draft contracts faster with lawyer-verified templates
-- Access comprehensive clause libraries
-- Build custom approval flows tailored to your company
+### Human Review by Default
+The system notifies you for reviews automatically. AI drafts, you approve.
 
-## 🛠️ Tech Stack
+### Full Audit Trail
+Every decision. Every approval. Logged.
 
-- **Framework**: Next.js 15.3.3 with React 19
-- **UI Library**: Chakra UI v3.20.0
-- **Animations**: Motion (Framer Motion) v12.18.1
-- **Styling**: Emotion React & Styled
-- **Typography**: Open Sans Variable Font
+### Works with Your Data
+Connects to Gmail, Sheets, Slack, and more.
+
+### Changes with Your Needs
+Configure auto-approvals, notifications, and approval workflows.
+
+## Why Colex?
+
+Traditional solutions have their drawbacks:
+- **SaaS is too rigid** - Teams end up back on WhatsApp
+- **No-code is a lot of code** - You become the maintenance person
+- **Vibe coding doesn't ship** - Cool demos that never get shared
+- **Devs are expensive** - Three months later, "almost done"
+
+Colex gives control back to you with:
+- Minutes to your first workflow
+- Human review built in
+- Interfaces that come ready to use
+
+## Industries
+
+Built for logistics, insurance, legal, and more - anywhere teams need reliable workflow automation with human oversight.
+
+## Tech Stack
+
+- **Framework**: Next.js 15 with React 19
+- **UI Library**: Chakra UI v3
+- **Animations**: Framer Motion
 - **Smooth Scrolling**: Lenis
-- **Theme Management**: next-themes
 - **Language**: TypeScript
-- **Development Tools**: ESLint
 
-## 📁 Project Structure
-
-```
-colex/
-├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── layout.tsx         # Root layout
-│   │   ├── page.tsx           # Landing page
-│   │   ├── LayoutClient.tsx   # Client-side layout
-│   │   └── providers.tsx      # App providers
-│   ├── components/
-│   │   └── Landing/           # Landing page components
-│   │       ├── Navbar.tsx     # Navigation component
-│   │       ├── HeroSection.tsx
-│   │       ├── FeatureSection.tsx
-│   │       ├── TestimonialsSection.tsx
-│   │       └── Footer.tsx
-│   ├── lib/
-│   │   ├── constants.ts       # App constants
-│   │   ├── gtag.ts           # Google Analytics
-│   │   ├── lenis.ts          # Smooth scrolling setup
-│   │   └── hooks/
-│   │       └── useHasMounted.ts
-│   ├── assets/
-│   │   └── icons/            # SVG icons
-│   └── theme/
-│       └── index.tsx         # Chakra UI theme
-├── public/
-│   └── images/               # Static images
-├── next.config.ts            # Next.js configuration
-├── tsconfig.json            # TypeScript configuration
-├── eslint.config.mjs        # ESLint configuration
-└── package.json             # Dependencies and scripts
-```
-
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm, yarn, pnpm, or bun
 
 ### Installation
@@ -87,90 +67,60 @@ colex/
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd colex
+cd colex-website-v2
 ```
 
 2. Install dependencies:
 ```bash
 npm install
-# or
-yarn install
-# or
-pnpm install
-# or
-bun install
 ```
 
 3. Run the development server:
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## 📜 Available Scripts
+## Scripts
 
-- `npm run dev` - Start the development server
-- `npm run build` - Build the application for production
-- `npm start` - Start the production server
-- `npm run lint` - Run ESLint for code linting
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npm run lint` - Run ESLint
 
-## 🎨 Features Implementation
+## Project Structure
 
-### Responsive Design
-The application is fully responsive with breakpoint-specific styling using Chakra UI's responsive utilities.
+```
+colex-website-v2/
+├── src/
+│   ├── app/                    # Next.js App Router
+│   ├── components/
+│   │   └── Landing/           # Landing page sections
+│   │       ├── Navbar.tsx
+│   │       ├── HeroSection.tsx
+│   │       ├── HowItWorksSection.tsx
+│   │       ├── WhySection.tsx
+│   │       ├── FeatureGridSection.tsx
+│   │       ├── BenefitsSection.tsx
+│   │       ├── FeatureSection.tsx
+│   │       ├── ResultsSection.tsx
+│   │       ├── TrustSection.tsx
+│   │       ├── VerticalsSection.tsx
+│   │       ├── CTASection.tsx
+│   │       └── Footer.tsx
+│   ├── lib/                   # Utilities and constants
+│   ├── hooks/                 # Custom React hooks
+│   ├── assets/               # Icons and images
+│   └── theme/                # Chakra UI theme
+├── public/                   # Static assets
+└── CONTENT.md               # Website copy (editable)
+```
 
-### Smooth Animations
-- Custom scroll-based animations for the features section
-- Progressive loading with Lenis smooth scrolling
-- Motion components for enhanced user interactions
+## Content Management
 
-### Contact Integration
-- WhatsApp integration for demo booking
-- Google Analytics tracking for user engagement
-- Phone contact: +91 9945 075 889
-
-## 🔧 Configuration
-
-### Next.js Configuration
-- Custom webpack configuration for SVG handling with SVGR
-- Optimized for production builds
-
-### TypeScript Configuration
-- Strict mode enabled
-- Path mapping configured for `@/*` imports
-- Modern ES2017 target with full type checking
-
-## 📱 Contact & Demo
-
-Ready to streamline your legal workflow? 
-
-**Book a Demo**: Click the "Book a demo" button on the website to connect via WhatsApp and schedule a personalized demonstration.
-
-**Phone**: +91 9945 075 889
-
-## 🤝 Testimonials
-
-> "I spend less time switching between tools and more time building strong arguments."  
-> **Ananya** - Senior Associate at a Litigation Practice
-
-> "Finally, something that understands in-house lawyers. I'd use this every day if it keeps improving."  
-> **Lovesh** - Corporate Counsel
-
-## 📈 Development Status
-
-This project is actively being developed with a focus on:
-- Enhanced AI capabilities for legal document analysis
-- Improved collaboration features
-- Extended integration capabilities
-- Advanced security features for legal compliance
+All website copy is maintained in `CONTENT.md` for easy editing.
 
 ---
 
-Built with ❤️ for legal professionals who value efficiency and precision.
+Trusted by teams at Mellow Designs and SC Lines.
