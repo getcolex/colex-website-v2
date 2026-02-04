@@ -17,7 +17,7 @@ export default function CTASection() {
           <Box flex={1}>
             <Text
               fontFamily="heading"
-              fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
+              fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
               fontWeight="700"
               lineHeight={1.2}
               letterSpacing="-0.03em"

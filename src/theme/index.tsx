@@ -15,8 +15,8 @@ const customConfig = defineConfig({
     },
     tokens: {
       fonts: {
-        heading: { value: `"Open Sans Variable", sans-serif` },
-        body: { value: `"Open Sans Variable", sans-serif` },
+        heading: { value: `"Fraunces Variable", serif` },
+        body: { value: `"Inter Variable", sans-serif` },
       },
       colors: {
         // Brand Colors

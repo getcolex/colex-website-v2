@@ -1,0 +1,6 @@
+/* Tune Fraunces to be sharper and less quirky */
+[style*="Fraunces"],
+*[class*="heading"],
+h1, h2, h3, h4, h5, h6 {
+  font-variation-settings: "WONK" 0, "opsz" 144;
+}
