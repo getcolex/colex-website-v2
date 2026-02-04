@@ -9,7 +9,6 @@ import HowItWorksSection from "@/components/Landing/HowItWorksSection";
 import WhySection from "@/components/Landing/WhySection";
 import FeatureGridSection from "@/components/Landing/FeatureGridSection";
 import BenefitsSection from "@/components/Landing/BenefitsSection";
-import CTASection from "@/components/Landing/CTASection";
 import Footer from "@/components/Landing/Footer";
 import { useEffect } from "react";
 import { trackLandingPageView } from "@/lib/gtag";
@@ -27,7 +26,6 @@ export default function LandingPage() {
       <WhySection />
       <FeatureGridSection />
       <BenefitsSection />
-      <CTASection />
       <Footer />
     </Box>
   );
