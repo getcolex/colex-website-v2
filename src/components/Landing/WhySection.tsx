@@ -104,10 +104,10 @@ function FailureCard({ failure }: { failure: (typeof failures)[0] }) {
       overflow="hidden"
       boxShadow="sm"
     >
-      {/* Mockup area */}
+      {/* Mockup area - 1:1.6 ratio */}
       <Box
         bg="gray.50"
-        h={{ base: "140px", md: "160px" }}
+        h={{ base: "180px", md: "220px" }}
         p={4}
         borderBottom="1px solid"
         borderColor="gray.100"
@@ -137,151 +137,191 @@ function FailureCard({ failure }: { failure: (typeof failures)[0] }) {
 function FailureMockup({ type }: { type: number }) {
   switch (type) {
     case 1:
-      // WhatsApp-style chat bubbles
+      // WhatsApp-style chat with beige background
       return (
-        <Flex direction="column" gap={2} h="full" justify="center">
-          <Box
-            bg="white"
-            borderRadius="lg"
-            borderBottomLeftRadius="sm"
-            p={2}
-            maxW="80%"
-            alignSelf="flex-start"
-            boxShadow="xs"
-          >
-            <Text fontSize="xs" color="gray.600">did you add the inquiry?</Text>
-          </Box>
-          <Box
-            bg="white"
-            borderRadius="lg"
-            borderBottomRightRadius="sm"
-            p={2}
-            maxW="70%"
-            alignSelf="flex-end"
-            boxShadow="xs"
-          >
-            <Text fontSize="xs" color="gray.600">where&apos;s the doc?</Text>
-          </Box>
-          <Box
-            bg="white"
-            borderRadius="lg"
-            borderBottomLeftRadius="sm"
-            p={2}
-            maxW="60%"
-            alignSelf="flex-start"
-            boxShadow="xs"
-          >
-            <Text fontSize="xs" color="gray.600">checking...</Text>
-          </Box>
-        </Flex>
+        <Box h="full" bg="#ece5dd" borderRadius="md" p={2} overflow="hidden">
+          <Flex direction="column" gap={1.5} h="full" justify="center">
+            <Box
+              bg="white"
+              borderRadius="lg"
+              borderBottomLeftRadius="sm"
+              px={2}
+              py={1.5}
+              maxW="85%"
+              alignSelf="flex-start"
+              boxShadow="xs"
+            >
+              <Text fontSize="10px" color="gray.700">did you add the inquiry?</Text>
+            </Box>
+            <Box
+              bg="#dcf8c6"
+              borderRadius="lg"
+              borderBottomRightRadius="sm"
+              px={2}
+              py={1.5}
+              maxW="70%"
+              alignSelf="flex-end"
+              boxShadow="xs"
+            >
+              <Text fontSize="10px" color="gray.700">where&apos;s the doc?</Text>
+            </Box>
+            <Box
+              bg="white"
+              borderRadius="lg"
+              borderBottomLeftRadius="sm"
+              px={2}
+              py={1.5}
+              maxW="60%"
+              alignSelf="flex-start"
+              boxShadow="xs"
+            >
+              <Text fontSize="10px" color="gray.700">checking...</Text>
+            </Box>
+            <Box
+              bg="#dcf8c6"
+              borderRadius="lg"
+              borderBottomRightRadius="sm"
+              px={2}
+              py={1.5}
+              maxW="30%"
+              alignSelf="flex-end"
+              boxShadow="xs"
+            >
+              <Text fontSize="2xl">🤯</Text>
+            </Box>
+          </Flex>
+        </Box>
       );
 
     case 2:
-      // Tangled flowchart nodes
+      // n8n-style workflow with errors
       return (
-        <Flex direction="column" gap={3} h="full" justify="center" align="center">
-          <Flex gap={3} align="center">
-            <Box w={10} h={6} bg="gray.200" borderRadius="md" />
-            <Box w="20px" h="1px" bg="red.400" />
-            <Box w={10} h={6} bg="gray.200" borderRadius="md" position="relative">
-              <Box
-                position="absolute"
-                top={-1}
-                right={-1}
-                w={3}
-                h={3}
-                bg="red.500"
-                borderRadius="full"
-                fontSize="8px"
-                color="white"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                !
+        <Box h="full" bg="gray.800" borderRadius="md" p={4} position="relative" overflow="hidden">
+          {/* Grid background like n8n */}
+          <Box
+            position="absolute"
+            inset={0}
+            opacity={0.1}
+            backgroundImage="linear-gradient(gray 1px, transparent 1px), linear-gradient(90deg, gray 1px, transparent 1px)"
+            backgroundSize="20px 20px"
+          />
+          <Flex direction="column" gap={4} h="full" justify="center" position="relative">
+            {/* Top row: Trigger -> HTTP -> Sheets */}
+            <Flex align="center" justify="center" gap={2}>
+              <Box w={16} h={10} bg="purple.500" borderRadius="md" display="flex" alignItems="center" justifyContent="center">
+                <Text fontSize="10px" color="white" fontWeight="600">Trigger</Text>
               </Box>
-            </Box>
-          </Flex>
-          <Flex gap={3} align="center">
-            <Box w={10} h={6} bg="gray.200" borderRadius="md" />
-            <Box w="20px" h="1px" bg="gray.300" />
-            <Box w={10} h={6} bg="gray.200" borderRadius="md" position="relative">
-              <Box
-                position="absolute"
-                top={-1}
-                right={-1}
-                w={3}
-                h={3}
-                bg="red.500"
-                borderRadius="full"
-                fontSize="8px"
-                color="white"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                !
+              <Box w={6} h="2px" bg="gray.500" />
+              <Box w={16} h={10} bg="blue.500" borderRadius="md" display="flex" alignItems="center" justifyContent="center" position="relative">
+                <Text fontSize="10px" color="white" fontWeight="600">HTTP</Text>
+                <Box position="absolute" top={-2} right={-2} w={6} h={6} bg="red.500" borderRadius="full" display="flex" alignItems="center" justifyContent="center" border="2px solid" borderColor="gray.800">
+                  <Text fontSize="12px" color="white" fontWeight="700">!</Text>
+                </Box>
               </Box>
-            </Box>
+              <Box w={6} h="2px" bg="red.400" />
+              <Box w={16} h={10} bg="green.500" borderRadius="md" display="flex" alignItems="center" justifyContent="center" position="relative">
+                <Text fontSize="10px" color="white" fontWeight="600">Sheets</Text>
+                <Box position="absolute" top={-2} right={-2} w={6} h={6} bg="red.500" borderRadius="full" display="flex" alignItems="center" justifyContent="center" border="2px solid" borderColor="gray.800">
+                  <Text fontSize="12px" color="white" fontWeight="700">!</Text>
+                </Box>
+              </Box>
+            </Flex>
+            {/* Bottom row: Branch with errors */}
+            <Flex align="center" justify="center" gap={2} ml={12}>
+              <Box w={16} h={10} bg="orange.500" borderRadius="md" display="flex" alignItems="center" justifyContent="center" position="relative">
+                <Text fontSize="10px" color="white" fontWeight="600">IF</Text>
+              </Box>
+              <Box w={6} h="2px" bg="gray.500" />
+              <Box w={16} h={10} bg="teal.500" borderRadius="md" display="flex" alignItems="center" justifyContent="center" position="relative">
+                <Text fontSize="10px" color="white" fontWeight="600">Email</Text>
+                <Box position="absolute" top={-2} right={-2} w={6} h={6} bg="red.500" borderRadius="full" display="flex" alignItems="center" justifyContent="center" border="2px solid" borderColor="gray.800">
+                  <Text fontSize="12px" color="white" fontWeight="700">!</Text>
+                </Box>
+              </Box>
+            </Flex>
           </Flex>
-        </Flex>
+        </Box>
       );
 
     case 3:
-      // Code editor with DEMO badge
+      // Lovable-style UI with endless loading sidebar
       return (
-        <Box h="full" position="relative">
-          <Box
-            bg="gray.800"
-            borderRadius="md"
-            p={2}
-            h="full"
-            fontFamily="mono"
-          >
+        <Flex h="full" gap={0} borderRadius="md" overflow="hidden">
+          {/* Sidebar with loading spinner */}
+          <Box w="35%" bg="gray.900" p={2} borderRight="1px solid" borderColor="gray.700">
+            <Flex direction="column" h="full" align="center" justify="center">
+              <MotionBox
+                w={8}
+                h={8}
+                border="2px solid"
+                borderColor="gray.600"
+                borderTopColor="purple.400"
+                borderRadius="full"
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 1, ease: "linear", repeatType: "loop" } as never}
+                mb={3}
+              />
+              <Text fontSize="9px" color="gray.500" textAlign="center">Generating...</Text>
+            </Flex>
+          </Box>
+          {/* Main preview area - blank/loading */}
+          <Box flex={1} bg="white" p={2} position="relative">
             <Flex gap={1} mb={2}>
               <Box w={2} h={2} borderRadius="full" bg="red.400" />
               <Box w={2} h={2} borderRadius="full" bg="yellow.400" />
               <Box w={2} h={2} borderRadius="full" bg="green.400" />
             </Flex>
-            <Box h={2} w="60%" bg="gray.600" borderRadius="sm" mb={1} />
-            <Box h={2} w="80%" bg="gray.600" borderRadius="sm" mb={1} />
-            <Box h={2} w="40%" bg="gray.600" borderRadius="sm" />
+            <Box h="full" display="flex" alignItems="center" justifyContent="center">
+              <Text fontSize="9px" color="gray.400">Preview loading...</Text>
+            </Box>
+            <Box
+              position="absolute"
+              top={2}
+              right={2}
+              bg="purple.500"
+              color="white"
+              fontSize="8px"
+              fontWeight="600"
+              px={1.5}
+              py={0.5}
+              borderRadius="sm"
+            >
+              DEMO
+            </Box>
           </Box>
-          <Box
-            position="absolute"
-            top={2}
-            right={2}
-            bg="yellow.400"
-            color="gray.800"
-            fontSize="9px"
-            fontWeight="700"
-            px={2}
-            py={0.5}
-            borderRadius="sm"
-          >
-            DEMO
-          </Box>
-        </Box>
+        </Flex>
       );
 
     case 4:
-      // Jira-style board with tickets
+      // Jira-style board with 💰 on each ticket
       return (
         <Flex gap={2} h="full">
           <Box flex={1} bg="gray.100" borderRadius="md" p={2}>
             <Text fontSize="8px" color="gray.500" mb={2}>TODO</Text>
-            <Box h={4} bg="white" borderRadius="sm" mb={1} boxShadow="xs" />
-            <Box h={4} bg="white" borderRadius="sm" mb={1} boxShadow="xs" />
-            <Box h={4} bg="white" borderRadius="sm" boxShadow="xs" />
+            <Box h={7} bg="white" borderRadius="sm" mb={1} boxShadow="xs" display="flex" alignItems="center" justifyContent="flex-end" px={2}>
+              <Text fontSize="lg">💰</Text>
+            </Box>
+            <Box h={7} bg="white" borderRadius="sm" mb={1} boxShadow="xs" display="flex" alignItems="center" justifyContent="flex-end" px={2}>
+              <Text fontSize="lg">💰</Text>
+            </Box>
+            <Box h={7} bg="white" borderRadius="sm" boxShadow="xs" display="flex" alignItems="center" justifyContent="flex-end" px={2}>
+              <Text fontSize="lg">💰</Text>
+            </Box>
           </Box>
           <Box flex={1} bg="gray.100" borderRadius="md" p={2}>
             <Text fontSize="8px" color="gray.500" mb={2}>IN PROGRESS</Text>
-            <Box h={4} bg="yellow.100" borderRadius="sm" mb={1} boxShadow="xs" />
-            <Box h={4} bg="yellow.100" borderRadius="sm" boxShadow="xs" />
+            <Box h={7} bg="yellow.100" borderRadius="sm" mb={1} boxShadow="xs" display="flex" alignItems="center" justifyContent="flex-end" px={2}>
+              <Text fontSize="lg">💰</Text>
+            </Box>
+            <Box h={7} bg="yellow.100" borderRadius="sm" boxShadow="xs" display="flex" alignItems="center" justifyContent="flex-end" px={2}>
+              <Text fontSize="lg">💰</Text>
+            </Box>
           </Box>
           <Box flex={1} bg="gray.100" borderRadius="md" p={2}>
             <Text fontSize="8px" color="gray.500" mb={2}>DONE</Text>
-            <Box h={4} bg="green.100" borderRadius="sm" boxShadow="xs" />
+            <Box h={7} bg="green.100" borderRadius="sm" boxShadow="xs" display="flex" alignItems="center" justifyContent="flex-end" px={2}>
+              <Text fontSize="lg">💰</Text>
+            </Box>
           </Box>
         </Flex>
       );

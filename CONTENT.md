@@ -55,7 +55,7 @@ Edit this file to update website copy. Organized by section in page order.
 
 ## Why Section (Pain Points)
 
-**Section Header:** "You have tried this before"
+**Section Header:** "You have tried to solve this before"
 
 ### Card 1
 - **Title:** "SaaS is too rigid"
