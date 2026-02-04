@@ -33,7 +33,7 @@ export default function FeatureGridSection() {
         <Box mb={{ base: 10, md: 14 }}>
           <Text
             fontFamily="heading"
-            fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
+            fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
             fontWeight="700"
             color="text.primary"
             letterSpacing="-0.02em"
