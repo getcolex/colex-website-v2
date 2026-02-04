@@ -14,7 +14,7 @@ Edit this file to update website copy. Organized by section in page order.
 ## Hero Section
 
 - **Headline:** "Give your teams extra hands"
-- **Subtitle:** "Colex is purpose built to automate your team reliably"
+- **Subtitle:** "Colex is purpose-built to automate your team reliably"
 - **CTA Button:** "Let's build yours"
 - **Trust Statement:** "Trusted by teams at"
 - **Trust Companies:** "Mellow Designs", "SC Lines"
