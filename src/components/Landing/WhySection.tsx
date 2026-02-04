@@ -1,113 +1,34 @@
 "use client";
 
-import { Box, Container, Text, Button } from "@chakra-ui/react";
-import { motion, useScroll, useTransform, MotionValue } from "motion/react";
+import { Box, Container, Text, Grid, Flex } from "@chakra-ui/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
-import { getEarlyAccess } from "@/lib/utils";
-import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 
 const MotionBox = motion.create(Box);
 
-// Failed alternatives
+// Failure cards data
 const failures = [
   {
-    tried: "Tried SaaS.",
-    result: "Team's still on WhatsApp.",
+    id: 1,
+    title: "Tried SaaS",
+    subtitle: "team is still on whatsapp",
   },
   {
-    tried: "Tried no-code.",
-    result: "Became the maintenance guy.",
+    id: 2,
+    title: "Tried no-code",
+    subtitle: "Became the maintenance guy.",
   },
   {
-    tried: "Tried vibe coding.",
-    result: "Cool demo. Never shipped.",
+    id: 3,
+    title: "Tried vibe coding",
+    subtitle: "Cool demo. Never shipped.",
   },
   {
-    tried: "Hired devs.",
-    result: "Three months later, 'almost done.'",
+    id: 4,
+    title: "Hired devs",
+    subtitle: "Three months later, 'almost done.'",
   },
 ];
-
-const success = {
-  headline: "Try Colex.",
-  subline: "Describe now. Use in minutes.",
-};
-
-// Animated strikethrough line
-function StrikethroughLine({
-  scrollProgress,
-  index,
-}: {
-  scrollProgress: MotionValue<number>;
-  index: number;
-}) {
-  // Each line strikes through in sequence
-  // Lines appear at 0.15, 0.25, 0.35, 0.45
-  // Lines strike at 0.25, 0.35, 0.45, 0.55
-  const strikeStart = 0.25 + index * 0.1;
-  const strikeEnd = strikeStart + 0.08;
-
-  const width = useTransform(scrollProgress, [strikeStart, strikeEnd], ["0%", "100%"]);
-
-  return (
-    <MotionBox
-      style={{ width }}
-      position="absolute"
-      top="50%"
-      left={0}
-      h="2px"
-      bg="text.muted"
-    />
-  );
-}
-
-// Single failure line with animated strikethrough
-function FailureLine({
-  failure,
-  index,
-  scrollProgress,
-}: {
-  failure: typeof failures[0];
-  index: number;
-  scrollProgress: MotionValue<number>;
-}) {
-  // Staggered fade in - lines appear one by one
-  const appearStart = 0.1 + index * 0.08;
-  const appearEnd = appearStart + 0.06;
-
-  const y = useTransform(scrollProgress, [appearStart, appearEnd], [20, 0]);
-  const opacity = useTransform(scrollProgress, [appearStart, appearEnd], [0, 1]);
-
-  // Text fades after its strikethrough completes
-  const strikeStart = 0.25 + index * 0.1;
-  const strikeEnd = strikeStart + 0.08;
-  const textOpacity = useTransform(scrollProgress, [strikeStart, strikeEnd], [1, 0.4]);
-
-  return (
-    <MotionBox
-      style={{ y, opacity }}
-      mb={{ base: 5, md: 6 }}
-    >
-      <Box position="relative" display="inline-block">
-        <MotionBox style={{ opacity: textOpacity }}>
-          <Text
-            fontSize={{ base: "md", md: "lg" }}
-            color="text.primary"
-            lineHeight={1.5}
-            display="inline"
-          >
-            <Text as="span" fontWeight="600">{failure.tried}</Text>
-            {" "}
-            <Text as="span" color="text.muted">{failure.result}</Text>
-          </Text>
-        </MotionBox>
-
-        {/* Animated strikethrough - only as wide as text */}
-        <StrikethroughLine scrollProgress={scrollProgress} index={index} />
-      </Box>
-    </MotionBox>
-  );
-}
 
 export default function WhySection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -117,112 +38,272 @@ export default function WhySection() {
     offset: ["start start", "end end"],
   });
 
-  // Colex line appears after all strikethroughs (around 0.7)
-  const colexStart = 0.68;
-  const colexY = useTransform(scrollYProgress, [colexStart, colexStart + 0.1], [30, 0]);
-  const colexOpacity = useTransform(scrollYProgress, [colexStart, colexStart + 0.1], [0, 1]);
-  const colexScale = useTransform(scrollYProgress, [colexStart, colexStart + 0.1], [0.97, 1]);
+  // Header transforms: starts big centered, shrinks and moves to top as user scrolls
+  const headerScale = useTransform(scrollYProgress, [0, 0.15], [1, 0.4]);
+  const headerTop = useTransform(scrollYProgress, [0, 0.15], ["50%", "10%"]);
+
+  // Content fades in SIMULTANEOUSLY as header shrinks
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.15], [0, 1]);
+  const contentY = useTransform(scrollYProgress, [0, 0.15], [60, 0]);
 
   return (
     <Box
       ref={containerRef}
       position="relative"
-      height="300vh"
+      height="200vh"
       bg="transparent"
     >
       {/* Sticky container */}
-      <Box
-        position="sticky"
-        top={0}
-        height="100vh"
-        display="flex"
-        alignItems="center"
-      >
-        <Container maxW="container.md" px={{ base: 5, md: 8 }}>
-          {/* Section header - always visible */}
-          <Text
-            fontFamily="heading"
-            fontSize={{ base: "xl", md: "2xl", lg: "3xl" }}
-            color="brand.primary"
-            fontWeight="600"
-            letterSpacing="-0.03em"
-            lineHeight={1.2}
-            mb={{ base: 10, md: 12 }}
-          >
-            You&apos;ve tried to automate your team before.
-          </Text>
-
-          {/* Failed alternatives with strikethroughs */}
-          <Box mb={{ base: 8, md: 10 }}>
-            {failures.map((failure, index) => (
-              <FailureLine
-                key={failure.tried}
-                failure={failure}
-                index={index}
-                scrollProgress={scrollYProgress}
-              />
-            ))}
-          </Box>
-
-          {/* Colex CTA card */}
+      <Box position="sticky" top={0} height="100vh" overflow="hidden">
+        <Container maxW="container.xl" h="full" position="relative">
+          {/* Animated header - starts big and centered, shrinks and moves to top */}
           <MotionBox
             style={{
-              y: colexY,
-              opacity: colexOpacity,
-              scale: colexScale,
+              scale: headerScale,
+              top: headerTop,
+              x: "-50%",
             }}
-            bg="brand.primary"
-            px={{ base: 6, md: 10 }}
-            py={{ base: 6, md: 8 }}
-            borderRadius="xl"
+            position="absolute"
+            left="50%"
+            transformOrigin="center center"
+            zIndex={2}
           >
             <Text
               fontFamily="heading"
-              fontSize={{ base: "lg", md: "xl" }}
-              color="white"
+              fontSize={{ base: "10vw", md: "7vw", lg: "5vw" }}
               fontWeight="700"
-              lineHeight={1.2}
-              mb={2}
+              color="text.primary"
+              letterSpacing="-0.03em"
+              textAlign="center"
+              whiteSpace="nowrap"
             >
-              {success.headline}
+              You have tried this before
             </Text>
-            <Text
-              fontSize="md"
-              color="white"
-              opacity={0.9}
-              lineHeight={1.5}
-              mb={{ base: 5, md: 6 }}
+          </MotionBox>
+
+          {/* Content area - 2x2 grid of failure cards */}
+          <MotionBox
+            style={{ opacity: contentOpacity, y: contentY }}
+            position="absolute"
+            top="18%"
+            left={0}
+            right={0}
+            bottom={0}
+            px={{ base: 4, md: 8 }}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Grid
+              templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
+              gap={{ base: 4, md: 6 }}
+              maxW="900px"
+              w="full"
             >
-              {success.subline}
-            </Text>
-            <Button
-              size="lg"
-              bg="white"
-              color="brand.primary"
-              fontWeight="500"
-              fontSize="md"
-              px={6}
-              borderRadius="4px"
-              _hover={{
-                bg: "gray.100",
-                transform: "translateY(-2px)",
-              }}
-              transition="all 0.2s"
-              onClick={() => getEarlyAccess("why_section")}
-            >
-              Get access
-              <ArrowRightIcon
-                style={{
-                  width: 18,
-                  height: 18,
-                  marginLeft: 8,
-                  filter: "brightness(0) saturate(100%) invert(12%) sepia(48%) saturate(3000%) hue-rotate(315deg) brightness(90%) contrast(100%)",
-                }}
-              />
-            </Button>
+              {failures.map((failure) => (
+                <FailureCard key={failure.id} failure={failure} />
+              ))}
+            </Grid>
           </MotionBox>
         </Container>
       </Box>
     </Box>
   );
+}
+
+function FailureCard({ failure }: { failure: (typeof failures)[0] }) {
+  return (
+    <Box
+      bg="white"
+      borderRadius="xl"
+      border="1px solid"
+      borderColor="gray.200"
+      overflow="hidden"
+      boxShadow="sm"
+    >
+      {/* Mockup area */}
+      <Box
+        bg="gray.50"
+        h={{ base: "140px", md: "160px" }}
+        p={4}
+        borderBottom="1px solid"
+        borderColor="gray.100"
+      >
+        <FailureMockup type={failure.id} />
+      </Box>
+
+      {/* Text area */}
+      <Box p={{ base: 4, md: 5 }}>
+        <Text
+          fontFamily="heading"
+          fontSize={{ base: "md", md: "lg" }}
+          fontWeight="600"
+          color="text.primary"
+          mb={1}
+        >
+          {failure.title}
+        </Text>
+        <Text fontSize="sm" color="text.muted">
+          {failure.subtitle}
+        </Text>
+      </Box>
+    </Box>
+  );
+}
+
+function FailureMockup({ type }: { type: number }) {
+  switch (type) {
+    case 1:
+      // WhatsApp-style chat bubbles
+      return (
+        <Flex direction="column" gap={2} h="full" justify="center">
+          <Box
+            bg="white"
+            borderRadius="lg"
+            borderBottomLeftRadius="sm"
+            p={2}
+            maxW="80%"
+            alignSelf="flex-start"
+            boxShadow="xs"
+          >
+            <Text fontSize="xs" color="gray.600">did you update the CRM?</Text>
+          </Box>
+          <Box
+            bg="white"
+            borderRadius="lg"
+            borderBottomRightRadius="sm"
+            p={2}
+            maxW="70%"
+            alignSelf="flex-end"
+            boxShadow="xs"
+          >
+            <Text fontSize="xs" color="gray.600">where&apos;s the doc?</Text>
+          </Box>
+          <Box
+            bg="white"
+            borderRadius="lg"
+            borderBottomLeftRadius="sm"
+            p={2}
+            maxW="60%"
+            alignSelf="flex-start"
+            boxShadow="xs"
+          >
+            <Text fontSize="xs" color="gray.600">checking...</Text>
+          </Box>
+        </Flex>
+      );
+
+    case 2:
+      // Tangled flowchart nodes
+      return (
+        <Flex direction="column" gap={3} h="full" justify="center" align="center">
+          <Flex gap={3} align="center">
+            <Box w={10} h={6} bg="gray.200" borderRadius="md" />
+            <Box w="20px" h="1px" bg="red.400" />
+            <Box w={10} h={6} bg="gray.200" borderRadius="md" position="relative">
+              <Box
+                position="absolute"
+                top={-1}
+                right={-1}
+                w={3}
+                h={3}
+                bg="red.500"
+                borderRadius="full"
+                fontSize="8px"
+                color="white"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                !
+              </Box>
+            </Box>
+          </Flex>
+          <Flex gap={3} align="center">
+            <Box w={10} h={6} bg="gray.200" borderRadius="md" />
+            <Box w="20px" h="1px" bg="gray.300" />
+            <Box w={10} h={6} bg="gray.200" borderRadius="md" position="relative">
+              <Box
+                position="absolute"
+                top={-1}
+                right={-1}
+                w={3}
+                h={3}
+                bg="red.500"
+                borderRadius="full"
+                fontSize="8px"
+                color="white"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                !
+              </Box>
+            </Box>
+          </Flex>
+        </Flex>
+      );
+
+    case 3:
+      // Code editor with DEMO badge
+      return (
+        <Box h="full" position="relative">
+          <Box
+            bg="gray.800"
+            borderRadius="md"
+            p={2}
+            h="full"
+            fontFamily="mono"
+          >
+            <Flex gap={1} mb={2}>
+              <Box w={2} h={2} borderRadius="full" bg="red.400" />
+              <Box w={2} h={2} borderRadius="full" bg="yellow.400" />
+              <Box w={2} h={2} borderRadius="full" bg="green.400" />
+            </Flex>
+            <Box h={2} w="60%" bg="gray.600" borderRadius="sm" mb={1} />
+            <Box h={2} w="80%" bg="gray.600" borderRadius="sm" mb={1} />
+            <Box h={2} w="40%" bg="gray.600" borderRadius="sm" />
+          </Box>
+          <Box
+            position="absolute"
+            top={2}
+            right={2}
+            bg="yellow.400"
+            color="gray.800"
+            fontSize="9px"
+            fontWeight="700"
+            px={2}
+            py={0.5}
+            borderRadius="sm"
+          >
+            DEMO
+          </Box>
+        </Box>
+      );
+
+    case 4:
+      // Jira-style board with tickets
+      return (
+        <Flex gap={2} h="full">
+          <Box flex={1} bg="gray.100" borderRadius="md" p={2}>
+            <Text fontSize="8px" color="gray.500" mb={2}>TODO</Text>
+            <Box h={4} bg="white" borderRadius="sm" mb={1} boxShadow="xs" />
+            <Box h={4} bg="white" borderRadius="sm" mb={1} boxShadow="xs" />
+            <Box h={4} bg="white" borderRadius="sm" boxShadow="xs" />
+          </Box>
+          <Box flex={1} bg="gray.100" borderRadius="md" p={2}>
+            <Text fontSize="8px" color="gray.500" mb={2}>IN PROGRESS</Text>
+            <Box h={4} bg="yellow.100" borderRadius="sm" mb={1} boxShadow="xs" />
+            <Box h={4} bg="yellow.100" borderRadius="sm" boxShadow="xs" />
+          </Box>
+          <Box flex={1} bg="gray.100" borderRadius="md" p={2}>
+            <Text fontSize="8px" color="gray.500" mb={2}>DONE</Text>
+            <Box h={4} bg="green.100" borderRadius="sm" boxShadow="xs" />
+          </Box>
+        </Flex>
+      );
+
+    default:
+      return null;
+  }
 }

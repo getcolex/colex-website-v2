@@ -5,8 +5,10 @@
 import { Box } from "@chakra-ui/react";
 import LandingNavbar from "@/components/Landing/Navbar";
 import HeroSection from "@/components/Landing/HeroSection";
-import HowSection from "@/components/Landing/HowSection";
+import HowItWorksSection from "@/components/Landing/HowItWorksSection";
 import WhySection from "@/components/Landing/WhySection";
+import FeatureGridSection from "@/components/Landing/FeatureGridSection";
+import BenefitsSection from "@/components/Landing/BenefitsSection";
 import CTASection from "@/components/Landing/CTASection";
 import Footer from "@/components/Landing/Footer";
 import AsciiBackground from "@/components/AsciiBackground";
@@ -24,8 +26,10 @@ export default function LandingPage() {
       <Box position="relative" zIndex={1}>
         <LandingNavbar />
         <HeroSection />
-        <HowSection />
+        <HowItWorksSection />
         <WhySection />
+        <FeatureGridSection />
+        <BenefitsSection />
         <CTASection />
         <Footer />
       </Box>
