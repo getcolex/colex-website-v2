@@ -1,9 +1,7 @@
 "use client";
 
 import { Box, Container, Text, Grid, Flex } from "@chakra-ui/react";
-import { motion, useTransform } from "motion/react";
-import { useRef } from "react";
-import { useSectionScroll } from "@/hooks/useSectionScroll";
+import { motion } from "motion/react";
 
 const MotionBox = motion.create(Box);
 
@@ -32,63 +30,38 @@ const failures = [
 ];
 
 export default function WhySection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  // Track section as it travels through viewport
-  // Progress 0 = section top enters viewport bottom
-  // Progress 0.5 = section centered in viewport
-  // Progress 1 = section bottom exits viewport top
-  const { scrollYProgress } = useSectionScroll(containerRef, {
-    offset: ["start end", "end start"],
-  });
-
-  // Header shrinks as section enters viewport (0 to 0.35 progress)
-  const headerScale = useTransform(scrollYProgress, [0.05, 0.35], [1.2, 0.5]);
-  const headerY = useTransform(scrollYProgress, [0.05, 0.35], ["20vh", "0vh"]);
-
-  // Content fades in after header starts shrinking
-  const contentOpacity = useTransform(scrollYProgress, [0.15, 0.4], [0, 1]);
-  const contentY = useTransform(scrollYProgress, [0.15, 0.4], [60, 0]);
-
   return (
     <Box
-      ref={containerRef}
       position="relative"
       py={{ base: 20, md: 28 }}
       bg="transparent"
     >
       <Container maxW="container.xl" px={{ base: 4, md: 8 }}>
-        {/* Section header - shrinks as you scroll */}
-        <MotionBox
-          style={{ scale: headerScale, y: headerY }}
-          transformOrigin="center top"
-          mb={{ base: 6, md: 11 }}
-        >
+        {/* Section header */}
+        <Box mb={{ base: 10, md: 14 }}>
           <Text
             fontFamily="heading"
-            fontSize={{ base: "10vw", md: "6vw", lg: "5vw" }}
+            fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
             fontWeight="700"
             color="text.primary"
-            letterSpacing="-0.03em"
+            letterSpacing="-0.02em"
             textAlign="center"
           >
             You have tried to solve this before
           </Text>
-        </MotionBox>
+        </Box>
 
         {/* Content area - 2x2 grid of failure cards */}
-        <MotionBox style={{ opacity: contentOpacity, y: contentY }}>
-          <Grid
-            templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
-            gap={{ base: 4, md: 6 }}
-            maxW="900px"
-            mx="auto"
-          >
-            {failures.map((failure) => (
-              <FailureCard key={failure.id} failure={failure} />
-            ))}
-          </Grid>
-        </MotionBox>
+        <Grid
+          templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
+          gap={{ base: 4, md: 6 }}
+          maxW="900px"
+          mx="auto"
+        >
+          {failures.map((failure) => (
+            <FailureCard key={failure.id} failure={failure} />
+          ))}
+        </Grid>
       </Container>
     </Box>
   );
