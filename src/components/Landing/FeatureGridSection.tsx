@@ -34,18 +34,19 @@ export default function FeatureGridSection() {
   });
 
   // Header transforms: starts big centered, shrinks and moves to top as user scrolls
-  const headerScale = useTransform(scrollYProgress, [0, 0.15], [1, 0.4]);
-  const headerTop = useTransform(scrollYProgress, [0, 0.15], ["50%", "10%"]);
+  // Animation uses more of the scroll range (0 -> 0.6) so less "dead" scroll time
+  const headerScale = useTransform(scrollYProgress, [0, 0.6], [1, 0.4]);
+  const headerTop = useTransform(scrollYProgress, [0, 0.6], ["50%", "10%"]);
 
   // Content fades in SIMULTANEOUSLY as header shrinks
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.15], [0.2, 1]);
-  const contentY = useTransform(scrollYProgress, [0, 0.15], [40, 0]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.6], [0.2, 1]);
+  const contentY = useTransform(scrollYProgress, [0, 0.6], [40, 0]);
 
   return (
     <Box
       ref={containerRef}
       position="relative"
-      height="150vh"
+      height="115vh"
       bg="transparent"
     >
       {/* Sticky container */}
