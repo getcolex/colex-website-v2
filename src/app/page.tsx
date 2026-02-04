@@ -11,7 +11,6 @@ import FeatureGridSection from "@/components/Landing/FeatureGridSection";
 import BenefitsSection from "@/components/Landing/BenefitsSection";
 import CTASection from "@/components/Landing/CTASection";
 import Footer from "@/components/Landing/Footer";
-import AsciiBackground from "@/components/AsciiBackground";
 import { useEffect } from "react";
 import { trackLandingPageView } from "@/lib/gtag";
 
@@ -21,18 +20,15 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <Box bg="white" position="relative" minH="100vh">
-      <AsciiBackground opacity={0.06} showControls={true} />
-      <Box position="relative" zIndex={1}>
-        <LandingNavbar />
-        <HeroSection />
-        <HowItWorksSection />
-        <WhySection />
-        <FeatureGridSection />
-        <BenefitsSection />
-        <CTASection />
-        <Footer />
-      </Box>
+    <Box bg="#F8F7F4" minH="100vh">
+      <LandingNavbar />
+      <HeroSection />
+      <HowItWorksSection />
+      <WhySection />
+      <FeatureGridSection />
+      <BenefitsSection />
+      <CTASection />
+      <Footer />
     </Box>
   );
 }
