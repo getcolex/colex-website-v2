@@ -10,6 +10,7 @@ import WhySection from "@/components/Landing/WhySection";
 import FeatureGridSection from "@/components/Landing/FeatureGridSection";
 import BenefitsSection from "@/components/Landing/BenefitsSection";
 import Footer from "@/components/Landing/Footer";
+import DevGridOverlay from "@/components/DevGridOverlay";
 import { useEffect } from "react";
 import { trackLandingPageView } from "@/lib/gtag";
 
@@ -20,6 +21,7 @@ export default function LandingPage() {
 
   return (
     <Box bg="#F8F7F4" minH="100vh">
+      <DevGridOverlay />
       <LandingNavbar />
       <HeroSection />
       <HowItWorksSection />
