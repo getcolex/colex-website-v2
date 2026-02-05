@@ -1,9 +1,12 @@
 "use client";
 
 import { Box, Container, Text, Button, Grid } from "@chakra-ui/react";
+import { motion } from "motion/react";
 import { getEarlyAccess } from "@/lib/utils";
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import HeroDemo from "./HeroDemo";
+
+const MotionBox = motion.create(Box);
 
 export default function HeroSection() {
   return (
@@ -97,6 +100,30 @@ export default function HeroSection() {
             <HeroDemo />
           </Box>
         </Grid>
+
+        {/* Scroll indicator */}
+        <MotionBox
+          position="absolute"
+          bottom={{ base: 6, md: 8 }}
+          left="50%"
+          transform="translateX(-50%)"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          gap={2}
+          animate={{ y: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+        >
+          <Text fontSize="xs" color="text.muted" fontWeight="500" letterSpacing="0.05em">
+            SCROLL
+          </Text>
+          <Box
+            w="1px"
+            h="24px"
+            bg="text.muted"
+            opacity={0.5}
+          />
+        </MotionBox>
       </Container>
     </Box>
   );

@@ -523,6 +523,13 @@ function StepTextSide({
     [30, 0, 0, index === 3 ? 0 : -30]
   );
 
+  // Line grows as you scroll through the step
+  const lineWidth = useTransform(
+    scrollProgress,
+    [stepStart, stepEnd - transitionDuration],
+    ["0px", "40px"]
+  );
+
   return (
     <MotionBox
       style={{ opacity, y }}
@@ -548,7 +555,19 @@ function StepTextSide({
         >
           {step.id}
         </Box>
-        <Box h="1px" w="40px" bg="brand.primary" opacity={0.3} />
+        <Box position="relative" w="40px" h="2px">
+          {/* Background line */}
+          <Box position="absolute" inset={0} bg="brand.primary" opacity={0.15} />
+          {/* Animated fill */}
+          <MotionBox
+            style={{ width: lineWidth }}
+            position="absolute"
+            left={0}
+            top={0}
+            h="full"
+            bg="brand.primary"
+          />
+        </Box>
       </Flex>
 
       {/* Title */}
