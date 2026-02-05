@@ -27,86 +27,106 @@ interface Workflow {
 // Workflows with multi-step tasks
 const workflows: Workflow[] = [
   {
-    request: "Send invoice reminders every Monday",
+    request: "Process new freight inquiry from Maersk",
     tasks: [
       {
-        label: "Find overdue invoices",
-        ui: {
-          type: "table",
-          title: "Overdue Invoices",
-          rows: ["Acme Corp — $2,400", "Beta LLC — $890"],
-        },
-      },
-      {
-        label: "Draft reminder emails",
-        ui: {
-          type: "email",
-          to: "billing@acme.corp",
-          subject: "Payment Reminder: Invoice #1042",
-          preview: "Hi, this is a friendly reminder that your invoice is overdue...",
-        },
-      },
-      {
-        label: "Send and log",
-        ui: { type: "confirmation", message: "2 emails sent, logged to sheet" },
-      },
-    ],
-  },
-  {
-    request: "Qualify leads from today's signups",
-    tasks: [
-      {
-        label: "Pull new signups",
-        ui: {
-          type: "table",
-          title: "New Leads",
-          rows: ["Sarah Chen — SaaS", "Mike Ross — Legal"],
-        },
-      },
-      {
-        label: "Score each lead",
+        label: "Parse inquiry details",
         ui: {
           type: "form",
-          title: "Lead Score",
-          fields: ["Company: Series B", "Score: 85 — High"],
+          title: "Shipment Details",
+          fields: ["Route: Shanghai → Rotterdam", "Cargo: 2x 40ft FCL", "Date: 15 Mar 2025"],
         },
       },
       {
-        label: "Update CRM",
-        ui: { type: "confirmation", message: "2 leads synced to HubSpot" },
+        label: "Fetch carrier rates",
+        ui: {
+          type: "table",
+          title: "Rate Comparison",
+          rows: ["MSC — $2,840", "Hapag-Lloyd — $2,920", "ONE — $3,100"],
+        },
+      },
+      {
+        label: "Send RFQ to client",
+        ui: {
+          type: "email",
+          to: "procurement@maersk.com",
+          subject: "Quote: Shanghai-Rotterdam FCL",
+          preview: "Please find attached our rates for your shipment. MSC offers the best rate at...",
+        },
+      },
+      {
+        label: "Log to booking system",
+        ui: { type: "confirmation", message: "RFQ #4821 created, awaiting confirmation" },
       },
     ],
   },
   {
-    request: "Create social posts from blog",
+    request: "Start brand research for Northwind Coffee",
     tasks: [
       {
-        label: "Extract key points",
+        label: "Collect brand precedents",
         ui: {
           type: "table",
-          title: "Content",
-          rows: ["5 productivity tips", "Tool recommendations"],
+          title: "Reference Brands",
+          rows: ["Blue Bottle — Minimal", "Stumptown — Heritage", "Verve — Modern"],
         },
       },
       {
-        label: "Generate graphics",
-        ui: { type: "gallery", title: "Graphics", count: 3 },
+        label: "Scrape visual assets",
+        ui: { type: "gallery", title: "Collected Assets", count: 4 },
       },
       {
-        label: "Draft posts",
+        label: "Synthesize directions",
+        ui: {
+          type: "form",
+          title: "Brand Direction",
+          fields: ["Style: Scandinavian minimal", "Palette: Warm neutrals", "Type: Sans-serif geometric"],
+        },
+      },
+      {
+        label: "Generate concepts",
+        ui: { type: "confirmation", message: "3 logo concepts ready for review" },
+      },
+    ],
+  },
+  {
+    request: "Screen applicants for Senior Engineer role",
+    tasks: [
+      {
+        label: "Parse new resumes",
+        ui: {
+          type: "table",
+          title: "Applicants",
+          rows: ["Sarah Chen — 8 yrs", "James Park — 6 yrs", "Maria Silva — 10 yrs"],
+        },
+      },
+      {
+        label: "Score against criteria",
+        ui: {
+          type: "form",
+          title: "Top Candidate",
+          fields: ["Name: Maria Silva", "Match: 94%", "Strengths: System design, Team lead exp"],
+        },
+      },
+      {
+        label: "Schedule interviews",
         ui: {
           type: "email",
-          to: "Twitter, LinkedIn",
-          subject: "Ready to publish",
-          preview: "🚀 5 productivity hacks that actually work...",
+          to: "maria.silva@email.com",
+          subject: "Interview: Senior Engineer at Acme",
+          preview: "Hi Maria, we'd love to schedule a call to discuss the Senior Engineer position...",
         },
+      },
+      {
+        label: "Update ATS",
+        ui: { type: "confirmation", message: "3 candidates moved to Interview stage" },
       },
     ],
   },
 ];
 
-const TASK_DURATION = 3200; // Time per task
-const TYPING_DURATION = 1000;
+const TASK_DURATION = 2600; // Time per task (faster with 4 tasks)
+const TYPING_DURATION = 1200;
 
 type TaskPhase = "running" | "review" | "approved";
 
@@ -165,41 +185,29 @@ export default function HeroDemo() {
       case "table":
         return (
           <Box>
-            <Text fontSize="sm" fontWeight="600" color="brand.primary" mb={3} fontFamily="heading">
+            <Text fontSize="sm" fontWeight="600" color="brand.primary" mb={2} fontFamily="heading">
               {ui.title}
             </Text>
-            {/* Table header */}
-            <Flex bg="ui.borderLight" borderRadius="4px 4px 0 0" border="1px solid" borderColor="ui.border" borderBottom="none">
-              <Box w="28px" p={2} borderRight="1px solid" borderColor="ui.border">
-                <Box w="12px" h="12px" border="1.5px solid" borderColor="ui.border" borderRadius="2px" bg="white" />
-              </Box>
-              <Box flex={1} p={2}>
-                <Text fontSize="10px" fontWeight="600" color="text.muted" textTransform="uppercase">Name</Text>
-              </Box>
-              <Box w="70px" p={2} borderLeft="1px solid" borderColor="ui.border">
-                <Text fontSize="10px" fontWeight="600" color="text.muted" textTransform="uppercase">Industry</Text>
-              </Box>
-            </Flex>
             {/* Table rows */}
             {ui.rows.map((row, i) => {
-              const [name, industry] = row.split(" — ");
+              const [primary, secondary] = row.split(" — ");
               return (
                 <Flex
                   key={i}
                   bg={i % 2 === 0 ? "white" : "ui.surface"}
                   border="1px solid"
                   borderColor="ui.border"
-                  borderTop="none"
-                  borderRadius={i === ui.rows.length - 1 ? "0 0 4px 4px" : "0"}
+                  borderTop={i === 0 ? "1px solid" : "none"}
+                  borderRadius={i === 0 ? "4px 4px 0 0" : i === ui.rows.length - 1 ? "0 0 4px 4px" : "0"}
                 >
-                  <Box w="28px" p={2} borderRight="1px solid" borderColor="ui.border" display="flex" alignItems="center" justifyContent="center">
-                    <Box w="12px" h="12px" border="1.5px solid" borderColor="ui.border" borderRadius="2px" bg="white" />
+                  <Box w="24px" py={1.5} px={1} borderRight="1px solid" borderColor="ui.border" display="flex" alignItems="center" justifyContent="center">
+                    <Box w="10px" h="10px" border="1.5px solid" borderColor="ui.border" borderRadius="2px" bg="white" />
                   </Box>
-                  <Box flex={1} p={2}>
-                    <Text fontSize="xs" color="text.primary">{name}</Text>
+                  <Box flex={1} py={1.5} px={2}>
+                    <Text fontSize="xs" color="text.primary" fontWeight="500">{primary}</Text>
                   </Box>
-                  <Box w="70px" p={2} borderLeft="1px solid" borderColor="ui.border">
-                    <Text fontSize="xs" color="text.muted">{industry}</Text>
+                  <Box w="70px" py={1.5} px={2} borderLeft="1px solid" borderColor="ui.border">
+                    <Text fontSize="xs" color="text.muted">{secondary}</Text>
                   </Box>
                 </Flex>
               );
@@ -217,84 +225,58 @@ export default function HeroDemo() {
               </Box>
             </Flex>
             {/* Subject */}
-            <Box bg="white" border="1px solid" borderColor="ui.border" borderRadius="4px" px={3} py={2} mb={2}>
-              <Text fontSize="sm" fontWeight="600" color="text.primary">{ui.subject}</Text>
+            <Box bg="white" border="1px solid" borderColor="ui.border" borderRadius="4px" px={2} py={1.5} mb={2}>
+              <Text fontSize="xs" fontWeight="600" color="text.primary">{ui.subject}</Text>
             </Box>
             {/* Body preview */}
-            <Box bg="white" border="1px solid" borderColor="ui.border" borderRadius="4px" px={3} py={2} mb={3} minH="40px">
-              <Text fontSize="xs" color="text.muted" lineHeight="1.5">{ui.preview.slice(0, 55)}...</Text>
+            <Box bg="white" border="1px solid" borderColor="ui.border" borderRadius="4px" px={2} py={1.5}>
+              <Text fontSize="xs" color="text.muted" lineHeight="1.4">{ui.preview.slice(0, 65)}...</Text>
             </Box>
-            {/* Action buttons */}
-            <Flex gap={2} justify="flex-end">
-              <Box bg="white" border="1px solid" borderColor="ui.border" borderRadius="4px" px={3} py={1.5}>
-                <Text fontSize="xs" color="text.muted" fontWeight="500">Edit</Text>
-              </Box>
-              <Box bg="brand.primary" borderRadius="4px" px={3} py={1.5}>
-                <Text fontSize="xs" color="white" fontWeight="500">Send →</Text>
-              </Box>
-            </Flex>
           </Box>
         );
       case "form":
         return (
           <Box>
-            <Text fontSize="sm" fontWeight="600" color="brand.primary" mb={3} fontFamily="heading">
+            <Text fontSize="sm" fontWeight="600" color="brand.primary" mb={2} fontFamily="heading">
               {ui.title}
             </Text>
             {ui.fields.map((field, i) => {
               const [label, value] = field.split(": ");
               return (
-                <Box key={i} mb={3}>
-                  <Text fontSize="10px" fontWeight="500" color="text.muted" mb={1} textTransform="uppercase">{label}</Text>
-                  <Box bg="white" border="1px solid" borderColor="ui.border" borderRadius="6px" px={3} py={2}>
-                    <Text fontSize="sm" color="text.primary">{value}</Text>
+                <Box key={i} mb={2}>
+                  <Text fontSize="10px" fontWeight="500" color="text.muted" mb={0.5} textTransform="uppercase">{label}</Text>
+                  <Box bg="white" border="1px solid" borderColor="ui.border" borderRadius="4px" px={2} py={1.5}>
+                    <Text fontSize="xs" color="text.primary">{value}</Text>
                   </Box>
                 </Box>
               );
             })}
-            {/* Save button */}
-            <Flex justify="flex-end" mt={2}>
-              <Box bg="brand.primary" borderRadius="4px" px={4} py={1.5}>
-                <Text fontSize="xs" color="white" fontWeight="500">Save</Text>
-              </Box>
-            </Flex>
           </Box>
         );
       case "gallery":
         return (
           <Box>
-            <Text fontSize="sm" fontWeight="600" color="brand.primary" mb={3} fontFamily="heading">
+            <Text fontSize="sm" fontWeight="600" color="brand.primary" mb={2} fontFamily="heading">
               {ui.title}
             </Text>
             {/* Image grid */}
-            <Flex gap={2} flexWrap="wrap" mb={3}>
+            <Flex gap={2} flexWrap="wrap">
               {Array.from({ length: ui.count }).map((_, i) => (
                 <Box
                   key={i}
-                  w="56px"
-                  h="56px"
+                  w="48px"
+                  h="48px"
                   bg="linear-gradient(135deg, #e4e4e7 0%, #d4d4d8 100%)"
-                  borderRadius="6px"
+                  borderRadius="4px"
                   display="flex"
                   alignItems="center"
                   justifyContent="center"
                   border="1px solid"
                   borderColor="ui.border"
-                  position="relative"
-                  overflow="hidden"
                 >
-                  <Box position="absolute" bottom={1} right={1} bg="white" borderRadius="2px" px={1}>
-                    <Text fontSize="8px" color="text.muted">.png</Text>
-                  </Box>
-                  <Text fontSize="20px" opacity={0.5}>🖼️</Text>
+                  <Text fontSize="16px" opacity={0.5}>🖼️</Text>
                 </Box>
               ))}
-            </Flex>
-            {/* Action button */}
-            <Flex justify="flex-end">
-              <Box bg="brand.primary" borderRadius="4px" px={3} py={1.5}>
-                <Text fontSize="xs" color="white" fontWeight="500">Post All →</Text>
-              </Box>
             </Flex>
           </Box>
         );
