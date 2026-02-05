@@ -57,7 +57,7 @@ export default function HowItWorksSection() {
           {/* Header */}
           <Box
             position="absolute"
-            top={{ base: "80px", md: "100px" }}
+            top={{ base: "100px", md: "120px" }}
             left="50%"
             transform="translateX(-50%)"
             zIndex={2}
@@ -79,7 +79,7 @@ export default function HowItWorksSection() {
           <MotionBox
             style={{ opacity: contentOpacity, y: contentY }}
             position="absolute"
-            top={{ base: "140px", md: "180px" }}
+            top={{ base: "150px", md: "180px" }}
             left={0}
             right={0}
             bottom={0}
