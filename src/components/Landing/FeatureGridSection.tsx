@@ -6,7 +6,7 @@ import { Box, Container, Text, Grid, Flex, Image } from "@chakra-ui/react";
 const features = [
   {
     id: 1,
-    title: "Each task has a interface",
+    title: "Each task has an interface",
     description: "No more fighting google sheets",
   },
   {
@@ -44,7 +44,7 @@ export default function FeatureGridSection() {
             <Box mb={{ base: 10, md: 14 }}>
               <Text
                 fontFamily="heading"
-                fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
+                fontSize={{ base: "2xl", md: "4xl", lg: "5xl" }}
                 fontWeight="700"
                 color="text.primary"
                 letterSpacing="-0.02em"
@@ -83,7 +83,7 @@ function FeatureCard({ feature }: { feature: (typeof features)[0] }) {
       {/* Mockup area - 1.6:1 ratio (taller) */}
       <Box
         bg="gray.50"
-        h={{ base: "280px", md: "320px" }}
+        h={{ base: "300px", md: "320px" }}
         p={4}
         borderBottom="1px solid"
         borderColor="gray.100"
@@ -229,14 +229,14 @@ function FeatureMockup({ type }: { type: number }) {
           </Box>
 
           {/* Actions */}
-          <Flex gap={2} p={3} pt={0} justify="center">
-            <Box bg="green.500" color="white" px={3} py={1.5} borderRadius="md" fontSize="xs" fontWeight="500">
+          <Flex gap={2} p={3} pt={0}>
+            <Box flex={1} bg="green.500" color="white" py={1.5} borderRadius="md" fontSize="xs" fontWeight="500" textAlign="center">
               Approve
             </Box>
-            <Box bg="red.500" color="white" px={3} py={1.5} borderRadius="md" fontSize="xs" fontWeight="500">
+            <Box flex={1} bg="red.500" color="white" py={1.5} borderRadius="md" fontSize="xs" fontWeight="500" textAlign="center">
               Reject
             </Box>
-            <Box bg="gray.200" color="gray.700" px={3} py={1.5} borderRadius="md" fontSize="xs" fontWeight="500">
+            <Box flex={1} bg="gray.200" color="gray.700" py={1.5} borderRadius="md" fontSize="xs" fontWeight="500" textAlign="center">
               Escalate
             </Box>
           </Flex>
