@@ -28,31 +28,42 @@ export default function FeatureGridSection() {
       py={{ base: 20, md: 28 }}
       bg="transparent"
     >
-      <Container maxW="container.xl" px={{ base: 4, md: 8 }}>
-        {/* Section header */}
-        <Box mb={{ base: 10, md: 14 }}>
-          <Text
-            fontFamily="heading"
-            fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
-            fontWeight="700"
-            color="text.primary"
-            letterSpacing="-0.02em"
-            textAlign="center"
-          >
-            Colex gives the control back to you
-          </Text>
-        </Box>
-
-        {/* Content area - 3 feature cards in a row */}
+      <Container maxW="container.xl" px={{ base: 4, md: 8, lg: 12 }}>
+        {/* 12-column grid layout */}
         <Grid
-          templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }}
-          gap={{ base: 4, md: 6 }}
-          maxW="1100px"
-          mx="auto"
+          data-testid="feature-grid"
+          templateColumns={{ base: "1fr", lg: "repeat(12, 1fr)" }}
+          gap={{ base: 10, lg: 8 }}
         >
-          {features.map((feature) => (
-            <FeatureCard key={feature.id} feature={feature} />
-          ))}
+          {/* Content spans columns 2-11 (centered) */}
+          <Box
+            data-testid="feature-content"
+            gridColumn={{ base: "1", lg: "1 / -1" }}
+          >
+            {/* Section header */}
+            <Box mb={{ base: 10, md: 14 }}>
+              <Text
+                fontFamily="heading"
+                fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
+                fontWeight="700"
+                color="text.primary"
+                letterSpacing="-0.02em"
+                textAlign="center"
+              >
+                Colex gives the control back to you
+              </Text>
+            </Box>
+
+            {/* Content area - 3 feature cards in a row */}
+            <Grid
+              templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }}
+              gap={{ base: 4, lg: 8 }}
+            >
+              {features.map((feature) => (
+                <FeatureCard key={feature.id} feature={feature} />
+              ))}
+            </Grid>
+          </Box>
         </Grid>
       </Container>
     </Box>

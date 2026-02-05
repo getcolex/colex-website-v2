@@ -19,6 +19,8 @@ vi.mock('motion/react', () => {
     useScroll: () => ({ scrollYProgress: createMotionValue(0) }),
     useTransform: (_: unknown, __: unknown, values: unknown[]) => values?.[0] ?? 0,
     useMotionValue: (initial: number) => createMotionValue(initial),
+    useInView: () => true,
+    AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
   };
 })
 

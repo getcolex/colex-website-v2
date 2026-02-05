@@ -22,93 +22,102 @@ export default function BenefitsSection() {
       position="relative"
       zIndex={10}
     >
-      <Container maxW="container.xl" px={{ base: 4, md: 8 }}>
-        {/* Header + CTA row */}
-        <Flex
-          direction={{ base: "column", md: "row" }}
-          align={{ base: "flex-start", md: "center" }}
-          justify="space-between"
-          gap={{ base: 4, md: 6 }}
-          mb={{ base: 10, md: 14 }}
-          maxW="900px"
-          mx="auto"
-        >
-          <Text
-            fontFamily="heading"
-            fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
-            fontWeight="700"
-            color="white"
-            letterSpacing="-0.02em"
-          >
-            30 minutes. You walk away with:
-          </Text>
-          <Button
-            size="lg"
-            px={{ base: 6, md: 8 }}
-            py={6}
-            borderRadius="4px"
-            bg="white"
-            color="brand.primary"
-            fontWeight="600"
-            fontSize={{ base: "sm", md: "md" }}
-            flexShrink={0}
-            _hover={{
-              bg: "gray.100",
-              transform: "translateY(-2px)",
-            }}
-            transition="all 0.2s"
-            onClick={() => getEarlyAccess("benefits_section")}
-          >
-            Let&apos;s talk
-            <Box as="span" ml={2} display="inline-flex">
-              <ArrowRightIcon
-                style={{
-                  width: 18,
-                  height: 18,
-                }}
-              />
-            </Box>
-          </Button>
-        </Flex>
-
-        {/* Bento Grid - 2x2 */}
+      <Container maxW="container.xl" px={{ base: 4, md: 8, lg: 12 }}>
+        {/* 12-column grid layout */}
         <Grid
-          templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
-          gap={4}
-          maxW="900px"
-          mx="auto"
+          data-testid="benefits-grid"
+          templateColumns={{ base: "1fr", lg: "repeat(12, 1fr)" }}
+          gap={{ base: 0, lg: 8 }}
         >
-          <BentoCell
-            label="Your first workflow"
-            index={0}
-            isInView={isInView}
+          {/* Content centered in columns 3-10 (8 cols total, 4 cols per card) */}
+          <Box
+            data-testid="benefits-content"
+            gridColumn={{ base: "1", lg: "3 / 11" }}
           >
-            <WorkflowVisual isInView={isInView} />
-          </BentoCell>
+            {/* Header + CTA row */}
+            <Flex
+              direction={{ base: "column", md: "row" }}
+              align={{ base: "flex-start", md: "center" }}
+              justify="space-between"
+              gap={{ base: 4, md: 6 }}
+              mb={{ base: 10, md: 14 }}
+            >
+              <Text
+                fontFamily="heading"
+                fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
+                fontWeight="700"
+                color="white"
+                letterSpacing="-0.02em"
+              >
+                30 minutes. You walk away with:
+              </Text>
+              <Button
+                size="lg"
+                px={{ base: 6, md: 8 }}
+                py={6}
+                borderRadius="4px"
+                bg="white"
+                color="brand.primary"
+                fontWeight="600"
+                fontSize={{ base: "sm", md: "md" }}
+                flexShrink={0}
+                _hover={{
+                  bg: "gray.100",
+                  transform: "translateY(-2px)",
+                }}
+                transition="all 0.2s"
+                onClick={() => getEarlyAccess("benefits_section")}
+              >
+                Let&apos;s talk
+                <Box as="span" ml={2} display="inline-flex">
+                  <ArrowRightIcon
+                    style={{
+                      width: 18,
+                      height: 18,
+                    }}
+                  />
+                </Box>
+              </Button>
+            </Flex>
 
-          <BentoCell
-            label="A team interface"
-            index={1}
-            isInView={isInView}
-          >
-            <TeamInterfaceVisual isInView={isInView} />
-          </BentoCell>
+            {/* Bento Grid - 2x2 */}
+            <Grid
+              templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
+              gap={{ base: 4, lg: 8 }}
+            >
+              <BentoCell
+                label="Your first workflow"
+                index={0}
+                isInView={isInView}
+              >
+                <WorkflowVisual isInView={isInView} />
+              </BentoCell>
 
-          <BentoCell
-            label="Built-in human review"
-            index={2}
-            isInView={isInView}
-          >
-            <HumanReviewVisual isInView={isInView} />
-          </BentoCell>
+              <BentoCell
+                label="A team interface"
+                index={1}
+                isInView={isInView}
+              >
+                <TeamInterfaceVisual isInView={isInView} />
+              </BentoCell>
 
-          <BentoCell
-            label="Connected to your tools"
-            index={3}
-            isInView={isInView}
-          >
-            <IntegrationsVisual isInView={isInView} />
-          </BentoCell>
+              <BentoCell
+                label="Built-in human review"
+                index={2}
+                isInView={isInView}
+              >
+                <HumanReviewVisual isInView={isInView} />
+              </BentoCell>
+
+              <BentoCell
+                label="Connected to your tools"
+                index={3}
+                isInView={isInView}
+              >
+                <IntegrationsVisual isInView={isInView} />
+              </BentoCell>
+            </Grid>
+          </Box>
         </Grid>
       </Container>
     </Box>

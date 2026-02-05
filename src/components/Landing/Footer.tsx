@@ -15,7 +15,7 @@ export default function Footer() {
 
   return (
     <Box as="footer" bg="transparent" pt={20}>
-      <Container maxW="container.xl" px={{ base: 5, md: 8, lg: 12, xl: 16 }}>
+      <Container maxW="container.xl" px={{ base: 4, md: 8, lg: 12 }}>
         {isMobile ? (
           <VStack gap={10} align="center">
             <Image

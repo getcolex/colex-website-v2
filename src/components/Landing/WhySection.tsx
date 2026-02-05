@@ -36,31 +36,42 @@ export default function WhySection() {
       py={{ base: 20, md: 28 }}
       bg="transparent"
     >
-      <Container maxW="container.xl" px={{ base: 4, md: 8 }}>
-        {/* Section header */}
-        <Box mb={{ base: 10, md: 14 }}>
-          <Text
-            fontFamily="heading"
-            fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
-            fontWeight="700"
-            color="text.primary"
-            letterSpacing="-0.02em"
-            textAlign="center"
-          >
-            You have tried to solve this before
-          </Text>
-        </Box>
-
-        {/* Content area - 2x2 grid of failure cards */}
+      <Container maxW="container.xl" px={{ base: 4, md: 8, lg: 12 }}>
+        {/* 12-column grid layout */}
         <Grid
-          templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
-          gap={{ base: 4, md: 6 }}
-          maxW="900px"
-          mx="auto"
+          data-testid="why-grid"
+          templateColumns={{ base: "1fr", lg: "repeat(12, 1fr)" }}
+          gap={{ base: 10, lg: 8 }}
         >
-          {failures.map((failure) => (
-            <FailureCard key={failure.id} failure={failure} />
-          ))}
+          {/* Content centered in columns 3-10 (8 cols for 2x2 grid = 4 cols per card) */}
+          <Box
+            data-testid="why-content"
+            gridColumn={{ base: "1", lg: "3 / 11" }}
+          >
+            {/* Section header */}
+            <Box mb={{ base: 10, md: 14 }}>
+              <Text
+                fontFamily="heading"
+                fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
+                fontWeight="700"
+                color="text.primary"
+                letterSpacing="-0.02em"
+                textAlign="center"
+              >
+                You have tried to solve this before
+              </Text>
+            </Box>
+
+            {/* Content area - 2x2 grid of failure cards */}
+            <Grid
+              templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
+              gap={{ base: 4, lg: 8 }}
+            >
+              {failures.map((failure) => (
+                <FailureCard key={failure.id} failure={failure} />
+              ))}
+            </Grid>
+          </Box>
         </Grid>
       </Container>
     </Box>

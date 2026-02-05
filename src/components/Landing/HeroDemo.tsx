@@ -319,7 +319,6 @@ export default function HeroDemo() {
       boxShadow="0 8px 32px rgba(0,0,0,0.08)"
       p={{ base: 5, md: 6 }}
       w="full"
-      maxW="440px"
       h="560px"
       pointerEvents="none"
       userSelect="none"

@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Container, Text, Button, Flex } from "@chakra-ui/react";
+import { Box, Container, Text, Button, Grid } from "@chakra-ui/react";
 import { getEarlyAccess } from "@/lib/utils";
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import HeroDemo from "./HeroDemo";
@@ -12,22 +12,21 @@ export default function HeroSection() {
       minH="100vh"
       bg="transparent"
     >
-      <Container maxW="container.xl" h="full" position="relative">
-        {/* Two-column layout: text left, demo right */}
-        <Flex
-          direction={{ base: "column", lg: "row" }}
+      <Container maxW="container.xl" h="full" position="relative" px={{ base: 4, md: 8, lg: 12 }}>
+        {/* 12-column grid layout */}
+        <Grid
+          data-testid="hero-grid"
+          templateColumns={{ base: "1fr", lg: "repeat(12, 1fr)" }}
+          gap={{ base: 10, lg: 8 }}
           alignItems="center"
-          justifyContent="space-between"
-          gap={{ base: 10, lg: 16 }}
-          px={{ base: 4, md: 8 }}
           py={{ base: 24, md: 32 }}
           minH="100vh"
         >
-          {/* Left side - Text content */}
+          {/* Left side - Text content (7 columns) */}
           <Box
-            flex={1}
+            data-testid="hero-text-col"
+            gridColumn={{ base: "1", lg: "span 7" }}
             textAlign={{ base: "center", lg: "left" }}
-            maxW={{ lg: "550px" }}
           >
             {/* Headline */}
             <Text
@@ -88,18 +87,16 @@ export default function HeroSection() {
             </Box>
           </Box>
 
-          {/* Right side - Demo (hidden on mobile) */}
+          {/* Right side - Demo (cols 8-12, hidden on mobile) */}
           <Box
-            flex={1}
-            display={{ base: "none", md: "flex" }}
-            justifyContent={{ md: "center", lg: "flex-end" }}
+            data-testid="hero-demo-col"
+            gridColumn={{ base: "1", lg: "8 / 13" }}
+            display={{ base: "none", lg: "flex" }}
             w="full"
-            maxW={{ md: "440px", lg: "none" }}
-            mx={{ md: "auto", lg: 0 }}
           >
             <HeroDemo />
           </Box>
-        </Flex>
+        </Grid>
       </Container>
     </Box>
   );

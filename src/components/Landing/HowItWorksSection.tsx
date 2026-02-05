@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Container, Text, Flex } from "@chakra-ui/react";
+import { Box, Container, Text, Flex, Grid } from "@chakra-ui/react";
 import { motion, useTransform } from "motion/react";
 import { useRef } from "react";
 import { useSectionScroll } from "@/hooks/useSectionScroll";
@@ -53,7 +53,7 @@ export default function HowItWorksSection() {
     >
       {/* Sticky container */}
       <Box position="sticky" top={0} height="100vh" overflow="hidden">
-        <Container maxW="container.xl" h="full" position="relative">
+        <Container maxW="container.xl" h="full" position="relative" px={{ base: 4, md: 8, lg: 12 }}>
           {/* Header */}
           <Box
             position="absolute"
@@ -83,23 +83,34 @@ export default function HowItWorksSection() {
             left={0}
             right={0}
             bottom={0}
-            px={{ base: 4, md: 8 }}
+            px={{ base: 4, md: 8, lg: 12 }}
           >
-            <Flex
-              direction={{ base: "column", lg: "row" }}
-              align="center"
-              gap={{ base: 8, lg: 16 }}
+            {/* 12-column grid layout */}
+            <Grid
+              data-testid="how-it-works-grid"
+              templateColumns={{ base: "1fr", lg: "repeat(12, 1fr)" }}
+              gap={{ base: 8, lg: 8 }}
+              alignItems="center"
               h="full"
               maxW="1400px"
               mx="auto"
             >
-              {/* Left side - Evolving Visual */}
-              <Box flex="1.5" w="full">
+              {/* Left side - Evolving Visual (5 columns) */}
+              <Box
+                data-testid="how-it-works-visual-col"
+                gridColumn={{ base: "1", lg: "2 / 7" }}
+                w="full"
+              >
                 <EvolvingVisual scrollProgress={scrollYProgress} />
               </Box>
 
-              {/* Right side - Step text */}
-              <Box flex="1" w="full" position="relative">
+              {/* Right side - Step text (5 columns) */}
+              <Box
+                data-testid="how-it-works-text-col"
+                gridColumn={{ base: "1", lg: "7 / 12" }}
+                w="full"
+                position="relative"
+              >
                 <Box position="relative" h={{ base: "200px", md: "250px" }}>
                   {steps.map((step, index) => (
                     <StepTextSide
@@ -111,7 +122,7 @@ export default function HowItWorksSection() {
                   ))}
                 </Box>
               </Box>
-            </Flex>
+            </Grid>
           </MotionBox>
         </Container>
       </Box>
@@ -163,7 +174,6 @@ function EvolvingVisual({
     <Box
       position="relative"
       w="full"
-      maxW={{ base: "100%", lg: "700px" }}
       h={{ base: "400px", md: "500px", lg: "550px" }}
       bg="gray.50"
       borderRadius="2xl"

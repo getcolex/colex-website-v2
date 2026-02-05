@@ -48,7 +48,7 @@ export default function LandingNavbar() {
           >
             <Container
               maxW="container.xl"
-              px={{ base: 5, md: 8, lg: 12, xl: 16 }}
+              px={{ base: 4, md: 8, lg: 12 }}
             >
               <Flex align="center" justify="space-between">
                 <ColexBrandLogo
