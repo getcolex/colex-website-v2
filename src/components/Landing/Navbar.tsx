@@ -38,6 +38,7 @@ export default function LandingNavbar() {
             left: 0,
             right: 0,
             zIndex: 100,
+            width: "100vw",
           }}
         >
           <Box
@@ -53,18 +54,18 @@ export default function LandingNavbar() {
               <Flex align="center" justify="space-between">
                 <ColexBrandLogo
                   style={{
-                    width: 126,
-                    height: 44,
+                    width: isMobile ? 100 : 126,
+                    height: isMobile ? 35 : 44,
                   }}
                   alt="Colex Logo"
                 />
                 <Flex gap={{ base: 2, md: 5 }}>
                   <Button
-                    size="lg"
+                    size={{ base: "sm", md: "lg" }}
                     w={{ base: "auto", lg: 260 }}
                     fontSize="md"
                     fontWeight="500"
-                    px={5}
+                    px={{ base: 3, md: 5 }}
                     py={0.5}
                     borderRadius={4}
                     bg="button.primary"

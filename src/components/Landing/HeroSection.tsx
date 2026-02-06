@@ -102,28 +102,28 @@ export default function HeroSection() {
         </Grid>
 
         {/* Scroll indicator */}
-        <MotionBox
-          position="absolute"
-          bottom={{ base: 6, md: 8 }}
-          left="50%"
-          transform="translateX(-50%)"
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          gap={2}
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+        <Box
+          marginTop="-8rem"
         >
-          <Text fontSize="xs" color="text.muted" fontWeight="500" letterSpacing="0.05em">
-            SCROLL
-          </Text>
-          <Box
-            w="1px"
-            h="24px"
-            bg="text.muted"
-            opacity={0.5}
-          />
-        </MotionBox>
+          <MotionBox
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            gap={2}
+            animate={{ y: [0, 8, 0] }}
+            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+          >
+            <Text fontSize="xs" color="text.muted" fontWeight="500" letterSpacing="0.05em">
+              SCROLL
+            </Text>
+            <Box
+              w="1px"
+              h="24px"
+              bg="text.muted"
+              opacity={0.5}
+            />
+          </MotionBox>
+        </Box>
       </Container>
     </Box>
   );
