@@ -38,8 +38,8 @@ export default function Footer() {
             ))}
           </Flex>
           <Text
-            fontSize="xs"
-            color="text.secondary"
+            fontSize="sm"
+            color="text.muted"
             textAlign="center"
             w="full"
           >
@@ -76,7 +76,7 @@ export default function Footer() {
                 </Link>
               ))}
             </Flex>
-            <Text fontSize="sm" color="text.secondary">
+            <Text fontSize="sm" color="text.muted">
               © 2025 | ALL RIGHTS RESERVED by Colex.
             </Text>
           </VStack>
