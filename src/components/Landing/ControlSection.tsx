@@ -132,7 +132,7 @@ function FeatureMockup({ type }: { type: number }) {
                 borderColor="brand.primary"
                 boxShadow={task.active ? "sm" : "none"}
               >
-                <Text fontSize="9px" color={task.active ? "gray.800" : "gray.500"} fontWeight={task.active ? "600" : "400"}>
+                <Text fontSize="11px" color={task.active ? "gray.800" : "gray.500"} fontWeight={task.active ? "600" : "400"}>
                   {task.name}
                 </Text>
               </Box>
@@ -143,37 +143,37 @@ function FeatureMockup({ type }: { type: number }) {
           <Box flex={1} bg="white" borderRadius="md" boxShadow="sm" border="1px solid" borderColor="gray.200" overflow="hidden">
             {/* Task header */}
             <Box bg="gray.50" px={3} py={2} borderBottom="1px solid" borderColor="gray.100">
-              <Text fontSize="10px" fontWeight="600" color="gray.700">Invoice #1247</Text>
-              <Text fontSize="8px" color="gray.500">Process and approve invoice</Text>
+              <Text fontSize="12px" fontWeight="600" color="gray.700">Invoice #1247</Text>
+              <Text fontSize="12px" color="gray.500">Process and approve invoice</Text>
             </Box>
 
             {/* Generated UI for this task */}
             <Box p={3}>
               <Box mb={2}>
-                <Text fontSize="8px" color="gray.500">Vendor</Text>
+                <Text fontSize="12px" color="gray.500">Vendor</Text>
                 <Box bg="gray.50" borderRadius="sm" px={2} py={1} mt={0.5}>
-                  <Text fontSize="9px" color="gray.800">Acme Corp</Text>
+                  <Text fontSize="11px" color="gray.800">Acme Corp</Text>
                 </Box>
               </Box>
               <Flex gap={2} mb={2}>
                 <Box flex={1}>
-                  <Text fontSize="8px" color="gray.500">Amount</Text>
+                  <Text fontSize="12px" color="gray.500">Amount</Text>
                   <Box bg="gray.50" borderRadius="sm" px={2} py={1} mt={0.5}>
-                    <Text fontSize="9px" color="gray.800" fontWeight="600">$4,850</Text>
+                    <Text fontSize="11px" color="gray.800" fontWeight="600">$4,850</Text>
                   </Box>
                 </Box>
                 <Box flex={1}>
-                  <Text fontSize="8px" color="gray.500">Due</Text>
+                  <Text fontSize="12px" color="gray.500">Due</Text>
                   <Box bg="gray.50" borderRadius="sm" px={2} py={1} mt={0.5}>
-                    <Text fontSize="9px" color="gray.800">Feb 15</Text>
+                    <Text fontSize="11px" color="gray.800">Feb 15</Text>
                   </Box>
                 </Box>
               </Flex>
               <Flex gap={2} mt={3}>
-                <Box bg="green.500" color="white" px={2} py={1} borderRadius="md" fontSize="8px" fontWeight="500">
+                <Box bg="green.500" color="white" px={2} py={1} borderRadius="md" fontSize="12px" fontWeight="500">
                   Approve
                 </Box>
-                <Box bg="gray.200" color="gray.600" px={2} py={1} borderRadius="md" fontSize="8px" fontWeight="500">
+                <Box bg="gray.200" color="gray.600" px={2} py={1} borderRadius="md" fontSize="12px" fontWeight="500">
                   Reject
                 </Box>
               </Flex>
@@ -189,9 +189,9 @@ function FeatureMockup({ type }: { type: number }) {
           {/* Header */}
           <Box bg="gray.50" px={3} py={2} borderBottom="1px solid" borderColor="gray.100">
             <Flex justify="space-between" align="center">
-              <Text fontSize="10px" fontWeight="600" color="gray.700">Quote Review</Text>
+              <Text fontSize="12px" fontWeight="600" color="gray.700">Quote Review</Text>
               <Box bg="yellow.100" px={2} py={0.5} borderRadius="full">
-                <Text fontSize="8px" color="yellow.700" fontWeight="500">Pending</Text>
+                <Text fontSize="12px" color="yellow.700" fontWeight="500">Pending</Text>
               </Box>
             </Flex>
           </Box>
@@ -199,21 +199,21 @@ function FeatureMockup({ type }: { type: number }) {
           {/* Content preview */}
           <Box flex={1} p={3}>
             <Box bg="gray.50" borderRadius="md" p={2} mb={2}>
-              <Text fontSize="8px" color="gray.500" mb={1}>Customer</Text>
-              <Text fontSize="10px" color="gray.800" fontWeight="500">BlueSky Logistics</Text>
+              <Text fontSize="12px" color="gray.500" mb={1}>Customer</Text>
+              <Text fontSize="12px" color="gray.800" fontWeight="500">BlueSky Logistics</Text>
             </Box>
             <Flex gap={2} mb={2}>
               <Box bg="gray.50" borderRadius="md" p={2} flex={1}>
-                <Text fontSize="8px" color="gray.500">Route</Text>
-                <Text fontSize="9px" color="gray.800">SIN → LAX</Text>
+                <Text fontSize="12px" color="gray.500">Route</Text>
+                <Text fontSize="11px" color="gray.800">SIN → LAX</Text>
               </Box>
               <Box bg="gray.50" borderRadius="md" p={2} flex={1}>
-                <Text fontSize="8px" color="gray.500">Weight</Text>
-                <Text fontSize="9px" color="gray.800">2,400 kg</Text>
+                <Text fontSize="12px" color="gray.500">Weight</Text>
+                <Text fontSize="11px" color="gray.800">2,400 kg</Text>
               </Box>
             </Flex>
             <Box bg="blue.50" borderRadius="md" p={2} mb={2}>
-              <Text fontSize="8px" color="blue.600" fontWeight="500">Proposed: $12,450</Text>
+              <Text fontSize="12px" color="blue.600" fontWeight="500">Proposed: $12,450</Text>
             </Box>
             {/* Reviewer inline */}
             <Flex align="center" gap={2}>
@@ -224,7 +224,7 @@ function FeatureMockup({ type }: { type: number }) {
                 h={5}
                 borderRadius="full"
               />
-              <Text fontSize="8px" color="gray.500">Assigned to <Text as="span" color="gray.700" fontWeight="500">Sarah</Text></Text>
+              <Text fontSize="12px" color="gray.500">Assigned to <Text as="span" color="gray.700" fontWeight="500">Sarah</Text></Text>
             </Flex>
           </Box>
 
@@ -249,7 +249,7 @@ function FeatureMockup({ type }: { type: number }) {
         <Box h="full" bg="white" borderRadius="md" p={3} boxShadow="xs">
           <Flex justify="space-between" align="center" mb={3}>
             <Text fontSize="xs" fontWeight="600" color="gray.700">Activity Log</Text>
-            <Text fontSize="8px" color="gray.400">Today</Text>
+            <Text fontSize="12px" color="gray.400">Today</Text>
           </Flex>
           {[
             { action: "Invoice approved", user: "John", seed: "JohnDoe", time: "2m ago", icon: "✓", iconBg: "green.100", iconColor: "green.600" },
@@ -267,14 +267,14 @@ function FeatureMockup({ type }: { type: number }) {
                 bg="gray.100"
               />
               <Box flex={1}>
-                <Text fontSize="10px" color="gray.800" fontWeight="500">{item.action}</Text>
-                <Text fontSize="8px" color="gray.500">{item.user}</Text>
+                <Text fontSize="12px" color="gray.800" fontWeight="500">{item.action}</Text>
+                <Text fontSize="12px" color="gray.500">{item.user}</Text>
               </Box>
               <Flex direction="column" align="flex-end" gap={1}>
                 <Box bg={item.iconBg} w={5} h={5} borderRadius="full" display="flex" alignItems="center" justifyContent="center">
-                  <Text fontSize="10px" color={item.iconColor}>{item.icon}</Text>
+                  <Text fontSize="12px" color={item.iconColor}>{item.icon}</Text>
                 </Box>
-                <Text fontSize="8px" color="gray.400">{item.time}</Text>
+                <Text fontSize="12px" color="gray.400">{item.time}</Text>
               </Flex>
             </Flex>
           ))}

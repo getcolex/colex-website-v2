@@ -224,7 +224,7 @@ function WorkflowVisual({ isInView }: { isInView: boolean }) {
       >
         <Flex align="center" gap={1}>
           <Box w={1.5} h={1.5} borderRadius="full" bg="green.500" />
-          <Text fontSize="10px" fontWeight="600" color="green.700">
+          <Text fontSize="12px" fontWeight="600" color="green.700">
             Running
           </Text>
         </Flex>
@@ -255,7 +255,7 @@ function TeamInterfaceVisual({ isInView }: { isInView: boolean }) {
           py={0.5}
           bg="green.100"
           borderRadius="full"
-          fontSize="9px"
+          fontSize="11px"
           fontWeight="600"
           color="green.700"
         >
@@ -344,7 +344,7 @@ function HumanReviewVisual({ isInView }: { isInView: boolean }) {
           <Text fontSize="xs" fontWeight="600" color="gray.700">
             Invoice #1247
           </Text>
-          <Text fontSize="10px" color="gray.500">
+          <Text fontSize="12px" color="gray.500">
             Awaiting your review
           </Text>
         </Box>
