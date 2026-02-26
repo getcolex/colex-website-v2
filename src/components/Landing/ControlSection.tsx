@@ -75,10 +75,8 @@ function FeatureCard({ feature }: { feature: (typeof features)[0] }) {
     <Box
       bg="white"
       borderRadius="xl"
-      border="1px solid"
-      borderColor="gray.200"
       overflow="hidden"
-      boxShadow="sm"
+      boxShadow="md"
     >
       {/* Mockup area - 1.6:1 ratio (taller) */}
       <Box
@@ -142,7 +140,7 @@ function FeatureMockup({ type }: { type: number }) {
           {/* Expanded task - right side */}
           <Box flex={1} bg="white" borderRadius="md" boxShadow="sm" border="1px solid" borderColor="gray.200" overflow="hidden">
             {/* Task header */}
-            <Box bg="gray.50" px={3} py={2} borderBottom="1px solid" borderColor="gray.100">
+            <Box bg="#F9F2F5" px={3} py={2} borderBottom="1px solid" borderColor="gray.100">
               <Text fontSize="12px" fontWeight="600" color="gray.700">Invoice #1247</Text>
               <Text fontSize="12px" color="gray.500">Process and approve invoice</Text>
             </Box>
@@ -187,7 +185,7 @@ function FeatureMockup({ type }: { type: number }) {
       return (
         <Flex h="full" direction="column" bg="white" borderRadius="md" boxShadow="xs" overflow="hidden">
           {/* Header */}
-          <Box bg="gray.50" px={3} py={2} borderBottom="1px solid" borderColor="gray.100">
+          <Box bg="#F9F2F5" px={3} py={2} borderBottom="1px solid" borderColor="gray.100">
             <Flex justify="space-between" align="center">
               <Text fontSize="12px" fontWeight="600" color="gray.700">Quote Review</Text>
               <Box bg="yellow.100" px={2} py={0.5} borderRadius="full">

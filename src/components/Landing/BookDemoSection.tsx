@@ -147,6 +147,7 @@ function BentoCell({
       display="flex"
       flexDirection="column"
       cursor="default"
+      boxShadow="md"
       _hover={{
         transform: "translateY(-4px)",
         boxShadow: "0 12px 40px rgba(0,0,0,0.15)",
@@ -413,6 +414,10 @@ function IntegrationsVisual({ isInView }: { isInView: boolean }) {
       icon: "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg",
       bg: "white"
     },
+    { name: "Notion", icon: "https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png", bg: "white" },
+    { name: "Salesforce", icon: "https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg", bg: "white" },
+    { name: "HubSpot", icon: "https://upload.wikimedia.org/wikipedia/commons/3/3f/HubSpot_Logo.svg", bg: "white" },
+    { name: "Jira", icon: "https://upload.wikimedia.org/wikipedia/commons/8/8a/Jira_Logo.svg", bg: "white" },
   ];
 
   return (
@@ -444,15 +449,6 @@ function IntegrationsVisual({ isInView }: { isInView: boolean }) {
           />
         </MotionBox>
       ))}
-      <MotionBox
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.3, delay: 0.7 }}
-      >
-        <Text fontSize="sm" color="gray.400" fontWeight="500">
-          + more
-        </Text>
-      </MotionBox>
     </Flex>
   );
 }

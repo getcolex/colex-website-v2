@@ -83,10 +83,8 @@ function FailureCard({ failure }: { failure: (typeof failures)[0] }) {
     <Box
       bg="white"
       borderRadius="xl"
-      border="1px solid"
-      borderColor="gray.200"
       overflow="hidden"
-      boxShadow="sm"
+      boxShadow="md"
     >
       {/* Mockup area - 1:1.6 ratio */}
       <Box
@@ -95,6 +93,9 @@ function FailureCard({ failure }: { failure: (typeof failures)[0] }) {
         p={4}
         borderBottom="1px solid"
         borderColor="gray.100"
+        filter="saturate(0.5) opacity(0.85)"
+        transition="filter 0.3s ease"
+        _hover={{ filter: "saturate(1) opacity(1)" }}
       >
         <FailureMockup type={failure.id} />
       </Box>
