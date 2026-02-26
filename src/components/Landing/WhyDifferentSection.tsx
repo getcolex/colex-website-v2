@@ -93,9 +93,9 @@ function FailureCard({ failure }: { failure: (typeof failures)[0] }) {
         p={4}
         borderBottom="1px solid"
         borderColor="gray.100"
-        filter="saturate(0.5) opacity(0.85)"
+        filter="saturate(0.4)"
         transition="filter 0.3s ease"
-        _hover={{ filter: "saturate(1) opacity(1)" }}
+        _hover={{ filter: "saturate(1)" }}
       >
         <FailureMockup type={failure.id} />
       </Box>
