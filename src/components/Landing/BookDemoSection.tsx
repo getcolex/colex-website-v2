@@ -68,7 +68,7 @@ export default function BookDemoSection() {
                 transition="all 0.2s"
                 onClick={() => getEarlyAccess("benefits_section")}
               >
-                Let&apos;s talk
+                Book a demo
                 <Box as="span" ml={2} display="inline-flex">
                   <ArrowRightIcon
                     style={{

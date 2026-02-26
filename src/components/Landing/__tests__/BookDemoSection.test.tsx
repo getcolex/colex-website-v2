@@ -33,6 +33,6 @@ describe('BookDemoSection', () => {
 
   it('renders the CTA button', () => {
     render(<BookDemoSection />)
-    expect(screen.getByRole('button', { name: /let's talk/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /book a demo/i })).toBeInTheDocument()
   })
 })
