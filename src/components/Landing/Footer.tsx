@@ -10,11 +10,12 @@ import {
   Link,
 } from "@chakra-ui/react";
 import Image from "next/image";
+import { getEarlyAccess } from "@/lib/utils";
 
 const FOOTER_LINKS = [
   { label: "Privacy Policy", href: "/privacy" },
   { label: "Terms of Service", href: "/terms" },
-  { label: "Contact", href: "mailto:hello@getcolex.com" },
+  { label: "Contact", href: "#", onClick: () => getEarlyAccess("footer") },
 ];
 
 export default function Footer() {
@@ -28,6 +29,7 @@ export default function Footer() {
               <Link
                 key={link.label}
                 href={link.href}
+                onClick={link.onClick}
                 fontSize="sm"
                 color="text.muted"
                 _hover={{ color: "text.primary" }}
