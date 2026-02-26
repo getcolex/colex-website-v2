@@ -2,6 +2,7 @@ export const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "";
 
 // Track pageviews
 export const pageview = (url: string) => {
+  if (typeof window.gtag !== 'function') return;
   window.gtag("config", GA_ID, {
     page_path: url,
   });
@@ -21,6 +22,7 @@ export const event = ({
   value?: number;
   custom_parameters?: Record<string, unknown>;
 }) => {
+  if (typeof window.gtag !== 'function') return;
   window.gtag("event", action, {
     event_category: category,
     event_label: label,

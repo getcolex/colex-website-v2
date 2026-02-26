@@ -25,7 +25,7 @@ describe('FeatureGridSection', () => {
 
   it('renders all 3 feature cards', () => {
     render(<FeatureGridSection />)
-    expect(screen.getByText('Each task has a interface')).toBeInTheDocument()
+    expect(screen.getByText('Each task has an interface')).toBeInTheDocument()
     expect(screen.getByText('Reviews where needed')).toBeInTheDocument()
     expect(screen.getByText('Full Audit Trail')).toBeInTheDocument()
   })

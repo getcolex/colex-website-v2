@@ -27,7 +27,7 @@ describe('WhySection', () => {
     render(<WhySection />)
     expect(screen.getByText('SaaS is too rigid')).toBeInTheDocument()
     expect(screen.getByText('No-code is a lot of code')).toBeInTheDocument()
-    expect(screen.getByText("Vibe coding dosen't ship")).toBeInTheDocument()
+    expect(screen.getByText("Vibe coding doesn't ship")).toBeInTheDocument()
     expect(screen.getByText('Devs are expensive')).toBeInTheDocument()
   })
 

@@ -1,19 +1,17 @@
 /**
- * review-verify: Code review finding verification tests
- * Each test verifies one runtime_claim from the code review.
+ * Regression tests for code review findings.
+ * These ensure the fixes remain in place.
  */
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import React from 'react'
 import { render, act } from '@testing-library/react'
 
 // ---------------------------------------------------------------------------
-// Finding 1: gtag.ts:16 — Missing window.gtag check
-// runtime_claim: calling window.gtag before the afterInteractive script loads
-//   throws a TypeError
+// Finding 1: gtag.ts:16 — window.gtag guard
+// Ensures event() does NOT throw when window.gtag is missing (ad-blocker)
 // ---------------------------------------------------------------------------
-describe('review-verify: Finding 1 — gtag event() without window.gtag', () => {
-  it('throws TypeError when window.gtag is not defined', async () => {
-    // Ensure window.gtag is not defined
+describe('regression: gtag safety guard', () => {
+  it('event() does not throw when window.gtag is undefined', async () => {
     const orig = (window as unknown as Record<string, unknown>).gtag
     delete (window as unknown as Record<string, unknown>).gtag
 
@@ -21,9 +19,8 @@ describe('review-verify: Finding 1 — gtag event() without window.gtag', () => 
 
     expect(() =>
       event({ action: 'test', category: 'cat', label: 'lbl' })
-    ).toThrow(TypeError)
+    ).not.toThrow()
 
-    // restore
     if (orig !== undefined) {
       (window as unknown as Record<string, unknown>).gtag = orig
     }
@@ -31,89 +28,78 @@ describe('review-verify: Finding 1 — gtag event() without window.gtag', () => 
 })
 
 // ---------------------------------------------------------------------------
-// Finding 3: setup.ts:16 — motion mock breaks standard elements
-// runtime_claim: motion.div is undefined in the mock, crashing components
+// Finding 3: setup.ts:16 — motion.div must be defined in mock
 // ---------------------------------------------------------------------------
-describe('review-verify: Finding 3 — motion.div defined in mock', () => {
-  it('motion.div is defined after mock is applied', async () => {
+describe('regression: motion mock provides HTML element proxies', () => {
+  it('motion.div is defined', async () => {
     const { motion } = await import('motion/react')
-    // The mock exposes motion.create but NOT motion.div / motion.span etc.
     expect((motion as Record<string, unknown>).div).toBeDefined()
+  })
+
+  it('motion.span is defined', async () => {
+    const { motion } = await import('motion/react')
+    expect((motion as Record<string, unknown>).span).toBeDefined()
   })
 })
 
 // ---------------------------------------------------------------------------
-// Finding 4: setup.ts:28 — useLenis mock triggers state updates during render
-// runtime_claim: calling a state-updating callback synchronously inside
-//   useLenis mock triggers React warnings
+// Finding 4: useLenis mock must NOT call callback synchronously
 // ---------------------------------------------------------------------------
-describe('review-verify: Finding 4 — useLenis synchronous callback triggers React warning', () => {
-  it('useLenis callback is called synchronously during render', async () => {
+describe('regression: useLenis mock defers callback', () => {
+  it('callback is not called synchronously', async () => {
     const { useLenis } = await import('lenis/react')
     let callCount = 0
-    // Simulate what the mock does: call the callback immediately
     useLenis(({ scroll }: { scroll: number }) => {
       callCount++
       void scroll
     })
-    // If the mock calls synchronously, callCount is already 1 here
-    expect(callCount).toBe(1)
+    // Should NOT be called yet (deferred via queueMicrotask)
+    expect(callCount).toBe(0)
   })
 
-  it('state update inside useLenis callback during render causes infinite re-render loop (proven defect)', async () => {
+  it('component with setState in useLenis callback does not crash', async () => {
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
-
     const { useLenis: useLenisImport } = await import('lenis/react')
 
-    // The mock calls the callback synchronously during render.
-    // setState during render → re-render → callback → setState again → infinite loop.
     const TestComponent = () => {
       const [scroll, setScroll] = React.useState(0)
       useLenisImport(({ scroll: s }: { scroll: number }) => {
-        setScroll(s) // state update during render
+        setScroll(s)
       })
       return React.createElement('div', null, String(scroll))
     }
 
-    // React throws "Too many re-renders" — which is a runtime crash, not just a warning
+    // Should NOT throw "Too many re-renders"
     let threwError = false
     try {
       await act(async () => {
         render(React.createElement(TestComponent))
       })
-    } catch (e: unknown) {
-      if (e instanceof Error && e.message.includes('Too many re-renders')) {
-        threwError = true
-      }
+    } catch {
+      threwError = true
     }
 
-    // The synchronous callback causes a crash — proven defect (worse than "React warning")
-    expect(threwError).toBe(true)
-
+    expect(threwError).toBe(false)
     consoleError.mockRestore()
   })
 })
 
 // ---------------------------------------------------------------------------
-// Finding 5: setup.ts:20 — useTransform mock breaks MotionValue contract
-// runtime_claim: calling .get() on the result of useTransform throws
-//   a TypeError because the mock returns a primitive
+// Finding 5: useTransform must return MotionValue-like object, not primitive
 // ---------------------------------------------------------------------------
-describe('review-verify: Finding 5 — useTransform returns primitive, .get() throws', () => {
-  it('useTransform result is a primitive (not a MotionValue)', async () => {
+describe('regression: useTransform returns MotionValue-like object', () => {
+  it('result has .get() method', async () => {
     const { useTransform } = await import('motion/react')
     const result = useTransform(null, [0, 1], [0, 100])
-    // The mock returns values?.[0] ?? 0, which is a primitive number
-    expect(typeof result).toBe('number')
+    expect(typeof result).toBe('object')
+    expect(typeof (result as { get: () => unknown }).get).toBe('function')
   })
 
-  it('calling .get() on useTransform result throws TypeError', async () => {
+  it('.get() does not throw', async () => {
     const { useTransform } = await import('motion/react')
     const result = useTransform(null, [0, 1], [0, 100])
     expect(() => {
-      // result is a primitive; accessing .get() on it won't throw,
-      // but calling it as a function will
-      ;(result as unknown as { get: () => unknown }).get()
-    }).toThrow(TypeError)
+      (result as { get: () => unknown }).get()
+    }).not.toThrow()
   })
 })
