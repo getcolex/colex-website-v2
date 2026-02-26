@@ -33,12 +33,12 @@ describe('regression: gtag safety guard', () => {
 describe('regression: motion mock provides HTML element proxies', () => {
   it('motion.div is defined', async () => {
     const { motion } = await import('motion/react')
-    expect((motion as Record<string, unknown>).div).toBeDefined()
+    expect((motion as unknown as Record<string, unknown>).div).toBeDefined()
   })
 
   it('motion.span is defined', async () => {
     const { motion } = await import('motion/react')
-    expect((motion as Record<string, unknown>).span).toBeDefined()
+    expect((motion as unknown as Record<string, unknown>).span).toBeDefined()
   })
 })
 
@@ -90,14 +90,14 @@ describe('regression: useLenis mock defers callback', () => {
 describe('regression: useTransform returns MotionValue-like object', () => {
   it('result has .get() method', async () => {
     const { useTransform } = await import('motion/react')
-    const result = useTransform(null, [0, 1], [0, 100])
+    const result = useTransform(null as never, [0, 1], [0, 100])
     expect(typeof result).toBe('object')
     expect(typeof (result as { get: () => unknown }).get).toBe('function')
   })
 
   it('.get() does not throw', async () => {
     const { useTransform } = await import('motion/react')
-    const result = useTransform(null, [0, 1], [0, 100])
+    const result = useTransform(null as never, [0, 1], [0, 100])
     expect(() => {
       (result as { get: () => unknown }).get()
     }).not.toThrow()
