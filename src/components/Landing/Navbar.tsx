@@ -48,7 +48,7 @@ export default function LandingNavbar() {
                 >
                   <ColexBrandLogo
                     style={{ width: 126, height: 44 }}
-                    alt="Colex Logo"
+                    aria-label="Colex Logo"
                   />
                 </Container>
               </Box>
@@ -92,7 +92,7 @@ export default function LandingNavbar() {
                     width: isMobile ? 100 : 126,
                     height: isMobile ? 35 : 44,
                   }}
-                  alt="Colex Logo"
+                  aria-label="Colex Logo"
                 />
                 <Flex gap={{ base: 2, md: 5 }}>
                   <Button
