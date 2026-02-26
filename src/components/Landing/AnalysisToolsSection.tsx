@@ -81,7 +81,7 @@ export default function AnalysisToolsSection() {
               columns={{ base: 3, md: 2, lg: 3 }}
               gap={5}
               w={{ base: "fit-content", md: "auto" }}
-              minW={{ base: "calc(452px * 3 + 40px)", md: "auto" }}
+              minW={{ base: "calc(85vw * 3 + 40px)", sm: "calc(350px * 3 + 40px)", md: "auto" }}
             >
               {ANALYSIS_TOOLS.map((tool) => (
                 <Box
@@ -97,7 +97,7 @@ export default function AnalysisToolsSection() {
                     boxShadow: "lg",
                   }}
                   flexShrink={0}
-                  w={{ base: "452px", md: "auto" }}
+                  w={{ base: "85vw", sm: "350px", md: "auto" }}
                   backgroundImage="url('/images/ToolsBg.png')"
                   transition="all 0.2s ease-in-out"
                   background="linear-gradient(100deg, var(--whiteAlpha-0, #FFF) 50%, var(--whiteAlpha-500, rgba(255, 255, 255, 0.00)) 100%)"

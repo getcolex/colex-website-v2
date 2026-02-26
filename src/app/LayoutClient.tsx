@@ -1,14 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
-import { getLenis } from "@/lib/lenis";
 import Script from "next/script";
 
 export default function LayoutClient() {
-  useEffect(() => {
-    getLenis();
-  }, []);
-
   return (
     <>
       <Script

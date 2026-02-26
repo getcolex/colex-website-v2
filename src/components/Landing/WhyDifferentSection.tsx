@@ -29,7 +29,7 @@ const failures = [
   },
 ];
 
-export default function WhySection() {
+export default function WhyDifferentSection() {
   return (
     <Box
       position="relative"
@@ -83,10 +83,8 @@ function FailureCard({ failure }: { failure: (typeof failures)[0] }) {
     <Box
       bg="white"
       borderRadius="xl"
-      border="1px solid"
-      borderColor="gray.200"
       overflow="hidden"
-      boxShadow="sm"
+      boxShadow="md"
     >
       {/* Mockup area - 1:1.6 ratio */}
       <Box
@@ -95,6 +93,9 @@ function FailureCard({ failure }: { failure: (typeof failures)[0] }) {
         p={4}
         borderBottom="1px solid"
         borderColor="gray.100"
+        filter="saturate(0.4)"
+        transition="filter 0.3s ease"
+        _hover={{ filter: "saturate(1)" }}
       >
         <FailureMockup type={failure.id} />
       </Box>
@@ -135,7 +136,7 @@ function FailureMockup({ type }: { type: number }) {
               alignSelf="flex-start"
               boxShadow="xs"
             >
-              <Text fontSize="10px" color="gray.700">did you add the inquiry?</Text>
+              <Text fontSize="12px" color="gray.700">did you add the inquiry?</Text>
             </Box>
             <Box
               bg="#dcf8c6"
@@ -147,7 +148,7 @@ function FailureMockup({ type }: { type: number }) {
               alignSelf="flex-end"
               boxShadow="xs"
             >
-              <Text fontSize="10px" color="gray.700">where&apos;s the doc?</Text>
+              <Text fontSize="12px" color="gray.700">where&apos;s the doc?</Text>
             </Box>
             <Box
               bg="white"
@@ -159,7 +160,7 @@ function FailureMockup({ type }: { type: number }) {
               alignSelf="flex-start"
               boxShadow="xs"
             >
-              <Text fontSize="10px" color="gray.700">checking...</Text>
+              <Text fontSize="12px" color="gray.700">checking...</Text>
             </Box>
             <Box
               bg="#dcf8c6"
@@ -194,18 +195,18 @@ function FailureMockup({ type }: { type: number }) {
               {/* Top row: Trigger -> HTTP -> Sheets */}
               <Flex align="center" justify="center" gap={2}>
                 <Box w={16} h={10} bg="purple.500" borderRadius="md" display="flex" alignItems="center" justifyContent="center">
-                  <Text fontSize="10px" color="white" fontWeight="600">Trigger</Text>
+                  <Text fontSize="12px" color="white" fontWeight="600">Trigger</Text>
                 </Box>
                 <Box w={6} h="2px" bg="gray.500" />
                 <Box w={16} h={10} bg="blue.500" borderRadius="md" display="flex" alignItems="center" justifyContent="center" position="relative">
-                  <Text fontSize="10px" color="white" fontWeight="600">HTTP</Text>
+                  <Text fontSize="12px" color="white" fontWeight="600">HTTP</Text>
                   <Box position="absolute" top={-2} right={-2} w={6} h={6} bg="red.500" borderRadius="full" display="flex" alignItems="center" justifyContent="center" border="2px solid" borderColor="gray.800">
                     <Text fontSize="12px" color="white" fontWeight="700">!</Text>
                   </Box>
                 </Box>
                 <Box w={6} h="2px" bg="red.400" />
                 <Box w={16} h={10} bg="green.500" borderRadius="md" display="flex" alignItems="center" justifyContent="center" position="relative">
-                  <Text fontSize="10px" color="white" fontWeight="600">Sheets</Text>
+                  <Text fontSize="12px" color="white" fontWeight="600">Sheets</Text>
                   <Box position="absolute" top={-2} right={-2} w={6} h={6} bg="red.500" borderRadius="full" display="flex" alignItems="center" justifyContent="center" border="2px solid" borderColor="gray.800">
                     <Text fontSize="12px" color="white" fontWeight="700">!</Text>
                   </Box>
@@ -214,11 +215,11 @@ function FailureMockup({ type }: { type: number }) {
               {/* Bottom row: Branch with errors */}
               <Flex align="center" justify="center" gap={2} ml={{ base: 4, md: 12 }}>
                 <Box w={16} h={10} bg="orange.500" borderRadius="md" display="flex" alignItems="center" justifyContent="center" position="relative">
-                  <Text fontSize="10px" color="white" fontWeight="600">IF</Text>
+                  <Text fontSize="12px" color="white" fontWeight="600">IF</Text>
                 </Box>
                 <Box w={6} h="2px" bg="gray.500" />
                 <Box w={16} h={10} bg="teal.500" borderRadius="md" display="flex" alignItems="center" justifyContent="center" position="relative">
-                  <Text fontSize="10px" color="white" fontWeight="600">Email</Text>
+                  <Text fontSize="12px" color="white" fontWeight="600">Email</Text>
                   <Box position="absolute" top={-2} right={-2} w={6} h={6} bg="red.500" borderRadius="full" display="flex" alignItems="center" justifyContent="center" border="2px solid" borderColor="gray.800">
                     <Text fontSize="12px" color="white" fontWeight="700">!</Text>
                   </Box>
@@ -247,7 +248,7 @@ function FailureMockup({ type }: { type: number }) {
                 transition={{ repeat: Infinity, duration: 1, ease: "linear", repeatType: "loop" } as never}
                 mb={3}
               />
-              <Text fontSize="9px" color="gray.500" textAlign="center">Generating...</Text>
+              <Text fontSize="11px" color="gray.500" textAlign="center">Generating...</Text>
             </Flex>
           </Box>
           {/* Main preview area - blank/loading */}
@@ -258,7 +259,7 @@ function FailureMockup({ type }: { type: number }) {
               <Box w={2} h={2} borderRadius="full" bg="green.400" />
             </Flex>
             <Box h="full" display="flex" alignItems="center" justifyContent="center">
-              <Text fontSize="9px" color="gray.400">Preview loading...</Text>
+              <Text fontSize="11px" color="gray.400">Preview loading...</Text>
             </Box>
             <Box
               position="absolute"
@@ -266,7 +267,7 @@ function FailureMockup({ type }: { type: number }) {
               right={2}
               bg="purple.500"
               color="white"
-              fontSize="8px"
+              fontSize="12px"
               fontWeight="600"
               px={1.5}
               py={0.5}
@@ -283,7 +284,7 @@ function FailureMockup({ type }: { type: number }) {
       return (
         <Flex gap={2} h="full" overflowX="auto" css={{ "&::-webkit-scrollbar": { display: "none" } }}>
           <Box flex="0 0 130px" bg="gray.100" borderRadius="md" p={2}>
-            <Text fontSize="8px" color="gray.500" mb={2}>TODO</Text>
+            <Text fontSize="12px" color="gray.500" mb={2}>TODO</Text>
             <Box h={7} bg="white" borderRadius="sm" mb={1} boxShadow="xs" display="flex" alignItems="center" justifyContent="flex-end" px={2}>
               <Text fontSize="lg">💰</Text>
             </Box>
@@ -295,7 +296,7 @@ function FailureMockup({ type }: { type: number }) {
             </Box>
           </Box>
           <Box flex="0 0 130px" bg="gray.100" borderRadius="md" p={2}>
-            <Text fontSize="8px" color="gray.500" mb={2}>IN PROGRESS</Text>
+            <Text fontSize="12px" color="gray.500" mb={2}>IN PROGRESS</Text>
             <Box h={7} bg="yellow.100" borderRadius="sm" mb={1} boxShadow="xs" display="flex" alignItems="center" justifyContent="flex-end" px={2}>
               <Text fontSize="lg">💰</Text>
             </Box>
@@ -304,7 +305,7 @@ function FailureMockup({ type }: { type: number }) {
             </Box>
           </Box>
           <Box flex="0 0 130px" bg="gray.100" borderRadius="md" p={2}>
-            <Text fontSize="8px" color="gray.500" mb={2}>DONE</Text>
+            <Text fontSize="12px" color="gray.500" mb={2}>DONE</Text>
             <Box h={7} bg="green.100" borderRadius="sm" boxShadow="xs" display="flex" alignItems="center" justifyContent="flex-end" px={2}>
               <Text fontSize="lg">💰</Text>
             </Box>

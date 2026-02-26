@@ -37,6 +37,11 @@ export default function FeatureShowcase() {
   const phantomRef = useRef<HTMLDivElement>(null);
 
   const handleFeatureClick = (idx: number) => {
+    const phantom = phantomRef.current;
+    if (phantom) {
+      const targetScroll = phantomTopRef.current + idx * FEATURE_HEIGHT_PX + FEATURE_HEIGHT_PX / 2;
+      window.scrollTo({ top: targetScroll, behavior: "smooth" });
+    }
     setActiveIndex(idx);
     sliceProgress.set(1);
   };
@@ -44,17 +49,35 @@ export default function FeatureShowcase() {
   const translateY = useTransform(sliceProgress, [0, 1], [50, 0]);
 
   /* scroll logic -------------------------------------------------- */
+  const phantomTopRef = useRef(0);
+
+  // Keep phantom top position fresh on resize / layout shift
+  useEffect(() => {
+    const phantom = phantomRef.current;
+    if (!phantom) return;
+
+    const measure = () => {
+      phantomTopRef.current = phantom.getBoundingClientRect().top + window.scrollY;
+    };
+    measure();
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(phantom);
+    // Also observe document body so shifts above the phantom are caught
+    observer.observe(document.body);
+
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     if (!isDesktop) return;
     const phantom = phantomRef.current;
     if (!phantom) return;
 
-    const startTop = phantom.offsetTop; // top of phantom
-    const endTop = startTop + SCROLL_SPAN_PX; // bottom of phantom
-
-    console.log(startTop, endTop);
     const handler = () => {
       const y = window.scrollY;
+      const startTop = phantomTopRef.current;
+      const endTop = startTop + SCROLL_SPAN_PX;
 
       const inside = y >= startTop && y < endTop;
 
@@ -71,6 +94,12 @@ export default function FeatureShowcase() {
           sliceProgress.set(1);
         }
         setActiveIndex(Math.min(idx, FEATURES.length - 1));
+      } else if (y < startTop) {
+        setActiveIndex(0);
+        sliceProgress.set(0);
+      } else {
+        setActiveIndex(FEATURES.length - 1);
+        sliceProgress.set(1);
       }
     };
 
@@ -213,9 +242,8 @@ export default function FeatureShowcase() {
                       <Image
                         src={FEATURES[activeIndex].image}
                         alt={FEATURES[activeIndex].title}
-                        layout="fill"
-                        objectFit="cover"
-                        style={{ borderRadius: 4 }}
+                        fill
+                        style={{ objectFit: "cover", borderRadius: 4 }}
                         priority
                       />
                     </motion.div>
@@ -252,9 +280,8 @@ export default function FeatureShowcase() {
                       <Image
                         src={f.image}
                         alt={f.title}
-                        layout="fill"
-                        objectFit="cover"
-                        style={{ borderRadius: 4 }}
+                        fill
+                        style={{ objectFit: "cover", borderRadius: 4 }}
                         priority
                       />
                     </Box>

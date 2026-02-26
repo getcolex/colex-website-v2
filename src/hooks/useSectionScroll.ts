@@ -1,6 +1,6 @@
 "use client";
 
-import { RefObject } from "react";
+import { RefObject, useRef, useEffect } from "react";
 import { useMotionValue, MotionValue } from "motion/react";
 import { useLenis } from "lenis/react";
 
@@ -16,12 +16,8 @@ interface UseSectionScrollReturn {
  * Hook that provides scroll progress for a section, bridging Lenis smooth scroll
  * with Framer Motion's MotionValue system.
  *
- * This replaces Framer Motion's useScroll() when using Lenis for smooth scrolling.
- *
- * @param targetRef - Reference to the section element
- * @param options - Configuration options
- * @param options.offset - Scroll offset config, e.g., ["start start", "end end"]
- * @returns Object containing scrollYProgress MotionValue (0-1)
+ * Uses ResizeObserver to cache element geometry, avoiding getBoundingClientRect
+ * on every scroll frame.
  */
 export function useSectionScroll(
   targetRef: RefObject<HTMLElement | null>,
@@ -29,22 +25,39 @@ export function useSectionScroll(
 ): UseSectionScrollReturn {
   const { offset = ["start start", "end end"] } = options;
   const scrollYProgress = useMotionValue(0);
+  const geometryRef = useRef({ top: 0, height: 0 });
+
+  // Cache element geometry, update on resize
+  useEffect(() => {
+    const element = targetRef.current;
+    if (!element) return;
+
+    const measure = () => {
+      const rect = element.getBoundingClientRect();
+      geometryRef.current = {
+        top: rect.top + window.scrollY,
+        height: element.offsetHeight,
+      };
+    };
+
+    measure();
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, [targetRef]);
 
   useLenis(({ scroll }) => {
-    if (!targetRef.current) return;
+    const { top: elementTop, height: elementHeight } = geometryRef.current;
+    if (elementHeight === 0) return;
 
-    const element = targetRef.current;
-    const rect = element.getBoundingClientRect();
-    const elementTop = rect.top + scroll;
-    const elementHeight = element.offsetHeight;
     const windowHeight = window.innerHeight;
 
-    // Parse offset strings
     const [startOffset, endOffset] = offset;
     const startPosition = parseOffset(startOffset, elementTop, elementHeight, windowHeight);
     const endPosition = parseOffset(endOffset, elementTop, elementHeight, windowHeight);
 
-    // Calculate progress (0-1) based on current scroll position
     const scrollRange = endPosition - startPosition;
     if (scrollRange === 0) {
       scrollYProgress.set(0);
@@ -63,9 +76,6 @@ export function useSectionScroll(
 /**
  * Parse offset string like "start start" or "end end"
  * First word is element position, second is viewport position
- *
- * Example: "start start" means animation starts when element's top reaches viewport's top
- * Example: "end end" means animation ends when element's bottom reaches viewport's bottom
  */
 function parseOffset(
   offsetStr: string,
@@ -75,7 +85,6 @@ function parseOffset(
 ): number {
   const [elementPos, viewportPos] = offsetStr.split(" ");
 
-  // Element position relative to document top
   let elementPoint = elementTop;
   if (elementPos === "center") {
     elementPoint = elementTop + elementHeight / 2;
@@ -83,7 +92,6 @@ function parseOffset(
     elementPoint = elementTop + elementHeight;
   }
 
-  // Viewport offset (subtracted from element point to get scroll position)
   let viewportOffset = 0;
   if (viewportPos === "start") {
     viewportOffset = 0;
@@ -93,6 +101,5 @@ function parseOffset(
     viewportOffset = windowHeight;
   }
 
-  // Return the scroll position where this condition is met
   return elementPoint - viewportOffset;
 }

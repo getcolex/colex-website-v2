@@ -79,7 +79,7 @@ export default function HowItWorksSection() {
           <MotionBox
             style={{ opacity: contentOpacity, y: contentY }}
             position="absolute"
-            top={{ base: "150px", md: "180px" }}
+            top={{ base: "120px", md: "180px" }}
             left={0}
             right={0}
             bottom={0}
@@ -89,7 +89,7 @@ export default function HowItWorksSection() {
             <Grid
               data-testid="how-it-works-grid"
               templateColumns={{ base: "1fr", lg: "repeat(12, 1fr)" }}
-              gap={{ base: 8, lg: 8 }}
+              gap={{ base: 4, md: 6, lg: 8 }}
               alignItems="center"
               h="full"
               maxW="1400px"
@@ -111,7 +111,7 @@ export default function HowItWorksSection() {
                 w="full"
                 position="relative"
               >
-                <Box position="relative" h={{ base: "200px", md: "250px" }}>
+                <Box position="relative" h={{ base: "160px", md: "250px" }}>
                   {steps.map((step, index) => (
                     <StepTextSide
                       key={step.id}
@@ -174,7 +174,7 @@ function EvolvingVisual({
     <Box
       position="relative"
       w="full"
-      h={{ base: "400px", md: "500px", lg: "550px" }}
+      h={{ base: "250px", sm: "320px", md: "500px", lg: "550px" }}
       bg="gray.50"
       borderRadius="2xl"
       border="1px solid"
@@ -493,12 +493,12 @@ function StepTextSide({
   index: number;
   scrollProgress: ReturnType<typeof useTransform<number, number>>;
 }) {
-  // Match the visual stage timing - 350vh section
-  // Stage 1: 0.22 - 0.32
-  // Stage 2: 0.30 - 0.42
-  // Stage 3: 0.40 - 0.52
-  // Stage 4: 0.50 - 0.65
-  const stepStart = 0.15 + index * 0.15;
+  // Text step timing — no overlap between steps
+  // Step 0: 0.10 → 0.27
+  // Step 1: 0.28 → 0.45
+  // Step 2: 0.46 → 0.63
+  // Step 3: 0.64 → 0.81
+  const stepStart = 0.10 + index * 0.18;
   const stepEnd = stepStart + 0.17;
   const transitionDuration = 0.03;
 

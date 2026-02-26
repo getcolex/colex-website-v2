@@ -6,9 +6,9 @@ import { Box } from "@chakra-ui/react";
 import LandingNavbar from "@/components/Landing/Navbar";
 import HeroSection from "@/components/Landing/HeroSection";
 import HowItWorksSection from "@/components/Landing/HowItWorksSection";
-import WhySection from "@/components/Landing/WhySection";
-import FeatureGridSection from "@/components/Landing/FeatureGridSection";
-import BenefitsSection from "@/components/Landing/BenefitsSection";
+import WhyDifferentSection from "@/components/Landing/WhyDifferentSection";
+import ControlSection from "@/components/Landing/ControlSection";
+import BookDemoSection from "@/components/Landing/BookDemoSection";
 import Footer from "@/components/Landing/Footer";
 import DevGridOverlay from "@/components/DevGridOverlay";
 import { useEffect } from "react";
@@ -25,9 +25,9 @@ export default function LandingPage() {
       <LandingNavbar />
       <HeroSection />
       <HowItWorksSection />
-      <WhySection />
-      <FeatureGridSection />
-      <BenefitsSection />
+      <WhyDifferentSection />
+      <ControlSection />
+      <BookDemoSection />
       <Footer />
     </Box>
   );

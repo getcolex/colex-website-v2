@@ -1,5 +1,13 @@
 import '@testing-library/jest-dom'
+import React from 'react'
 import { vi } from 'vitest'
+
+// Polyfill ResizeObserver for jsdom
+globalThis.ResizeObserver = class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+} as unknown as typeof ResizeObserver;
 
 // Mock framer-motion globally
 vi.mock('motion/react', () => {
@@ -12,12 +20,19 @@ vi.mock('motion/react', () => {
     };
   };
 
+  const motionProxy = new Proxy(
+    { create: (component: unknown) => component },
+    { get: (target, prop) => (prop in target ? (target as Record<string | symbol, unknown>)[prop] : (props: Record<string, unknown>) => {
+        const { children, ...rest } = props || {};
+        return React.createElement(prop as string, rest, children as React.ReactNode);
+      })
+    }
+  );
+
   return {
-    motion: {
-      create: (component: unknown) => component,
-    },
+    motion: motionProxy,
     useScroll: () => ({ scrollYProgress: createMotionValue(0) }),
-    useTransform: (_: unknown, __: unknown, values: unknown[]) => values?.[0] ?? 0,
+    useTransform: (_: unknown, __: unknown, values: unknown[]) => createMotionValue(typeof values?.[0] === 'number' ? values[0] : 0),
     useMotionValue: (initial: number) => createMotionValue(initial),
     useInView: () => true,
     AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
@@ -28,8 +43,8 @@ vi.mock('motion/react', () => {
 vi.mock('lenis/react', () => ({
   ReactLenis: ({ children }: { children: React.ReactNode }) => children,
   useLenis: (callback: (params: { scroll: number }) => void) => {
-    // Call the callback once with initial scroll value for testing
-    if (callback) callback({ scroll: 0 });
+    // Defer callback to avoid state updates during render
+    if (callback) queueMicrotask(() => callback({ scroll: 0 }));
   },
 }))
 

@@ -10,7 +10,7 @@ import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 const MotionBox = motion.create(Box);
 const MotionFlex = motion.create(Flex);
 
-export default function BenefitsSection() {
+export default function BookDemoSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
 
@@ -68,7 +68,7 @@ export default function BenefitsSection() {
                 transition="all 0.2s"
                 onClick={() => getEarlyAccess("benefits_section")}
               >
-                Let&apos;s talk
+                Book a demo
                 <Box as="span" ml={2} display="inline-flex">
                   <ArrowRightIcon
                     style={{
@@ -147,6 +147,7 @@ function BentoCell({
       display="flex"
       flexDirection="column"
       cursor="default"
+      boxShadow="md"
       _hover={{
         transform: "translateY(-4px)",
         boxShadow: "0 12px 40px rgba(0,0,0,0.15)",
@@ -224,7 +225,7 @@ function WorkflowVisual({ isInView }: { isInView: boolean }) {
       >
         <Flex align="center" gap={1}>
           <Box w={1.5} h={1.5} borderRadius="full" bg="green.500" />
-          <Text fontSize="10px" fontWeight="600" color="green.700">
+          <Text fontSize="12px" fontWeight="600" color="green.700">
             Running
           </Text>
         </Flex>
@@ -255,7 +256,7 @@ function TeamInterfaceVisual({ isInView }: { isInView: boolean }) {
           py={0.5}
           bg="green.100"
           borderRadius="full"
-          fontSize="9px"
+          fontSize="11px"
           fontWeight="600"
           color="green.700"
         >
@@ -344,7 +345,7 @@ function HumanReviewVisual({ isInView }: { isInView: boolean }) {
           <Text fontSize="xs" fontWeight="600" color="gray.700">
             Invoice #1247
           </Text>
-          <Text fontSize="10px" color="gray.500">
+          <Text fontSize="12px" color="gray.500">
             Awaiting your review
           </Text>
         </Box>
@@ -413,6 +414,10 @@ function IntegrationsVisual({ isInView }: { isInView: boolean }) {
       icon: "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg",
       bg: "white"
     },
+    { name: "Notion", icon: "https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png", bg: "white" },
+    { name: "Salesforce", icon: "https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg", bg: "white" },
+    { name: "HubSpot", icon: "https://upload.wikimedia.org/wikipedia/commons/3/3f/HubSpot_Logo.svg", bg: "white" },
+    { name: "Jira", icon: "https://upload.wikimedia.org/wikipedia/commons/8/8a/Jira_Logo.svg", bg: "white" },
   ];
 
   return (
@@ -444,15 +449,6 @@ function IntegrationsVisual({ isInView }: { isInView: boolean }) {
           />
         </MotionBox>
       ))}
-      <MotionBox
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.3, delay: 0.7 }}
-      >
-        <Text fontSize="sm" color="gray.400" fontWeight="500">
-          + more
-        </Text>
-      </MotionBox>
     </Flex>
   );
 }
