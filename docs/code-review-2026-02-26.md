@@ -10,8 +10,7 @@ Two-pass Gemini review with oracle-aware Claude verification.
 
 - **`src/lib/gtag.ts:16` — Unsafe `window.gtag` call crashes primary CTA.** `event()` calls `window.gtag(...)` with no existence check. Google Analytics loads via `afterInteractive` and is blocked by ad-blockers. Clicking "Book a demo" throws `TypeError: window.gtag is not a function`, aborting execution before the WhatsApp link opens. Fix: guard with `if (typeof window.gtag === 'function')`.
 
-- **`src/app/LayoutClient.tsx:8` — Two competing Lenis scroll instances cause jitter.** `LenisProvider` creates a `<ReactLenis root>` instance (duration: 1.2). `LayoutClient` calls `getLenis()` which creates a second independent instance (duration: 1.05) with its own RAF loop. Two scroll hijackers fight over `window.scrollTo`. Fix: remove `getLenis()` from LayoutClient, delete `src/lib/lenis.ts`, rely on `LenisProvider` only. 
-##Are we even using these? 
+- **`src/app/LayoutClient.tsx:8` — Two competing Lenis scroll instances cause jitter.** `LenisProvider` creates a `<ReactLenis root>` instance (duration: 1.2). `LayoutClient` calls `getLenis()` which creates a second independent instance (duration: 1.05) with its own RAF loop. Two scroll hijackers fight over `window.scrollTo`. Fix: remove `getLenis()` from LayoutClient, delete `src/lib/lenis.ts`, rely on `LenisProvider` only. **Note:** `getLenis()` is only used in `LayoutClient.tsx` — nothing else depends on it. Safe to delete.
 
 ### HIGH
 
@@ -41,11 +40,9 @@ Two-pass Gemini review with oracle-aware Claude verification.
 
 ### HIGH
 
-- **`src/components/Landing/HowItWorksSection.tsx:501` — Step cross-fade ranges overlap.** Formula `stepStart = 0.15 + index * 0.15`, `stepEnd = stepStart + 0.17`. Step 1 ends at 0.47, step 2 starts at 0.45 — 0.02 overlap where both absolutely-positioned text blocks are visible simultaneously. Screenshots confirm steps 2/3 overlapping visually. Fix: increase step spacing or reduce `stepEnd`.
-## will pick in a manual run
+- **`src/components/Landing/HowItWorksSection.tsx:501` — Step cross-fade ranges overlap.** Formula `stepStart = 0.15 + index * 0.15`, `stepEnd = stepStart + 0.17`. Step 1 ends at 0.47, step 2 starts at 0.45 — 0.02 overlap where both absolutely-positioned text blocks are visible simultaneously. Screenshots confirm steps 2/3 overlapping visually. Fix: increase step spacing or reduce `stepEnd`. **TODO: pick up in a manual run.**
 
-- **`src/components/Landing/FeatureSection.tsx:39` — Feature click doesn't scroll window.** `handleFeatureClick` sets `activeIndex` and `sliceProgress` but doesn't call `window.scrollTo`. Next scroll event recalculates from `scrollY` and snaps back. Fix: programmatically scroll to `startTop + idx * FEATURE_HEIGHT_PX`.
-##What is the expected behaviour here?
+- **`src/components/Landing/FeatureSection.tsx:39` — Feature click doesn't scroll window.** `handleFeatureClick` sets `activeIndex` and `sliceProgress` but doesn't call `window.scrollTo`. Next scroll event recalculates from `scrollY` and snaps back. The click is desktop-only and meant as a visual highlight (swaps image, fills progress bar), but any subsequent scroll immediately overwrites it. Fix: either scroll the window to the corresponding position on click, or make the scroll handler temporarily yield after a manual click.
 
 - **`src/components/Landing/AnalysisToolsSection.tsx:100` — Card width exceeds mobile viewport.** Cards hardcoded to `w={{ base: "452px" }}`. Standard mobile viewports are 320–430px. Individual cards overflow. Fix: use `w={{ base: "85vw", sm: "350px", md: "auto" }}`.
 
@@ -57,19 +54,13 @@ Two-pass Gemini review with oracle-aware Claude verification.
 
 - **`src/hooks/useSectionScroll.ts:37` — Layout thrashing in scroll callback.** `getBoundingClientRect()` called inside `useLenis` callback on every scroll frame. Synchronous layout read at 60fps+ with no caching or throttling. Fix: use `ResizeObserver` or Framer Motion `useScroll`.
 
-- **`src/components/Landing/FeatureSection.tsx:52` — Stale `offsetTop` on resize.** `startTop = phantom.offsetTop` computed once in `useEffect`. No `ResizeObserver` or resize listener. Layout shifts above the section desynchronize scroll animations. Fix: add `ResizeObserver` or recalculate dynamically.
-## let's do this manually later
+- **`src/components/Landing/FeatureSection.tsx:52` — Stale `offsetTop` on resize.** `startTop = phantom.offsetTop` computed once in `useEffect`. No `ResizeObserver` or resize listener. Layout shifts above the section desynchronize scroll animations. Fix: add `ResizeObserver` or recalculate dynamically. **TODO: manual fix later.**
 
-- **`src/components/Landing/HeroDemo.tsx:324` — Inline `@keyframes` may not work in Chakra v3.** Inline `@keyframes blink` defined inside `css` prop. Chakra v3 / Panda CSS may silently ignore inline at-rules. Blinking cursor could be static. Fix: move keyframes to global CSS or theme config. Partially confirmed — runtime behavior unverified.
-## how can we check?
-
-- **`src/components/AsciiBackground.tsx:181` — Static canvas doesn't resize.** When `params.animated` is false, RAF loop stops. Resize check never runs again. CSS stretches the fixed-size buffer on window resize. Fix: add `window.addEventListener('resize', ...)` for static mode.
-##Remove this
+- ~~**`src/components/Landing/HeroDemo.tsx:324` — Inline `@keyframes` may not work in Chakra v3.**~~ **FALSE POSITIVE — REMOVED.** Project uses Chakra v3 with Emotion runtime (`@emotion/react` + `ThemeProvider`), not Panda CSS static extraction. Emotion fully supports inline `@keyframes` in the `css` prop. The blinking cursor works fine.
 
 ### LOW
 
-- **`src/components/Landing/FeatureSection.tsx:59` — Missing out-of-bounds state reset.** Scroll handler only acts inside `if (inside)` block. Scrolling above `startTop` leaves `activeIndex` at last recorded value instead of resetting to 0. Fix: add `else if (y < startTop) { setActiveIndex(0) }`.
-## explain
+- **`src/components/Landing/FeatureSection.tsx:59` — Missing out-of-bounds state reset.** Scroll handler only updates `activeIndex` when inside the section (`y >= startTop && y < endTop`). There is no `else` branch. If you scroll down to feature #3 then scroll back up past the section entirely, feature #3 stays highlighted — wrong title emphasized, wrong description expanded, wrong image shown. Fix: add `else if (y < startTop) { setActiveIndex(0) }` to reset when leaving the section.
 ---
 
 ## UX / UI Issues
@@ -82,8 +73,7 @@ Two-pass Gemini review with oracle-aware Claude verification.
 
 ### HIGH
 
-- **Navbar hidden on initial desktop load.** `shouldShowNavbar = isMobile || scrollY > 580` hides the navbar until the user scrolls past 580px. No brand logo, no "Book a demo" CTA visible on first load. Breaks web conventions and removes immediate conversion for high-intent visitors. Fix: show navbar on load with transparent background, transition to solid on scroll. 
-##We need to add a logo instead.
+- **Navbar hidden on initial desktop load.** `shouldShowNavbar = isMobile || scrollY > 580` hides the navbar until the user scrolls past 580px. No brand logo, no "Book a demo" CTA visible on first load. Breaks web conventions and removes immediate conversion for high-intent visitors. Fix: add a visible logo on first load (even if full navbar stays hidden until scroll).
 
 
 
@@ -95,17 +85,15 @@ Two-pass Gemini review with oracle-aware Claude verification.
 
 ### LOW
 
-- **Inconsistent CTA messaging.** Hero says "See it work in 30 minutes", navbar says "Book a demo", benefits says "Let's talk", CONTENT.md says "Let's build yours". Four different CTAs increases cognitive load. Fix: unify around one strong action phrase.
+- **Inconsistent CTA messaging.** Hero says "See it work in 30 minutes", navbar says "Book a demo", benefits says "Let's talk", CONTENT.md says "Let's build yours". Four different CTAs increases cognitive load. **TODO: decide on one unified CTA phrase.**
 
-- **Barebones footer.** Footer has only logo + copyright. Missing Privacy Policy, Terms of Service, social links, contact info. Feels unfinished for a B2B product. Fix: add standard columns for Product, Legal, Social.
+- **Barebones footer.** Footer has only logo + copyright. Missing Privacy Policy, Terms of Service, social links, contact info. Feels unfinished for a B2B product. Fix: add standard columns for Product, Legal, Social. **TODO: add placeholder footer links now.**
 
 ---
 
 ## Design & Creative Critique
 
-### SUBJECTIVE (opinion, not a defect)
 
-- **Typography choice — serif heading font.** Fraunces (serif) for headings + Inter for body. The serif reads "editorial/boutique" to some, which may or may not fit an enterprise AI platform. Competitors like Linear and Vercel use geometric sans-serifs. Worth considering if the brand intentionally leans editorial or if a sharper technical font better matches the "reliable automation" positioning.
 
 ### PARTIALLY VALID
 
@@ -116,32 +104,3 @@ Two-pass Gemini review with oracle-aware Claude verification.
 - **Integrations section is small.** Integrations appear as one quadrant of a 2x2 bento grid in `BenefitsSection` — 4 icons (Gmail, Sheets, Slack, WhatsApp) at 48px with scroll-triggered scale-in animation and "+ more" label. For an orchestration platform, integrations are a key selling point. A dedicated full-width section with more logos and a visual ecosystem representation would be more compelling.
 
 - **Card styling — borders and shadows together.** Cards consistently use both `border="1px solid" borderColor="gray.200"` and `boxShadow="sm"` across `WhySection`, `FeatureGridSection`, and other areas. The combination is applied consistently (not accidental) but reads as uncommitted. Choosing one approach — either crisp borders without shadows, or floating cards with rich multi-layered shadows — would create a more intentional feel.
-
-### INVALID (dropped)
-
-- **"Hero is static" — WRONG.** `HeroDemo.tsx` has a fully animated workflow simulator: character-by-character typing, step-by-step task progression (`running → review → approved`), `AnimatePresence` transitions, spring-animated "DONE" badge, and 3 auto-cycling workflows. This is a rich animated demo, not a static form.
-
-- **"Zero visual rhythm / off-white fatigue" — WRONG.** `BenefitsSection` uses `bg="#49082D"` (deep burgundy) as a full dark section break with white text. The page does have a color inversion section.
-
----
-
-## False Positives Dropped
-
-- **`src/lib/hooks/useScrollPosition.ts:18` — "state on every frame".** Uses `ticking` + `requestAnimationFrame` guard. State updates at most once per animation frame. Not an issue.
-
-- **`src/app/page.tsx` — "missing sections from render tree".** Components like `CTASection`, `FeatureSection`, `TrustSection` etc. exist as files but are not rendered. May be intentionally unreleased / WIP. Needs product spec check. (Also covered in UX section as a recommendation to render them.)
-
----
-
-## Summary
-
-| Category | Count |
-|----------|-------|
-| Proven code defects | 9 |
-| Behavioral mismatches (needs spec) | 3 |
-| Code observations (low confidence) | 5 |
-| UX/UI issues | 10 |
-| Design critique (partially valid) | 4 |
-| Design critique (subjective) | 1 |
-| False positives dropped | 4 |
-| **Total findings** | **36** |
