@@ -10,7 +10,7 @@ import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 const MotionBox = motion.create(Box);
 const MotionFlex = motion.create(Flex);
 
-export default function BenefitsSection() {
+export default function BookDemoSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
 

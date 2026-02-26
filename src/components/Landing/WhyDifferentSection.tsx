@@ -29,7 +29,7 @@ const failures = [
   },
 ];
 
-export default function WhySection() {
+export default function WhyDifferentSection() {
   return (
     <Box
       position="relative"

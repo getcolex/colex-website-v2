@@ -21,7 +21,7 @@ const features = [
   },
 ];
 
-export default function FeatureGridSection() {
+export default function ControlSection() {
   return (
     <Box
       position="relative"
@@ -56,7 +56,7 @@ export default function FeatureGridSection() {
 
             {/* Content area - 3 feature cards in a row */}
             <Grid
-              templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }}
+              templateColumns={{ base: "1fr", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }}
               gap={{ base: 4, lg: 8 }}
             >
               {features.map((feature) => (
