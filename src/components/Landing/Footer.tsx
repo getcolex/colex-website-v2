@@ -21,7 +21,7 @@ const FOOTER_LINKS = [
 export default function Footer() {
   return (
     <Box as="footer" bg="transparent" pt={20}>
-      <Container maxW="container.xl" px={{ base: 4, md: 8, lg: 12 }}>
+      <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
         {/* Mobile + Tablet layout */}
         <VStack gap={4} align="center" display={{ base: "flex", lg: "none" }}>
           <Flex gap={4} flexWrap="wrap" justify="center">
@@ -47,22 +47,28 @@ export default function Footer() {
           >
             © 2025 | ALL RIGHTS RESERVED by Colex.
           </Text>
-          <Image
-            width={350}
-            height={120}
-            src="/images/ColexLogo.png"
-            alt="Colex Logo"
-          />
+          <Box position="relative" w={{ base: "280px", sm: "320px" }} h={{ base: "96px", sm: "110px" }}>
+            <Image
+              fill
+              sizes="320px"
+              src="/images/ColexLogo.png"
+              alt="Colex Logo"
+              style={{ objectFit: "contain" }}
+            />
+          </Box>
         </VStack>
 
         {/* Desktop layout */}
         <HStack justifyContent="space-between" alignItems="flex-end" display={{ base: "none", lg: "flex" }}>
-          <Image
-            width={550}
-            height={190}
-            src="/images/ColexLogo.png"
-            alt="Colex Logo"
-          />
+          <Box position="relative" w={{ lg: "400px", xl: "500px", "2xl": "550px" }} h={{ lg: "138px", xl: "172px", "2xl": "190px" }}>
+            <Image
+              fill
+              sizes="(min-width: 1280px) 500px, 400px"
+              src="/images/ColexLogo.png"
+              alt="Colex Logo"
+              style={{ objectFit: "contain" }}
+            />
+          </Box>
           <VStack align="flex-end" gap={2} mb={2}>
             <Flex gap={6}>
               {FOOTER_LINKS.map((link) => (

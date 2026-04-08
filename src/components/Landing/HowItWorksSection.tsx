@@ -48,16 +48,16 @@ export default function HowItWorksSection() {
     <Box
       ref={containerRef}
       position="relative"
-      height="350vh"
+      height={{ base: "200vh", md: "280vh", lg: "350vh" }}
       bg="transparent"
     >
       {/* Sticky container */}
       <Box position="sticky" top={0} height="100vh" overflow="hidden">
-        <Container maxW="container.xl" h="full" position="relative" px={{ base: 4, md: 8, lg: 12 }}>
+        <Container maxW="container.xl" h="full" position="relative" px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
           {/* Header */}
           <Box
             position="absolute"
-            top={{ base: "100px", md: "120px" }}
+            top={{ base: "100px", md: "12vh", lg: "14vh" }}
             left="50%"
             transform="translateX(-50%)"
             zIndex={2}
@@ -79,11 +79,11 @@ export default function HowItWorksSection() {
           <MotionBox
             style={{ opacity: contentOpacity, y: contentY }}
             position="absolute"
-            top={{ base: "120px", md: "180px" }}
+            top={{ base: "120px", md: "22vh", lg: "26vh" }}
             left={0}
             right={0}
             bottom={0}
-            px={{ base: 4, md: 8, lg: 12 }}
+            px={{ base: 4, sm: 6, md: 8, lg: 12 }}
           >
             {/* 12-column grid layout */}
             <Grid
@@ -111,7 +111,7 @@ export default function HowItWorksSection() {
                 w="full"
                 position="relative"
               >
-                <Box position="relative" h={{ base: "160px", md: "250px" }}>
+                <Box position="relative" h={{ base: "160px", md: "250px", lg: "250px" }}>
                   {steps.map((step, index) => (
                     <StepTextSide
                       key={step.id}
@@ -174,7 +174,14 @@ function EvolvingVisual({
     <Box
       position="relative"
       w="full"
-      h={{ base: "250px", sm: "320px", md: "500px", lg: "550px" }}
+      h={{ base: "250px", sm: "320px", md: "500px", lg: "550px", xl: "550px" }}
+      css={{
+        "@media (max-height: 750px) and (min-width: 62em)": {
+          transform: "scale(0.8)",
+          transformOrigin: "top left",
+          width: "125%",
+        },
+      }}
       bg="gray.50"
       borderRadius="2xl"
       border="1px solid"

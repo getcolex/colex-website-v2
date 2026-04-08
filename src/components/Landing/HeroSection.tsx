@@ -15,7 +15,7 @@ export default function HeroSection() {
       minH="100vh"
       bg="transparent"
     >
-      <Container maxW="container.xl" h="full" position="relative" px={{ base: 4, md: 8, lg: 12 }}>
+      <Container maxW="container.xl" h="full" position="relative" px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
         {/* 12-column grid layout */}
         <Grid
           data-testid="hero-grid"
@@ -34,7 +34,7 @@ export default function HeroSection() {
             {/* Headline */}
             <Text
               fontFamily="heading"
-              fontSize={{ base: "10vw", md: "7vw", lg: "4.5vw" }}
+              fontSize={{ base: "10vw", md: "7vw", lg: "clamp(40px, 4.5vw, 65px)" }}
               lineHeight={1.1}
               color="text.primary"
               fontWeight="700"
@@ -103,7 +103,7 @@ export default function HeroSection() {
 
         {/* Scroll indicator */}
         <Box
-          marginTop="-8rem"
+          mt={{ base: "-4rem", md: "-6rem", lg: "-8rem" }}
         >
           <MotionBox
             display="flex"

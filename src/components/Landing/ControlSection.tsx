@@ -28,7 +28,7 @@ export default function ControlSection() {
       py={{ base: 20, md: 28 }}
       bg="transparent"
     >
-      <Container maxW="container.xl" px={{ base: 4, md: 8, lg: 12 }}>
+      <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
         {/* 12-column grid layout */}
         <Grid
           data-testid="feature-grid"
@@ -81,7 +81,7 @@ function FeatureCard({ feature }: { feature: (typeof features)[0] }) {
       {/* Mockup area - 1.6:1 ratio (taller) */}
       <Box
         bg="gray.50"
-        h={{ base: "300px", md: "320px" }}
+        h={{ base: "300px", md: "320px", lg: "320px" }}
         p={4}
         borderBottom="1px solid"
         borderColor="gray.100"
