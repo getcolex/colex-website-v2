@@ -57,10 +57,15 @@ export default function HowItWorksSection() {
           {/* Header */}
           <Box
             position="absolute"
-            top={{ base: "100px", md: "12vh", lg: "14vh" }}
+            top={{ base: "100px", md: "12vh", lg: "10vh" }}
             left="50%"
             transform="translateX(-50%)"
             zIndex={2}
+            css={{
+              "@media (max-height: 750px) and (min-width: 62em)": {
+                top: "6vh",
+              },
+            }}
           >
             <Text
               fontFamily="heading"
@@ -70,6 +75,11 @@ export default function HowItWorksSection() {
               letterSpacing="-0.02em"
               textAlign="center"
               whiteSpace="nowrap"
+              css={{
+                "@media (max-height: 750px) and (min-width: 62em)": {
+                  fontSize: "var(--chakra-font-sizes-4xl)",
+                },
+              }}
             >
               How it works
             </Text>
@@ -79,7 +89,12 @@ export default function HowItWorksSection() {
           <MotionBox
             style={{ opacity: contentOpacity, y: contentY }}
             position="absolute"
-            top={{ base: "120px", md: "22vh", lg: "26vh" }}
+            top={{ base: "120px", md: "22vh", lg: "20vh" }}
+            css={{
+              "@media (max-height: 750px) and (min-width: 62em)": {
+                top: "14vh",
+              },
+            }}
             left={0}
             right={0}
             bottom={0}
