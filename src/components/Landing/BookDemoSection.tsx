@@ -22,7 +22,7 @@ export default function BookDemoSection() {
       position="relative"
       zIndex={10}
     >
-      <Container maxW="container.xl" px={{ base: 4, md: 8, lg: 12 }}>
+      <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
         {/* 12-column grid layout */}
         <Grid
           data-testid="benefits-grid"
@@ -143,7 +143,7 @@ function BentoCell({
       bg="white"
       borderRadius="xl"
       p={{ base: 5, md: 6 }}
-      minH={{ base: "180px", md: "200px" }}
+      minH={{ base: "180px", md: "200px", lg: "220px" }}
       display="flex"
       flexDirection="column"
       cursor="default"

@@ -36,7 +36,7 @@ export default function WhyDifferentSection() {
       py={{ base: 20, md: 28 }}
       bg="transparent"
     >
-      <Container maxW="container.xl" px={{ base: 4, md: 8, lg: 12 }}>
+      <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
         {/* 12-column grid layout */}
         <Grid
           data-testid="why-grid"
@@ -89,7 +89,7 @@ function FailureCard({ failure }: { failure: (typeof failures)[0] }) {
       {/* Mockup area - 1:1.6 ratio */}
       <Box
         bg="gray.50"
-        h={{ base: "180px", md: "220px" }}
+        h={{ base: "180px", md: "220px", lg: "240px" }}
         p={4}
         borderBottom="1px solid"
         borderColor="gray.100"

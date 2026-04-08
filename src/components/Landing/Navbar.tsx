@@ -44,7 +44,7 @@ export default function LandingNavbar() {
               <Box py={5}>
                 <Container
                   maxW="container.xl"
-                  px={{ base: 4, md: 8, lg: 12 }}
+                  px={{ base: 4, sm: 6, md: 8, lg: 12 }}
                 >
                   <ColexBrandLogo
                     style={{ width: 126, height: 44 }}
@@ -84,7 +84,7 @@ export default function LandingNavbar() {
           >
             <Container
               maxW="container.xl"
-              px={{ base: 4, md: 8, lg: 12 }}
+              px={{ base: 4, sm: 6, md: 8, lg: 12 }}
             >
               <Flex align="center" justify="space-between">
                 <ColexBrandLogo
@@ -97,7 +97,7 @@ export default function LandingNavbar() {
                 <Flex gap={{ base: 2, md: 5 }}>
                   <Button
                     size={{ base: "sm", md: "lg" }}
-                    w={{ base: "auto", lg: 260 }}
+                    w={{ base: "auto", lg: 220, xl: 260 }}
                     fontSize="md"
                     fontWeight="500"
                     px={{ base: 3, md: 5 }}
