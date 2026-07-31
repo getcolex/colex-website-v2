@@ -57,9 +57,14 @@ export default function LandingNavbar() {
                     <Link href="/blog">
                       <Box
                         as="span"
+                        display="inline-block"
                         fontSize="md"
                         fontWeight="500"
                         color="text.primary"
+                        /* Matches the CTA beside it, so the link has a hit area
+                           and does not sit flush against the container edge. */
+                        px={{ base: 3, md: 5 }}
+                        py={0.5}
                         _hover={{ color: "brand.primary" }}
                         transition="color 0.15s ease"
                         whiteSpace="nowrap"
@@ -118,9 +123,13 @@ export default function LandingNavbar() {
                   <Link href="/blog">
                     <Box
                       as="span"
+                      display="inline-block"
                       fontSize={{ base: "sm", md: "md" }}
                       fontWeight="500"
                       color="text.primary"
+                      /* Matches the CTA beside it. */
+                      px={{ base: 3, md: 5 }}
+                      py={0.5}
                       _hover={{ color: "brand.primary" }}
                       transition="color 0.15s ease"
                       whiteSpace="nowrap"
