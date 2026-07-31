@@ -426,7 +426,11 @@ export default function TestBenchPage() {
         <PostFooterNav slug="a-test-bench-i-can-rely-on" />
       </Container>
 
-      <Footer />
+      {/* The shared footer bleeds its logo to the page bottom, which reads as
+          design on the landing page and as a cut-off page under an article. */}
+      <Box pb={{ base: 10, md: 16 }}>
+        <Footer />
+      </Box>
     </Box>
   );
 }
