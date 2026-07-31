@@ -13,6 +13,7 @@ import Image from "next/image";
 import { getEarlyAccess } from "@/lib/utils";
 
 const FOOTER_LINKS = [
+  { label: "Blog", href: "/blog" },
   { label: "Privacy Policy", href: "/privacy" },
   { label: "Terms of Service", href: "/terms" },
   { label: "Contact", href: "#", onClick: () => getEarlyAccess("footer") },
