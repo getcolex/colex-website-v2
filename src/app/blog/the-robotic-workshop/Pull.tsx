@@ -12,7 +12,7 @@ export default function Pull({
     <Box
       as="blockquote"
       fontFamily="heading"
-      fontSize="21px"
+      fontSize="27px"
       fontWeight={big ? "700" : "400"}
       lineHeight={1.45}
       color="brand.primary"

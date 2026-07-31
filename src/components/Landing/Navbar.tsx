@@ -39,7 +39,6 @@ export default function LandingNavbar() {
                 left: 0,
                 right: 0,
                 zIndex: 99,
-                width: "100vw",
               }}
             >
               <Box py={5}>
@@ -96,7 +95,6 @@ export default function LandingNavbar() {
               left: 0,
               right: 0,
               zIndex: 100,
-              width: "100vw",
             }}
           >
           <Box
