@@ -9,6 +9,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { motion, AnimatePresence } from "motion/react";
+import Link from "next/link";
 import { getEarlyAccess } from "@/lib/utils";
 import { useScrollPosition } from "@/lib/hooks/useScrollPosition";
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
@@ -46,10 +47,27 @@ export default function LandingNavbar() {
                   maxW="container.xl"
                   px={{ base: 4, sm: 6, md: 8, lg: 12 }}
                 >
-                  <ColexBrandLogo
-                    style={{ width: 126, height: 44 }}
-                    aria-label="Colex Logo"
-                  />
+                  <Flex align="center" justify="space-between">
+                    <Link href="/" aria-label="Colex home">
+                      <ColexBrandLogo
+                        style={{ width: 126, height: 44 }}
+                        aria-label="Colex Logo"
+                      />
+                    </Link>
+                    <Link href="/blog">
+                      <Box
+                        as="span"
+                        fontSize="md"
+                        fontWeight="500"
+                        color="text.primary"
+                        _hover={{ color: "brand.primary" }}
+                        transition="color 0.15s ease"
+                        whiteSpace="nowrap"
+                      >
+                        Blog
+                      </Box>
+                    </Link>
+                  </Flex>
                 </Container>
               </Box>
             </motion.div>
@@ -87,14 +105,29 @@ export default function LandingNavbar() {
               px={{ base: 4, sm: 6, md: 8, lg: 12 }}
             >
               <Flex align="center" justify="space-between">
-                <ColexBrandLogo
-                  style={{
-                    width: isMobile ? 100 : 126,
-                    height: isMobile ? 35 : 44,
-                  }}
-                  aria-label="Colex Logo"
-                />
-                <Flex gap={{ base: 2, md: 5 }}>
+                <Link href="/" aria-label="Colex home">
+                  <ColexBrandLogo
+                    style={{
+                      width: isMobile ? 100 : 126,
+                      height: isMobile ? 35 : 44,
+                    }}
+                    aria-label="Colex Logo"
+                  />
+                </Link>
+                <Flex gap={{ base: 3, md: 5 }} align="center">
+                  <Link href="/blog">
+                    <Box
+                      as="span"
+                      fontSize={{ base: "sm", md: "md" }}
+                      fontWeight="500"
+                      color="text.primary"
+                      _hover={{ color: "brand.primary" }}
+                      transition="color 0.15s ease"
+                      whiteSpace="nowrap"
+                    >
+                      Blog
+                    </Box>
+                  </Link>
                   <Button
                     size={{ base: "sm", md: "lg" }}
                     w={{ base: "auto", lg: 220, xl: 260 }}
