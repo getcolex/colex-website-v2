@@ -122,6 +122,13 @@ export default function WorkshopChart() {
 
   useEffect(() => {
     const measure = () => {
+      // The width the chart bleeds to. documentElement.clientWidth excludes the
+      // scrollbar, which 100vw would wrongly include and overflow the page by.
+      document.documentElement.style.setProperty(
+        "--bleed-w",
+        `${document.documentElement.clientWidth}px`
+      );
+
       const marker = alignRef.current;
       const canvas = canvasRef.current;
       if (!marker || !canvas) return;
@@ -715,14 +722,19 @@ export default function WorkshopChart() {
            never arbitrated here and always scrolls the page. */
         overflow="hidden"
         cursor="grab"
-        touchAction="pan-y"
+        /* Vertical touch still scrolls the page. Horizontal is left to the drag
+           handler, which "pan-y" alone would stop the browser from delivering. */
+        touchAction="pan-y pinch-zoom"
         backgroundImage="radial-gradient(circle at 1px 1px, rgba(26,26,26,.10) 1px, transparent 0)"
         backgroundSize="22px 22px"
         h={{ base: "460px", md: "620px" }}
-        /* Break out of the article's text column to the full viewport width. */
-        w="100vw"
-        ml="calc(50% - 50vw)"
-        mr="calc(50% - 50vw)"
+        /* Break out of the article's text column to the full viewport width.
+           Widths come from the root element, not 100vw, because vw counts the
+           scrollbar while the page content box does not, and the difference
+           makes the page itself scroll sideways. */
+        w="var(--bleed-w, 100vw)"
+        ml="calc(50% - var(--bleed-w, 100vw) / 2)"
+        mr="calc(50% - var(--bleed-w, 100vw) / 2)"
         px={`${gutter}px`}
       >
         <svg
