@@ -1,4 +1,4 @@
-import { Box, Container, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Container, Heading, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import LandingNavbar from "@/components/Landing/Navbar";
 import Footer from "@/components/Landing/Footer";
@@ -53,18 +53,14 @@ const rounds = [
   {
     n: "Round one",
     body: "Full run. Many units, a manifest, a ledger.",
-    last: false,
   },
   {
     n: "Then I smoke it",
     body: "I use the real thing and find what the gates missed. Smoke isn't the last gate. It's what generates the next round.",
-    boldTail: "Smoke isn't the last gate. It's what generates the next round.",
-    last: false,
   },
   {
     n: "Round two onward",
     body: "Mostly single units. I talk one fix through, dispatch it, same gates, no manifest.",
-    last: false,
   },
 ];
 
@@ -100,7 +96,7 @@ export default function TheRoboticWorkshopPage() {
             <br />
             Now I run a <Box as="em" fontStyle="italic" color="brand.primary">factory</Box>.
           </Heading>
-          <Text fontSize="lg" color="text.muted" maxW="62ch">
+          <Text fontSize="17px" color="text.muted" maxW="62ch">
             Agents write the code here. My job is to decide what gets built, and to catch what
             they got wrong. This is how that setup came together, including the parts that are
             still broken.
@@ -162,40 +158,16 @@ export default function TheRoboticWorkshopPage() {
             bottleneck slid somewhere new.
           </Text>
 
-          <VStack gap={0} align="stretch" mt={7}>
-            {chain.map((step, i) => (
-              <Box
-                key={step.when}
-                display="grid"
-                gridTemplateColumns={{ base: "1fr", sm: "128px 1fr" }}
-                gap={{ base: 2, sm: 6 }}
-                py={5}
-                borderTop="1px solid"
-                borderColor="ui.border"
-                borderBottom={i === chain.length - 1 ? "1px solid" : undefined}
-                borderBottomColor={i === chain.length - 1 ? "ui.border" : undefined}
-              >
-                <Text
-                  fontFamily="mono, monospace"
-                  fontSize="11px"
-                  letterSpacing="0.1em"
-                  textTransform="uppercase"
-                  color="brand.primary"
-                  pt="3px"
-                >
-                  {step.when}
-                </Text>
-                <Box>
-                  <Text fontFamily="heading" fontSize="17px" fontWeight="700" mb={1} lineHeight={1.35} color="text.primary">
-                    {step.heading}
-                  </Text>
-                  <Text fontSize="13px" color="text.muted" maxW="66ch">
-                    {step.body}
-                  </Text>
-                </Box>
+          <Box as="ul" mt={6} pl={6} maxW="66ch" listStyleType="disc" css={{ "& li": { listStyleType: "disc", marginBottom: "14px" } }}>
+            {chain.map((step) => (
+              <Box as="li" key={step.when} fontSize="17px" lineHeight="1.62" color="text.primary">
+                <Text as="strong" fontWeight="700">
+                  {step.heading}.
+                </Text>{" "}
+                {step.body}
               </Box>
             ))}
-          </VStack>
+          </Box>
 
           <Text fontSize="17px" lineHeight="1.62" color="text.primary" maxW="66ch" mt={6}>
             Three fixes in. All three are working, and together they are the thing below.
@@ -234,44 +206,13 @@ export default function TheRoboticWorkshopPage() {
             them hard to specify well, so they take more passes.
           </Text>
 
-          <Box
-            display="grid"
-            gridTemplateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }}
-            gap={3}
-            mb={6}
-          >
+          <Box as="ul" mb={6} pl={6} maxW="66ch" listStyleType="disc" css={{ "& li": { listStyleType: "disc", marginBottom: "14px" } }}>
             {rounds.map((r) => (
-              <Box
-                key={r.n}
-                border="1px solid"
-                borderColor="ui.border"
-                bg="ui.background"
-                borderRadius="3px"
-                px={4}
-                py={3.5}
-              >
-                <Text
-                  fontFamily="mono"
-                  fontSize="11px"
-                  letterSpacing="0.13em"
-                  textTransform="uppercase"
-                  color="brand.primary"
-                  mb={2}
-                >
-                  {r.n}
-                </Text>
-                <Text fontSize="13px" lineHeight="1.45" color="text.muted">
-                  {r.boldTail ? (
-                    <>
-                      {r.body.replace(r.boldTail, "")}
-                      <Text as="strong" fontWeight="600" color="text.primary">
-                        {r.boldTail}
-                      </Text>
-                    </>
-                  ) : (
-                    r.body
-                  )}
-                </Text>
+              <Box as="li" key={r.n} fontSize="17px" lineHeight="1.62" color="text.primary">
+                <Text as="strong" fontWeight="700">
+                  {r.n}.
+                </Text>{" "}
+                {r.body}
               </Box>
             ))}
           </Box>
