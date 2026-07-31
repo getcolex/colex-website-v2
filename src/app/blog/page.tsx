@@ -36,7 +36,7 @@ export default function BlogIndexPage() {
           <Heading
             as="h1"
             fontFamily="heading"
-            fontWeight="400"
+            fontWeight="700"
             fontSize={{ base: "3xl", md: "5xl" }}
             letterSpacing="-0.02em"
             color="text.primary"

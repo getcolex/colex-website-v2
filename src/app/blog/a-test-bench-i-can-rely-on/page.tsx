@@ -84,7 +84,7 @@ export default function TestBenchPage() {
           <Heading
             as="h1"
             fontFamily="heading"
-            fontWeight="400"
+            fontWeight="700"
             fontSize={{ base: "31px", md: "47px" }}
             lineHeight={1.16}
             letterSpacing="-0.02em"

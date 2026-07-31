@@ -7,7 +7,6 @@ import PostFooterNav from "@/components/Blog/PostFooterNav";
 import WorkshopChart from "@/components/Blog/WorkshopChart";
 import ActTag from "./ActTag";
 import Pull from "./Pull";
-import Note from "./Note";
 
 export const metadata = {
   title: "I stopped writing code. Now I run a factory. | Colex",
@@ -90,7 +89,7 @@ export default function TheRoboticWorkshopPage() {
           <Heading
             as="h1"
             fontFamily="heading"
-            fontWeight="400"
+            fontWeight="700"
             fontSize={{ base: "4xl", md: "6xl" }}
             lineHeight={1.16}
             letterSpacing="-0.02em"
@@ -277,12 +276,6 @@ export default function TheRoboticWorkshopPage() {
             ))}
           </Box>
 
-          <Note title="Weight follows the environment, not the size">
-            I don&apos;t pick a full run because the work is big. I pick it when setup and proof
-            are still unsettled. Two things never drop at any weight:{" "}
-            <Text as="strong" fontWeight="600" color="text.primary">a diff review by an agent
-            that isn&apos;t the writer, and me looking at the result</Text>.
-          </Note>
         </Box>
 
         {/* WHAT IS NEXT */}
