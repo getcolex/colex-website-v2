@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Container, Text, Grid, Heading } from "@chakra-ui/react";
+import { Box, Container, Text, Flex, Grid, Heading } from "@chakra-ui/react";
 
 const cards = [
   {
@@ -50,9 +50,9 @@ export default function GetSection() {
           gap={{ base: 10, lg: 16 }}
         >
           {cards.map((card) => (
-            <Box
+            <Flex
               key={card.title}
-              p={0}
+              direction="column"
             >
               <Heading
                 as="h3"
@@ -63,10 +63,10 @@ export default function GetSection() {
               >
                 {card.title}
               </Heading>
-              <Text color="border.default" fontSize={{ base: "sm", md: "md" }} mb={{ base: 6, md: 8 }}>
+              <Text color="border.default" fontSize={{ base: "sm", md: "md" }} flex="1">
                 {card.description}
               </Text>
-              <Box
+              <Box mt={{ base: 6, md: 8 }}
                 data-testid="card-image-placeholder"
                 bg="rgba(255,255,255,0.06)"
                 border="1px solid"
@@ -74,7 +74,7 @@ export default function GetSection() {
                 borderRadius="xl"
                 aspectRatio="1 / 1"
               />
-            </Box>
+            </Flex>
           ))}
         </Grid>
       </Container>
