@@ -6,7 +6,7 @@ import { Box } from "@chakra-ui/react";
 import LandingNavbar from "@/components/Landing/Navbar";
 import HeroSection from "@/components/Landing/HeroSection";
 import PainSection from "@/components/Landing/PainSection";
-import ShiftSection from "@/components/Landing/ShiftSection";
+// import ShiftSection from "@/components/Landing/ShiftSection"; // hidden for now
 import VerticalsSection from "@/components/Landing/VerticalsSection";
 import HowSection from "@/components/Landing/HowSection";
 import GetSection from "@/components/Landing/GetSection";
@@ -27,7 +27,7 @@ export default function LandingPage() {
       <LandingNavbar />
       <HeroSection />
       <PainSection />
-      <ShiftSection />
+      {/* <ShiftSection /> — hidden for now */}
       <VerticalsSection />
       <HowSection />
       <GetSection />
