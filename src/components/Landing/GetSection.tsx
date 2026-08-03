@@ -54,15 +54,6 @@ export default function GetSection() {
               key={card.title}
               p={0}
             >
-              <Box
-                data-testid="card-image-placeholder"
-                bg="rgba(255,255,255,0.06)"
-                border="1px solid"
-                borderColor="rgba(255,255,255,0.1)"
-                borderRadius="xl"
-                aspectRatio="1 / 1"
-                mb={{ base: 6, md: 8 }}
-              />
               <Heading
                 as="h3"
                 fontSize={{ base: "lg", md: "xl" }}
@@ -72,9 +63,17 @@ export default function GetSection() {
               >
                 {card.title}
               </Heading>
-              <Text color="border.default" fontSize={{ base: "sm", md: "md" }}>
+              <Text color="border.default" fontSize={{ base: "sm", md: "md" }} mb={{ base: 6, md: 8 }}>
                 {card.description}
               </Text>
+              <Box
+                data-testid="card-image-placeholder"
+                bg="rgba(255,255,255,0.06)"
+                border="1px solid"
+                borderColor="rgba(255,255,255,0.1)"
+                borderRadius="xl"
+                aspectRatio="1 / 1"
+              />
             </Box>
           ))}
         </Grid>
