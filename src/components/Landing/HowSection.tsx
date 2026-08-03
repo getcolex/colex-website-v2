@@ -64,7 +64,7 @@ export default function HowSection() {
               {/* Image placeholder */}
               <Box
                 data-testid="how-card-image"
-                aspectRatio="1 / 1.64"
+                aspectRatio="1 / 1.6"
                 bg="surface.raised"
                 border="1px solid"
                 borderColor="border.subtle"
