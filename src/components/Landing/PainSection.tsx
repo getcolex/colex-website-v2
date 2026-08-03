@@ -45,7 +45,6 @@ export default function PainSection() {
           fontWeight="700"
           color="ink.primary"
           letterSpacing="-0.02em"
-          textAlign="center"
           mb={{ base: 4, md: 6 }}
         >
           You wrote the process. It still isn&rsquo;t being followed.
@@ -55,9 +54,7 @@ export default function PainSection() {
         <Text
           fontSize={{ base: "md", md: "lg" }}
           color="ink.muted"
-          textAlign="center"
           maxW="640px"
-          mx="auto"
           mb={{ base: 10, md: 14 }}
         >
           You documented the workflow. You trained the team. You even automated
@@ -105,12 +102,11 @@ export default function PainSection() {
 
         {/* Pull quote */}
         <Text
-          fontSize={{ base: "md", md: "lg" }}
+          fontFamily="heading"
+          fontSize={{ base: "lg", md: "xl" }}
+          fontWeight="600"
           color="ink.muted"
-          textAlign="center"
-          fontStyle="italic"
           maxW="640px"
-          mx="auto"
         >
           We&rsquo;re building Colex so your process becomes the system, not a
           document people try to follow.
