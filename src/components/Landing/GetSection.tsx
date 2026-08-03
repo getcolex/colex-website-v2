@@ -160,6 +160,7 @@ export default function GetSection() {
                 fontSize: "0.75rem",
                 letterSpacing: "0.08em",
                 textTransform: "uppercase",
+                backgroundColor: "#E4DFD8",
                 borderBottomWidth: "2px",
                 borderColor: "var(--chakra-colors-border-default, #cbd5e0)",
               },
