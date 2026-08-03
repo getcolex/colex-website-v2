@@ -10,19 +10,20 @@ describe('HeroSection', () => {
     expect(screen.getByText('extra hands')).toBeInTheDocument()
   })
 
-  it('renders the subtitle', () => {
+  it('renders the lede', () => {
     render(<HeroSection />)
-    expect(screen.getByText('Colex is purpose-built to automate your team reliably')).toBeInTheDocument()
+    expect(screen.getByText(/Colex turns your business processes into rules/)).toBeInTheDocument()
+    expect(screen.getByText(/It gets sharper every time you use it/)).toBeInTheDocument()
   })
 
-  it('renders the CTA button', () => {
+  it('renders the primary CTA', () => {
     render(<HeroSection />)
-    expect(screen.getByRole('button', { name: /see it work in 30 minutes/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /talk to us/i })).toBeInTheDocument()
   })
 
-  it('renders the micro-copy', () => {
+  it('renders the secondary CTA link', () => {
     render(<HeroSection />)
-    expect(screen.getByText('No code. No consultants.')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /why are we building this/i })).toBeInTheDocument()
   })
 
   describe('Layout', () => {

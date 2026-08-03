@@ -1,9 +1,8 @@
 "use client";
 
-import { Box, Container, Text, Button, Grid } from "@chakra-ui/react";
+import { Box, Container, Text, Button, Grid, Link } from "@chakra-ui/react";
 import { motion } from "motion/react";
 import { getEarlyAccess } from "@/lib/utils";
-import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import HeroDemo from "./HeroDemo";
 
 const MotionBox = motion.create(Box);
@@ -44,49 +43,49 @@ export default function HeroSection() {
               <Box as="span" display="block">extra hands</Box>
             </Text>
 
-            {/* Subtitle */}
+            {/* Lede */}
             <Text
               fontSize={{ base: "md", md: "lg", lg: "xl" }}
               color="text.primary"
-              fontWeight="500"
+              fontWeight="400"
               mt={{ base: 4, md: 6 }}
+              maxW="560px"
+              mx={{ base: "auto", lg: "0" }}
             >
-              Colex is purpose-built to automate your team reliably
+              Colex turns your business processes into rules and does the work. You get a written record of how your company decides things. It gets sharper every time you use it.
             </Text>
 
-            {/* CTA + Micro-copy */}
-            <Box mt={{ base: 8, md: 10 }}>
-              <Box mb={{ base: 4, md: 5 }}>
-                <Button
-                  size="lg"
-                  px={10}
-                  py={7}
-                  borderRadius="4px"
-                  bg="brand.primary"
-                  color="white"
-                  fontWeight="500"
-                  fontSize="md"
-                  _hover={{
-                    bg: "#5a0a38",
-                    transform: "translateY(-2px)",
-                  }}
-                  transition="all 0.2s"
-                  onClick={() => getEarlyAccess("hero_section")}
-                >
-                  See it work in 30 minutes
-                  <ArrowRightIcon
-                    style={{
-                      width: 20,
-                      height: 20,
-                      marginLeft: 10,
-                    }}
-                  />
-                </Button>
-              </Box>
-
-              <Text fontSize="sm" color="text.muted">
-                No code. No consultants.
-              </Text>
+            {/* Two CTAs */}
+            <Box mt={{ base: 8, md: 10 }} display="flex" flexDirection={{ base: "column", sm: "row" }} gap={4} justifyContent={{ base: "center", lg: "flex-start" }} alignItems={{ base: "center", sm: "flex-start" }}>
+              <Button
+                size="lg"
+                px={10}
+                py={7}
+                borderRadius="4px"
+                bg="brand.primary"
+                color="white"
+                fontWeight="500"
+                fontSize="md"
+                _hover={{
+                  bg: "#5a0a38",
+                  transform: "translateY(-2px)",
+                }}
+                transition="all 0.2s"
+                onClick={() => getEarlyAccess("hero_section")}
+              >
+                Talk to us
+              </Button>
+              <Link
+                href="#thesis"
+                px={4}
+                py={3}
+                fontWeight="500"
+                fontSize="md"
+                color="text.primary"
+                _hover={{ textDecoration: "underline" }}
+              >
+                Why are we building this? →
+              </Link>
             </Box>
           </Box>
 
