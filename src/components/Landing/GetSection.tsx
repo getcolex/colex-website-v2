@@ -100,8 +100,7 @@ export default function GetSection() {
                 borderWidth="1px"
                 borderColor="border.subtle"
                 borderRadius="lg"
-                style={{ aspectRatio: "1 / 1.6" }}
-                maxH={{ base: "280px", md: "320px" }}
+                h={{ base: "180px", md: "220px" }}
                 mb={{ base: 4, md: 5 }}
               />
               <Heading
