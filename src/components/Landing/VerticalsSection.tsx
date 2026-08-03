@@ -189,7 +189,7 @@ export default function VerticalsSection() {
           gap={{ base: 1, md: 2 }}
           justifyContent="flex-start"
           flexWrap="wrap"
-          mb={{ base: 10, md: 14 }}
+          mb={{ base: 4, md: 6 }}
           overflowX="auto"
         >
           {TAB_ITEMS.map((item, idx) => (
@@ -237,8 +237,8 @@ export default function VerticalsSection() {
         {/* Separator */}
         <Box
           borderTop="1px solid"
-          borderColor="border.subtle"
-          mb={{ base: 6, md: 8 }}
+          borderColor="border.default"
+          mb={{ base: 4, md: 6 }}
         />
 
         {/* Tab panel — two columns */}
@@ -263,10 +263,8 @@ export default function VerticalsSection() {
                 onClick={() => handlePromptClick(idx)}
                 cursor="pointer"
                 py={3}
-                borderBottom={
-                  idx < prompts.length - 1 ? "1px solid" : "none"
-                }
-                borderColor="border.subtle"
+                borderBottom="1px solid"
+                borderColor="border.default"
                 transition="color 0.15s ease"
                 color={selectedIdx === idx ? "brand.primary" : "ink.muted"}
                 fontWeight={selectedIdx === idx ? "600" : "400"}
