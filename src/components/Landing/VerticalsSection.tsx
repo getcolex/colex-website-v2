@@ -2,9 +2,8 @@
 
 import { Box, Container, Text, Flex, Link } from "@chakra-ui/react";
 import { useState, useRef, useCallback, useEffect } from "react";
-import { VERTICALS } from "./data/wireframe";
 
-type VerticalKey = keyof typeof VERTICALS;
+type VerticalKey = "freight" | "procurement" | "vendor" | "hr" | "finance";
 
 const TAB_ITEMS: { key: VerticalKey; label: string }[] = [
   { key: "freight", label: "Freight & shipping" },
@@ -36,12 +35,6 @@ const PROMPTS: Record<VerticalKey, string[]> = {
     "Get month-end close ready — accrue uninvoiced shipments, match bank lines, flag variances",
     "Reconcile this vendor statement against our ledger and surface anything unexplained",
   ],
-};
-
-const STATUS_MARKS: Record<string, { symbol: string; color: string }> = {
-  ok: { symbol: "✓", color: "status.success" },
-  wait: { symbol: "○", color: "ink.muted" },
-  late: { symbol: "◷", color: "#B45309" },
 };
 
 const CYCLE_INTERVAL = 4000;
@@ -170,9 +163,7 @@ export default function VerticalsSection() {
   );
 
   const prompts = PROMPTS[activeTab];
-  const cards = VERTICALS[activeTab].cards;
   const selectedIdx = promptSelections[activeTab];
-  const activeCard = cards[selectedIdx];
 
   return (
     <Box as="section" py={{ base: 20, md: 28 }} bg="surface.page">
@@ -295,8 +286,8 @@ export default function VerticalsSection() {
                 alignItems="center"
                 bg="brand.primary"
                 color="white"
-                px={{ base: 6, md: 8 }}
-                py={6}
+                px={{ base: 4, md: 6 }}
+                py={3}
                 borderRadius="4px"
                 fontWeight="600"
                 fontSize={{ base: "sm", md: "md" }}
@@ -314,72 +305,17 @@ export default function VerticalsSection() {
             </Box>
           </Box>
 
-          {/* Right column: Checklist card */}
+          {/* Right column: Image placeholder */}
           <Box flex="1">
             <Box
+              data-testid="image-placeholder"
+              aspectRatio="1 / 1"
               bg="surface.raised"
               border="1px solid"
               borderColor="border.subtle"
               borderRadius="xl"
-              p={{ base: 5, md: 8 }}
-            >
-              {/* Goal label */}
-              <Text
-                fontSize="xs"
-                fontWeight="600"
-                color="ink.muted"
-                textTransform="uppercase"
-                letterSpacing="0.05em"
-                mb={2}
-              >
-                Goal
-              </Text>
-              <Text
-                as="h3"
-                fontFamily="heading"
-                fontSize={{ base: "lg", md: "xl" }}
-                fontWeight="600"
-                color="ink.primary"
-                mb={5}
-              >
-                {activeCard.goal}
-              </Text>
-
-              {/* Rules */}
-              <Box as="ul" listStyleType="none" pl={0} mb={4}>
-                {activeCard.rules.map((rule, idx) => {
-                  const [status, text] = rule;
-                  const mark = STATUS_MARKS[status] || STATUS_MARKS.wait;
-                  return (
-                    <Flex
-                      as="li"
-                      key={idx}
-                      gap={2}
-                      mb={2}
-                      alignItems="flex-start"
-                    >
-                      <Text
-                        color={mark.color}
-                        fontSize="md"
-                        fontWeight="600"
-                        flexShrink={0}
-                        lineHeight="1.5"
-                      >
-                        {mark.symbol}
-                      </Text>
-                      <Text fontSize="sm" color="ink.muted" lineHeight="1.5">
-                        {text}
-                      </Text>
-                    </Flex>
-                  );
-                })}
-              </Box>
-
-              {/* Footer */}
-              <Text fontSize="xs" color="ink.muted" fontStyle="italic">
-                {activeCard.ft}
-              </Text>
-            </Box>
+              w="100%"
+            />
           </Box>
         </Flex>
       </Container>
