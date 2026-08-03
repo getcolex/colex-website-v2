@@ -40,29 +40,21 @@ describe('VerticalsSection', () => {
 
   it('renders human-written prompts for the active vertical', () => {
     render(<VerticalsSection />)
-    // Freight prompts rendered as quoted text
     expect(screen.getByText(/Book me a shipment with three valid quotes/)).toBeInTheDocument()
     expect(screen.getByText(/Flag any accessorial charge we didn.t authorize/)).toBeInTheDocument()
   })
 
-  it('shows checklist for the selected prompt', () => {
+  it('renders a square image placeholder in the right column', () => {
     render(<VerticalsSection />)
-    // Default: first prompt selected → Booking a shipment rules
-    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent('Shipment booked')
-    expect(screen.getByText(/three quotes, distinct carriers/)).toBeInTheDocument()
-    expect(screen.getByText(/HS code accepted at customs entry/)).toBeInTheDocument()
-    expect(screen.getByText(/The last rule resolves days later/)).toBeInTheDocument()
+    const placeholder = screen.getByTestId('image-placeholder')
+    expect(placeholder).toBeInTheDocument()
   })
 
-  it('selecting a different prompt shows its rules', () => {
+  it('selecting a different prompt highlights it', () => {
     render(<VerticalsSection />)
-    // Click second freight prompt
     const secondPrompt = screen.getByText(/Flag any accessorial charge/)
     fireEvent.click(secondPrompt)
-
-    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent('Accessorial charge cleared')
-    expect(screen.getByText(/charge type appears on the signed rate agreement/)).toBeInTheDocument()
-    expect(screen.getByText(/A person makes the call/)).toBeInTheDocument()
+    expect(secondPrompt.closest('[role="option"]')).toHaveAttribute('aria-selected', 'true')
   })
 
   it('switches tabs and shows correct prompts', () => {
@@ -71,22 +63,19 @@ describe('VerticalsSection', () => {
 
     expect(screen.getByText(/Only pay this invoice if it matches the PO/)).toBeInTheDocument()
     expect(screen.getByText(/Raise a PO but make sure the budget has room/)).toBeInTheDocument()
-    // Default first prompt → Paying an invoice rules
-    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent('Invoice cleared for payment')
   })
 
   it('tab click resets to first prompt', () => {
     render(<VerticalsSection />)
-    // Select second prompt in freight
     fireEvent.click(screen.getByText(/Flag any accessorial charge/))
-    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent('Accessorial charge cleared')
+    const secondOption = screen.getByText(/Flag any accessorial charge/).closest('[role="option"]')
+    expect(secondOption).toHaveAttribute('aria-selected', 'true')
 
-    // Switch to procurement and back
     fireEvent.click(screen.getByRole('tab', { name: /Procurement/i }))
     fireEvent.click(screen.getByRole('tab', { name: /Freight & shipping/i }))
 
-    // Should reset to first prompt
-    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent('Shipment booked')
+    const firstOption = screen.getByText(/Book me a shipment/).closest('[role="option"]')
+    expect(firstOption).toHaveAttribute('aria-selected', 'true')
   })
 
   it('has correct accessibility attributes', () => {
@@ -105,7 +94,6 @@ describe('VerticalsSection', () => {
     expect(selectedTab).toHaveAttribute('aria-controls', panelId)
     expect(panel).toHaveAttribute('aria-labelledby', selectedTab.getAttribute('id'))
 
-    // Prompts have listbox/option roles
     const listbox = screen.getByRole('listbox')
     expect(listbox).toBeInTheDocument()
     const options = screen.getAllByRole('option')
@@ -138,45 +126,37 @@ describe('VerticalsSection', () => {
 
   it('auto-advances to next prompt after interval', () => {
     render(<VerticalsSection />)
-    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent('Shipment booked')
+    const firstOption = screen.getByText(/Book me a shipment/).closest('[role="option"]')
+    expect(firstOption).toHaveAttribute('aria-selected', 'true')
 
     act(() => { vi.advanceTimersByTime(4000) })
-    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent('Accessorial charge cleared')
+    const secondOption = screen.getByText(/Flag any accessorial charge/).closest('[role="option"]')
+    expect(secondOption).toHaveAttribute('aria-selected', 'true')
   })
 
   it('auto-advances to next vertical when prompts exhausted', () => {
     render(<VerticalsSection />)
     act(() => { vi.advanceTimersByTime(4000) }) // freight prompt 1
-    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent('Accessorial charge cleared')
-
     act(() => { vi.advanceTimersByTime(4000) }) // procurement prompt 0
+
     expect(screen.getByRole('tab', { name: /Procurement/i })).toHaveAttribute('aria-selected', 'true')
-    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent('Invoice cleared for payment')
+    expect(screen.getByText(/Only pay this invoice/)).toBeInTheDocument()
   })
 
   it('stops auto-cycling on user click and resumes after idle', () => {
     render(<VerticalsSection />)
 
-    // Click second prompt to stop cycling
     fireEvent.click(screen.getByText(/Flag any accessorial charge/))
-    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent('Accessorial charge cleared')
+    const secondOption = screen.getByText(/Flag any accessorial charge/).closest('[role="option"]')
+    expect(secondOption).toHaveAttribute('aria-selected', 'true')
 
-    // Advance 4 seconds — should NOT auto-advance
+    // Should NOT auto-advance while paused
     act(() => { vi.advanceTimersByTime(4000) })
-    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent('Accessorial charge cleared')
+    expect(secondOption).toHaveAttribute('aria-selected', 'true')
 
-    // After 8 seconds idle, cycling resumes
+    // After 8s idle, cycling resumes; advance one more interval
     act(() => { vi.advanceTimersByTime(8000) })
-    // Now advance one more interval
     act(() => { vi.advanceTimersByTime(4000) })
-    // Should have advanced from freight prompt 1 to procurement prompt 0
     expect(screen.getByRole('tab', { name: /Procurement/i })).toHaveAttribute('aria-selected', 'true')
-  })
-
-  it('renders status marks with correct symbols', () => {
-    render(<VerticalsSection />)
-    // Default freight prompt 0: has ok (✓) and late (◷) marks
-    expect(screen.getAllByText('✓').length).toBeGreaterThanOrEqual(1)
-    expect(screen.getAllByText('◷').length).toBeGreaterThanOrEqual(1)
   })
 })
