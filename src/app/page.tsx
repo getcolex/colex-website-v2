@@ -10,6 +10,7 @@ import PainSection from "@/components/Landing/PainSection";
 import VerticalsSection from "@/components/Landing/VerticalsSection";
 import HowSection from "@/components/Landing/HowSection";
 import GetSection from "@/components/Landing/GetSection";
+import MomentsSection from "@/components/Landing/MomentsSection";
 import BookDemoSection from "@/components/Landing/BookDemoSection";
 import Footer from "@/components/Landing/Footer";
 import DevGridOverlay from "@/components/DevGridOverlay";
@@ -29,6 +30,7 @@ export default function LandingPage() {
       <PainSection />
       <HowSection />
       <GetSection />
+      <MomentsSection />
       {/* <ShiftSection /> — hidden for now */}
       <VerticalsSection />
       <BookDemoSection />

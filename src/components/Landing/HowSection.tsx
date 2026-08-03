@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Container, Text, Grid, Heading, Link } from "@chakra-ui/react";
+import { Box, Container, Text, Flex, Grid, Heading, Link } from "@chakra-ui/react";
 
 const steps = [
   {
@@ -33,27 +33,58 @@ export default function HowSection() {
   return (
     <Box position="relative" py={{ base: 20, md: 28 }} bg="surface.page">
       <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
-        {/* Section heading */}
-        <Box mb={{ base: 10, md: 14 }}>
-          <Heading
-            as="h2"
-            fontFamily="heading"
-            fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
-            fontWeight="700"
-            color="ink.primary"
-            letterSpacing="-0.02em"
+        {/* Section heading + CTA */}
+        <Flex
+          justify="space-between"
+          align="flex-start"
+          mb={{ base: 10, md: 14 }}
+          direction={{ base: "column", md: "row" }}
+          gap={{ base: 4, md: 0 }}
+        >
+          <Box>
+            <Heading
+              as="h2"
+              fontFamily="heading"
+              fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
+              fontWeight="700"
+              color="ink.primary"
+              letterSpacing="-0.02em"
+            >
+              This is how Colex works for you
+            </Heading>
+            <Text
+              fontSize={{ base: "md", md: "lg" }}
+              color="ink.muted"
+              mt={{ base: 3, md: 4 }}
+              maxW="640px"
+            >
+              We&rsquo;re building Colex so your process becomes the system, not a document people try to follow.
+            </Text>
+          </Box>
+          <Link
+            href="/demo"
+            display="inline-flex"
+            alignItems="center"
+            bg="brand.primary"
+            color="white"
+            px={{ base: 4, md: 6 }}
+            py={3}
+            borderRadius="4px"
+            fontWeight="600"
+            fontSize={{ base: "sm", md: "md" }}
+            textDecoration="none"
+            transition="all 0.2s"
+            whiteSpace="nowrap"
+            mt={{ base: 0, md: 2 }}
+            _hover={{
+              opacity: 0.9,
+              transform: "translateY(-2px)",
+              textDecoration: "none",
+            }}
           >
-            This is how Colex works for you
-          </Heading>
-          <Text
-            fontSize={{ base: "md", md: "lg" }}
-            color="ink.muted"
-            mt={{ base: 3, md: 4 }}
-            maxW="640px"
-          >
-            We&rsquo;re building Colex so your process becomes the system, not a document people try to follow.
-          </Text>
-        </Box>
+            Get to a personalised demo &rarr;
+          </Link>
+        </Flex>
 
         {/* 2x2 grid, collapses to 1 col below md */}
         <Grid
@@ -113,18 +144,6 @@ export default function HowSection() {
           ))}
         </Grid>
 
-        {/* CTA */}
-        <Box mt={{ base: 10, md: 14 }} textAlign="center">
-          <Link
-            href="/demo"
-            fontSize={{ base: "md", md: "lg" }}
-            fontWeight="600"
-            color="ink.primary"
-            _hover={{ textDecoration: "underline" }}
-          >
-            Get to a personalised demo &rarr;
-          </Link>
-        </Box>
       </Container>
     </Box>
   );
