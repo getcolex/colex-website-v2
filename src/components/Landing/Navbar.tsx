@@ -53,24 +53,43 @@ export default function LandingNavbar() {
                         aria-label="Colex Logo"
                       />
                     </Link>
-                    <Link href="/blog">
-                      <Box
-                        as="span"
-                        display="inline-block"
+                    <Flex gap={{ base: 2, md: 4 }} align="center">
+                      {["Use cases", "Why Colex", "Blog"].map((label) => (
+                        <Link
+                          key={label}
+                          href={label === "Blog" ? "/blog" : `#${label.toLowerCase().replace(/ /g, "-")}`}
+                        >
+                          <Box
+                            as="span"
+                            display={{ base: label === "Blog" ? "inline-block" : "none", md: "inline-block" }}
+                            fontSize="md"
+                            fontWeight="500"
+                            color="text.primary"
+                            px={{ base: 2, md: 4 }}
+                            py={0.5}
+                            _hover={{ color: "brand.primary" }}
+                            transition="color 0.15s ease"
+                            whiteSpace="nowrap"
+                          >
+                            {label}
+                          </Box>
+                        </Link>
+                      ))}
+                      <Button
+                        size="lg"
                         fontSize="md"
                         fontWeight="500"
-                        color="text.primary"
-                        /* Matches the CTA beside it, so the link has a hit area
-                           and does not sit flush against the container edge. */
-                        px={{ base: 3, md: 5 }}
+                        px={5}
                         py={0.5}
-                        _hover={{ color: "brand.primary" }}
-                        transition="color 0.15s ease"
-                        whiteSpace="nowrap"
+                        borderRadius={4}
+                        bg="brand.primary"
+                        color="white"
+                        _hover={{ bg: "#5a0a38" }}
+                        onClick={() => getEarlyAccess("header")}
                       >
-                        Blog
-                      </Box>
-                    </Link>
+                        Talk to us
+                      </Button>
+                    </Flex>
                   </Flex>
                 </Container>
               </Box>
@@ -117,43 +136,43 @@ export default function LandingNavbar() {
                     aria-label="Colex Logo"
                   />
                 </Link>
-                <Flex gap={{ base: 3, md: 5 }} align="center">
-                  <Link href="/blog">
-                    <Box
-                      as="span"
-                      display="inline-block"
-                      fontSize={{ base: "sm", md: "md" }}
-                      fontWeight="500"
-                      color="text.primary"
-                      /* Matches the CTA beside it. */
-                      px={{ base: 3, md: 5 }}
-                      py={0.5}
-                      _hover={{ color: "brand.primary" }}
-                      transition="color 0.15s ease"
-                      whiteSpace="nowrap"
+                <Flex gap={{ base: 2, md: 4 }} align="center">
+                  {["Use cases", "Why Colex", "Blog"].map((label) => (
+                    <Link
+                      key={label}
+                      href={label === "Blog" ? "/blog" : `#${label.toLowerCase().replace(/ /g, "-")}`}
                     >
-                      Blog
-                    </Box>
-                  </Link>
+                      <Box
+                        as="span"
+                        display={{ base: label === "Blog" ? "inline-block" : "none", md: "inline-block" }}
+                        fontSize={{ base: "sm", md: "md" }}
+                        fontWeight="500"
+                        color="text.primary"
+                        px={{ base: 2, md: 4 }}
+                        py={0.5}
+                        _hover={{ color: "brand.primary" }}
+                        transition="color 0.15s ease"
+                        whiteSpace="nowrap"
+                      >
+                        {label}
+                      </Box>
+                    </Link>
+                  ))}
                   <Button
                     size={{ base: "sm", md: "lg" }}
-                    w={{ base: "auto", lg: 220, xl: 260 }}
                     fontSize="md"
                     fontWeight="500"
                     px={{ base: 3, md: 5 }}
                     py={0.5}
                     borderRadius={4}
-                    bg="button.primary"
+                    bg="brand.primary"
                     color="white"
                     _hover={{
-                      bg: "button.primaryHover",
-                    }}
-                    _active={{
-                      bg: "button.primaryActive",
+                      bg: "#5a0a38",
                     }}
                     onClick={() => getEarlyAccess("header")}
                   >
-                    Book a demo
+                    Talk to us
                     {!isMobile && (
                       <ArrowRightIcon
                         style={{
