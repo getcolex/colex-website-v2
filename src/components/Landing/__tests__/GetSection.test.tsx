@@ -65,7 +65,7 @@ describe("GetSection", () => {
     it("renders the moments table lede", () => {
       render(<GetSection />);
       expect(
-        screen.getByText("Automation leaves you with scripts that decay.")
+        screen.getByText(/Other automation tools leave you with rigid workflows which decay/)
       ).toBeInTheDocument();
     });
 

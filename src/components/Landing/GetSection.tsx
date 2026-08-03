@@ -137,7 +137,7 @@ export default function GetSection() {
           fontSize={{ base: "md", md: "lg" }}
           mb={{ base: 8, md: 12 }}
         >
-          Automation leaves you with scripts that decay.
+          Other automation tools leave you with rigid workflows which decay. Colex grows with you continuously.
         </Text>
 
         <Box
