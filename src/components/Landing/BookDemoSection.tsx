@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Container, Text, Grid, Flex, Button } from "@chakra-ui/react";
+import { Box, Container, Text, Grid, Flex, Button, Link } from "@chakra-ui/react";
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { getEarlyAccess } from "@/lib/utils";
@@ -34,51 +34,73 @@ export default function BookDemoSection() {
             data-testid="benefits-content"
             gridColumn={{ base: "1", lg: "3 / 11" }}
           >
-            {/* Header + CTA row */}
-            <Flex
-              direction={{ base: "column", md: "row" }}
-              align={{ base: "flex-start", md: "center" }}
-              justify="space-between"
-              gap={{ base: 4, md: 6 }}
-              mb={{ base: 10, md: 14 }}
-            >
+            {/* Closing CTA copy (§7) */}
+            <Box mb={{ base: 10, md: 14 }}>
               <Text
+                as="h2"
                 fontFamily="heading"
                 fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
                 fontWeight="700"
                 color="white"
                 letterSpacing="-0.02em"
+                mb={{ base: 4, md: 6 }}
               >
-                30 minutes. You walk away with:
+                Bring us the process that keeps breaking.
               </Text>
-              <Button
-                size="lg"
-                px={{ base: 6, md: 8 }}
-                py={6}
-                borderRadius="4px"
-                bg="white"
-                color="brand.primary"
-                fontWeight="600"
-                fontSize={{ base: "sm", md: "md" }}
-                flexShrink={0}
-                _hover={{
-                  bg: "gray.100",
-                  transform: "translateY(-2px)",
-                }}
-                transition="all 0.2s"
-                onClick={() => getEarlyAccess("benefits_section")}
+              <Text
+                fontSize={{ base: "md", md: "lg" }}
+                color="whiteAlpha.800"
+                maxW="640px"
+                mb={{ base: 6, md: 8 }}
               >
-                Book a demo
-                <Box as="span" ml={2} display="inline-flex">
-                  <ArrowRightIcon
-                    style={{
-                      width: 18,
-                      height: 18,
-                    }}
-                  />
-                </Box>
-              </Button>
-            </Flex>
+                We&apos;re pre-launch, working with a handful of AI first teams
+                who see this problem now. Show us the one that breaks most and
+                we&apos;ll build it for you.
+              </Text>
+              <Flex
+                direction={{ base: "column", sm: "row" }}
+                align={{ base: "flex-start", sm: "center" }}
+                gap={{ base: 3, md: 4 }}
+              >
+                <Button
+                  size="lg"
+                  px={{ base: 6, md: 8 }}
+                  py={6}
+                  borderRadius="4px"
+                  bg="white"
+                  color="brand.primary"
+                  fontWeight="600"
+                  fontSize={{ base: "sm", md: "md" }}
+                  flexShrink={0}
+                  _hover={{
+                    bg: "gray.100",
+                    transform: "translateY(-2px)",
+                  }}
+                  transition="all 0.2s"
+                  onClick={() => getEarlyAccess("closing_cta")}
+                >
+                  Become a design partner
+                  <Box as="span" ml={2} display="inline-flex">
+                    <ArrowRightIcon
+                      style={{
+                        width: 18,
+                        height: 18,
+                      }}
+                    />
+                  </Box>
+                </Button>
+                <Link
+                  href="/thesis"
+                  color="white"
+                  fontWeight="600"
+                  fontSize={{ base: "sm", md: "md" }}
+                  _hover={{ textDecoration: "underline" }}
+                  transition="all 0.2s"
+                >
+                  Read the thesis first →
+                </Link>
+              </Flex>
+            </Box>
 
             {/* Bento Grid - 2x2 */}
             <Grid
