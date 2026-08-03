@@ -17,7 +17,7 @@ export default function BookDemoSection() {
   return (
     <Box
       ref={containerRef}
-      py={{ base: 16, md: 24 }}
+      py={{ base: 20, md: 28 }}
       bg="brand.primary"
       position="relative"
       zIndex={10}
