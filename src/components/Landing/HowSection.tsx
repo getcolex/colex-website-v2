@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Container, Text, Flex, Grid, Heading, Link } from "@chakra-ui/react";
+import { Box, Container, Text, Flex, Heading, Link } from "@chakra-ui/react";
 
 const steps = [
   {
@@ -13,13 +13,13 @@ const steps = [
     id: 2,
     title: "Review and get the rules how you want them",
     description:
-      "Edit until they’re your standard. Just ask the in-Colex AI or change the rules yourself.",
+      "Edit until they're your standard. Just ask the in-Colex AI or change the rules yourself.",
   },
   {
     id: 3,
     title: "Colex builds an auditable, human-first workflow",
     description:
-      "It does the work, then checks every result against your rules the same way every time. And if you want to change anything, it’s editable inline.",
+      "It does the work, then checks every result against your rules the same way every time. And if you want to change anything, it's editable inline.",
   },
   {
     id: 4,
@@ -86,64 +86,68 @@ export default function HowSection() {
           </Link>
         </Flex>
 
-        {/* 2x2 grid, collapses to 1 col below md */}
-        <Grid
-          templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
-          gap={{ base: 6, md: 8 }}
-        >
-          {steps.map((step) => (
-            <Box
-              key={step.id}
-              bg="surface.raised"
-              borderRadius="xl"
-              border="1px solid"
-              borderColor="border.default"
-              p={{ base: 5, md: 6 }}
-            >
-              {/* Image placeholder */}
-              <Box
-                data-testid="how-card-image"
-                h={{ base: "180px", md: "220px" }}
+        {/* Full-width cards, alternating image/text sides */}
+        <Flex direction="column" gap={{ base: 6, md: 8 }}>
+          {steps.map((step) => {
+            const isEven = step.id % 2 === 0;
+            return (
+              <Flex
+                key={step.id}
                 bg="surface.raised"
+                borderRadius="xl"
                 border="1px solid"
-                borderColor="border.subtle"
-                borderRadius="lg"
-                mb={{ base: 4, md: 5 }}
-              />
-
-              {/* Step label */}
-              <Text
-                fontSize="xs"
-                fontWeight="700"
-                color="ink.muted"
-                letterSpacing="0.08em"
-                textTransform="uppercase"
-                mb={2}
+                borderColor="border.default"
+                overflow="hidden"
+                direction={{ base: "column", md: isEven ? "row-reverse" : "row" }}
               >
-                STEP {step.id}
-              </Text>
+                {/* Square image placeholder */}
+                <Box
+                  data-testid="how-card-image"
+                  flexShrink={0}
+                  w={{ base: "100%", md: "45%" }}
+                  minH={{ base: "200px", md: "auto" }}
+                  aspectRatio={{ base: "16 / 9", md: "1 / 1" }}
+                  bg="border.subtle"
+                />
 
-              {/* Card heading */}
-              <Heading
-                as="h3"
-                fontFamily="heading"
-                fontSize={{ base: "md", md: "lg" }}
-                fontWeight="600"
-                color="ink.primary"
-                lineHeight={1.3}
-                mb={2}
-              >
-                {step.title}
-              </Heading>
+                {/* Text content */}
+                <Flex
+                  direction="column"
+                  justify="center"
+                  p={{ base: 6, md: 8, lg: 10 }}
+                  flex="1"
+                >
+                  <Text
+                    fontSize="xs"
+                    fontWeight="700"
+                    color="ink.muted"
+                    letterSpacing="0.08em"
+                    textTransform="uppercase"
+                    mb={3}
+                  >
+                    STEP {step.id}
+                  </Text>
 
-              {/* Description */}
-              <Text fontSize="sm" color="ink.muted" lineHeight={1.6}>
-                {step.description}
-              </Text>
-            </Box>
-          ))}
-        </Grid>
+                  <Heading
+                    as="h3"
+                    fontFamily="heading"
+                    fontSize={{ base: "xl", md: "2xl" }}
+                    fontWeight="600"
+                    color="ink.primary"
+                    lineHeight={1.3}
+                    mb={3}
+                  >
+                    {step.title}
+                  </Heading>
 
+                  <Text fontSize={{ base: "sm", md: "md" }} color="ink.muted" lineHeight={1.7}>
+                    {step.description}
+                  </Text>
+                </Flex>
+              </Flex>
+            );
+          })}
+        </Flex>
       </Container>
     </Box>
   );
