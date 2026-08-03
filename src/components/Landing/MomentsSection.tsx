@@ -41,7 +41,7 @@ const tableRows = [
 
 export default function MomentsSection() {
   return (
-    <Box as="section" py={{ base: 20, md: 28 }} bg="surface.page">
+    <Box as="section" py={{ base: 20, md: 28 }} bg="#EDE9E3">
       <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
         <Heading
           as="h2"
@@ -83,7 +83,7 @@ export default function MomentsSection() {
                 fontSize: "0.75rem",
                 letterSpacing: "0.08em",
                 textTransform: "uppercase",
-                backgroundColor: "#E4DFD8",
+                backgroundColor: "#DDD8D1",
                 borderBottomWidth: "2px",
                 borderColor: "var(--chakra-colors-border-default, #cbd5e0)",
               },
@@ -97,7 +97,7 @@ export default function MomentsSection() {
                 borderBottomWidth: 0,
               },
               "& tbody tr:nth-of-type(even)": {
-                backgroundColor: "#EDE9E3",
+                backgroundColor: "#E4DFD8",
               },
               "& td:last-child": {
                 fontWeight: 500,
