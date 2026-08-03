@@ -100,7 +100,8 @@ export default function GetSection() {
                 borderWidth="1px"
                 borderColor="border.subtle"
                 borderRadius="lg"
-                style={{ aspectRatio: "1 / 1.64" }}
+                style={{ aspectRatio: "1 / 1.6" }}
+                maxH={{ base: "280px", md: "320px" }}
                 mb={{ base: 4, md: 5 }}
               />
               <Heading
@@ -172,7 +173,7 @@ export default function GetSection() {
                 borderBottomWidth: 0,
               },
               "& tbody tr:nth-of-type(even)": {
-                backgroundColor: "var(--chakra-colors-surface-raised, #f7f7f5)",
+                backgroundColor: "#EDE9E3",
               },
               "& td:last-child": {
                 fontWeight: 500,
