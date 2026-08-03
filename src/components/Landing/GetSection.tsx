@@ -52,18 +52,14 @@ export default function GetSection() {
           {cards.map((card) => (
             <Box
               key={card.title}
-              bg="rgba(255,255,255,0.05)"
-              border="1px solid"
-              borderColor="rgba(255,255,255,0.1)"
-              borderRadius="xl"
-              p={{ base: 5, md: 6 }}
+              p={0}
             >
               <Box
                 data-testid="card-image-placeholder"
-                bg="rgba(255,255,255,0.03)"
+                bg="rgba(255,255,255,0.06)"
                 border="1px solid"
-                borderColor="rgba(255,255,255,0.08)"
-                borderRadius="lg"
+                borderColor="rgba(255,255,255,0.1)"
+                borderRadius="xl"
                 h={{ base: "180px", md: "220px" }}
                 mb={{ base: 4, md: 5 }}
               />
