@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Container, Text, Flex, Link } from "@chakra-ui/react";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { VERTICALS } from "./data/wireframe";
 
 type VerticalKey = keyof typeof VERTICALS;
@@ -20,6 +20,8 @@ const STATUS_MARKS: Record<string, { symbol: string; color: string }> = {
   late: { symbol: "◷", color: "status.warning" },
 };
 
+const CYCLE_INTERVAL = 4000;
+
 export default function VerticalsSection() {
   const [activeTab, setActiveTab] = useState<VerticalKey>("freight");
   const [pillSelections, setPillSelections] = useState<
@@ -31,13 +33,100 @@ export default function VerticalsSection() {
     hr: 0,
     finance: 0,
   });
+  const [cycling, setCycling] = useState(true);
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cycleTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const panelId = "verticals-tabpanel";
 
+  // Advance to next pill, wrapping to next vertical when exhausted
+  const advance = useCallback(() => {
+    setActiveTab((prevTab) => {
+      const tabIdx = TAB_ITEMS.findIndex((t) => t.key === prevTab);
+      const cards = VERTICALS[prevTab].cards;
+
+      setPillSelections((prev) => {
+        const currentPill = prev[prevTab];
+        if (currentPill < cards.length - 1) {
+          // Next pill in same vertical
+          return { ...prev, [prevTab]: currentPill + 1 };
+        }
+        // Reset this vertical to 0, move to next vertical
+        const nextTabIdx = (tabIdx + 1) % TAB_ITEMS.length;
+        const nextTabKey = TAB_ITEMS[nextTabIdx].key;
+        return { ...prev, [prevTab]: 0, [nextTabKey]: 0 };
+      });
+
+      const currentPill = pillSelections[prevTab];
+      if (currentPill >= cards.length - 1) {
+        const nextTabIdx = (tabIdx + 1) % TAB_ITEMS.length;
+        return TAB_ITEMS[nextTabIdx].key;
+      }
+      return prevTab;
+    });
+  }, [pillSelections]);
+
+  // Auto-cycle effect
+  useEffect(() => {
+    if (!cycling) {
+      if (cycleTimerRef.current) {
+        clearInterval(cycleTimerRef.current);
+        cycleTimerRef.current = null;
+      }
+      return;
+    }
+
+    cycleTimerRef.current = setInterval(advance, CYCLE_INTERVAL);
+    return () => {
+      if (cycleTimerRef.current) {
+        clearInterval(cycleTimerRef.current);
+        cycleTimerRef.current = null;
+      }
+    };
+  }, [cycling, advance]);
+
+  // User interaction: stop cycling, resume after idle
+  const handleUserInteraction = useCallback(() => {
+    setCycling(false);
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    idleTimerRef.current = setTimeout(() => {
+      setCycling(true);
+    }, 8000);
+  }, []);
+
+  // Cleanup idle timer on unmount
+  useEffect(() => {
+    return () => {
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    };
+  }, []);
+
+  const handleTabClick = useCallback(
+    (key: VerticalKey) => {
+      handleUserInteraction();
+      setActiveTab(key);
+    },
+    [handleUserInteraction]
+  );
+
+  const handlePillClick = useCallback(
+    (idx: number) => {
+      handleUserInteraction();
+      setPillSelections((prev) => ({ ...prev, [activeTab]: idx }));
+    },
+    [handleUserInteraction, activeTab]
+  );
+
   const handleTabKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      const currentIdx = TAB_ITEMS.findIndex((t) => t.key === activeTab);
+      // Determine current index from the focused element's id, not state
+      const targetId = (e.currentTarget as HTMLElement).id;
+      const currentIdx = TAB_ITEMS.findIndex(
+        (t) => `vertical-tab-${t.key}` === targetId
+      );
+      if (currentIdx === -1) return;
+
       let nextIdx = currentIdx;
 
       if (e.key === "ArrowRight") {
@@ -50,21 +139,18 @@ export default function VerticalsSection() {
       }
 
       e.preventDefault();
+      handleUserInteraction();
       const nextKey = TAB_ITEMS[nextIdx].key;
       setActiveTab(nextKey);
       tabRefs.current[nextIdx]?.focus();
     },
-    [activeTab]
+    [handleUserInteraction]
   );
 
   const vertical = VERTICALS[activeTab];
   const cards = vertical.cards;
   const selectedPillIdx = pillSelections[activeTab];
   const activeCard = cards[selectedPillIdx];
-
-  const selectPill = (idx: number) => {
-    setPillSelections((prev) => ({ ...prev, [activeTab]: idx }));
-  };
 
   return (
     <Box as="section" py={{ base: 20, md: 28 }} bg="surface.page">
@@ -97,14 +183,14 @@ export default function VerticalsSection() {
           </Link>
         </Text>
 
-        {/* Tabs */}
+        {/* Tabs — left-aligned */}
         <Flex
           role="tablist"
           aria-label="Industry verticals"
           gap={{ base: 1, md: 2 }}
-          justifyContent="center"
+          justifyContent="flex-start"
           flexWrap="wrap"
-          mb={{ base: 6, md: 8 }}
+          mb={{ base: 4, md: 6 }}
           overflowX="auto"
         >
           {TAB_ITEMS.map((item, idx) => (
@@ -119,7 +205,7 @@ export default function VerticalsSection() {
               ref={(el: HTMLButtonElement | null) => {
                 tabRefs.current[idx] = el;
               }}
-              onClick={() => setActiveTab(item.key)}
+              onClick={() => handleTabClick(item.key)}
               onKeyDown={handleTabKeyDown}
               px={{ base: 3, md: 5 }}
               py={{ base: 2, md: 2.5 }}
@@ -157,10 +243,10 @@ export default function VerticalsSection() {
           id={panelId}
           aria-labelledby={`vertical-tab-${activeTab}`}
         >
-          {/* Pills */}
+          {/* Pills — left-aligned */}
           <Flex
             gap={{ base: 2, md: 3 }}
-            justifyContent="center"
+            justifyContent="flex-start"
             flexWrap="wrap"
             mb={{ base: 6, md: 8 }}
           >
@@ -168,7 +254,7 @@ export default function VerticalsSection() {
               <Box
                 as="button"
                 key={card.name}
-                onClick={() => selectPill(idx)}
+                onClick={() => handlePillClick(idx)}
                 px={{ base: 3, md: 4 }}
                 py={{ base: 1.5, md: 2 }}
                 borderRadius="lg"
@@ -191,7 +277,7 @@ export default function VerticalsSection() {
             ))}
           </Flex>
 
-          {/* Active card */}
+          {/* Active card — left-aligned, not centered */}
           <Box
             bg="surface.raised"
             border="1px solid"
@@ -199,7 +285,6 @@ export default function VerticalsSection() {
             borderRadius="xl"
             p={{ base: 5, md: 8 }}
             maxW="640px"
-            mx="auto"
           >
             <Text
               as="h3"

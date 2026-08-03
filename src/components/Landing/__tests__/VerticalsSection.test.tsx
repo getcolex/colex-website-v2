@@ -1,9 +1,17 @@
-import { describe, it, expect } from 'vitest'
-import { screen, fireEvent } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { screen, fireEvent, act } from '@testing-library/react'
 import { render } from '@/test/test-utils'
 import VerticalsSection from '../VerticalsSection'
 
 describe('VerticalsSection', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('renders h2 and CTA link', () => {
     render(<VerticalsSection />)
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
@@ -32,11 +40,9 @@ describe('VerticalsSection', () => {
 
   it('shows pills for active tab and displays card content', () => {
     render(<VerticalsSection />)
-    // Freight tab is default — should show its two cards as pill buttons
     expect(screen.getByRole('button', { name: /Booking a shipment/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Clearing an accessorial/i })).toBeInTheDocument()
 
-    // First pill is selected by default — card should show its content
     expect(screen.getByRole('heading', { level: 3, name: /Booking a shipment/i })).toBeInTheDocument()
     expect(screen.getByText(/Quote to confirmed booking/)).toBeInTheDocument()
     expect(screen.getByText(/Shipment booked/)).toBeInTheDocument()
@@ -56,8 +62,7 @@ describe('VerticalsSection', () => {
     render(<VerticalsSection />)
 
     // In freight tab, select the second pill
-    const accessorialPill = screen.getByRole('button', { name: /Clearing an accessorial/i })
-    fireEvent.click(accessorialPill)
+    fireEvent.click(screen.getByRole('button', { name: /Clearing an accessorial/i }))
     expect(screen.getByRole('heading', { level: 3, name: /Clearing an accessorial/i })).toBeInTheDocument()
 
     // Switch to procurement
@@ -77,7 +82,7 @@ describe('VerticalsSection', () => {
 
   it('survives a rerender with pill selection intact', () => {
     const { rerender } = render(<VerticalsSection />)
-    // Select second pill
+    // Stop auto-cycle by clicking a pill
     fireEvent.click(screen.getByRole('button', { name: /Clearing an accessorial/i }))
     expect(screen.getByRole('heading', { level: 3, name: /Clearing an accessorial/i })).toBeInTheDocument()
 
@@ -96,7 +101,6 @@ describe('VerticalsSection', () => {
     const panel = screen.getByRole('tabpanel')
     expect(panel).toBeInTheDocument()
 
-    // The selected tab's aria-controls matches the panel's id
     const selectedTab = screen.getByRole('tab', { selected: true })
     const panelId = panel.getAttribute('id')
     expect(selectedTab).toHaveAttribute('aria-controls', panelId)
@@ -116,17 +120,54 @@ describe('VerticalsSection', () => {
     const vendorTab = screen.getByRole('tab', { name: /Vendor management/i })
     expect(document.activeElement).toBe(vendorTab)
 
-    // Left arrow back
     fireEvent.keyDown(vendorTab, { key: 'ArrowLeft' })
     expect(document.activeElement).toBe(procurementTab)
 
-    // Wrap around from first to last
-    fireEvent.keyDown(freightTab, { key: 'ArrowLeft' })
-    // After left from freight, should focus on freight first since vendorTab has focus
-    // Let's reset: focus freight, then go left to wrap
     freightTab.focus()
     fireEvent.keyDown(freightTab, { key: 'ArrowLeft' })
     const financeTab = screen.getByRole('tab', { name: /Finance ops/i })
     expect(document.activeElement).toBe(financeTab)
+  })
+
+  // Auto-cycling tests
+
+  it('auto-advances to next pill after interval', () => {
+    render(<VerticalsSection />)
+    // Starts on freight, pill 0 (Booking a shipment)
+    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent('Booking a shipment')
+
+    // Advance 4 seconds — should move to pill 1 (Clearing an accessorial)
+    act(() => { vi.advanceTimersByTime(4000) })
+    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent('Clearing an accessorial')
+  })
+
+  it('auto-advances to next vertical when pills exhausted', () => {
+    render(<VerticalsSection />)
+    // freight has 2 cards: pill 0 -> pill 1 -> next vertical (procurement, pill 0)
+    act(() => { vi.advanceTimersByTime(4000) }) // freight pill 1
+    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent('Clearing an accessorial')
+
+    act(() => { vi.advanceTimersByTime(4000) }) // procurement pill 0
+    expect(screen.getByRole('tab', { name: /Procurement/i })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent('Paying an invoice')
+  })
+
+  it('stops auto-cycling on user click and resumes after idle', () => {
+    render(<VerticalsSection />)
+
+    // Click a pill to stop cycling
+    fireEvent.click(screen.getByRole('button', { name: /Clearing an accessorial/i }))
+    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent('Clearing an accessorial')
+
+    // Advance 4 seconds — should NOT auto-advance (cycling paused)
+    act(() => { vi.advanceTimersByTime(4000) })
+    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent('Clearing an accessorial')
+
+    // After 8 seconds idle, cycling resumes
+    act(() => { vi.advanceTimersByTime(8000) })
+    // Now cycling is back on, advance one more interval
+    act(() => { vi.advanceTimersByTime(4000) })
+    // Should have advanced from accessorial (freight pill 1) to procurement pill 0
+    expect(screen.getByRole('tab', { name: /Procurement/i })).toHaveAttribute('aria-selected', 'true')
   })
 })
