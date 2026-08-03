@@ -5,21 +5,21 @@ import { getEarlyAccess } from "@/lib/utils";
 
 export default function BookDemoSection() {
   return (
-    <Box as="section" py={{ base: 20, md: 28 }} bg="surface.page">
+    <Box as="section" py={{ base: 20, md: 28 }} bg="brand.primary">
       <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
         <Text
           as="h2"
           fontFamily="heading"
           fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
           fontWeight="700"
-          color="ink.primary"
+          color="surface.page"
           letterSpacing="-0.02em"
         >
           Bring us the process that keeps breaking.
         </Text>
         <Text
           fontSize={{ base: "md", md: "lg" }}
-          color="ink.muted"
+          color="rgba(255,255,255,0.7)"
           mt={{ base: 3, md: 4 }}
           maxW="640px"
         >
@@ -38,8 +38,8 @@ export default function BookDemoSection() {
             px={{ base: 6, md: 8 }}
             py={6}
             borderRadius="4px"
-            bg="brand.primary"
-            color="white"
+            bg="surface.page"
+            color="brand.primary"
             fontWeight="600"
             fontSize={{ base: "sm", md: "md" }}
             _hover={{
@@ -53,7 +53,7 @@ export default function BookDemoSection() {
           </Button>
           <Link
             href="/thesis"
-            color="ink.primary"
+            color="surface.page"
             fontWeight="600"
             fontSize={{ base: "sm", md: "md" }}
             _hover={{ textDecoration: "underline" }}

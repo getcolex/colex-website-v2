@@ -22,7 +22,7 @@ const FOOTER_LINKS = [
 
 export default function Footer() {
   return (
-    <Box as="footer" bg="transparent" pt={20}>
+    <Box as="footer" bg="brand.primary" pt={20} pb={10}>
       <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
         {/* Mobile + Tablet layout */}
         <VStack gap={4} align="center" display={{ base: "flex", lg: "none" }}>
@@ -33,8 +33,8 @@ export default function Footer() {
                 key={link.label}
                 onClick={link.onClick}
                 fontSize="sm"
-                color="text.muted"
-                _hover={{ color: "text.primary" }}
+                color="rgba(255,255,255,0.6)"
+                _hover={{ color: "surface.page" }}
                 transition="color 0.2s"
               >
                 <NextLink href={link.href}>
@@ -45,11 +45,11 @@ export default function Footer() {
           </Flex>
           <Text
             fontSize="sm"
-            color="text.muted"
+            color="rgba(255,255,255,0.5)"
             textAlign="center"
             w="full"
           >
-            © 2025 | ALL RIGHTS RESERVED by Colex.
+            © 2026 Colex. All rights reserved.
           </Text>
           <Box position="relative" w={{ base: "280px", sm: "320px" }} h={{ base: "96px", sm: "110px" }}>
             <Image
@@ -57,7 +57,7 @@ export default function Footer() {
               sizes="320px"
               src="/images/ColexLogo.png"
               alt="Colex Logo"
-              style={{ objectFit: "contain" }}
+              style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }}
             />
           </Box>
         </VStack>
@@ -70,7 +70,7 @@ export default function Footer() {
               sizes="(min-width: 1280px) 500px, 400px"
               src="/images/ColexLogo.png"
               alt="Colex Logo"
-              style={{ objectFit: "contain" }}
+              style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }}
             />
           </Box>
           <VStack align="flex-end" gap={2} mb={2}>
@@ -81,8 +81,8 @@ export default function Footer() {
                   key={link.label}
                   onClick={link.onClick}
                   fontSize="sm"
-                  color="text.muted"
-                  _hover={{ color: "text.primary" }}
+                  color="rgba(255,255,255,0.6)"
+                  _hover={{ color: "surface.page" }}
                   transition="color 0.2s"
                 >
                   <NextLink href={link.href}>
@@ -91,8 +91,8 @@ export default function Footer() {
                 </ChakraLink>
               ))}
             </Flex>
-            <Text fontSize="sm" color="text.muted">
-              © 2025 | ALL RIGHTS RESERVED by Colex.
+            <Text fontSize="sm" color="rgba(255,255,255,0.5)">
+              © 2026 Colex. All rights reserved.
             </Text>
           </VStack>
         </HStack>
