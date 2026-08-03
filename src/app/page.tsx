@@ -20,7 +20,7 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <Box bg="#F8F7F4" minH="100vh">
+    <Box bg="surface.page" minH="100vh">
       <DevGridOverlay />
       <LandingNavbar />
       <HeroSection />

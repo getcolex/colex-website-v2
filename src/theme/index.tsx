@@ -49,6 +49,24 @@ const customConfig = defineConfig({
           secondaryHover: { value: "#E4E4E7" }, // Secondary button hover
         },
 
+        // Surface tokens (from wireframe)
+        surface: {
+          page: { value: "#F8F7F4" },
+          raised: { value: "#FFFFFF" },
+        },
+
+        // Border tokens (from wireframe)
+        border: {
+          default: { value: "#D6D3D1" },
+          subtle: { value: "#E7E5E4" },
+        },
+
+        // Ink tokens (from wireframe)
+        ink: {
+          primary: { value: "#1A1A1A" },
+          muted: { value: "#4A443E" },
+        },
+
         // Status Colors
         status: {
           success: { value: "#10B981" }, // Green

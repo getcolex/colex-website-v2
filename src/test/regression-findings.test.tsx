@@ -5,6 +5,27 @@
 import { describe, it, expect, vi } from 'vitest'
 import React from 'react'
 import { render, act } from '@testing-library/react'
+import { readFileSync } from 'fs'
+import { resolve } from 'path'
+
+// ---------------------------------------------------------------------------
+// Unit 2: design tokens exist and page.tsx uses them
+// ---------------------------------------------------------------------------
+describe('unit 2: one token system', () => {
+  it('surface.page token resolves to #F8F7F4', async () => {
+    const { system } = await import('@/theme/index')
+    const resolved = system.token('colors.surface.page')
+    expect(resolved).toBe('#F8F7F4')
+  })
+
+  it('page.tsx contains no raw hex literal', () => {
+    const src = readFileSync(
+      resolve(__dirname, '../app/page.tsx'),
+      'utf-8'
+    )
+    expect(src).not.toMatch(/#[0-9A-Fa-f]{3,8}\b/)
+  })
+})
 
 // ---------------------------------------------------------------------------
 // Finding 1: gtag.ts:16 — window.gtag guard
