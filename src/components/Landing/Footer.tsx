@@ -7,8 +7,9 @@ import {
   HStack,
   VStack,
   Text,
-  Link,
+  Link as ChakraLink,
 } from "@chakra-ui/react";
+import NextLink from "next/link";
 import Image from "next/image";
 import { getEarlyAccess } from "@/lib/utils";
 
@@ -27,17 +28,19 @@ export default function Footer() {
         <VStack gap={4} align="center" display={{ base: "flex", lg: "none" }}>
           <Flex gap={4} flexWrap="wrap" justify="center">
             {FOOTER_LINKS.map((link) => (
-              <Link
+              <ChakraLink
+                asChild
                 key={link.label}
-                href={link.href}
                 onClick={link.onClick}
                 fontSize="sm"
                 color="text.muted"
                 _hover={{ color: "text.primary" }}
                 transition="color 0.2s"
               >
+                <NextLink href={link.href}>
                 {link.label}
-              </Link>
+                </NextLink>
+              </ChakraLink>
             ))}
           </Flex>
           <Text
@@ -73,16 +76,19 @@ export default function Footer() {
           <VStack align="flex-end" gap={2} mb={2}>
             <Flex gap={6}>
               {FOOTER_LINKS.map((link) => (
-                <Link
+                <ChakraLink
+                  asChild
                   key={link.label}
-                  href={link.href}
+                  onClick={link.onClick}
                   fontSize="sm"
                   color="text.muted"
                   _hover={{ color: "text.primary" }}
                   transition="color 0.2s"
                 >
+                  <NextLink href={link.href}>
                   {link.label}
-                </Link>
+                  </NextLink>
+                </ChakraLink>
               ))}
             </Flex>
             <Text fontSize="sm" color="text.muted">
