@@ -39,9 +39,9 @@ export default function BookDemoSection() {
               <Text
                 as="h2"
                 fontFamily="heading"
-                fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
+                fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
                 fontWeight="700"
-                color="white"
+                color="ink.primary"
                 letterSpacing="-0.02em"
                 mb={{ base: 4, md: 6 }}
               >
