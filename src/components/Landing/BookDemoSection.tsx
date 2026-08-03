@@ -18,7 +18,7 @@ export default function BookDemoSection() {
     <Box
       ref={containerRef}
       py={{ base: 20, md: 28 }}
-      bg="brand.primary"
+      bg="surface.page"
       position="relative"
       zIndex={10}
     >
@@ -49,7 +49,7 @@ export default function BookDemoSection() {
               </Text>
               <Text
                 fontSize={{ base: "md", md: "lg" }}
-                color="whiteAlpha.800"
+                color="ink.muted"
                 maxW="640px"
                 mb={{ base: 6, md: 8 }}
               >
@@ -67,13 +67,13 @@ export default function BookDemoSection() {
                   px={{ base: 6, md: 8 }}
                   py={6}
                   borderRadius="4px"
-                  bg="white"
-                  color="brand.primary"
+                  bg="brand.primary"
+                  color="white"
                   fontWeight="600"
                   fontSize={{ base: "sm", md: "md" }}
                   flexShrink={0}
                   _hover={{
-                    bg: "gray.100",
+                    opacity: 0.9,
                     transform: "translateY(-2px)",
                   }}
                   transition="all 0.2s"
@@ -91,7 +91,7 @@ export default function BookDemoSection() {
                 </Button>
                 <Link
                   href="/thesis"
-                  color="white"
+                  color="ink.primary"
                   fontWeight="600"
                   fontSize={{ base: "sm", md: "md" }}
                   _hover={{ textDecoration: "underline" }}
