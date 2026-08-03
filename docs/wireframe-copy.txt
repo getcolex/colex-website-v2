@@ -1,0 +1,169 @@
+
+### 1 · HERO
+  h1: Give your teams extra hands
+  p: Colex turns your business processes into rules and does the work. You get a written record of how your company decides things. It gets sharper every time you use it.
+  a: Talk to us
+  a: Why are we building this? →
+  p: Shipment booked
+  li: ●Three quotes collected3/3
+  li: ○Carrier on an approved lane0/1
+  li: ○Customs entry accepted0/1
+  p: Waiting for Carrier on an approved lane
+  p: Booking a shipment
+  p: Running
+  p: This view was designed before the rule changed. It may not show the new data.
+  p: why?
+  p: No data received yet.
+  p: why?
+  p: Waiting for Carrier on an approved lane to finish.
+  p: why?
+  p: The quotes keep expiring before we book. Make them hold to the booking date.
+  p: I can tighten the rule to this:
+  p: It applies from the next run. Nothing downstream changes.
+  p: Apply Edit
+  p: Ask anything…
+
+### 2 · THE PAIN
+  h2: You wrote the process. It still isn't being followed.
+  p: You documented the workflow. You trained the team. You even automated parts of it. But you are still thinking about it.
+  h3: The automation only covered the easy path
+  p: Every exception came back to people.
+  p: Every rule change meant rewriting workflows.
+  h3: The document isn't the process
+  p: It lives in a file written months ago.
+  p: The real process lives in dozens of decisions people make every day.
+  h3: When something breaks, no one knows where
+  p: You can see the outcome was wrong.
+  p: Finding the answer means asking five people who each remember the process differently.
+  h3: Every change is expensive
+  p: A new policy shouldn't take months to reach production.
+  p: Instead it means updating documents, rebuilding workflows, retraining teams, and hoping everyone switches at the same time.
+  p: We're building Colex so your process becomes the system, not a document people try to follow.
+
+### 3 · THE SHIFT
+  h2: Stop writing the steps. Just write the rules you care about.
+  p: You own what “done” means. Colex works out how.
+  button: Booking a shipment
+  button: Paying an invoice
+  button: Starting a new hire
+  p: How you do it today
+  li: Chase the signed contract
+  li: Check right-to-work documents
+  li: Raise an IT ticket for the laptop
+  li: Ask each system owner for an account
+  li: Follow up on whatever is missing
+  li: Repeat the day before they start
+  p: Just ask Colex for
+  p: Don't let anyone start until the contract is signed, right to work is checked, and their laptop and accounts are ready.
+
+### 4 · WHO IT'S FOR
+  h2: For the teams that run a company day to day.
+  button: Freight & shipping
+  button: Procurement
+  button: Vendor management
+  button: HR & onboarding
+  button: Finance ops
+  a: Get a personalised live demo →
+
+### 5 · HOW IT RUNS
+  h2: This is how Colex works for you
+  h3: Ask Colex to draft the rules for your process
+  p: Describe the job in plain language. Colex turns it into rules over the evidence your process already produces.
+  p: Draft from a sentence
+  p: ↓
+  h3: Review and get the rules how you want them
+  p: Edit until they're your standard. Just ask the in-Colex AI or change the rules yourself.
+  p: Editing a rule
+  p: Priya, editing — unsaved
+  h3: Colex builds an auditable, human-first workflow
+  p: It does the work, then checks every result against your rules the same way every time. And if you want to change anything, it's editable inline.
+  p: The determinism boundary
+  p: ↓ evidence ↓
+  h3: If things change, just update the rules and the workflow evolves
+  p: You edit a rule. The workflow gets updated automatically and the team has it in seconds.
+  p: Edit one rule, the rest follows
+  p: You change
+  p: Changed by itself
+  li: ✓the task that fetches quotes
+  li: ✓the review screen
+  li: —nothing else touched
+  p: Get to a personalised demo →
+
+### 6 · WHAT YOU GET
+  h2: What that buys you, concretely.
+  h3: Simple interfaces, so your team can work with confidence
+  p: The review screen comes from the same rules that run the work. Change the process, the screen changes with it.
+  p: Review screen — shipment 4821
+  p: Evidence
+  li: ●MSC $2,840 · to 18 Mar
+  li: ●Hapag $2,920 · to 16 Mar
+  li: ●ONE $3,100 · to 21 Mar
+  p: Rules
+  li: ✓three quotes
+  li: ✓distinct carriers
+  li: ✗Hapag expires first
+  h3: Work that rewinds when things change
+  p: Customs rejects an entry on Thursday. Monday's "done" reopens and goes back into review.
+  p: The same rule, over four days
+  h3: All your rules written down, all action auditable
+  p: Versioned, inspectable, and yours to reason over, not buried inside a workflow where nobody can find them.
+  p: Three quotes collected — history
+  h3: Human judgement everywhere you need
+  p: Calls that need a person go to a person, never to a model pretending to be one.
+  p: Waiting on Dan — approval
+  li: ✓charge is on the signed rate agreement
+  li: ✓driver timestamps show 4h 20m waiting
+  p: Dan decides — Colex has not chosen
+  h2: Six months in, you own something.
+  p: Automation leaves you with scripts that decay.
+  td: Your company's standards, written down
+  td: Scattered across scripts, docs, and people's heads.
+  td: One place. In your words. The thing the work is measured against.
+  td: A record of every past judgement
+  td: Run logs. Green or red, no reasoning.
+  td: What was decided, on what evidence, by whom.
+  td: Standards that get sharper with use
+  td: The script does exactly what it did on day one.
+  td: Every exception teaches you what the rule was missing.
+  td: An answer for the auditor
+  td: "That's how it's always run."
+  td: The rule, the evidence, the person who signed it off.
+  td: A process anyone can pick up
+  td: A half-written doc and whoever remembers.
+  td: They read the rules. The rules are the process.
+  td: Books that stay honest after the fact
+  td: The run went green on Monday. Nothing left to reopen.
+  td: Thursday's customs rejection reopens Monday's "done".
+
+### 7 · CLOSING CTA
+  h2: Bring us the process that keeps breaking.
+  p: We're pre-launch, working with a handful of AI first teams who see this problem now. Show us the one that breaks most and we'll build it for you.
+  a: Become a design partner
+  a: Read the thesis first →
+
+### 8 · THESIS TEASER
+  h3: Checks, not steps
+  p: Why task DAGs stop working the moment you add a model, and what we built instead.
+  p: Read the essay
+  p: Colex
+  p: Software for operations teams.
+  p: Product
+  li: Use cases
+  li: How it works
+  li: Why Colex
+  p: Company
+  li: About
+  li: Blog
+  li: Contact
+  p: Legal
+  li: Privacy
+  li: Terms
+  button: Edit copy
+  button: Copy changes
+  button: Reset
+  p: Build notes — not part of the page
+  li: Hero Hero demo. Selection only — four jobs, four hand-written check sets, no model call. Claims nothing it can't do. If we later want free text, it needs a real draft behind it; a keyword guess would undercut the determinism pitch on the same screen.
+  li: The shift Content gap. The left column should be quoted from a real customer SOP, not written by us. A genuine one is longer, more tedious, and far more persuasive. Do we have a transcript?
+  li: How it runs Step 3 carries the trust. "Checks every result the same way every time" and "judgement calls go to a person" are what separate Colex from "we pointed an agent at it."
+  li: What happens after Framed as assets, not incidents. Rows describe what you accumulate, not what breaks — the difference between replacing workflows and being a system of record.
+  li: Who it's for Tabs, then a scrolling track — a sixth vertical is one entry in VERTICALS, and each vertical carries its own worked examples. Every example shown needs to be one we've actually built, not a plausible one.
