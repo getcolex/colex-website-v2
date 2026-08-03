@@ -166,15 +166,28 @@ export default function VerticalsSection() {
   const selectedIdx = promptSelections[activeTab];
 
   return (
-    <Box as="section" py={{ base: 20, md: 28 }} bg="surface.page">
-      <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
+    <Box
+      as="section"
+      py={{ base: 20, md: 28 }}
+      bg="ink.primary"
+      position="relative"
+      _after={{
+        content: '""',
+        position: "absolute",
+        inset: 0,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")`,
+        backgroundRepeat: "repeat",
+        pointerEvents: "none",
+      }}
+    >
+      <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }} position="relative">
         {/* Heading */}
         <Text
           as="h2"
           fontFamily="heading"
           fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
           fontWeight="700"
-          color="ink.primary"
+          color="surface.page"
           letterSpacing="-0.02em"
           textAlign="left"
           mb={{ base: 4, md: 6 }}
@@ -211,21 +224,21 @@ export default function VerticalsSection() {
               borderRadius="full"
               border="1px solid"
               borderColor={
-                activeTab === item.key ? "ink.primary" : "border.default"
+                activeTab === item.key ? "surface.page" : "rgba(255,255,255,0.2)"
               }
-              bg={activeTab === item.key ? "ink.primary" : "surface.raised"}
+              bg={activeTab === item.key ? "surface.page" : "transparent"}
               color={
-                activeTab === item.key ? "surface.raised" : "ink.primary"
+                activeTab === item.key ? "ink.primary" : "surface.page"
               }
               fontSize={{ base: "xs", md: "sm" }}
               fontWeight="500"
               cursor="pointer"
               whiteSpace="nowrap"
               transition="all 0.15s ease"
-              _hover={{ borderColor: "ink.primary" }}
+              _hover={{ borderColor: "surface.page" }}
               _focus={{
                 outline: "2px solid",
-                outlineColor: "ink.primary",
+                outlineColor: "surface.page",
                 outlineOffset: "2px",
               }}
             >
@@ -237,7 +250,7 @@ export default function VerticalsSection() {
         {/* Separator */}
         <Box
           borderTop="1px solid"
-          borderColor="border.default"
+          borderColor="rgba(255,255,255,0.15)"
           mb={{ base: 4, md: 6 }}
         />
 
@@ -264,12 +277,12 @@ export default function VerticalsSection() {
                 cursor="pointer"
                 py={3}
                 borderBottom="1px solid"
-                borderColor="border.default"
+                borderColor="rgba(255,255,255,0.15)"
                 transition="color 0.15s ease"
-                color={selectedIdx === idx ? "brand.primary" : "ink.muted"}
+                color={selectedIdx === idx ? "surface.page" : "rgba(255,255,255,0.5)"}
                 fontWeight={selectedIdx === idx ? "600" : "400"}
                 fontSize={{ base: "lg", md: "xl" }}
-                _hover={{ color: "brand.primary" }}
+                _hover={{ color: "surface.page" }}
               >
                 &ldquo;{prompt}&rdquo;
               </Box>
@@ -282,8 +295,8 @@ export default function VerticalsSection() {
                 role="button"
                 display="inline-flex"
                 alignItems="center"
-                bg="brand.primary"
-                color="white"
+                bg="surface.page"
+                color="ink.primary"
                 px={{ base: 4, md: 6 }}
                 py={3}
                 borderRadius="4px"
@@ -308,9 +321,9 @@ export default function VerticalsSection() {
             <Box
               data-testid="image-placeholder"
               aspectRatio="1 / 1"
-              bg="surface.raised"
+              bg="rgba(255,255,255,0.05)"
               border="1px solid"
-              borderColor="border.subtle"
+              borderColor="rgba(255,255,255,0.1)"
               borderRadius="xl"
               w="100%"
             />

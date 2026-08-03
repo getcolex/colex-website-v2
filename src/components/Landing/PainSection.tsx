@@ -2,6 +2,8 @@
 
 import { Box, Container, Text, Grid } from "@chakra-ui/react";
 
+const NOISE_SVG = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")`;
+
 const cards = [
   {
     title: "The automation only covered the easy path",
@@ -35,25 +37,36 @@ const cards = [
 
 export default function PainSection() {
   return (
-    <Box as="section" py={{ base: 20, md: 28 }} bg="surface.page">
-      <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
-        {/* Heading */}
+    <Box
+      as="section"
+      py={{ base: 20, md: 28 }}
+      bg="ink.primary"
+      position="relative"
+      _after={{
+        content: '""',
+        position: "absolute",
+        inset: 0,
+        backgroundImage: NOISE_SVG,
+        backgroundRepeat: "repeat",
+        pointerEvents: "none",
+      }}
+    >
+      <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }} position="relative">
         <Text
           as="h2"
           fontFamily="heading"
           fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
           fontWeight="700"
-          color="ink.primary"
+          color="surface.page"
           letterSpacing="-0.02em"
           mb={{ base: 4, md: 6 }}
         >
           You wrote the process. It still isn&rsquo;t being followed.
         </Text>
 
-        {/* Lede */}
         <Text
           fontSize={{ base: "md", md: "lg" }}
-          color="ink.muted"
+          color="border.default"
           maxW="640px"
           mb={{ base: 10, md: 14 }}
         >
@@ -61,18 +74,16 @@ export default function PainSection() {
           parts of it. But you are still thinking about it.
         </Text>
 
-        {/* 2x2 card grid */}
         <Grid
           templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
           gap={{ base: 4, lg: 8 }}
-          mb={{ base: 10, md: 14 }}
         >
           {cards.map((card) => (
             <Box
               key={card.title}
-              bg="surface.raised"
+              bg="rgba(255,255,255,0.05)"
               border="1px solid"
-              borderColor="border.subtle"
+              borderColor="rgba(255,255,255,0.1)"
               borderRadius="xl"
               p={{ base: 5, md: 6 }}
             >
@@ -81,7 +92,7 @@ export default function PainSection() {
                 fontFamily="heading"
                 fontSize={{ base: "lg", md: "xl" }}
                 fontWeight="600"
-                color="ink.primary"
+                color="surface.page"
                 mb={3}
               >
                 {card.title}
@@ -90,7 +101,7 @@ export default function PainSection() {
                 <Text
                   key={line}
                   fontSize="sm"
-                  color="ink.muted"
+                  color="border.default"
                   mb={1}
                 >
                   {line}
@@ -99,7 +110,6 @@ export default function PainSection() {
             </Box>
           ))}
         </Grid>
-
       </Container>
     </Box>
   );
