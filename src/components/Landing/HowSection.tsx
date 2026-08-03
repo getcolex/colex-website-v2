@@ -125,7 +125,7 @@ export default function HowSection() {
                     textTransform="uppercase"
                     mb={3}
                   >
-                    STEP {step.id}
+                    {["Create", "Edit", "Run", "Update"][step.id - 1]}
                   </Text>
 
                   <Heading

@@ -36,10 +36,10 @@ describe('HowSection', () => {
 
   it('renders step labels for each card', () => {
     render(<HowSection />)
-    expect(screen.getByText('STEP 1')).toBeInTheDocument()
-    expect(screen.getByText('STEP 2')).toBeInTheDocument()
-    expect(screen.getByText('STEP 3')).toBeInTheDocument()
-    expect(screen.getByText('STEP 4')).toBeInTheDocument()
+    expect(screen.getByText('Create')).toBeInTheDocument()
+    expect(screen.getByText('Edit')).toBeInTheDocument()
+    expect(screen.getByText('Run')).toBeInTheDocument()
+    expect(screen.getByText('Update')).toBeInTheDocument()
   })
 
   it('renders description paragraphs for each card', () => {
