@@ -4,11 +4,11 @@ import { render } from "@/test/test-utils";
 import GetSection from "../GetSection";
 
 describe("GetSection", () => {
-  it("renders h2: 'What that buys you, concretely.'", () => {
+  it("renders h2: 'The part automation never gave you.'", () => {
     render(<GetSection />);
     const heading = screen.getByRole("heading", {
       level: 2,
-      name: "What that buys you, concretely.",
+      name: "The part automation never gave you.",
     });
     expect(heading).toBeInTheDocument();
   });

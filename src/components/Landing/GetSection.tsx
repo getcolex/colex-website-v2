@@ -40,7 +40,7 @@ export default function GetSection() {
           letterSpacing="-0.02em"
           mb={{ base: 10, md: 14 }}
         >
-          What that buys you, concretely.
+          The part automation never gave you.
         </Heading>
 
         {/* 2x2 card grid */}
