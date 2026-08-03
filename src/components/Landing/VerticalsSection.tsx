@@ -14,17 +14,41 @@ const TAB_ITEMS: { key: VerticalKey; label: string }[] = [
   { key: "finance", label: "Finance ops" },
 ];
 
+// Human-written prompts mapped to each card index per vertical
+const PROMPTS: Record<VerticalKey, string[]> = {
+  freight: [
+    "Book me a shipment with three valid quotes from different carriers",
+    "Flag any accessorial charge we didn’t authorize before we pay it",
+  ],
+  procurement: [
+    "Only pay this invoice if it matches the PO and we received the goods",
+    "Raise a PO but make sure the budget has room and the vendor is approved",
+  ],
+  vendor: [
+    "Onboard this vendor — check their registration and confirm bank details on a second channel",
+    "A vendor wants to change bank details — make sure the right people confirm it",
+  ],
+  hr: [
+    "Don’t let the new hire start until contract, right to work, laptop and accounts are all ready",
+    "Someone’s leaving — revoke access everywhere and reconcile their final pay",
+  ],
+  finance: [
+    "Get month-end close ready — accrue uninvoiced shipments, match bank lines, flag variances",
+    "Reconcile this vendor statement against our ledger and surface anything unexplained",
+  ],
+};
+
 const STATUS_MARKS: Record<string, { symbol: string; color: string }> = {
   ok: { symbol: "✓", color: "status.success" },
   wait: { symbol: "○", color: "ink.muted" },
-  late: { symbol: "◷", color: "status.warning" },
+  late: { symbol: "◷", color: "#B45309" },
 };
 
 const CYCLE_INTERVAL = 4000;
 
 export default function VerticalsSection() {
   const [activeTab, setActiveTab] = useState<VerticalKey>("freight");
-  const [pillSelections, setPillSelections] = useState<
+  const [promptSelections, setPromptSelections] = useState<
     Record<VerticalKey, number>
   >({
     freight: 0,
@@ -40,32 +64,30 @@ export default function VerticalsSection() {
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const panelId = "verticals-tabpanel";
 
-  // Advance to next pill, wrapping to next vertical when exhausted
+  // Advance to next prompt, wrapping to next vertical when exhausted
   const advance = useCallback(() => {
     setActiveTab((prevTab) => {
       const tabIdx = TAB_ITEMS.findIndex((t) => t.key === prevTab);
-      const cards = VERTICALS[prevTab].cards;
+      const prompts = PROMPTS[prevTab];
 
-      setPillSelections((prev) => {
-        const currentPill = prev[prevTab];
-        if (currentPill < cards.length - 1) {
-          // Next pill in same vertical
-          return { ...prev, [prevTab]: currentPill + 1 };
+      setPromptSelections((prev) => {
+        const currentPrompt = prev[prevTab];
+        if (currentPrompt < prompts.length - 1) {
+          return { ...prev, [prevTab]: currentPrompt + 1 };
         }
-        // Reset this vertical to 0, move to next vertical
         const nextTabIdx = (tabIdx + 1) % TAB_ITEMS.length;
         const nextTabKey = TAB_ITEMS[nextTabIdx].key;
         return { ...prev, [prevTab]: 0, [nextTabKey]: 0 };
       });
 
-      const currentPill = pillSelections[prevTab];
-      if (currentPill >= cards.length - 1) {
+      const currentPrompt = promptSelections[prevTab];
+      if (currentPrompt >= prompts.length - 1) {
         const nextTabIdx = (tabIdx + 1) % TAB_ITEMS.length;
         return TAB_ITEMS[nextTabIdx].key;
       }
       return prevTab;
     });
-  }, [pillSelections]);
+  }, [promptSelections]);
 
   // Auto-cycle effect
   useEffect(() => {
@@ -106,21 +128,21 @@ export default function VerticalsSection() {
     (key: VerticalKey) => {
       handleUserInteraction();
       setActiveTab(key);
+      setPromptSelections((prev) => ({ ...prev, [key]: 0 }));
     },
     [handleUserInteraction]
   );
 
-  const handlePillClick = useCallback(
+  const handlePromptClick = useCallback(
     (idx: number) => {
       handleUserInteraction();
-      setPillSelections((prev) => ({ ...prev, [activeTab]: idx }));
+      setPromptSelections((prev) => ({ ...prev, [activeTab]: idx }));
     },
     [handleUserInteraction, activeTab]
   );
 
   const handleTabKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      // Determine current index from the focused element's id, not state
       const targetId = (e.currentTarget as HTMLElement).id;
       const currentIdx = TAB_ITEMS.findIndex(
         (t) => `vertical-tab-${t.key}` === targetId
@@ -147,10 +169,10 @@ export default function VerticalsSection() {
     [handleUserInteraction]
   );
 
-  const vertical = VERTICALS[activeTab];
-  const cards = vertical.cards;
-  const selectedPillIdx = pillSelections[activeTab];
-  const activeCard = cards[selectedPillIdx];
+  const prompts = PROMPTS[activeTab];
+  const cards = VERTICALS[activeTab].cards;
+  const selectedIdx = promptSelections[activeTab];
+  const activeCard = cards[selectedIdx];
 
   return (
     <Box as="section" py={{ base: 20, md: 28 }} bg="surface.page">
@@ -164,13 +186,13 @@ export default function VerticalsSection() {
           color="ink.primary"
           letterSpacing="-0.02em"
           textAlign="left"
-          mb={{ base: 4, md: 6 }}
+          mb={{ base: 2, md: 3 }}
         >
           For the teams that run a company day to day.
         </Text>
 
         {/* CTA */}
-        <Box textAlign="left" mb={{ base: 8, md: 12 }}>
+        <Box textAlign="left" mb={{ base: 6, md: 8 }}>
           <Link
             href="#book-demo"
             role="button"
@@ -186,7 +208,11 @@ export default function VerticalsSection() {
             cursor="pointer"
             textDecoration="none"
             transition="all 0.2s ease"
-            _hover={{ bg: "#5a0a38", transform: "translateY(-2px)", textDecoration: "none" }}
+            _hover={{
+              bg: "#5a0a38",
+              transform: "translateY(-2px)",
+              textDecoration: "none",
+            }}
           >
             Get a personalised live demo &rarr;
           </Link>
@@ -199,7 +225,7 @@ export default function VerticalsSection() {
           gap={{ base: 1, md: 2 }}
           justifyContent="flex-start"
           flexWrap="wrap"
-          mb={{ base: 4, md: 6 }}
+          mb={{ base: 6, md: 8 }}
           overflowX="auto"
         >
           {TAB_ITEMS.map((item, idx) => (
@@ -232,9 +258,7 @@ export default function VerticalsSection() {
               cursor="pointer"
               whiteSpace="nowrap"
               transition="all 0.15s ease"
-              _hover={{
-                borderColor: "ink.primary",
-              }}
+              _hover={{ borderColor: "ink.primary" }}
               _focus={{
                 outline: "2px solid",
                 outlineColor: "ink.primary",
@@ -246,113 +270,118 @@ export default function VerticalsSection() {
           ))}
         </Flex>
 
-        {/* Tab panel */}
+        {/* Separator */}
         <Box
+          borderTop="1px solid"
+          borderColor="border.subtle"
+          mb={{ base: 6, md: 8 }}
+        />
+
+        {/* Tab panel — two columns */}
+        <Flex
           role="tabpanel"
           id={panelId}
           aria-labelledby={`vertical-tab-${activeTab}`}
+          direction={{ base: "column", md: "row" }}
+          gap={{ base: 6, md: 10 }}
         >
-          {/* Pills — left-aligned */}
-          <Flex
-            gap={{ base: 2, md: 3 }}
-            justifyContent="flex-start"
-            flexWrap="wrap"
-            mb={{ base: 6, md: 8 }}
+          {/* Left column: Human-written prompts */}
+          <Box
+            flex="1"
+            role="listbox"
+            aria-label="Prompts"
           >
-            {cards.map((card, idx) => (
+            {prompts.map((prompt, idx) => (
               <Box
-                as="button"
-                key={card.name}
-                onClick={() => handlePillClick(idx)}
-                px={{ base: 3, md: 4 }}
-                py={{ base: 1.5, md: 2 }}
-                borderRadius="lg"
-                border="1px solid"
-                borderColor={
-                  selectedPillIdx === idx ? "ink.primary" : "border.subtle"
-                }
-                bg={
-                  selectedPillIdx === idx ? "surface.raised" : "transparent"
-                }
-                color="ink.primary"
-                fontSize={{ base: "sm", md: "md" }}
-                fontWeight={selectedPillIdx === idx ? "600" : "400"}
+                key={prompt}
+                role="option"
+                aria-selected={selectedIdx === idx}
+                onClick={() => handlePromptClick(idx)}
                 cursor="pointer"
-                transition="all 0.15s ease"
-                _hover={{ borderColor: "border.default" }}
+                py={3}
+                borderBottom={
+                  idx < prompts.length - 1 ? "1px solid" : "none"
+                }
+                borderColor="border.subtle"
+                transition="color 0.15s ease"
+                color={selectedIdx === idx ? "brand.primary" : "ink.muted"}
+                fontWeight={selectedIdx === idx ? "600" : "400"}
+                fontSize={{ base: "md", md: "lg" }}
+                _hover={{ color: "brand.primary" }}
               >
-                {card.name}
+                &ldquo;{prompt}&rdquo;
               </Box>
             ))}
-          </Flex>
-
-          {/* Active card — left-aligned, not centered */}
-          <Box
-            bg="surface.raised"
-            border="1px solid"
-            borderColor="border.subtle"
-            borderRadius="xl"
-            p={{ base: 5, md: 8 }}
-            maxW="640px"
-          >
-            <Text
-              as="h3"
-              fontFamily="heading"
-              fontSize={{ base: "xl", md: "2xl" }}
-              fontWeight="600"
-              color="ink.primary"
-              mb={1}
-            >
-              {activeCard.name}
-            </Text>
-            <Text fontSize="sm" color="ink.muted" mb={1}>
-              {activeCard.sub}
-            </Text>
-            <Text
-              fontSize={{ base: "sm", md: "md" }}
-              color="ink.primary"
-              fontWeight="500"
-              mb={4}
-            >
-              Goal: {activeCard.goal}
-            </Text>
-
-            {/* Rules */}
-            <Box as="ul" listStyleType="none" pl={0} mb={4}>
-              {activeCard.rules.map((rule, idx) => {
-                const [status, text] = rule;
-                const mark = STATUS_MARKS[status] || STATUS_MARKS.wait;
-                return (
-                  <Flex
-                    as="li"
-                    key={idx}
-                    gap={2}
-                    mb={2}
-                    alignItems="flex-start"
-                  >
-                    <Text
-                      color={mark.color}
-                      fontSize="md"
-                      fontWeight="600"
-                      flexShrink={0}
-                      lineHeight="1.5"
-                    >
-                      {mark.symbol}
-                    </Text>
-                    <Text fontSize="sm" color="ink.muted" lineHeight="1.5">
-                      {text}
-                    </Text>
-                  </Flex>
-                );
-              })}
-            </Box>
-
-            {/* Footer */}
-            <Text fontSize="xs" color="ink.muted" fontStyle="italic">
-              {activeCard.ft}
-            </Text>
           </Box>
-        </Box>
+
+          {/* Right column: Checklist card */}
+          <Box flex="1">
+            <Box
+              bg="surface.raised"
+              border="1px solid"
+              borderColor="border.subtle"
+              borderRadius="xl"
+              p={{ base: 5, md: 8 }}
+            >
+              {/* Goal label */}
+              <Text
+                fontSize="xs"
+                fontWeight="600"
+                color="ink.muted"
+                textTransform="uppercase"
+                letterSpacing="0.05em"
+                mb={2}
+              >
+                Goal
+              </Text>
+              <Text
+                as="h3"
+                fontFamily="heading"
+                fontSize={{ base: "lg", md: "xl" }}
+                fontWeight="600"
+                color="ink.primary"
+                mb={5}
+              >
+                {activeCard.goal}
+              </Text>
+
+              {/* Rules */}
+              <Box as="ul" listStyleType="none" pl={0} mb={4}>
+                {activeCard.rules.map((rule, idx) => {
+                  const [status, text] = rule;
+                  const mark = STATUS_MARKS[status] || STATUS_MARKS.wait;
+                  return (
+                    <Flex
+                      as="li"
+                      key={idx}
+                      gap={2}
+                      mb={2}
+                      alignItems="flex-start"
+                    >
+                      <Text
+                        color={mark.color}
+                        fontSize="md"
+                        fontWeight="600"
+                        flexShrink={0}
+                        lineHeight="1.5"
+                      >
+                        {mark.symbol}
+                      </Text>
+                      <Text fontSize="sm" color="ink.muted" lineHeight="1.5">
+                        {text}
+                      </Text>
+                    </Flex>
+                  );
+                })}
+              </Box>
+
+              {/* Footer */}
+              <Text fontSize="xs" color="ink.muted" fontStyle="italic">
+                {activeCard.ft}
+              </Text>
+            </Box>
+          </Box>
+        </Flex>
       </Container>
     </Box>
   );
