@@ -28,9 +28,9 @@ export default function LandingPage() {
       <HeroSection />
       <PainSection />
       <HowSection />
+      <GetSection />
       {/* <ShiftSection /> — hidden for now */}
       <VerticalsSection />
-      <GetSection />
       <BookDemoSection />
       <Footer />
     </Box>
