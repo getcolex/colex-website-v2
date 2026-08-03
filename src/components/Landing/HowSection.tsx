@@ -38,7 +38,7 @@ export default function HowSection() {
           <Heading
             as="h2"
             fontFamily="heading"
-            fontSize={{ base: "2xl", md: "4xl", lg: "5xl" }}
+            fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
             fontWeight="700"
             color="ink.primary"
             letterSpacing="-0.02em"
