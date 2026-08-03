@@ -100,17 +100,6 @@ export default function PainSection() {
           ))}
         </Grid>
 
-        {/* Pull quote */}
-        <Text
-          fontFamily="heading"
-          fontSize={{ base: "lg", md: "xl" }}
-          fontWeight="600"
-          color="ink.muted"
-          maxW="640px"
-        >
-          We&rsquo;re building Colex so your process becomes the system, not a
-          document people try to follow.
-        </Text>
       </Container>
     </Box>
   );

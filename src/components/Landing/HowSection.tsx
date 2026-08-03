@@ -45,6 +45,14 @@ export default function HowSection() {
           >
             This is how Colex works for you
           </Heading>
+          <Text
+            fontSize={{ base: "md", md: "lg" }}
+            color="ink.muted"
+            mt={{ base: 3, md: 4 }}
+            maxW="640px"
+          >
+            We&rsquo;re building Colex so your process becomes the system, not a document people try to follow.
+          </Text>
         </Box>
 
         {/* 2x2 grid, collapses to 1 col below md */}

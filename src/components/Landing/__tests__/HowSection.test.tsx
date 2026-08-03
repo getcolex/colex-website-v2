@@ -11,6 +11,13 @@ describe('HowSection', () => {
     ).toBeInTheDocument()
   })
 
+  it('renders the subtitle', () => {
+    render(<HowSection />)
+    expect(
+      screen.getByText(/your process becomes the system/)
+    ).toBeInTheDocument()
+  })
+
   it('renders 4 cards with h3 headings', () => {
     render(<HowSection />)
     expect(

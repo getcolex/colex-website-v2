@@ -2,12 +2,20 @@
 
 import { Box, Container, Text, Button, Grid, Link } from "@chakra-ui/react";
 import { motion } from "motion/react";
+import { useState, useEffect } from "react";
 import { getEarlyAccess } from "@/lib/utils";
 import HeroDemo from "./HeroDemo";
 
 const MotionBox = motion.create(Box);
 
 export default function HeroSection() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   return (
     <Box
       position="relative"
@@ -79,10 +87,11 @@ export default function HeroSection() {
                 href="#thesis"
                 px={4}
                 py={3}
-                fontWeight="500"
-                fontSize="md"
-                color="text.primary"
+                fontWeight="600"
+                fontSize={{ base: "sm", md: "md" }}
+                color="ink.primary"
                 _hover={{ textDecoration: "underline" }}
+                transition="all 0.2s"
               >
                 Why are we building this? →
               </Link>
@@ -100,9 +109,12 @@ export default function HeroSection() {
           </Box>
         </Grid>
 
-        {/* Scroll indicator */}
+        {/* Scroll indicator — fades out on scroll */}
         <Box
           mt={{ base: "-4rem", md: "-6rem", lg: "-8rem" }}
+          opacity={scrolled ? 0 : 1}
+          transition="opacity 0.3s ease"
+          pointerEvents={scrolled ? "none" : "auto"}
         >
           <MotionBox
             display="flex"
@@ -112,13 +124,13 @@ export default function HeroSection() {
             animate={{ y: [0, 8, 0] }}
             transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
           >
-            <Text fontSize="xs" color="text.muted" fontWeight="500" letterSpacing="0.05em">
+            <Text fontSize="xs" color="ink.muted" fontWeight="500" letterSpacing="0.05em">
               SCROLL
             </Text>
             <Box
               w="1px"
               h="24px"
-              bg="text.muted"
+              bg="ink.muted"
               opacity={0.5}
             />
           </MotionBox>

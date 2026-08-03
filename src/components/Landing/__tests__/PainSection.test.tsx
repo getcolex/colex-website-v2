@@ -40,10 +40,4 @@ describe('PainSection', () => {
     expect(screen.getByText(/Instead it means updating documents/)).toBeInTheDocument()
   })
 
-  it('renders the closing pull quote', () => {
-    render(<PainSection />)
-    expect(
-      screen.getByText(/your process becomes the system/)
-    ).toBeInTheDocument()
-  })
 })
