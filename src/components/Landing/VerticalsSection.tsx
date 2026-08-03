@@ -170,18 +170,27 @@ export default function VerticalsSection() {
         </Text>
 
         {/* CTA */}
-        <Text textAlign="left" mb={{ base: 8, md: 12 }}>
+        <Box textAlign="left" mb={{ base: 8, md: 12 }}>
           <Link
             href="#book-demo"
-            color="ink.primary"
+            role="button"
+            display="inline-flex"
+            alignItems="center"
+            bg="brand.primary"
+            color="white"
+            px={10}
+            py={7}
+            borderRadius="4px"
             fontWeight="500"
-            fontSize={{ base: "md", md: "lg" }}
-            textDecoration="underline"
-            _hover={{ color: "ink.muted" }}
+            fontSize="md"
+            cursor="pointer"
+            textDecoration="none"
+            transition="all 0.2s ease"
+            _hover={{ bg: "#5a0a38", transform: "translateY(-2px)", textDecoration: "none" }}
           >
             Get a personalised live demo &rarr;
           </Link>
-        </Text>
+        </Box>
 
         {/* Tabs — left-aligned */}
         <Flex
