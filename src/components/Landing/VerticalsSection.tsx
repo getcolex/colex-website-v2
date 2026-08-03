@@ -177,7 +177,7 @@ export default function VerticalsSection() {
           color="ink.primary"
           letterSpacing="-0.02em"
           textAlign="left"
-          mb={{ base: 2, md: 3 }}
+          mb={{ base: 4, md: 6 }}
         >
           For the teams that run a company day to day.
         </Text>
@@ -189,7 +189,7 @@ export default function VerticalsSection() {
           gap={{ base: 1, md: 2 }}
           justifyContent="flex-start"
           flexWrap="wrap"
-          mb={{ base: 6, md: 8 }}
+          mb={{ base: 10, md: 14 }}
           overflowX="auto"
         >
           {TAB_ITEMS.map((item, idx) => (
@@ -270,7 +270,7 @@ export default function VerticalsSection() {
                 transition="color 0.15s ease"
                 color={selectedIdx === idx ? "brand.primary" : "ink.muted"}
                 fontWeight={selectedIdx === idx ? "600" : "400"}
-                fontSize={{ base: "md", md: "lg" }}
+                fontSize={{ base: "lg", md: "xl" }}
                 _hover={{ color: "brand.primary" }}
               >
                 &ldquo;{prompt}&rdquo;

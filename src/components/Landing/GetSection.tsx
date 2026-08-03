@@ -83,7 +83,7 @@ export default function GetSection() {
         <Grid
           templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
           gap={{ base: 6, lg: 8 }}
-          mb={{ base: 20, md: 28 }}
+          mb={{ base: 10, md: 14 }}
         >
           {cards.map((card) => (
             <Box
