@@ -191,33 +191,6 @@ export default function VerticalsSection() {
           For the teams that run a company day to day.
         </Text>
 
-        {/* CTA */}
-        <Box textAlign="left" mb={{ base: 6, md: 8 }}>
-          <Link
-            href="#book-demo"
-            role="button"
-            display="inline-flex"
-            alignItems="center"
-            bg="brand.primary"
-            color="white"
-            px={10}
-            py={7}
-            borderRadius="4px"
-            fontWeight="500"
-            fontSize="md"
-            cursor="pointer"
-            textDecoration="none"
-            transition="all 0.2s ease"
-            _hover={{
-              bg: "#5a0a38",
-              transform: "translateY(-2px)",
-              textDecoration: "none",
-            }}
-          >
-            Get a personalised live demo &rarr;
-          </Link>
-        </Box>
-
         {/* Tabs — left-aligned */}
         <Flex
           role="tablist"
@@ -312,6 +285,33 @@ export default function VerticalsSection() {
                 &ldquo;{prompt}&rdquo;
               </Box>
             ))}
+
+            {/* CTA */}
+            <Box mt={{ base: 6, md: 8 }}>
+              <Link
+                href="#book-demo"
+                role="button"
+                display="inline-flex"
+                alignItems="center"
+                bg="brand.primary"
+                color="white"
+                px={{ base: 6, md: 8 }}
+                py={6}
+                borderRadius="4px"
+                fontWeight="600"
+                fontSize={{ base: "sm", md: "md" }}
+                cursor="pointer"
+                textDecoration="none"
+                transition="all 0.2s ease"
+                _hover={{
+                  opacity: 0.9,
+                  transform: "translateY(-2px)",
+                  textDecoration: "none",
+                }}
+              >
+                Get a personalised live demo &rarr;
+              </Link>
+            </Box>
           </Box>
 
           {/* Right column: Checklist card */}
