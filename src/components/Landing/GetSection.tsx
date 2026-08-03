@@ -47,7 +47,7 @@ export default function GetSection() {
 
         <Grid
           templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
-          gap={{ base: 8, lg: 12 }}
+          gap={{ base: 10, lg: 16 }}
         >
           {cards.map((card) => (
             <Box
@@ -61,7 +61,7 @@ export default function GetSection() {
                 borderColor="rgba(255,255,255,0.1)"
                 borderRadius="xl"
                 aspectRatio="1 / 1"
-                mb={{ base: 5, md: 6 }}
+                mb={{ base: 6, md: 8 }}
               />
               <Heading
                 as="h3"
