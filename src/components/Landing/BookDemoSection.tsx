@@ -14,14 +14,15 @@ export default function BookDemoSection() {
           fontWeight="700"
           color="surface.page"
           letterSpacing="-0.02em"
+          mb={{ base: 4, md: 6 }}
         >
           Bring us the process that keeps breaking.
         </Text>
         <Text
           fontSize={{ base: "md", md: "lg" }}
           color="rgba(255,255,255,0.7)"
-          mt={{ base: 3, md: 4 }}
           maxW="640px"
+          mb={{ base: 10, md: 14 }}
         >
           We&apos;re pre-launch, working with a handful of AI first teams who
           see this problem now. Show us the one that breaks most and we&apos;ll
@@ -31,7 +32,6 @@ export default function BookDemoSection() {
           direction={{ base: "column", sm: "row" }}
           align={{ base: "flex-start", sm: "center" }}
           gap={{ base: 3, md: 4 }}
-          mt={{ base: 6, md: 8 }}
         >
           <Button
             size="lg"
