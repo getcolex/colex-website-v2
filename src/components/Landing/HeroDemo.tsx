@@ -194,20 +194,20 @@ export default function HeroDemo() {
               return (
                 <Flex
                   key={i}
-                  bg={i % 2 === 0 ? "white" : "ui.surface"}
+                  bg={i % 2 === 0 ? "white" : "surface.page"}
                   border="1px solid"
-                  borderColor="ui.border"
+                  borderColor="border.default"
                   borderTop={i === 0 ? "1px solid" : "none"}
                   borderRadius={i === 0 ? "4px 4px 0 0" : i === ui.rows.length - 1 ? "0 0 4px 4px" : "0"}
                 >
-                  <Box w="24px" py={1.5} px={1} borderRight="1px solid" borderColor="ui.border" display="flex" alignItems="center" justifyContent="center">
-                    <Box w="10px" h="10px" border="1.5px solid" borderColor="ui.border" borderRadius="4px" bg="white" />
+                  <Box w="24px" py={1.5} px={1} borderRight="1px solid" borderColor="border.default" display="flex" alignItems="center" justifyContent="center">
+                    <Box w="10px" h="10px" border="1.5px solid" borderColor="border.default" borderRadius="4px" bg="white" />
                   </Box>
                   <Box flex={1} py={1.5} px={2}>
-                    <Text fontSize="xs" color="text.primary" fontWeight="500">{primary}</Text>
+                    <Text fontSize="xs" color="ink.primary" fontWeight="500">{primary}</Text>
                   </Box>
-                  <Box w="70px" py={1.5} px={2} borderLeft="1px solid" borderColor="ui.border">
-                    <Text fontSize="xs" color="text.muted">{secondary}</Text>
+                  <Box w="70px" py={1.5} px={2} borderLeft="1px solid" borderColor="border.default">
+                    <Text fontSize="xs" color="ink.muted">{secondary}</Text>
                   </Box>
                 </Flex>
               );
@@ -219,18 +219,18 @@ export default function HeroDemo() {
           <Box>
             {/* Email header */}
             <Flex gap={2} mb={2} align="center">
-              <Text fontSize="xs" color="text.muted" fontWeight="500">To:</Text>
-              <Box bg="ui.surface" border="1px solid" borderColor="ui.border" borderRadius="8px" px={2} py={0.5}>
-                <Text fontSize="xs" color="text.primary">{ui.to}</Text>
+              <Text fontSize="xs" color="ink.muted" fontWeight="500">To:</Text>
+              <Box bg="surface.page" border="1px solid" borderColor="border.default" borderRadius="8px" px={2} py={0.5}>
+                <Text fontSize="xs" color="ink.primary">{ui.to}</Text>
               </Box>
             </Flex>
             {/* Subject */}
-            <Box bg="white" border="1px solid" borderColor="ui.border" borderRadius="8px" px={2} py={1.5} mb={2}>
-              <Text fontSize="xs" fontWeight="600" color="text.primary">{ui.subject}</Text>
+            <Box bg="white" border="1px solid" borderColor="border.default" borderRadius="8px" px={2} py={1.5} mb={2}>
+              <Text fontSize="xs" fontWeight="600" color="ink.primary">{ui.subject}</Text>
             </Box>
             {/* Body preview */}
-            <Box bg="white" border="1px solid" borderColor="ui.border" borderRadius="8px" px={2} py={1.5}>
-              <Text fontSize="xs" color="text.muted" lineHeight="1.4">{ui.preview.slice(0, 65)}...</Text>
+            <Box bg="white" border="1px solid" borderColor="border.default" borderRadius="8px" px={2} py={1.5}>
+              <Text fontSize="xs" color="ink.muted" lineHeight="1.4">{ui.preview.slice(0, 65)}...</Text>
             </Box>
           </Box>
         );
@@ -244,9 +244,9 @@ export default function HeroDemo() {
               const [label, value] = field.split(": ");
               return (
                 <Box key={i} mb={2}>
-                  <Text fontSize="10px" fontWeight="500" color="text.muted" mb={0.5} textTransform="uppercase">{label}</Text>
-                  <Box bg="white" border="1px solid" borderColor="ui.border" borderRadius="8px" px={2} py={1.5}>
-                    <Text fontSize="xs" color="text.primary">{value}</Text>
+                  <Text fontSize="10px" fontWeight="500" color="ink.muted" mb={0.5} textTransform="uppercase">{label}</Text>
+                  <Box bg="white" border="1px solid" borderColor="border.default" borderRadius="8px" px={2} py={1.5}>
+                    <Text fontSize="xs" color="ink.primary">{value}</Text>
                   </Box>
                 </Box>
               );
@@ -272,7 +272,7 @@ export default function HeroDemo() {
                   alignItems="center"
                   justifyContent="center"
                   border="1px solid"
-                  borderColor="ui.border"
+                  borderColor="border.default"
                 >
                   <Text fontSize="16px" opacity={0.5}>🖼️</Text>
                 </Box>
@@ -297,7 +297,7 @@ export default function HeroDemo() {
       bg="white"
       borderRadius="12px"
       border="1px solid"
-      borderColor="ui.border"
+      borderColor="border.default"
       boxShadow="0 8px 32px rgba(0,0,0,0.08)"
       p={{ base: 5, md: 6 }}
       w="full"
@@ -309,15 +309,15 @@ export default function HeroDemo() {
       flexDirection="column"
     >
       {/* Share badge */}
-      <Box position="absolute" top={4} right={4} bg="ui.surface" px={2} py={1} borderRadius="8px" border="1px solid" borderColor="ui.borderLight">
-        <Text fontSize="10px" color="text.muted" fontWeight="500" letterSpacing="0.02em">SHARE WITH TEAM</Text>
+      <Box position="absolute" top={4} right={4} bg="surface.page" px={2} py={1} borderRadius="8px" border="1px solid" borderColor="border.subtle">
+        <Text fontSize="10px" color="ink.muted" fontWeight="500" letterSpacing="0.02em">SHARE WITH TEAM</Text>
       </Box>
 
       {/* Request */}
       <Box mb={5}>
-        <Text fontSize="xs" color="text.muted" mb={2} fontWeight="500">Create workflow</Text>
-        <Box bg="ui.surface" border="1px solid" borderColor="ui.border" borderRadius="8px" p={3} minH="56px">
-          <Text fontSize="sm" color="text.primary" lineHeight="1.5">
+        <Text fontSize="xs" color="ink.muted" mb={2} fontWeight="500">Create workflow</Text>
+        <Box bg="surface.page" border="1px solid" borderColor="border.default" borderRadius="8px" p={3} minH="56px">
+          <Text fontSize="sm" color="ink.primary" lineHeight="1.5">
             {workflow.request.slice(0, typedChars)}
             {activeTaskIndex === -1 && (
               <Box as="span" display="inline-block" w="2px" h="16px" bg="brand.primary" ml="1px" verticalAlign="middle"
@@ -330,7 +330,7 @@ export default function HeroDemo() {
 
       {/* Task progress - compact horizontal dots */}
       <Flex align="center" gap={2} mb={5}>
-        <Text fontSize="xs" color="text.muted" fontWeight="500">Tasks:</Text>
+        <Text fontSize="xs" color="ink.muted" fontWeight="500">Tasks:</Text>
         {workflow.tasks.map((_, i) => {
           const isActive = i === activeTaskIndex;
           const isDone = i < activeTaskIndex || (isActive && taskPhase === "approved");
@@ -339,20 +339,20 @@ export default function HeroDemo() {
               <Box
                 w="24px" h="24px"
                 borderRadius="full"
-                bg={isDone ? "status.success" : isActive ? "brand.primary" : "ui.surface"}
+                bg={isDone ? "status.success" : isActive ? "brand.primary" : "surface.page"}
                 border="2px solid"
-                borderColor={isDone ? "status.success" : isActive ? "brand.primary" : "ui.border"}
+                borderColor={isDone ? "status.success" : isActive ? "brand.primary" : "border.default"}
                 display="flex" alignItems="center" justifyContent="center"
                 transition="all 0.2s"
               >
                 {isDone ? (
                   <Text fontSize="xs" color="white">✓</Text>
                 ) : (
-                  <Text fontSize="xs" color={isActive ? "white" : "text.muted"} fontWeight="500">{i + 1}</Text>
+                  <Text fontSize="xs" color={isActive ? "white" : "ink.muted"} fontWeight="500">{i + 1}</Text>
                 )}
               </Box>
               {i < workflow.tasks.length - 1 && (
-                <Box w="16px" h="2px" bg={isDone ? "status.success" : "ui.border"} transition="all 0.2s" />
+                <Box w="16px" h="2px" bg={isDone ? "status.success" : "border.default"} transition="all 0.2s" />
               )}
             </Flex>
           );
@@ -369,7 +369,7 @@ export default function HeroDemo() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.25 }}
-              bg="ui.surface"
+              bg="surface.page"
               border="1px solid"
               borderColor={taskPhase === "approved" ? "status.success" : "brand.primary"}
               borderRadius="12px"
@@ -381,7 +381,7 @@ export default function HeroDemo() {
               maxH="100%"
               overflow="hidden"
             >
-              <Text fontSize="10px" color="text.muted" mb={2} fontWeight="600" letterSpacing="0.03em">
+              <Text fontSize="10px" color="ink.muted" mb={2} fontWeight="600" letterSpacing="0.03em">
                 {activeTask.label.toUpperCase()}
               </Text>
               {renderUI(activeTask.ui)}
@@ -391,7 +391,7 @@ export default function HeroDemo() {
       </Box>
 
       {/* Approval bar */}
-      <Box pt={4} borderTop="1px solid" borderColor="ui.borderLight" h="56px" flexShrink={0}>
+      <Box pt={4} borderTop="1px solid" borderColor="border.subtle" h="56px" flexShrink={0}>
         <AnimatePresence>
           {activeTask && (taskPhase === "review" || taskPhase === "approved") && (
             <MotionBox
@@ -410,7 +410,7 @@ export default function HeroDemo() {
                   >
                     <Text fontSize="xs" color="white">{taskPhase === "approved" ? "✓" : "👤"}</Text>
                   </Box>
-                  <Text fontSize="sm" fontWeight="500" color="text.primary">
+                  <Text fontSize="sm" fontWeight="500" color="ink.primary">
                     {taskPhase === "approved" ? "Approved" : "Review needed"}
                   </Text>
                 </Flex>

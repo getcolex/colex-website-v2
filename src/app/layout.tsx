@@ -1,11 +1,9 @@
 import "@fontsource-variable/inter";
 import "@fontsource-variable/fraunces";
 import "./globals.css";
-import "lenis/dist/lenis.css";
 import { ReactNode } from "react";
 import Providers from "./providers";
 import LayoutClient from "./LayoutClient";
-import LenisProvider from "@/lib/contexts/LenisProvider";
 
 export const metadata = {
   title: "Colex | Simple workflows",
@@ -49,10 +47,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <Providers>
-          <LenisProvider>
             <LayoutClient />
             {children}
-          </LenisProvider>
         </Providers>
       </body>
     </html>

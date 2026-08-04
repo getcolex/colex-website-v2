@@ -43,7 +43,7 @@ export default function HeroSection() {
               fontFamily="heading"
               fontSize={{ base: "10vw", md: "7vw", lg: "clamp(40px, 4.5vw, 65px)" }}
               lineHeight={1.1}
-              color="text.primary"
+              color="ink.primary"
               fontWeight="700"
               letterSpacing="-0.03em"
             >
@@ -54,7 +54,7 @@ export default function HeroSection() {
             {/* Lede */}
             <Text
               fontSize={{ base: "md", md: "lg", lg: "xl" }}
-              color="text.primary"
+              color="ink.primary"
               fontWeight="400"
               mt={{ base: 4, md: 6 }}
               maxW="560px"

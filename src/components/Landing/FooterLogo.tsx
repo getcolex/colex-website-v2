@@ -14,13 +14,13 @@ export default function FooterLogo() {
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
-    <Box bg="ui.surface" pt={20}>
+    <Box bg="surface.page" pt={20}>
       <Container maxW="container.xl" px={{ base: 5, md: 8, lg: 12, xl: 16 }}>
         {isMobile ? (
           <VStack gap={20} align="center">
             <Text
               fontSize="sm"
-              color="text.secondary"
+              color="ink.muted"
               textAlign={"left"}
               w={"full"}
             >
@@ -41,7 +41,7 @@ export default function FooterLogo() {
               src="/images/ColexLogo.png"
               alt="Colex Logo"
             />
-            <Text fontSize="sm" color="text.secondary" mb={5}>
+            <Text fontSize="sm" color="ink.muted" mb={5}>
               © 2025 | ALL RIGHTS RESERVED by Colex.
             </Text>
           </HStack>
