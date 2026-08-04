@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Container, Text, Flex, Link } from "@chakra-ui/react";
+import { Box, Container, Flex, Link, Heading } from "@chakra-ui/react";
 import { useState, useRef, useCallback, useEffect } from "react";
 import VerticalDemo from "./VerticalDemo";
 
@@ -183,7 +183,7 @@ export default function VerticalsSection() {
     >
       <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }} position="relative">
         {/* Heading */}
-        <Text
+        <Heading
           as="h2"
           fontFamily="heading"
           fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
@@ -194,7 +194,7 @@ export default function VerticalsSection() {
           mb={{ base: 4, md: 6 }}
         >
           For the teams that run a company day to day.
-        </Text>
+        </Heading>
 
         {/* Tabs — left-aligned */}
         <Flex

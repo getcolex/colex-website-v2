@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Container, Text, Flex } from "@chakra-ui/react";
+import { Box, Container, Text, Flex, Heading } from "@chakra-ui/react";
 
 const NOISE_SVG = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")`;
 
@@ -52,7 +52,7 @@ export default function PainSection() {
       }}
     >
       <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }} position="relative">
-        <Text
+        <Heading
           as="h2"
           fontFamily="heading"
           fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
@@ -62,7 +62,7 @@ export default function PainSection() {
           mb={{ base: 4, md: 6 }}
         >
           You wrote the process. It still isn&rsquo;t being followed.
-        </Text>
+        </Heading>
 
         <Text
           fontSize={{ base: "md", md: "lg" }}

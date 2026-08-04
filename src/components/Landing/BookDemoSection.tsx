@@ -1,13 +1,13 @@
 "use client";
 
-import { Box, Container, Text, Flex, Button, Link } from "@chakra-ui/react";
+import { Box, Container, Text, Flex, Button, Link, Heading } from "@chakra-ui/react";
 import { getEarlyAccess } from "@/lib/utils";
 
 export default function BookDemoSection() {
   return (
     <Box as="section" py={{ base: 20, md: 28 }} bg="brand.primary">
       <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
-        <Text
+        <Heading
           as="h2"
           fontFamily="heading"
           fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
@@ -17,7 +17,7 @@ export default function BookDemoSection() {
           mb={{ base: 4, md: 6 }}
         >
           Bring us the process that keeps breaking.
-        </Text>
+        </Heading>
         <Text
           fontSize={{ base: "md", md: "lg" }}
           color="rgba(255,255,255,0.7)"
