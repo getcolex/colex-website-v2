@@ -68,7 +68,7 @@ export default function HowSection() {
             <Text
               fontSize={{ base: "md", md: "lg" }}
               color="ink.muted"
-              mt={{ base: 3, md: 4 }}
+              mt={{ base: 4, md: 6 }}
               maxW="640px"
             >
               We&rsquo;re building Colex so your process becomes the system, not a document people try to follow.
