@@ -201,7 +201,7 @@ export default function HeroDemo() {
                   borderRadius={i === 0 ? "4px 4px 0 0" : i === ui.rows.length - 1 ? "0 0 4px 4px" : "0"}
                 >
                   <Box w="24px" py={1.5} px={1} borderRight="1px solid" borderColor="ui.border" display="flex" alignItems="center" justifyContent="center">
-                    <Box w="10px" h="10px" border="1.5px solid" borderColor="ui.border" borderRadius="2px" bg="white" />
+                    <Box w="10px" h="10px" border="1.5px solid" borderColor="ui.border" borderRadius="4px" bg="white" />
                   </Box>
                   <Box flex={1} py={1.5} px={2}>
                     <Text fontSize="xs" color="text.primary" fontWeight="500">{primary}</Text>
@@ -220,16 +220,16 @@ export default function HeroDemo() {
             {/* Email header */}
             <Flex gap={2} mb={2} align="center">
               <Text fontSize="xs" color="text.muted" fontWeight="500">To:</Text>
-              <Box bg="ui.surface" border="1px solid" borderColor="ui.border" borderRadius="4px" px={2} py={0.5}>
+              <Box bg="ui.surface" border="1px solid" borderColor="ui.border" borderRadius="8px" px={2} py={0.5}>
                 <Text fontSize="xs" color="text.primary">{ui.to}</Text>
               </Box>
             </Flex>
             {/* Subject */}
-            <Box bg="white" border="1px solid" borderColor="ui.border" borderRadius="4px" px={2} py={1.5} mb={2}>
+            <Box bg="white" border="1px solid" borderColor="ui.border" borderRadius="8px" px={2} py={1.5} mb={2}>
               <Text fontSize="xs" fontWeight="600" color="text.primary">{ui.subject}</Text>
             </Box>
             {/* Body preview */}
-            <Box bg="white" border="1px solid" borderColor="ui.border" borderRadius="4px" px={2} py={1.5}>
+            <Box bg="white" border="1px solid" borderColor="ui.border" borderRadius="8px" px={2} py={1.5}>
               <Text fontSize="xs" color="text.muted" lineHeight="1.4">{ui.preview.slice(0, 65)}...</Text>
             </Box>
           </Box>
@@ -245,7 +245,7 @@ export default function HeroDemo() {
               return (
                 <Box key={i} mb={2}>
                   <Text fontSize="10px" fontWeight="500" color="text.muted" mb={0.5} textTransform="uppercase">{label}</Text>
-                  <Box bg="white" border="1px solid" borderColor="ui.border" borderRadius="4px" px={2} py={1.5}>
+                  <Box bg="white" border="1px solid" borderColor="ui.border" borderRadius="8px" px={2} py={1.5}>
                     <Text fontSize="xs" color="text.primary">{value}</Text>
                   </Box>
                 </Box>
@@ -267,7 +267,7 @@ export default function HeroDemo() {
                   w="48px"
                   h="48px"
                   bg="linear-gradient(135deg, #e4e4e7 0%, #d4d4d8 100%)"
-                  borderRadius="4px"
+                  borderRadius="8px"
                   display="flex"
                   alignItems="center"
                   justifyContent="center"
@@ -282,7 +282,7 @@ export default function HeroDemo() {
         );
       case "confirmation":
         return (
-          <Flex align="center" gap={3} bg="status.success" borderRadius="6px" p={3} opacity={0.9}>
+          <Flex align="center" gap={3} bg="status.success" borderRadius="12px" p={3} opacity={0.9}>
             <Box w="24px" h="24px" borderRadius="full" bg="white" display="flex" alignItems="center" justifyContent="center">
               <Text fontSize="sm" color="status.success">✓</Text>
             </Box>
@@ -295,7 +295,7 @@ export default function HeroDemo() {
   return (
     <Box
       bg="white"
-      borderRadius="16px"
+      borderRadius="12px"
       border="1px solid"
       borderColor="ui.border"
       boxShadow="0 8px 32px rgba(0,0,0,0.08)"
@@ -309,7 +309,7 @@ export default function HeroDemo() {
       flexDirection="column"
     >
       {/* Share badge */}
-      <Box position="absolute" top={4} right={4} bg="ui.surface" px={2} py={1} borderRadius="4px" border="1px solid" borderColor="ui.borderLight">
+      <Box position="absolute" top={4} right={4} bg="ui.surface" px={2} py={1} borderRadius="8px" border="1px solid" borderColor="ui.borderLight">
         <Text fontSize="10px" color="text.muted" fontWeight="500" letterSpacing="0.02em">SHARE WITH TEAM</Text>
       </Box>
 
@@ -331,7 +331,7 @@ export default function HeroDemo() {
       {/* Task progress - compact horizontal dots */}
       <Flex align="center" gap={2} mb={5}>
         <Text fontSize="xs" color="text.muted" fontWeight="500">Tasks:</Text>
-        {workflow.tasks.map((task, i) => {
+        {workflow.tasks.map((_, i) => {
           const isActive = i === activeTaskIndex;
           const isDone = i < activeTaskIndex || (isActive && taskPhase === "approved");
           return (
@@ -372,7 +372,7 @@ export default function HeroDemo() {
               bg="ui.surface"
               border="1px solid"
               borderColor={taskPhase === "approved" ? "status.success" : "brand.primary"}
-              borderRadius="10px"
+              borderRadius="12px"
               p={4}
               position="absolute"
               top={0}
@@ -416,7 +416,7 @@ export default function HeroDemo() {
                 </Flex>
                 {taskPhase === "approved" && (
                   <MotionBox initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 500, damping: 20 }}>
-                    <Box bg="status.success" color="white" fontSize="xs" fontWeight="600" px={2.5} py={1} borderRadius="4px">
+                    <Box bg="status.success" color="white" fontSize="xs" fontWeight="600" px={2.5} py={1} borderRadius="8px">
                       DONE
                     </Box>
                   </MotionBox>

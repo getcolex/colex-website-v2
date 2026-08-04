@@ -37,7 +37,7 @@ export default function BookDemoSection() {
             size="lg"
             px={{ base: 6, md: 8 }}
             py={6}
-            borderRadius="4px"
+            borderRadius="8px"
             bg="surface.page"
             color="brand.primary"
             fontWeight="600"

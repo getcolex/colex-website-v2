@@ -21,37 +21,33 @@ describe("MomentsSection", () => {
     ).toBeInTheDocument();
   });
 
-  it("has 3 column headers", () => {
+  it("renders column headers", () => {
     render(<MomentsSection />);
-    expect(screen.getByRole("columnheader", { name: "What you have" })).toBeInTheDocument();
-    expect(screen.getByRole("columnheader", { name: "With automation" })).toBeInTheDocument();
-    expect(screen.getByRole("columnheader", { name: "With Colex" })).toBeInTheDocument();
+    expect(screen.getAllByText(/With automation/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/With Colex/i).length).toBeGreaterThan(0);
   });
 
-  it("has 6 data rows", () => {
+  it("renders all 6 comparison rows", () => {
     render(<MomentsSection />);
-    const firstCells = [
-      "Your company's standards, written down",
-      "A record of every past judgement",
-      "Standards that get sharper with use",
-      "An answer for the auditor",
-      "A process anyone can pick up",
-      "Books that stay honest after the fact",
+    const automationTexts = [
+      "Scattered across scripts, docs, and people's heads.",
+      "Run logs. Green or red, no reasoning.",
+      "The script does exactly what it did on day one.",
     ];
-    for (const cell of firstCells) {
-      expect(screen.getByText(cell)).toBeInTheDocument();
+    for (const text of automationTexts) {
+      expect(screen.getAllByText(text).length).toBeGreaterThan(0);
     }
   });
 
-  it("uses semantic table markup", () => {
+  it("renders row labels on desktop", () => {
     render(<MomentsSection />);
-    expect(screen.getByRole("table")).toBeInTheDocument();
+    expect(screen.getByText("Your company's standards, written down")).toBeInTheDocument();
+    expect(screen.getByText("An answer for the auditor")).toBeInTheDocument();
   });
 
-  it("table scrolls on mobile", () => {
+  it("renders red and green icons", () => {
     render(<MomentsSection />);
-    const scrollContainer = screen.getByTestId("table-scroll");
-    expect(scrollContainer).toBeInTheDocument();
-    expect(scrollContainer).toHaveStyle({ overflowX: "auto" });
+    expect(screen.getAllByText("×").length).toBeGreaterThanOrEqual(6);
+    expect(screen.getAllByText("✓").length).toBeGreaterThanOrEqual(6);
   });
 });

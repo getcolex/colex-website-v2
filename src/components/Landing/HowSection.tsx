@@ -1,6 +1,7 @@
 "use client";
 
 import { Box, Container, Text, Flex, Heading, Link } from "@chakra-ui/react";
+import { CreateDemo, EditDemo, RunDemo, UpdateDemo } from "./HowDemos";
 
 const steps = [
   {
@@ -81,7 +82,7 @@ export default function HowSection() {
             color="white"
             px={{ base: 4, md: 6 }}
             py={3}
-            borderRadius="4px"
+            borderRadius="8px"
             fontWeight="600"
             fontSize={{ base: "sm", md: "md" }}
             textDecoration="none"
@@ -106,21 +107,26 @@ export default function HowSection() {
               <Flex
                 key={step.id}
                 bg="surface.raised"
-                borderRadius="xl"
+                borderRadius="12px"
                 border="1px solid"
                 borderColor="border.default"
                 overflow="hidden"
                 direction={{ base: "column", md: isEven ? "row-reverse" : "row" }}
               >
-                {/* Square image placeholder */}
+                {/* Animated demo */}
                 <Box
                   data-testid="how-card-image"
                   flexShrink={0}
                   w={{ base: "100%", md: "45%" }}
-                  minH={{ base: "200px", md: "auto" }}
                   aspectRatio={{ base: "16 / 9", md: "1 / 1" }}
-                  bg="border.subtle"
-                />
+                  position="relative"
+                  overflow="hidden"
+                >
+                  {step.id === 1 && <CreateDemo />}
+                  {step.id === 2 && <EditDemo />}
+                  {step.id === 3 && <RunDemo />}
+                  {step.id === 4 && <UpdateDemo />}
+                </Box>
 
                 {/* Text content */}
                 <Flex

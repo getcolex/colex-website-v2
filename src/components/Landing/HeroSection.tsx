@@ -69,7 +69,7 @@ export default function HeroSection() {
                 size="lg"
                 px={10}
                 py={7}
-                borderRadius="4px"
+                borderRadius="8px"
                 bg="brand.primary"
                 color="white"
                 fontWeight="500"

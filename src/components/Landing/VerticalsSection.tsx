@@ -2,6 +2,7 @@
 
 import { Box, Container, Text, Flex, Link } from "@chakra-ui/react";
 import { useState, useRef, useCallback, useEffect } from "react";
+import VerticalDemo from "./VerticalDemo";
 
 type VerticalKey = "freight" | "procurement" | "vendor" | "hr" | "finance";
 
@@ -299,7 +300,7 @@ export default function VerticalsSection() {
                 color="ink.primary"
                 px={{ base: 4, md: 6 }}
                 py={3}
-                borderRadius="4px"
+                borderRadius="8px"
                 fontWeight="600"
                 fontSize={{ base: "sm", md: "md" }}
                 cursor="pointer"
@@ -316,17 +317,9 @@ export default function VerticalsSection() {
             </Box>
           </Box>
 
-          {/* Right column: Image placeholder */}
+          {/* Right column: Animated demo */}
           <Box flex="1">
-            <Box
-              data-testid="image-placeholder"
-              aspectRatio="1 / 1"
-              bg="rgba(255,255,255,0.05)"
-              border="1px solid"
-              borderColor="rgba(255,255,255,0.1)"
-              borderRadius="xl"
-              w="100%"
-            />
+            <VerticalDemo activeTab={activeTab} selectedPromptIdx={selectedIdx} />
           </Box>
         </Flex>
       </Container>

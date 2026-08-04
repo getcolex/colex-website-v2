@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Container, Text, Grid } from "@chakra-ui/react";
+import { Box, Container, Text, Flex } from "@chakra-ui/react";
 
 const NOISE_SVG = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")`;
 
@@ -74,17 +74,18 @@ export default function PainSection() {
           parts of it. But you are still thinking about it.
         </Text>
 
-        <Grid
-          templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
-          gap={{ base: 4, lg: 8 }}
+        <Flex
+          direction={{ base: "column", md: "row" }}
+          gap={{ base: 4, lg: 6 }}
         >
           {cards.map((card) => (
             <Box
               key={card.title}
+              flex="1"
               bg="rgba(255,255,255,0.05)"
               border="1px solid"
               borderColor="rgba(255,255,255,0.1)"
-              borderRadius="xl"
+              borderRadius="12px"
               p={{ base: 5, md: 6 }}
             >
               <Text
@@ -109,7 +110,7 @@ export default function PainSection() {
               ))}
             </Box>
           ))}
-        </Grid>
+        </Flex>
       </Container>
     </Box>
   );

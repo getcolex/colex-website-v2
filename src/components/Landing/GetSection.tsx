@@ -1,6 +1,14 @@
 "use client";
 
 import { Box, Container, Text, Flex, Grid, Heading } from "@chakra-ui/react";
+import {
+  SimpleInterfaceDemo,
+  RewindDemo,
+  AuditDemo,
+  HumanJudgementDemo,
+} from "./GetDemos";
+
+const demos = [SimpleInterfaceDemo, RewindDemo, AuditDemo, HumanJudgementDemo];
 
 const cards = [
   {
@@ -47,35 +55,33 @@ export default function GetSection() {
 
         <Grid
           templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
-          gap={{ base: 10, lg: 16 }}
+          gap={{ base: 8, lg: 10 }}
         >
-          {cards.map((card) => (
-            <Flex
-              key={card.title}
-              direction="column"
-            >
-              <Heading
-                as="h3"
-                fontSize={{ base: "lg", md: "xl" }}
-                fontWeight="600"
-                color="surface.page"
-                mb={2}
+          {cards.map((card, i) => {
+            const Demo = demos[i];
+            return (
+              <Flex
+                key={card.title}
+                direction="column"
               >
-                {card.title}
-              </Heading>
-              <Text color="border.default" fontSize={{ base: "sm", md: "md" }} flex="1">
-                {card.description}
-              </Text>
-              <Box mt={{ base: 6, md: 8 }}
-                data-testid="card-image-placeholder"
-                bg="rgba(255,255,255,0.06)"
-                border="1px solid"
-                borderColor="rgba(255,255,255,0.1)"
-                borderRadius="xl"
-                aspectRatio="1 / 1"
-              />
-            </Flex>
-          ))}
+                <Heading
+                  as="h3"
+                  fontSize={{ base: "lg", md: "xl" }}
+                  fontWeight="600"
+                  color="surface.page"
+                  mb={2}
+                >
+                  {card.title}
+                </Heading>
+                <Text color="border.default" fontSize={{ base: "sm", md: "md" }} flex="1">
+                  {card.description}
+                </Text>
+                <Box mt={{ base: 6, md: 8 }}>
+                  <Demo />
+                </Box>
+              </Flex>
+            );
+          })}
         </Grid>
       </Container>
     </Box>

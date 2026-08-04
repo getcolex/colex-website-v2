@@ -44,10 +44,17 @@ describe("GetSection", () => {
       }
     });
 
-    it("each card has an image placeholder", () => {
+    it("renders all four cards", () => {
       render(<GetSection />);
-      const placeholders = screen.getAllByTestId("card-image-placeholder");
-      expect(placeholders).toHaveLength(4);
+      const titles = [
+        "Simple interfaces",
+        "Work that rewinds",
+        "All your rules written down",
+        "Human judgement",
+      ];
+      titles.forEach((t) => {
+        expect(screen.getByText(new RegExp(t))).toBeInTheDocument();
+      });
     });
   });
 

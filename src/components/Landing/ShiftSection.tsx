@@ -168,7 +168,7 @@ export default function ShiftSection() {
               bg="surface.raised"
               border="1px solid"
               borderColor="border.subtle"
-              borderRadius="xl"
+              borderRadius="12px"
               p={{ base: 5, md: 6 }}
             >
               <Text

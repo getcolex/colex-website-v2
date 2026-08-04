@@ -44,10 +44,9 @@ describe('VerticalsSection', () => {
     expect(screen.getByText(/Flag any accessorial charge we didn.t authorize/)).toBeInTheDocument()
   })
 
-  it('renders a square image placeholder in the right column', () => {
+  it('renders the vertical demo in the right column', () => {
     render(<VerticalsSection />)
-    const placeholder = screen.getByTestId('image-placeholder')
-    expect(placeholder).toBeInTheDocument()
+    expect(screen.getByRole('tabpanel')).toBeInTheDocument()
   })
 
   it('selecting a different prompt highlights it', () => {
