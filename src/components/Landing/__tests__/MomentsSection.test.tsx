@@ -30,12 +30,12 @@ describe("MomentsSection", () => {
   it("renders all 6 comparison rows", () => {
     render(<MomentsSection />);
     const automationTexts = [
-      "Scattered across scripts, docs, and people's heads.",
-      "Run logs. Green or red, no reasoning.",
-      "The script does exactly what it did on day one.",
+      /Company standards are scattered/,
+      /Run logs show green or red/,
+      /The script follows the same rules/,
     ];
-    for (const text of automationTexts) {
-      expect(screen.getAllByText(text).length).toBeGreaterThan(0);
+    for (const pattern of automationTexts) {
+      expect(screen.getAllByText(pattern).length).toBeGreaterThan(0);
     }
   });
 

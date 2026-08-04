@@ -5,33 +5,33 @@ import { Box, Container, Text, Flex, Heading } from "@chakra-ui/react";
 const rows = [
   {
     label: "Your company's standards, written down",
-    automation: "Scattered across scripts, docs, and people's heads.",
-    colex: "One place. In your words. The thing the work is measured against.",
+    automation: "Company standards are scattered across scripts, docs, and people's heads.",
+    colex: "Company standards live in one place, in your words, and every decision is measured against them.",
   },
   {
     label: "A record of every past judgement",
-    automation: "Run logs. Green or red, no reasoning.",
-    colex: "What was decided, on what evidence, by whom.",
+    automation: "Run logs show green or red, but never the reasoning behind a decision.",
+    colex: "Every decision records what was decided, on what evidence, and by whom.",
   },
   {
     label: "Standards that get sharper with use",
-    automation: "The script does exactly what it did on day one.",
-    colex: "Every exception teaches you what the rule was missing.",
+    automation: "The script follows the same rules it had on day one, even when they fall short.",
+    colex: "Every exception reveals what the standard was missing and makes it sharper.",
   },
   {
     label: "An answer for the auditor",
-    automation: "“That’s how it’s always run.”",
-    colex: "The rule, the evidence, the person who signed it off.",
+    automation: 'When an auditor asks why, the answer is: "That\'s how it\'s always run."',
+    colex: "Every audit question has an answer: the rule, the evidence, and the person who signed it off.",
   },
   {
     label: "A process anyone can pick up",
-    automation: "A half-written doc and whoever remembers.",
-    colex: "They read the rules. The rules are the process.",
+    automation: "The process lives in a half-written document and whoever still remembers it.",
+    colex: "Anyone can pick up the process by reading the rules that define it.",
   },
   {
     label: "Books that stay honest after the fact",
-    automation: "The run went green on Monday. Nothing left to reopen.",
-    colex: "Thursday’s customs rejection reopens Monday’s “done”.",
+    automation: "Monday's run went green, with no way to revisit it when new evidence arrives.",
+    colex: "Thursday's customs rejection reopens Monday's completed work and keeps the books honest.",
   },
 ];
 
@@ -99,7 +99,7 @@ export default function MomentsSection() {
         <Text
           color="ink.muted"
           fontSize={{ base: "md", md: "lg" }}
-          mb={{ base: 10, md: 16 }}
+          mb={{ base: 10, md: 14 }}
           maxW="640px"
         >
           Other automation tools leave you with rigid workflows which decay. Colex grows with you continuously.
@@ -112,7 +112,7 @@ export default function MomentsSection() {
             <Box flex="1" px={6} pb={4}>
               {/* empty — label column has no header */}
             </Box>
-            <Box flex="1" px={6} pb={4}>
+            <Box flex="1" px={6} pt={5} pb={4}>
               <Text
                 fontSize="xs"
                 fontWeight="700"
@@ -128,8 +128,8 @@ export default function MomentsSection() {
             <Box
               flex="1"
               px={6}
-              pb={4}
               pt={5}
+              pb={4}
               bg="rgba(16,185,129,0.08)"
               borderRadius="12px 12px 0 0"
             >
