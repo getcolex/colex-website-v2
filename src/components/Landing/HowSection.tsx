@@ -1,7 +1,10 @@
 "use client";
 
 import { Box, Container, Text, Flex, Heading, Link } from "@chakra-ui/react";
-import { CreateDemo, EditDemo, RunDemo, UpdateDemo } from "./HowDemos";
+import { CreateDemo, EditDemo, RunDemo } from "./HowDemos";
+import dynamic from "next/dynamic";
+
+const NeatBackground = dynamic(() => import("./NeatBackground"), { ssr: false });
 
 const steps = [
   {
@@ -21,12 +24,6 @@ const steps = [
     title: "Colex builds an auditable, human-first workflow",
     description:
       "It does the work, then checks every result against your rules the same way every time. And if you want to change anything, it's editable inline.",
-  },
-  {
-    id: 4,
-    title: "If things change, just update the rules and the workflow evolves",
-    description:
-      "You edit a rule. The workflow gets updated automatically and the team has it in seconds.",
   },
 ];
 
@@ -99,40 +96,70 @@ export default function HowSection() {
           </Link>
         </Flex>
 
-        {/* Full-width cards, alternating image/text sides */}
-        <Flex direction="column" gap={{ base: 6, md: 8 }}>
+        {/* Alternating rows — text on bg, demo in bordered card */}
+        <Flex direction="column" gap={{ base: 12, md: 20 }}>
           {steps.map((step) => {
             const isEven = step.id % 2 === 0;
             return (
               <Flex
                 key={step.id}
-                bg="surface.raised"
-                borderRadius="12px"
-                border="1px solid"
-                borderColor="border.default"
-                overflow="hidden"
                 direction={{ base: "column", md: isEven ? "row-reverse" : "row" }}
+                align="center"
+                gap={{ base: 6, md: 10, lg: 14 }}
               >
-                {/* Animated demo */}
+                {/* Demo card with thick border + decorative bg */}
                 <Box
                   data-testid="how-card-image"
                   flexShrink={0}
-                  w={{ base: "100%", md: "45%" }}
-                  aspectRatio={{ base: "16 / 9", md: "1 / 1" }}
+                  w={{ base: "100%", md: "50%" }}
                   position="relative"
-                  overflow="hidden"
+
+                  p={{ base: 6, md: 10, lg: 12 }}
+                  borderRadius="20px"
                 >
-                  {step.id === 1 && <CreateDemo />}
-                  {step.id === 2 && <EditDemo />}
-                  {step.id === 3 && <RunDemo />}
-                  {step.id === 4 && <UpdateDemo />}
+                  {/* Neat animated gradient behind card */}
+                  <NeatBackground />
+                  {/* Feather edges into page bg */}
+                  <Box
+                    position="absolute"
+                    inset={0}
+                    borderRadius="inherit"
+                    pointerEvents="none"
+                    zIndex={0}
+                    _before={{
+                      content: '""',
+                      position: "absolute",
+                      inset: 0,
+                      background: "linear-gradient(to right, #F8F7F4 0%, transparent 25%, transparent 75%, #F8F7F4 100%)",
+                    }}
+                    _after={{
+                      content: '""',
+                      position: "absolute",
+                      inset: 0,
+                      background: "linear-gradient(to bottom, #F8F7F4 0%, transparent 25%, transparent 75%, #F8F7F4 100%)",
+                    }}
+                  />
+                  <Box
+                    position="relative"
+                    border="2px solid"
+                    borderColor="border.default"
+                    borderRadius="12px"
+                    overflow="hidden"
+                    bg="surface.raised"
+                    boxShadow="0 8px 32px rgba(0,0,0,0.08)"
+                    aspectRatio={{ base: "16 / 9", md: "4 / 3" }}
+                    zIndex={1}
+                  >
+                    {step.id === 1 && <CreateDemo />}
+                    {step.id === 2 && <EditDemo />}
+                    {step.id === 3 && <RunDemo />}
+                  </Box>
                 </Box>
 
-                {/* Text content */}
+                {/* Text content — sits on section bg */}
                 <Flex
                   direction="column"
                   justify="center"
-                  p={{ base: 6, md: 8, lg: 10 }}
                   flex="1"
                 >
                   <Text
@@ -143,7 +170,7 @@ export default function HowSection() {
                     textTransform="uppercase"
                     mb={3}
                   >
-                    {["Create", "Edit", "Run", "Update"][step.id - 1]}
+                    {["Create", "Edit", "Run"][step.id - 1]}
                   </Text>
 
                   <Heading

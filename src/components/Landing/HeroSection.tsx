@@ -5,6 +5,9 @@ import { motion } from "motion/react";
 import { useState, useEffect } from "react";
 import { getEarlyAccess } from "@/lib/utils";
 import HeroDemo from "./HeroDemo";
+import dynamic from "next/dynamic";
+
+const NeatBackground = dynamic(() => import("./NeatBackground"), { ssr: false });
 
 const MotionBox = motion.create(Box);
 
@@ -21,8 +24,50 @@ export default function HeroSection() {
       position="relative"
       minH="100vh"
       bg="transparent"
+      overflow="hidden"
     >
-      <Container maxW="container.xl" h="full" position="relative" px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
+      {/* Neat gradient covering right half */}
+      <Box
+        position="absolute"
+        top={0}
+        right={0}
+        bottom={0}
+        w={{ base: "0%", lg: "55%" }}
+        display={{ base: "none", lg: "block" }}
+      >
+        <NeatBackground zoom={4} />
+        {/* Left edge gradient to merge into page bg */}
+        <Box
+          position="absolute"
+          inset={0}
+          pointerEvents="none"
+          zIndex={1}
+          background="linear-gradient(to right, #F8F7F4 0%, transparent 40%)"
+        />
+        {/* Top feather — fixed height from navbar */}
+        <Box
+          position="absolute"
+          top={0}
+          left={0}
+          right={0}
+          h="200px"
+          pointerEvents="none"
+          zIndex={1}
+          background="linear-gradient(to bottom, #F8F7F4 0%, transparent 100%)"
+        />
+        {/* Bottom feather */}
+        <Box
+          position="absolute"
+          bottom={0}
+          left={0}
+          right={0}
+          h="150px"
+          pointerEvents="none"
+          zIndex={1}
+          background="linear-gradient(to top, #F8F7F4 0%, transparent 100%)"
+        />
+      </Box>
+      <Container maxW="container.xl" h="full" position="relative" px={{ base: 4, sm: 6, md: 8, lg: 12 }} zIndex={2}>
         {/* 12-column grid layout */}
         <Grid
           data-testid="hero-grid"
@@ -60,7 +105,7 @@ export default function HeroSection() {
               maxW="560px"
               mx={{ base: "auto", lg: "0" }}
             >
-              Colex turns your business processes into rules and does the work. You get a written record of how your company decides things. It gets sharper every time you use it.
+              Colex turns your business processes into rules and does the work. You get a written record of how your company decides things.
             </Text>
 
             {/* Two CTAs */}

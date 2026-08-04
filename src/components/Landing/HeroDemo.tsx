@@ -1,296 +1,145 @@
 "use client";
 
 import { Box, Text, Flex } from "@chakra-ui/react";
-import { motion, AnimatePresence } from "motion/react";
-import { useEffect, useState } from "react";
+import { AnimatePresence } from "motion/react";
+import { useEffect, useState, useCallback } from "react";
+import { MotionBox, StatusBadge, TypingCursor } from "./demo-primitives";
 
-const MotionBox = motion.create(Box);
-
-// Task UI types
-type TaskUI =
-  | { type: "table"; title: string; rows: string[] }
-  | { type: "email"; to: string; subject: string; preview: string }
-  | { type: "form"; title: string; fields: string[] }
-  | { type: "gallery"; title: string; count: number }
-  | { type: "confirmation"; message: string };
-
-interface Task {
-  label: string;
-  ui: TaskUI;
-}
-
-interface Workflow {
-  request: string;
-  tasks: Task[];
-}
-
-// Workflows with multi-step tasks
-const workflows: Workflow[] = [
-  {
-    request: "Process new freight inquiry from Maersk",
-    tasks: [
-      {
-        label: "Parse inquiry details",
-        ui: {
-          type: "form",
-          title: "Shipment Details",
-          fields: ["Route: Shanghai → Rotterdam", "Cargo: 2x 40ft FCL", "Date: 15 Mar 2025"],
-        },
-      },
-      {
-        label: "Fetch carrier rates",
-        ui: {
-          type: "table",
-          title: "Rate Comparison",
-          rows: ["MSC — $2,840", "Hapag-Lloyd — $2,920", "ONE — $3,100"],
-        },
-      },
-      {
-        label: "Send RFQ to client",
-        ui: {
-          type: "email",
-          to: "procurement@maersk.com",
-          subject: "Quote: Shanghai-Rotterdam FCL",
-          preview: "Please find attached our rates for your shipment. MSC offers the best rate at...",
-        },
-      },
-      {
-        label: "Log to booking system",
-        ui: { type: "confirmation", message: "RFQ #4821 created, awaiting confirmation" },
-      },
-    ],
-  },
-  {
-    request: "Start brand research for Northwind Coffee",
-    tasks: [
-      {
-        label: "Collect brand precedents",
-        ui: {
-          type: "table",
-          title: "Reference Brands",
-          rows: ["Blue Bottle — Minimal", "Stumptown — Heritage", "Verve — Modern"],
-        },
-      },
-      {
-        label: "Scrape visual assets",
-        ui: { type: "gallery", title: "Collected Assets", count: 4 },
-      },
-      {
-        label: "Synthesize directions",
-        ui: {
-          type: "form",
-          title: "Brand Direction",
-          fields: ["Style: Scandinavian minimal", "Palette: Warm neutrals", "Type: Sans-serif geometric"],
-        },
-      },
-      {
-        label: "Generate concepts",
-        ui: { type: "confirmation", message: "3 logo concepts ready for review" },
-      },
-    ],
-  },
-  {
-    request: "Screen applicants for Senior Engineer role",
-    tasks: [
-      {
-        label: "Parse new resumes",
-        ui: {
-          type: "table",
-          title: "Applicants",
-          rows: ["Sarah Chen — 8 yrs", "James Park — 6 yrs", "Maria Silva — 10 yrs"],
-        },
-      },
-      {
-        label: "Score against criteria",
-        ui: {
-          type: "form",
-          title: "Top Candidate",
-          fields: ["Name: Maria Silva", "Match: 94%", "Strengths: System design, Team lead exp"],
-        },
-      },
-      {
-        label: "Schedule interviews",
-        ui: {
-          type: "email",
-          to: "maria.silva@email.com",
-          subject: "Interview: Senior Engineer at Acme",
-          preview: "Hi Maria, we'd love to schedule a call to discuss the Senior Engineer position...",
-        },
-      },
-      {
-        label: "Update ATS",
-        ui: { type: "confirmation", message: "3 candidates moved to Interview stage" },
-      },
-    ],
-  },
+// ── Constants ──
+const REQUEST_TEXT = "Every new shipping inquiry needs three carrier quotes, the cheapest flagged, and an RFQ sent to the client";
+const TYPING_SPEED = 35; // ms per character
+const CHECKS = [
+  "At least 3 carrier quotes collected",
+  "Lowest rate identified and flagged",
+  "RFQ sent to client with summary",
+];
+const RATES = [
+  { carrier: "MSC", price: "$2,840", best: true },
+  { carrier: "Hapag-Lloyd", price: "$2,920", best: false },
+  { carrier: "ONE", price: "$3,100", best: false },
 ];
 
-const TASK_DURATION = 2600; // Time per task (faster with 4 tasks)
-const TYPING_DURATION = 1200;
-
-type TaskPhase = "running" | "review" | "approved";
+// ── Phase types ──
+type Phase =
+  | "typing"
+  | "goal-appear"
+  | "expand-task"
+  | "rate-1"
+  | "rate-2"
+  | "rate-3"
+  | "task-review"
+  | "approval-show"
+  | "approved"
+  | "collapse"
+  | "check-1"
+  | "check-2"
+  | "check-3"
+  | "complete"
+  | "fade-out";
 
 export default function HeroDemo() {
-  const [workflowIndex, setWorkflowIndex] = useState(0);
-  const [activeTaskIndex, setActiveTaskIndex] = useState(-1);
-  const [taskPhase, setTaskPhase] = useState<TaskPhase>("running");
+  const [phase, setPhase] = useState<Phase>("typing");
   const [typedChars, setTypedChars] = useState(0);
 
-  const workflow = workflows[workflowIndex];
-  const activeTask = activeTaskIndex >= 0 ? workflow.tasks[activeTaskIndex] : null;
+  const schedule = useCallback(
+    (timeouts: NodeJS.Timeout[], fn: () => void, delay: number) => {
+      timeouts.push(setTimeout(fn, delay));
+    },
+    []
+  );
 
+  // Typing effect
+  useEffect(() => {
+    if (phase !== "typing") return;
+    if (typedChars >= REQUEST_TEXT.length) return;
+
+    const t = setTimeout(
+      () => setTypedChars((c) => c + 1),
+      TYPING_SPEED
+    );
+    return () => clearTimeout(t);
+  }, [phase, typedChars]);
+
+  // Phase sequencing
   useEffect(() => {
     const timeouts: NodeJS.Timeout[] = [];
 
-    // Reset
-    setActiveTaskIndex(-1);
-    setTaskPhase("running");
-    setTypedChars(0);
-
-    // Typing
-    const len = workflow.request.length;
-    for (let i = 0; i <= len; i++) {
-      timeouts.push(setTimeout(() => setTypedChars(i), (i * TYPING_DURATION) / len));
+    if (phase === "typing" && typedChars >= REQUEST_TEXT.length) {
+      // Typing done -> show goal card
+      schedule(timeouts, () => setPhase("goal-appear"), 600);
+    } else if (phase === "goal-appear") {
+      // Goal visible -> expand first check with task
+      schedule(timeouts, () => setPhase("expand-task"), 1200);
+    } else if (phase === "expand-task") {
+      // Task running -> show rates one by one
+      schedule(timeouts, () => setPhase("rate-1"), 600);
+    } else if (phase === "rate-1") {
+      schedule(timeouts, () => setPhase("rate-2"), 500);
+    } else if (phase === "rate-2") {
+      schedule(timeouts, () => setPhase("rate-3"), 500);
+    } else if (phase === "rate-3") {
+      // All rates shown -> switch to review
+      schedule(timeouts, () => setPhase("task-review"), 800);
+    } else if (phase === "task-review") {
+      // Show approval bar
+      schedule(timeouts, () => setPhase("approval-show"), 800);
+    } else if (phase === "approval-show") {
+      // Auto-approve
+      schedule(timeouts, () => setPhase("approved"), 1000);
+    } else if (phase === "approved") {
+      // Collapse expanded area
+      schedule(timeouts, () => setPhase("collapse"), 1000);
+    } else if (phase === "collapse") {
+      // Tick checks in succession
+      schedule(timeouts, () => setPhase("check-1"), 400);
+    } else if (phase === "check-1") {
+      schedule(timeouts, () => setPhase("check-2"), 200);
+    } else if (phase === "check-2") {
+      schedule(timeouts, () => setPhase("check-3"), 200);
+    } else if (phase === "check-3") {
+      // Mark complete
+      schedule(timeouts, () => setPhase("complete"), 400);
+    } else if (phase === "complete") {
+      // Pause then fade out
+      schedule(timeouts, () => setPhase("fade-out"), 1500);
+    } else if (phase === "fade-out") {
+      // Reset and loop
+      schedule(timeouts, () => {
+        setTypedChars(0);
+        setPhase("typing");
+      }, 800);
     }
-
-    // Start tasks
-    const numTasks = workflow.tasks.length;
-    for (let t = 0; t < numTasks; t++) {
-      const start = TYPING_DURATION + 200 + t * TASK_DURATION;
-
-      // Activate task
-      timeouts.push(setTimeout(() => {
-        setActiveTaskIndex(t);
-        setTaskPhase("running");
-      }, start));
-
-      // Review
-      timeouts.push(setTimeout(() => setTaskPhase("review"), start + 1200));
-
-      // Approve
-      timeouts.push(setTimeout(() => setTaskPhase("approved"), start + 2400));
-    }
-
-    // Next workflow
-    const total = TYPING_DURATION + 200 + numTasks * TASK_DURATION + 800;
-    timeouts.push(setTimeout(() => {
-      setWorkflowIndex((prev) => (prev + 1) % workflows.length);
-    }, total));
 
     return () => timeouts.forEach(clearTimeout);
-  }, [workflowIndex, workflow.request.length, workflow.tasks.length]);
+  }, [phase, typedChars, schedule]);
 
-  const renderUI = (ui: TaskUI) => {
-    switch (ui.type) {
-      case "table":
-        return (
-          <Box>
-            <Text fontSize="sm" fontWeight="600" color="brand.primary" mb={2} fontFamily="heading">
-              {ui.title}
-            </Text>
-            {/* Table rows */}
-            {ui.rows.map((row, i) => {
-              const [primary, secondary] = row.split(" — ");
-              return (
-                <Flex
-                  key={i}
-                  bg={i % 2 === 0 ? "white" : "surface.page"}
-                  border="1px solid"
-                  borderColor="border.default"
-                  borderTop={i === 0 ? "1px solid" : "none"}
-                  borderRadius={i === 0 ? "4px 4px 0 0" : i === ui.rows.length - 1 ? "0 0 4px 4px" : "0"}
-                >
-                  <Box w="24px" py={1.5} px={1} borderRight="1px solid" borderColor="border.default" display="flex" alignItems="center" justifyContent="center">
-                    <Box w="10px" h="10px" border="1.5px solid" borderColor="border.default" borderRadius="4px" bg="white" />
-                  </Box>
-                  <Box flex={1} py={1.5} px={2}>
-                    <Text fontSize="xs" color="ink.primary" fontWeight="500">{primary}</Text>
-                  </Box>
-                  <Box w="70px" py={1.5} px={2} borderLeft="1px solid" borderColor="border.default">
-                    <Text fontSize="xs" color="ink.muted">{secondary}</Text>
-                  </Box>
-                </Flex>
-              );
-            })}
-          </Box>
-        );
-      case "email":
-        return (
-          <Box>
-            {/* Email header */}
-            <Flex gap={2} mb={2} align="center">
-              <Text fontSize="xs" color="ink.muted" fontWeight="500">To:</Text>
-              <Box bg="surface.page" border="1px solid" borderColor="border.default" borderRadius="8px" px={2} py={0.5}>
-                <Text fontSize="xs" color="ink.primary">{ui.to}</Text>
-              </Box>
-            </Flex>
-            {/* Subject */}
-            <Box bg="white" border="1px solid" borderColor="border.default" borderRadius="8px" px={2} py={1.5} mb={2}>
-              <Text fontSize="xs" fontWeight="600" color="ink.primary">{ui.subject}</Text>
-            </Box>
-            {/* Body preview */}
-            <Box bg="white" border="1px solid" borderColor="border.default" borderRadius="8px" px={2} py={1.5}>
-              <Text fontSize="xs" color="ink.muted" lineHeight="1.4">{ui.preview.slice(0, 65)}...</Text>
-            </Box>
-          </Box>
-        );
-      case "form":
-        return (
-          <Box>
-            <Text fontSize="sm" fontWeight="600" color="brand.primary" mb={2} fontFamily="heading">
-              {ui.title}
-            </Text>
-            {ui.fields.map((field, i) => {
-              const [label, value] = field.split(": ");
-              return (
-                <Box key={i} mb={2}>
-                  <Text fontSize="10px" fontWeight="500" color="ink.muted" mb={0.5} textTransform="uppercase">{label}</Text>
-                  <Box bg="white" border="1px solid" borderColor="border.default" borderRadius="8px" px={2} py={1.5}>
-                    <Text fontSize="xs" color="ink.primary">{value}</Text>
-                  </Box>
-                </Box>
-              );
-            })}
-          </Box>
-        );
-      case "gallery":
-        return (
-          <Box>
-            <Text fontSize="sm" fontWeight="600" color="brand.primary" mb={2} fontFamily="heading">
-              {ui.title}
-            </Text>
-            {/* Image grid */}
-            <Flex gap={2} flexWrap="wrap">
-              {Array.from({ length: ui.count }).map((_, i) => (
-                <Box
-                  key={i}
-                  w="48px"
-                  h="48px"
-                  bg="linear-gradient(135deg, #e4e4e7 0%, #d4d4d8 100%)"
-                  borderRadius="8px"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  border="1px solid"
-                  borderColor="border.default"
-                >
-                  <Text fontSize="16px" opacity={0.5}>🖼️</Text>
-                </Box>
-              ))}
-            </Flex>
-          </Box>
-        );
-      case "confirmation":
-        return (
-          <Flex align="center" gap={3} bg="status.success" borderRadius="12px" p={3} opacity={0.9}>
-            <Box w="24px" h="24px" borderRadius="full" bg="white" display="flex" alignItems="center" justifyContent="center">
-              <Text fontSize="sm" color="status.success">✓</Text>
-            </Box>
-            <Text fontSize="sm" color="white" fontWeight="500">{ui.message}</Text>
-          </Flex>
-        );
-    }
-  };
+  // Derived state
+  const showGoal = phase !== "typing" && phase !== "fade-out";
+  const isExpanded =
+    phase === "expand-task" ||
+    phase === "rate-1" ||
+    phase === "rate-2" ||
+    phase === "rate-3" ||
+    phase === "task-review" ||
+    phase === "approval-show" ||
+    phase === "approved";
+  const visibleRates =
+    phase === "rate-1" ? 1 :
+    phase === "rate-2" ? 2 :
+    (phase === "rate-3" || phase === "task-review" || phase === "approval-show" || phase === "approved") ? 3 : 0;
+  const taskStatus: "running" | "review" | "done" =
+    (phase === "approval-show" || phase === "task-review") ? "review" :
+    phase === "approved" ? "done" : "running";
+  const showApproval = phase === "approval-show" || phase === "approved";
+  const isApproved = phase === "approved";
+  const checksChecked = [
+    ["check-1", "check-2", "check-3", "complete", "fade-out"].includes(phase),
+    ["check-2", "check-3", "complete", "fade-out"].includes(phase),
+    ["check-3", "complete", "fade-out"].includes(phase),
+  ];
+  const isComplete = phase === "complete" || phase === "fade-out";
+  const goalTitle = isComplete ? "Processed" : "Process inquiry";
+
 
   return (
     <Box
@@ -307,125 +156,342 @@ export default function HeroDemo() {
       position="relative"
       display="flex"
       flexDirection="column"
+      overflow="hidden"
     >
-      {/* Share badge */}
-      <Box position="absolute" top={4} right={4} bg="surface.page" px={2} py={1} borderRadius="8px" border="1px solid" borderColor="border.subtle">
-        <Text fontSize="10px" color="ink.muted" fontWeight="500" letterSpacing="0.02em">SHARE WITH TEAM</Text>
-      </Box>
-
-      {/* Request */}
-      <Box mb={5}>
-        <Text fontSize="xs" color="ink.muted" mb={2} fontWeight="500">Create workflow</Text>
-        <Box bg="surface.page" border="1px solid" borderColor="border.default" borderRadius="8px" p={3} minH="56px">
-          <Text fontSize="sm" color="ink.primary" lineHeight="1.5">
-            {workflow.request.slice(0, typedChars)}
-            {activeTaskIndex === -1 && (
-              <Box as="span" display="inline-block" w="2px" h="16px" bg="brand.primary" ml="1px" verticalAlign="middle"
-                css={{ animation: "blink 0.7s infinite", "@keyframes blink": { "0%, 45%": { opacity: 1 }, "50%, 100%": { opacity: 0 } } }}
-              />
-            )}
+      {/* Outer fade for reset */}
+      <MotionBox
+        animate={{ opacity: phase === "fade-out" ? 0 : 1 }}
+        transition={{ duration: 0.6 }}
+        display="flex"
+        flexDirection="column"
+        flex={1}
+        overflow="hidden"
+      >
+        {/* ── Request field ── */}
+        <Box mb={4}>
+          <Text fontSize="xs" color="ink.muted" mb={2} fontWeight="500">
+            New request
           </Text>
+          <Box
+            bg="surface.page"
+            border="1px solid"
+            borderColor="border.default"
+            borderRadius="8px"
+            p={3}
+            minH="48px"
+          >
+            <Text fontSize="sm" color="ink.primary" lineHeight="1.5">
+              {REQUEST_TEXT.slice(0, typedChars)}
+              {phase === "typing" && <TypingCursor />}
+            </Text>
+          </Box>
         </Box>
-      </Box>
 
-      {/* Task progress - compact horizontal dots */}
-      <Flex align="center" gap={2} mb={5}>
-        <Text fontSize="xs" color="ink.muted" fontWeight="500">Tasks:</Text>
-        {workflow.tasks.map((_, i) => {
-          const isActive = i === activeTaskIndex;
-          const isDone = i < activeTaskIndex || (isActive && taskPhase === "approved");
-          return (
-            <Flex key={i} align="center" gap={1.5}>
-              <Box
-                w="24px" h="24px"
-                borderRadius="full"
-                bg={isDone ? "status.success" : isActive ? "brand.primary" : "surface.page"}
-                border="2px solid"
-                borderColor={isDone ? "status.success" : isActive ? "brand.primary" : "border.default"}
-                display="flex" alignItems="center" justifyContent="center"
-                transition="all 0.2s"
-              >
-                {isDone ? (
-                  <Text fontSize="xs" color="white">✓</Text>
-                ) : (
-                  <Text fontSize="xs" color={isActive ? "white" : "ink.muted"} fontWeight="500">{i + 1}</Text>
-                )}
-              </Box>
-              {i < workflow.tasks.length - 1 && (
-                <Box w="16px" h="2px" bg={isDone ? "status.success" : "border.default"} transition="all 0.2s" />
-              )}
-            </Flex>
-          );
-        })}
-      </Flex>
-
-      {/* Active task UI - fixed height container */}
-      <Box flex={1} position="relative" mb={4} overflow="hidden">
+        {/* ── Goal card ── */}
         <AnimatePresence mode="wait">
-          {activeTask && (
+          {showGoal && (
             <MotionBox
-              key={`${workflowIndex}-${activeTaskIndex}`}
-              initial={{ opacity: 0, y: 8 }}
+              key="goal-card"
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25 }}
-              bg="surface.page"
-              border="1px solid"
-              borderColor={taskPhase === "approved" ? "status.success" : "brand.primary"}
-              borderRadius="12px"
-              p={4}
-              position="absolute"
-              top={0}
-              left={0}
-              right={0}
-              maxH="100%"
+              transition={{ duration: 0.35 }}
+              flex={1}
               overflow="hidden"
+              display="flex"
+              flexDirection="column"
             >
-              <Text fontSize="10px" color="ink.muted" mb={2} fontWeight="600" letterSpacing="0.03em">
-                {activeTask.label.toUpperCase()}
-              </Text>
-              {renderUI(activeTask.ui)}
-            </MotionBox>
-          )}
-        </AnimatePresence>
-      </Box>
-
-      {/* Approval bar */}
-      <Box pt={4} borderTop="1px solid" borderColor="border.subtle" h="56px" flexShrink={0}>
-        <AnimatePresence>
-          {activeTask && (taskPhase === "review" || taskPhase === "approved") && (
-            <MotionBox
-              initial={{ opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <Flex align="center" justify="space-between">
-                <Flex align="center" gap={2}>
-                  <Box
-                    w="24px" h="24px"
-                    borderRadius="full"
-                    bg={taskPhase === "approved" ? "status.success" : "brand.primary"}
-                    display="flex" alignItems="center" justifyContent="center"
+              <Box
+                bg="white"
+                border="1px solid"
+                borderColor="border.default"
+                borderRadius="12px"
+                overflow="hidden"
+                flex={1}
+                display="flex"
+                flexDirection="column"
+              >
+                {/* Goal header */}
+                <Box px={4} pt={4} pb={2}>
+                  <Text
+                    fontSize="md"
+                    fontWeight="700"
+                    color="ink.primary"
+                    fontFamily="heading"
+                    transition="all 0.3s ease"
                   >
-                    <Text fontSize="xs" color="white">{taskPhase === "approved" ? "✓" : "👤"}</Text>
-                  </Box>
-                  <Text fontSize="sm" fontWeight="500" color="ink.primary">
-                    {taskPhase === "approved" ? "Approved" : "Review needed"}
+                    {goalTitle}
                   </Text>
-                </Flex>
-                {taskPhase === "approved" && (
-                  <MotionBox initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 500, damping: 20 }}>
-                    <Box bg="status.success" color="white" fontSize="xs" fontWeight="600" px={2.5} py={1} borderRadius="8px">
-                      DONE
+                </Box>
+
+                {/* Checks list */}
+                <Box px={4} pb={2} flex={1} overflow="hidden" display="flex" flexDirection="column">
+                  {CHECKS.map((label, i) => (
+                    <Box key={i}>
+                      {/* Check row */}
+                      <Flex align="center" gap={2.5} py={2}>
+                        {/* Checkbox */}
+                        <Box
+                          w="18px"
+                          h="18px"
+                          borderRadius="4px"
+                          bg={checksChecked[i] ? "#10B981" : "transparent"}
+                          border={checksChecked[i] ? "none" : "1.5px solid"}
+                          borderColor="border.default"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          transition="all 0.2s"
+                          flexShrink={0}
+                        >
+                          {checksChecked[i] && (
+                            <MotionBox
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{
+                                type: "spring",
+                                stiffness: 500,
+                                damping: 25,
+                              }}
+                            >
+                              <Text
+                                fontSize="10px"
+                                color="white"
+                                lineHeight="1"
+                              >
+                                ✓
+                              </Text>
+                            </MotionBox>
+                          )}
+                        </Box>
+                        <Text
+                          fontSize="sm"
+                          color={checksChecked[i] ? "ink.primary" : "ink.muted"}
+                          fontWeight={checksChecked[i] ? "500" : "400"}
+                          transition="all 0.2s"
+                        >
+                          {label}
+                        </Text>
+                      </Flex>
+
+                      {/* ── Expanded task area (under check 1 only) ── */}
+                      {i === 0 && (
+                        <AnimatePresence>
+                          {isExpanded && (
+                            <MotionBox
+                              key="task-expand"
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.35, ease: "easeInOut" }}
+                              overflow="hidden"
+                              pl={7}
+                              pb={2}
+                            >
+                              {/* Task card */}
+                              <Box
+                                bg="surface.page"
+                                border="1px solid"
+                                borderColor="border.default"
+                                borderRadius="8px"
+                                p={3}
+                              >
+                                {/* Task header */}
+                                <Flex
+                                  align="center"
+                                  justify="space-between"
+                                  mb={3}
+                                >
+                                  <Text
+                                    fontSize="xs"
+                                    fontWeight="600"
+                                    color="ink.primary"
+                                  >
+                                    Fetch carrier rates
+                                  </Text>
+                                  <StatusBadge status={taskStatus} />
+                                </Flex>
+
+                                {/* Rate table */}
+                                {visibleRates > 0 && (
+                                  <Box>
+                                    {/* Table header */}
+                                    <Flex
+                                      px={2}
+                                      py={1}
+                                      mb={1}
+                                    >
+                                      <Text
+                                        flex={1}
+                                        fontSize="10px"
+                                        fontWeight="600"
+                                        color="ink.muted"
+                                        textTransform="uppercase"
+                                        letterSpacing="0.04em"
+                                      >
+                                        Carrier
+                                      </Text>
+                                      <Text
+                                        w="80px"
+                                        fontSize="10px"
+                                        fontWeight="600"
+                                        color="ink.muted"
+                                        textTransform="uppercase"
+                                        letterSpacing="0.04em"
+                                        textAlign="right"
+                                      >
+                                        Rate
+                                      </Text>
+                                    </Flex>
+
+                                    {/* Rate rows */}
+                                    {RATES.slice(0, visibleRates).map(
+                                      (rate, ri) => (
+                                        <MotionBox
+                                          key={rate.carrier}
+                                          initial={{ opacity: 0, x: -6 }}
+                                          animate={{ opacity: 1, x: 0 }}
+                                          transition={{
+                                            duration: 0.25,
+                                          }}
+                                        >
+                                          <Flex
+                                            px={2}
+                                            py={1.5}
+                                            bg={
+                                              rate.best && visibleRates === 3
+                                                ? "rgba(73, 8, 45, 0.04)"
+                                                : ri % 2 === 0
+                                                ? "white"
+                                                : "surface.page"
+                                            }
+                                            borderRadius="4px"
+                                            border={
+                                              rate.best && visibleRates === 3
+                                                ? "1px solid"
+                                                : "1px solid transparent"
+                                            }
+                                            borderColor={
+                                              rate.best && visibleRates === 3
+                                                ? "brand.primary"
+                                                : "transparent"
+                                            }
+                                            transition="all 0.3s"
+                                          >
+                                            <Text
+                                              flex={1}
+                                              fontSize="xs"
+                                              color="ink.primary"
+                                              fontWeight={
+                                                rate.best && visibleRates === 3
+                                                  ? "600"
+                                                  : "400"
+                                              }
+                                            >
+                                              {rate.carrier}
+                                            </Text>
+                                            <Text
+                                              w="80px"
+                                              fontSize="xs"
+                                              color={
+                                                rate.best && visibleRates === 3
+                                                  ? "brand.primary"
+                                                  : "ink.primary"
+                                              }
+                                              fontWeight={
+                                                rate.best && visibleRates === 3
+                                                  ? "700"
+                                                  : "500"
+                                              }
+                                              textAlign="right"
+                                            >
+                                              {rate.price}
+                                            </Text>
+                                          </Flex>
+                                        </MotionBox>
+                                      )
+                                    )}
+                                  </Box>
+                                )}
+
+                                {/* Approval bar */}
+                                <AnimatePresence>
+                                  {showApproval && (
+                                    <MotionBox
+                                      key="approval"
+                                      initial={{ opacity: 0, y: 6 }}
+                                      animate={{ opacity: 1, y: 0 }}
+                                      exit={{ opacity: 0 }}
+                                      transition={{ duration: 0.25 }}
+                                      mt={3}
+                                      pt={3}
+                                      borderTop="1px solid"
+                                      borderColor="border.default"
+                                    >
+                                      <Flex
+                                        align="center"
+                                        justify="space-between"
+                                      >
+                                        <Flex align="center" gap={2}>
+                                          <Box
+                                            w="22px"
+                                            h="22px"
+                                            borderRadius="full"
+                                            bg={
+                                              isApproved
+                                                ? "#10B981"
+                                                : "#F59E0B"
+                                            }
+                                            display="flex"
+                                            alignItems="center"
+                                            justifyContent="center"
+                                            transition="background 0.3s"
+                                          >
+                                            <Text
+                                              fontSize="11px"
+                                              color="white"
+                                            >
+                                              {isApproved ? "✓" : "👤"}
+                                            </Text>
+                                          </Box>
+                                          <Text
+                                            fontSize="xs"
+                                            fontWeight="500"
+                                            color="ink.primary"
+                                          >
+                                            {isApproved
+                                              ? "Approved"
+                                              : "Review needed"}
+                                          </Text>
+                                        </Flex>
+                                        {isApproved && (
+                                          <StatusBadge status="done" />
+                                        )}
+                                      </Flex>
+                                    </MotionBox>
+                                  )}
+                                </AnimatePresence>
+                              </Box>
+                            </MotionBox>
+                          )}
+                        </AnimatePresence>
+                      )}
+
+                      {/* Separator between checks (not after last) */}
+                      {i < CHECKS.length - 1 && (
+                        <Box
+                          h="1px"
+                          bg="border.subtle"
+                        />
+                      )}
                     </Box>
-                  </MotionBox>
-                )}
-              </Flex>
+                  ))}
+                </Box>
+              </Box>
             </MotionBox>
           )}
         </AnimatePresence>
-      </Box>
+      </MotionBox>
     </Box>
   );
 }
