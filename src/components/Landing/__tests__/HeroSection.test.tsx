@@ -19,7 +19,7 @@ describe('HeroSection', () => {
 
   it('renders the primary CTA', () => {
     render(<HeroSection />)
-    expect(screen.getByRole('button', { name: /talk to us/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /get a personalised demo/i })).toBeInTheDocument()
   })
 
   it('renders the secondary CTA link', () => {

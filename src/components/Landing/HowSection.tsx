@@ -15,7 +15,7 @@ const steps = [
   },
   {
     id: 2,
-    title: "Your team gets an interface built from the rules",
+    title: "Colex builds the interface from the rules for your team",
     description:
       "Colex generates forms, tables, and views from the checks you defined. Your team can edit anything in it, and it updates when the rules change.",
   },

@@ -121,7 +121,7 @@ export default function HeroSection() {
               maxW="560px"
               mx={{ base: "auto", lg: "0" }}
             >
-              Colex turns your business processes into rules and does the work. You get a written record of how your company decides things.
+              Describe your business processes and Colex turns them into rules and gets the job done. You get a written record of how your company decides things.
             </Text>
 
             {/* Two CTAs */}
@@ -142,7 +142,7 @@ export default function HeroSection() {
                 transition="all 0.2s"
                 onClick={() => getEarlyAccess("hero_section")}
               >
-                Talk to us
+                Get a personalised demo
               </Button>
               <Link
                 href="#thesis"
