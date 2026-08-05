@@ -8,7 +8,7 @@ import { createNoise3D } from "simplex-noise";
 
 const noise3D = createNoise3D();
 
-export type GridPreset = "hero" | "how" | "get" | "verticals" | "footer" | "blog";
+export type GridPreset = "hero" | "how" | "get" | "verticals" | "footer" | "blog" | "pain";
 
 interface GridParams {
   segments: number;
@@ -82,6 +82,10 @@ const DEFAULTS: Record<GridPreset, GridParams> = {
     segments: 96, planeSize: 13.5, fov: 23, noiseAmpY: 0.32,
     opacity: 0.04, zoom: 0.9,
   },
+  pain: {
+    ...BASE,
+    segments: 240, planeSize: 12, fov: 26, opacity: 0.08, zoom: 0.9,
+  },
 };
 
 /* --- Mutable per-preset store with change notification --- */
@@ -106,6 +110,7 @@ const store: Record<GridPreset, GridParams> = {
   verticals: loadPreset("verticals"),
   footer: loadPreset("footer"),
   blog: loadPreset("blog"),
+  pain: loadPreset("pain"),
 };
 
 let version = 0;
@@ -273,7 +278,7 @@ const SLIDERS: { label: string; param: keyof GridParams; min: number; max: numbe
   { label: "FOV", param: "fov", min: 20, max: 80, step: 1 },
 ];
 
-const PRESETS: GridPreset[] = ["hero", "how", "get", "verticals", "footer", "blog"];
+const PRESETS: GridPreset[] = ["hero", "how", "get", "verticals", "footer", "blog", "pain"];
 
 export function GridTuner() {
   const [open, setOpen] = useState(false);
@@ -336,27 +341,29 @@ export function GridTuner() {
         </Box>
       </Flex>
 
-      {/* Preset tabs */}
-      <Flex gap={1} mb={3}>
+      {/* Preset dropdown */}
+      <select
+        value={preset}
+        onChange={(e) => setPreset(e.target.value as GridPreset)}
+        style={{
+          width: "100%",
+          marginBottom: "12px",
+          padding: "6px 8px",
+          borderRadius: "6px",
+          border: "1px solid rgba(255,255,255,0.25)",
+          background: "#1A1A1A",
+          color: "white",
+          fontSize: "12px",
+          fontWeight: 700,
+          cursor: "pointer",
+        }}
+      >
         {PRESETS.map((name) => (
-          <Box
-            key={name}
-            as="button"
-            flex="1"
-            fontSize="11px"
-            fontWeight="700"
-            textTransform="capitalize"
-            py={1.5}
-            borderRadius="6px"
-            cursor="pointer"
-            bg={preset === name ? "white" : "rgba(255,255,255,0.12)"}
-            color={preset === name ? "black" : "white"}
-            onClick={() => setPreset(name)}
-          >
+          <option key={name} value={name}>
             {name}
-          </Box>
+          </option>
         ))}
-      </Flex>
+      </select>
 
       <Flex direction="column" gap={1.5}>
         {SLIDERS.map((s) => (

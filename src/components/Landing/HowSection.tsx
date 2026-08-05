@@ -9,21 +9,21 @@ const WireframeGrid = dynamic(() => import("./WireframeGrid"), { ssr: false });
 const steps = [
   {
     id: 1,
-    title: "Ask Colex to draft the rules for your process",
+    title: "Ask Colex to draft the rules in plain English",
     description:
-      "Describe the job in plain language. Colex turns it into rules over the evidence your process already produces.",
+      "Colex turns it into rules over the evidence your process already produces.",
   },
   {
     id: 2,
     title: "Your team gets an interface built from the rules",
     description:
-      "Colex generates forms, tables, and views from the checks you defined. Your team works in a clean interface, not a spreadsheet.",
+      "Colex generates forms, tables, and views from the checks you defined. Your team can edit anything in it, and it updates when the rules change.",
   },
   {
     id: 3,
-    title: "People do the work, review the results, and approve",
+    title: "Colex does the work, your team verifies",
     description:
-      "Data fills in as Colex works. Your team edits what needs editing, and approves when it looks right.",
+      "Data fills in as Colex works. Your team reviews it, edits what needs editing, and approves when it looks right.",
   },
 ];
 
@@ -59,17 +59,11 @@ export default function HowSection() {
               fontWeight="700"
               color="ink.primary"
               letterSpacing="-0.02em"
+              lineHeight={1.15}
+              maxW="900px"
             >
-              This is how Colex works for you
+              You decide how it&rsquo;s done. Colex makes sure it is done.
             </Heading>
-            <Text
-              fontSize={{ base: "md", md: "lg" }}
-              color="ink.muted"
-              mt={{ base: 4, md: 6 }}
-              maxW="640px"
-            >
-              We&rsquo;re building Colex so your process becomes the system, not a document people try to follow.
-            </Text>
           </Box>
           <Link
             href="/demo"
