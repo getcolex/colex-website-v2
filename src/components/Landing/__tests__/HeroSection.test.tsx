@@ -10,19 +10,21 @@ describe('HeroSection', () => {
     expect(screen.getByText('extra hands')).toBeInTheDocument()
   })
 
-  it('renders the subtitle', () => {
-    render(<HeroSection />)
-    expect(screen.getByText('Colex is purpose-built to automate your team reliably')).toBeInTheDocument()
+  it('renders a non-empty lede under the headline', () => {
+    const { container } = render(<HeroSection />)
+    const textCol = container.querySelector('[data-testid="hero-text-col"]')!
+    const paragraphs = textCol.querySelectorAll('p')
+    expect(paragraphs.length).toBeGreaterThanOrEqual(1)
   })
 
-  it('renders the CTA button', () => {
+  it('renders the primary CTA', () => {
     render(<HeroSection />)
-    expect(screen.getByRole('button', { name: /see it work in 30 minutes/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /get a personalised demo/i })).toBeInTheDocument()
   })
 
-  it('renders the micro-copy', () => {
+  it('renders the secondary CTA link', () => {
     render(<HeroSection />)
-    expect(screen.getByText('No code. No consultants.')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /why are we building this/i })).toBeInTheDocument()
   })
 
   describe('Layout', () => {

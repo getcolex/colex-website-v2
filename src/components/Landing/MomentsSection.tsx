@@ -1,0 +1,259 @@
+"use client";
+
+import { Box, Container, Text, Flex, Heading } from "@chakra-ui/react";
+import { motion } from "motion/react";
+
+const MotionBox = motion.create(Box);
+
+const rows = [
+  {
+    label: "Your company's standards, written down",
+    automation: "Company standards are scattered across scripts, docs, and people's heads.",
+    colex: "Company standards live in one place, in your words, and every decision is measured against them.",
+  },
+  {
+    label: "A record of every past judgement",
+    automation: "Run logs show green or red, but never the reasoning behind a decision.",
+    colex: "Every decision records what was decided, on what evidence, and by whom.",
+  },
+  {
+    label: "Standards that get sharper with use",
+    automation: "The script follows the same rules it had on day one, even when they fall short.",
+    colex: "Every exception reveals what the standard was missing and makes it sharper.",
+  },
+  {
+    label: "An answer for the auditor",
+    automation: 'When an auditor asks why, the answer is: "That\'s how it\'s always run."',
+    colex: "Every audit question has an answer: the rule, the evidence, and the person who signed it off.",
+  },
+  {
+    label: "A process anyone can pick up",
+    automation: "The process lives in a half-written document and whoever still remembers it.",
+    colex: "Anyone can pick up the process by reading the rules that define it.",
+  },
+  {
+    label: "Books that stay honest after the fact",
+    automation: "Monday's run went green, with no way to revisit it when new evidence arrives.",
+    colex: "Thursday's customs rejection reopens Monday's completed work and keeps the books honest.",
+  },
+];
+
+function RedX() {
+  return (
+    <Flex
+      w="22px"
+      h="22px"
+      borderRadius="full"
+      bg="#EF4444"
+      align="center"
+      justify="center"
+      flexShrink={0}
+    >
+      <Text fontSize="12px" color="white" lineHeight="1" fontWeight="700">&times;</Text>
+    </Flex>
+  );
+}
+
+function GreenCheck() {
+  return (
+    <Flex
+      w="22px"
+      h="22px"
+      borderRadius="full"
+      bg="#10B981"
+      align="center"
+      justify="center"
+      flexShrink={0}
+    >
+      <Text fontSize="12px" color="white" lineHeight="1" fontWeight="700">&#x2713;</Text>
+    </Flex>
+  );
+}
+
+export default function MomentsSection() {
+  return (
+    <Box
+      as="section"
+      id="thesis"
+      py={{ base: 20, md: 28 }}
+      bg="#EDE9E3"
+      position="relative"
+      _after={{
+        content: '""',
+        position: "absolute",
+        inset: 0,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E")`,
+        backgroundRepeat: "repeat",
+        pointerEvents: "none",
+      }}
+    >
+      <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }} position="relative">
+        <Heading
+          as="h2"
+          fontFamily="heading"
+          fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
+          fontWeight="700"
+          color="ink.primary"
+          letterSpacing="-0.02em"
+          mb={{ base: 4, md: 6 }}
+        >
+          Six months in, you own something.
+        </Heading>
+
+        <Text
+          color="ink.muted"
+          fontSize={{ base: "md", md: "lg" }}
+          mb={{ base: 10, md: 14 }}
+          maxW="640px"
+        >
+          Other automation tools leave you with rigid workflows which decay. Colex grows with you continuously.
+        </Text>
+
+        {/* ── Desktop layout ── */}
+        <Box display={{ base: "none", md: "block" }}>
+          {/* Header row */}
+          <Flex>
+            <Box flex="1" px={6} pb={4}>
+              {/* empty — label column has no header */}
+            </Box>
+            <Box flex="1" px={6} pt={5} pb={4}>
+              <Text
+                fontSize="xs"
+                fontWeight="700"
+                color="#EF4444"
+                textTransform="uppercase"
+                letterSpacing="0.08em"
+                mb={3}
+              >
+                With automation
+              </Text>
+              <Box h="2px" bg="#EF4444" opacity={0.3} />
+            </Box>
+            <Box
+              flex="1"
+              px={6}
+              pt={5}
+              pb={4}
+              bg="rgba(16,185,129,0.08)"
+              borderRadius="12px 12px 0 0"
+            >
+              <Text
+                fontSize="xs"
+                fontWeight="700"
+                color="#10B981"
+                textTransform="uppercase"
+                letterSpacing="0.08em"
+                mb={3}
+              >
+                With Colex
+              </Text>
+              <Box h="2px" bg="#10B981" opacity={0.3} />
+            </Box>
+          </Flex>
+
+          {/* Data rows */}
+          {rows.map((row, i) => (
+            <Flex key={i}>
+              {/* Label */}
+              <Flex flex="1" px={6} py={5} align="center">
+                <Text
+                  fontSize="sm"
+                  fontWeight="700"
+                  color="ink.primary"
+                  textTransform="uppercase"
+                  letterSpacing="0.04em"
+                  lineHeight="1.5"
+                >
+                  {row.label}
+                </Text>
+              </Flex>
+
+              {/* Automation */}
+              <Flex flex="1" px={6} py={5} align="center">
+                <Flex align="flex-start" gap={3}>
+                  <Box pt={0.5}><RedX /></Box>
+                  <Text fontSize="sm" color="ink.muted" lineHeight="1.6">
+                    {row.automation}
+                  </Text>
+                </Flex>
+              </Flex>
+
+              {/* Colex */}
+              <Flex
+                flex="1"
+                px={6}
+                py={5}
+                align="center"
+                bg="rgba(16,185,129,0.08)"
+                {...(i === rows.length - 1 ? { borderRadius: "0 0 12px 12px" } : {})}
+              >
+                <Flex align="flex-start" gap={3}>
+                  <Box pt={0.5}><GreenCheck /></Box>
+                  <Text fontSize="sm" color="ink.primary" fontWeight="600" lineHeight="1.6">
+                    {row.colex}
+                  </Text>
+                </Flex>
+              </Flex>
+            </Flex>
+          ))}
+        </Box>
+
+        {/* ── Mobile layout: two stacked full-width tables, Colex reveals on scroll ── */}
+        <Box display={{ base: "block", md: "none" }}>
+          {/* Automation table */}
+          <Box mb={10}>
+            <Text fontSize="xs" fontWeight="700" color="#EF4444" textTransform="uppercase" letterSpacing="0.08em" mb={2}>
+              Automation
+            </Text>
+            <Box h="2px" bg="#EF4444" opacity={0.3} mb={2} />
+
+            {rows.map((row, i) => (
+              <Box
+                key={i}
+                py={4}
+                borderBottom={i < rows.length - 1 ? "1px solid" : "none"}
+                borderColor="rgba(0,0,0,0.06)"
+              >
+                <Flex align="flex-start" gap={3}>
+                  <Box pt={0.5}><RedX /></Box>
+                  <Text fontSize="sm" color="ink.muted" lineHeight="1.5">
+                    {row.automation}
+                  </Text>
+                </Flex>
+              </Box>
+            ))}
+          </Box>
+
+          {/* Colex table — animates in on scroll */}
+          <MotionBox
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <Text fontSize="xs" fontWeight="700" color="#10B981" textTransform="uppercase" letterSpacing="0.08em" mb={2}>
+              Colex
+            </Text>
+            <Box h="2px" bg="#10B981" opacity={0.3} mb={2} />
+
+            {rows.map((row, i) => (
+              <Box
+                key={i}
+                py={4}
+                borderBottom={i < rows.length - 1 ? "1px solid" : "none"}
+                borderColor="rgba(0,0,0,0.06)"
+              >
+                <Flex align="flex-start" gap={3}>
+                  <Box pt={0.5}><GreenCheck /></Box>
+                  <Text fontSize="sm" color="ink.primary" fontWeight="600" lineHeight="1.5">
+                    {row.colex}
+                  </Text>
+                </Flex>
+              </Box>
+            ))}
+          </MotionBox>
+        </Box>
+      </Container>
+    </Box>
+  );
+}

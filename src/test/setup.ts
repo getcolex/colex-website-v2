@@ -39,15 +39,6 @@ vi.mock('motion/react', () => {
   };
 })
 
-// Mock lenis/react
-vi.mock('lenis/react', () => ({
-  ReactLenis: ({ children }: { children: React.ReactNode }) => children,
-  useLenis: (callback: (params: { scroll: number }) => void) => {
-    // Defer callback to avoid state updates during render
-    if (callback) queueMicrotask(() => callback({ scroll: 0 }));
-  },
-}))
-
 // Mock SVG imports
 vi.mock('@/assets/icons/arrow-right.svg', () => ({
   default: () => null,

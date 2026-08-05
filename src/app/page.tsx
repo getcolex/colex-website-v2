@@ -5,11 +5,13 @@
 import { Box } from "@chakra-ui/react";
 import LandingNavbar from "@/components/Landing/Navbar";
 import HeroSection from "@/components/Landing/HeroSection";
-import HowItWorksSection from "@/components/Landing/HowItWorksSection";
-import WhyDifferentSection from "@/components/Landing/WhyDifferentSection";
-import ControlSection from "@/components/Landing/ControlSection";
-import BookDemoSection from "@/components/Landing/BookDemoSection";
-import Footer from "@/components/Landing/Footer";
+import PainSection from "@/components/Landing/PainSection";
+// import ShiftSection from "@/components/Landing/ShiftSection"; // hidden for now
+import VerticalsSection from "@/components/Landing/VerticalsSection";
+import HowSection from "@/components/Landing/HowSection";
+import GetSection from "@/components/Landing/GetSection";
+import MomentsSection from "@/components/Landing/MomentsSection";
+import FooterBand from "@/components/Landing/FooterBand";
 import DevGridOverlay from "@/components/DevGridOverlay";
 import { useEffect } from "react";
 import { trackLandingPageView } from "@/lib/gtag";
@@ -20,15 +22,17 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <Box bg="#F8F7F4" minH="100vh">
+    <Box bg="surface.page" minH="100vh">
       <DevGridOverlay />
       <LandingNavbar />
       <HeroSection />
-      <HowItWorksSection />
-      <WhyDifferentSection />
-      <ControlSection />
-      <BookDemoSection />
-      <Footer />
+      <PainSection />
+      <HowSection />
+      <GetSection />
+      <MomentsSection />
+      {/* <ShiftSection /> — hidden for now */}
+      <VerticalsSection />
+      <FooterBand />
     </Box>
   );
 }

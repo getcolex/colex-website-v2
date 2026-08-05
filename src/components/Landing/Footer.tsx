@@ -7,10 +7,18 @@ import {
   HStack,
   VStack,
   Text,
-  Link,
+  Link as ChakraLink,
 } from "@chakra-ui/react";
+import NextLink from "next/link";
 import Image from "next/image";
 import { getEarlyAccess } from "@/lib/utils";
+import dynamic from "next/dynamic";
+
+const WireframeGrid = dynamic(() => import("./WireframeGrid"), { ssr: false });
+const GridTuner = dynamic(
+  () => import("./WireframeGrid").then((m) => m.GridTuner),
+  { ssr: false }
+);
 
 const FOOTER_LINKS = [
   { label: "Blog", href: "/blog" },
@@ -19,74 +27,106 @@ const FOOTER_LINKS = [
   { label: "Contact", href: "#", onClick: () => getEarlyAccess("footer") },
 ];
 
-export default function Footer() {
+export default function Footer({ transparentBg = false }: { transparentBg?: boolean }) {
   return (
-    <Box as="footer" bg="transparent" pt={20}>
-      <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
+    <Box as="footer" bg={transparentBg ? "transparent" : "brand.primary"} pt={{ base: 12, lg: 20 }} position="relative">
+      {/* Dev-only tuner; renders nothing in production builds */}
+      <GridTuner />
+      {/* When the footer owns its background (e.g. blog pages), it also owns
+          the wireframe grid; on the landing page the parent wrapper provides
+          one continuous grid across CTA + footer instead. */}
+      {!transparentBg && (
+        <>
+          <WireframeGrid preset="blog" lineColor="rgba(248,247,244,0.35)" />
+          <Box
+            position="absolute"
+            inset={0}
+            pointerEvents="none"
+            _before={{
+              content: '""',
+              position: "absolute",
+              inset: 0,
+              background: "linear-gradient(to right, #49082D 0%, transparent 20%, transparent 80%, #49082D 100%)",
+            }}
+            _after={{
+              content: '""',
+              position: "absolute",
+              inset: 0,
+              background: "linear-gradient(to bottom, #49082D 0%, transparent 20%, transparent 80%, #49082D 100%)",
+            }}
+          />
+        </>
+      )}
+      <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }} position="relative" zIndex={1}>
         {/* Mobile + Tablet layout */}
         <VStack gap={4} align="center" display={{ base: "flex", lg: "none" }}>
           <Flex gap={4} flexWrap="wrap" justify="center">
             {FOOTER_LINKS.map((link) => (
-              <Link
+              <ChakraLink
+                asChild
                 key={link.label}
-                href={link.href}
                 onClick={link.onClick}
                 fontSize="sm"
-                color="text.muted"
-                _hover={{ color: "text.primary" }}
+                color="rgba(255,255,255,0.6)"
+                _hover={{ color: "surface.page" }}
                 transition="color 0.2s"
               >
+                <NextLink href={link.href}>
                 {link.label}
-              </Link>
+                </NextLink>
+              </ChakraLink>
             ))}
           </Flex>
           <Text
             fontSize="sm"
-            color="text.muted"
+            color="rgba(255,255,255,0.5)"
             textAlign="center"
             w="full"
           >
-            © 2025 | ALL RIGHTS RESERVED by Colex.
+            © 2026 Colex. All rights reserved.
           </Text>
-          <Box position="relative" w={{ base: "280px", sm: "320px" }} h={{ base: "96px", sm: "110px" }}>
+          <Box position="relative" w="full" h={{ base: "120px", sm: "150px" }}>
             <Image
               fill
-              sizes="320px"
+              sizes="100vw"
               src="/images/ColexLogo.png"
               alt="Colex Logo"
-              style={{ objectFit: "contain" }}
+              style={{ objectFit: "contain", objectPosition: "left bottom", filter: "brightness(0) invert(1)" }}
             />
           </Box>
         </VStack>
 
         {/* Desktop layout */}
         <HStack justifyContent="space-between" alignItems="flex-end" display={{ base: "none", lg: "flex" }}>
-          <Box position="relative" w={{ lg: "400px", xl: "500px", "2xl": "550px" }} h={{ lg: "138px", xl: "172px", "2xl": "190px" }}>
+          <Box position="relative" w={{ lg: "500px", xl: "620px", "2xl": "680px" }} h={{ lg: "172px", xl: "214px", "2xl": "234px" }}>
             <Image
               fill
-              sizes="(min-width: 1280px) 500px, 400px"
+              sizes="(min-width: 1280px) 620px, 500px"
               src="/images/ColexLogo.png"
               alt="Colex Logo"
-              style={{ objectFit: "contain" }}
+              style={{ objectFit: "contain", objectPosition: "left bottom", filter: "brightness(0) invert(1)" }}
             />
           </Box>
           <VStack align="flex-end" gap={2} mb={2}>
             <Flex gap={6}>
               {FOOTER_LINKS.map((link) => (
-                <Link
+                <ChakraLink
+                  asChild
                   key={link.label}
-                  href={link.href}
+                  onClick={link.onClick}
                   fontSize="sm"
-                  color="text.muted"
-                  _hover={{ color: "text.primary" }}
+                  color="rgba(255,255,255,0.6)"
+                  _hover={{ color: "surface.page" }}
                   transition="color 0.2s"
                 >
+                  <NextLink href={link.href}>
                   {link.label}
-                </Link>
+                  </NextLink>
+                </ChakraLink>
               ))}
             </Flex>
-            <Text fontSize="sm" color="text.muted">
-              © 2025 | ALL RIGHTS RESERVED by Colex.
+            <Text fontSize="sm" color="rgba(255,255,255,0.5)">
+              © 2026 Colex. All rights reserved.
             </Text>
           </VStack>
         </HStack>

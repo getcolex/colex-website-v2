@@ -1,4 +1,3 @@
-// src/components/LandingNavbar.tsx
 "use client";
 
 import {
@@ -8,170 +7,89 @@ import {
   Flex,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
 import { getEarlyAccess } from "@/lib/utils";
-import { useScrollPosition } from "@/lib/hooks/useScrollPosition";
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import ColexBrandLogo from "@/assets/icons/ColexBrandLogo.svg";
 
 export default function LandingNavbar() {
-  const { scrollY } = useScrollPosition();
   const isMobile = useBreakpointValue({ base: true, md: false });
 
-  // Show navbar always on mobile, or after scrolling past hero section on desktop
-  const shouldShowNavbar = isMobile || scrollY > 580;
-
   return (
-    <>
-      {/* Static logo visible on desktop before scroll */}
-      {!isMobile && (
-        <AnimatePresence>
-          {!shouldShowNavbar && (
-            <motion.div
-              initial={{ opacity: 1 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
+    <Box
+      position="fixed"
+      top={0}
+      left={0}
+      right={0}
+      zIndex={100}
+      bg="surface.page"
+      borderBottom="1px solid"
+      borderColor="border.subtle"
+      py={{ base: 3, md: 4 }}
+    >
+      <Container
+        maxW="container.xl"
+        px={{ base: 4, sm: 6, md: 8, lg: 12 }}
+      >
+        <Flex align="center" justify="space-between">
+          <Link href="/" aria-label="Colex home">
+            <ColexBrandLogo
               style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                right: 0,
-                zIndex: 99,
+                width: isMobile ? 100 : 126,
+                height: isMobile ? 35 : 44,
               }}
-            >
-              <Box py={5}>
-                <Container
-                  maxW="container.xl"
-                  px={{ base: 4, sm: 6, md: 8, lg: 12 }}
+              aria-label="Colex Logo"
+            />
+          </Link>
+          <Flex gap={{ base: 2, md: 4 }} align="center">
+            {["Use cases", "Why Colex", "Blog"].map((label) => (
+              <Link
+                key={label}
+                href={label === "Blog" ? "/blog" : `/#${label.toLowerCase().replace(/ /g, "-")}`}
+              >
+                <Box
+                  as="span"
+                  display={{ base: label === "Blog" ? "inline-block" : "none", md: "inline-block" }}
+                  fontSize={{ base: "sm", md: "md" }}
+                  fontWeight="500"
+                  color="ink.primary"
+                  px={{ base: 2, md: 4 }}
+                  py={0.5}
+                  _hover={{ color: "brand.primary" }}
+                  transition="color 0.15s ease"
+                  whiteSpace="nowrap"
                 >
-                  <Flex align="center" justify="space-between">
-                    <Link href="/" aria-label="Colex home">
-                      <ColexBrandLogo
-                        style={{ width: 126, height: 44 }}
-                        aria-label="Colex Logo"
-                      />
-                    </Link>
-                    <Link href="/blog">
-                      <Box
-                        as="span"
-                        display="inline-block"
-                        fontSize="md"
-                        fontWeight="500"
-                        color="text.primary"
-                        /* Matches the CTA beside it, so the link has a hit area
-                           and does not sit flush against the container edge. */
-                        px={{ base: 3, md: 5 }}
-                        py={0.5}
-                        _hover={{ color: "brand.primary" }}
-                        transition="color 0.15s ease"
-                        whiteSpace="nowrap"
-                      >
-                        Blog
-                      </Box>
-                    </Link>
-                  </Flex>
-                </Container>
-              </Box>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      )}
-
-      <AnimatePresence>
-        {shouldShowNavbar && (
-          <motion.div
-            initial={{ y: -100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -100, opacity: 0 }}
-            transition={{
-              duration: 0.3,
-              ease: "easeOut",
-            }}
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              right: 0,
-              zIndex: 100,
-            }}
-          >
-          <Box
-            py={5}
-            bg="ui.background"
-            borderBottom="1px solid"
-            borderColor="ui.border"
-          >
-            <Container
-              maxW="container.xl"
-              px={{ base: 4, sm: 6, md: 8, lg: 12 }}
+                  {label}
+                </Box>
+              </Link>
+            ))}
+            <Button
+              size={{ base: "sm", md: "lg" }}
+              fontSize="md"
+              fontWeight="500"
+              px={{ base: 3, md: 5 }}
+              py={0.5}
+              borderRadius="8px"
+              bg="brand.primary"
+              color="white"
+              _hover={{ bg: "#5a0a38" }}
+              onClick={() => getEarlyAccess("header")}
             >
-              <Flex align="center" justify="space-between">
-                <Link href="/" aria-label="Colex home">
-                  <ColexBrandLogo
-                    style={{
-                      width: isMobile ? 100 : 126,
-                      height: isMobile ? 35 : 44,
-                    }}
-                    aria-label="Colex Logo"
-                  />
-                </Link>
-                <Flex gap={{ base: 3, md: 5 }} align="center">
-                  <Link href="/blog">
-                    <Box
-                      as="span"
-                      display="inline-block"
-                      fontSize={{ base: "sm", md: "md" }}
-                      fontWeight="500"
-                      color="text.primary"
-                      /* Matches the CTA beside it. */
-                      px={{ base: 3, md: 5 }}
-                      py={0.5}
-                      _hover={{ color: "brand.primary" }}
-                      transition="color 0.15s ease"
-                      whiteSpace="nowrap"
-                    >
-                      Blog
-                    </Box>
-                  </Link>
-                  <Button
-                    size={{ base: "sm", md: "lg" }}
-                    w={{ base: "auto", lg: 220, xl: 260 }}
-                    fontSize="md"
-                    fontWeight="500"
-                    px={{ base: 3, md: 5 }}
-                    py={0.5}
-                    borderRadius={4}
-                    bg="button.primary"
-                    color="white"
-                    _hover={{
-                      bg: "button.primaryHover",
-                    }}
-                    _active={{
-                      bg: "button.primaryActive",
-                    }}
-                    onClick={() => getEarlyAccess("header")}
-                  >
-                    Book a demo
-                    {!isMobile && (
-                      <ArrowRightIcon
-                        style={{
-                          width: 20,
-                          height: 20,
-                          marginLeft: 8,
-                          color: "white",
-                        }}
-                      />
-                    )}
-                  </Button>
-                </Flex>
-              </Flex>
-            </Container>
-          </Box>
-        </motion.div>
-      )}
-    </AnimatePresence>
-    </>
+              Talk to us
+              {!isMobile && (
+                <ArrowRightIcon
+                  style={{
+                    width: 20,
+                    height: 20,
+                    marginLeft: 8,
+                    color: "white",
+                  }}
+                />
+              )}
+            </Button>
+          </Flex>
+        </Flex>
+      </Container>
+    </Box>
   );
 }

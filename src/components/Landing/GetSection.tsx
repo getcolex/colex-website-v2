@@ -1,0 +1,131 @@
+"use client";
+
+import { Box, Container, Text, Flex, Grid, Heading } from "@chakra-ui/react";
+import {
+  RewindDemo,
+  AuditDemo,
+} from "./GetDemos";
+import { UpdateDemo } from "./HowDemos";
+import { ConnectDemo } from "./ConnectDemo";
+import dynamic from "next/dynamic";
+
+const WireframeGrid = dynamic(() => import("./WireframeGrid"), { ssr: false });
+
+const cards = [
+  {
+    title: "Plug into the tools you already use",
+    description:
+      "Email, Slack, ERPs, spreadsheets. Colex connects where your data already lives.",
+    Demo: ConnectDemo,
+  },
+  {
+    title: "Change the rules, the workflow follows",
+    description:
+      "Edit a rule and the running workflow updates in seconds. No rebuild, no retraining.",
+    Demo: UpdateDemo,
+  },
+  {
+    title: "Work that rewinds when things change",
+    description:
+      "Customs rejects an entry on Thursday. Monday’s “done” reopens and goes back into review.",
+    Demo: RewindDemo,
+  },
+  {
+    title: "All your rules written down, all action auditable",
+    description:
+      "Versioned, inspectable, and yours to reason over, not buried inside a workflow where nobody can find them.",
+    Demo: AuditDemo,
+  },
+];
+
+export default function GetSection() {
+  return (
+    <Box
+      as="section"
+      py={{ base: 20, md: 28 }}
+      bg="brand.primary"
+    >
+      <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }} position="relative">
+        <Heading
+          as="h2"
+          fontFamily="heading"
+          fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
+          fontWeight="700"
+          color="surface.page"
+          letterSpacing="-0.02em"
+          mb={{ base: 10, md: 14 }}
+        >
+          The part automation never gave you.
+        </Heading>
+
+        <Grid
+          templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
+          gap={{ base: 8, lg: 10 }}
+        >
+          {cards.map((card) => {
+            const Demo = card.Demo;
+            return (
+              /* Outer card: Neat bg + dimmed overlay + cream border */
+              <Box
+                key={card.title}
+                position="relative"
+                borderRadius="16px"
+                border="1.5px solid"
+                borderColor="rgba(248,247,244,0.25)"
+                overflow="hidden"
+              >
+                {/* Neat wireframe */}
+                <WireframeGrid preset="get" lineColor="rgba(248,247,244,0.12)" />
+
+                {/* Maroon dim overlay on top of Neat */}
+                <Box
+                  position="absolute"
+                  inset={0}
+                  bg="rgba(73,8,45,0.88)"
+                  pointerEvents="none"
+                  zIndex={0}
+                />
+
+                {/* Content */}
+                <Flex
+                  direction="column"
+                  position="relative"
+                  zIndex={1}
+                  p={{ base: 5, md: 7, lg: 8 }}
+                >
+                  {/* Text */}
+                  <Box mb={{ base: 5, md: 6 }}>
+                    <Heading
+                      as="h3"
+                      fontSize={{ base: "lg", md: "xl" }}
+                      fontWeight="600"
+                      color="surface.page"
+                      mb={2}
+                    >
+                      {card.title}
+                    </Heading>
+                    <Text color="border.default" fontSize={{ base: "sm", md: "md" }}>
+                      {card.description}
+                    </Text>
+                  </Box>
+
+                  {/* Inner card: cream border, solid maroon bg, demo */}
+                  <Box
+                    border="1.5px solid"
+                    borderColor="rgba(248,247,244,0.2)"
+                    borderRadius="12px"
+                    overflow="hidden"
+                    bg="brand.primary"
+                    aspectRatio={{ base: "4 / 5", md: "4 / 3" }}
+                  >
+                    <Demo />
+                  </Box>
+                </Flex>
+              </Box>
+            );
+          })}
+        </Grid>
+      </Container>
+    </Box>
+  );
+}
