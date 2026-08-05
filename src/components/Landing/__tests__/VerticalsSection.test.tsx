@@ -17,7 +17,7 @@ describe('VerticalsSection', () => {
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
       'For the teams that run a company day to day.'
     )
-    const cta = screen.getByRole('button', { name: /Get a personalised live demo/i })
+    const cta = screen.getByRole('button', { name: /Get a personalised demo/i })
     expect(cta).toBeInTheDocument()
   })
 

@@ -74,7 +74,8 @@ export default function HeroSection() {
           templateColumns={{ base: "1fr", lg: "repeat(12, 1fr)" }}
           gap={{ base: 10, lg: 8 }}
           alignItems="center"
-          py={{ base: 16, md: 32 }}
+          pt={{ base: 28, md: 32 }}
+          pb={{ base: 16, md: 32 }}
           minH={{ base: "auto", lg: "100vh" }}
         >
           {/* Left side - Text content (7 columns) */}

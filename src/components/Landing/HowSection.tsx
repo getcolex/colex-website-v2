@@ -69,6 +69,8 @@ export default function HowSection() {
             href="/demo"
             display="inline-flex"
             alignItems="center"
+            justifyContent="center"
+            w={{ base: "full", md: "auto" }}
             bg="brand.primary"
             color="white"
             px={{ base: 4, md: 6 }}
@@ -86,7 +88,7 @@ export default function HowSection() {
               textDecoration: "none",
             }}
           >
-            Get to a personalised demo &rarr;
+            Get a personalised demo &rarr;
           </Link>
         </Flex>
 
@@ -100,6 +102,9 @@ export default function HowSection() {
                 direction={{ base: "column", md: isEven ? "row-reverse" : "row" }}
                 align="center"
                 gap={{ base: 6, md: 10, lg: 14 }}
+                pb={{ base: step.id !== steps.length ? 6 : 0, md: 0 }}
+                borderBottom={{ base: step.id !== steps.length ? "1px solid" : "none", md: "none" }}
+                borderColor="border.default"
               >
                 {/* Demo card with thick border + decorative bg */}
                 <Box

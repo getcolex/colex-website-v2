@@ -77,6 +77,20 @@ export default function VerticalsSection() {
   const promptScrollerRef = useRef<HTMLDivElement | null>(null);
   const promptCardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+  // Cross-tab swipe: swiping past the last card of a tab advances to the
+  // next tab's first card (and, mirrored, swiping past the first card goes
+  // to the previous tab's last card). Detected via touch delta rather than
+  // scroll position alone — an onScroll-only check fires spuriously (e.g.
+  // rubber-band bounce). We track the touch start X + the scroller's
+  // scrollLeft at touchstart, and on touchend look at whether the user was
+  // already at (or within a few px of) the scroll boundary AND dragged
+  // further past it by more than a small threshold. A ref-based cooldown
+  // debounces so one gesture only ever advances one tab.
+  const touchStateRef = useRef<{ startX: number; atMax: boolean; atMin: boolean } | null>(null);
+  const tabAdvanceCooldownRef = useRef(false);
+  const EDGE_EPSILON = 4; // px tolerance for "already at boundary"
+  const SWIPE_THRESHOLD = 40; // px of further drag past the boundary to count as intent
+
   // Advance to next prompt, wrapping to next vertical when exhausted
   const advance = useCallback(() => {
     setActiveTab((prevTab) => {
@@ -192,6 +206,87 @@ export default function VerticalsSection() {
     },
     [handleUserInteraction, activeTab]
   );
+
+  // Advance/retreat the active tab in response to a cross-tab swipe gesture.
+  // Resets the carousel container (only) to its boundary card with an
+  // INSTANT scroll — never smooth, never the page. This is always called
+  // synchronously from a touch handler, i.e. in direct response to user
+  // gesture, so programmatic scroll of the carousel container is allowed.
+  const handleCrossTabSwipe = useCallback(
+    (direction: 1 | -1) => {
+      const tabIdx = TAB_ITEMS.findIndex((t) => t.key === activeTab);
+      const nextTabIdx = tabIdx + direction;
+      if (nextTabIdx < 0 || nextTabIdx >= TAB_ITEMS.length) return; // no wrap-around
+
+      handleUserInteraction();
+      const nextTabKey = TAB_ITEMS[nextTabIdx].key;
+      const nextPrompts = PROMPTS[nextTabKey];
+      const nextIdx = direction === 1 ? 0 : nextPrompts.length - 1;
+
+      setActiveTab(nextTabKey);
+      setPromptSelections((prev) => ({ ...prev, [nextTabKey]: nextIdx }));
+
+      // Reset carousel container scroll instantly (no smooth behavior, no
+      // page scroll) once the new tab's cards have rendered.
+      requestAnimationFrame(() => {
+        const scroller = promptScrollerRef.current;
+        if (!scroller) return;
+        if (direction === 1) {
+          scroller.scrollLeft = 0;
+        } else {
+          scroller.scrollLeft = scroller.scrollWidth - scroller.clientWidth;
+        }
+      });
+    },
+    [activeTab, handleUserInteraction]
+  );
+
+  const handlePromptTouchStart = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    const scroller = promptScrollerRef.current;
+    if (!scroller) return;
+    const maxScrollLeft = scroller.scrollWidth - scroller.clientWidth;
+    touchStateRef.current = {
+      startX: e.touches[0].clientX,
+      atMax: scroller.scrollLeft >= maxScrollLeft - EDGE_EPSILON,
+      atMin: scroller.scrollLeft <= EDGE_EPSILON,
+    };
+  }, []);
+
+  const handlePromptTouchMove = useCallback(
+    (e: React.TouchEvent<HTMLDivElement>) => {
+      const touchState = touchStateRef.current;
+      if (!touchState || tabAdvanceCooldownRef.current) return;
+
+      const deltaX = touchState.startX - e.touches[0].clientX;
+
+      // Dragging left (content moves left, i.e. finger moves left) past the
+      // right boundary => advance to next tab.
+      if (touchState.atMax && deltaX > SWIPE_THRESHOLD) {
+        tabAdvanceCooldownRef.current = true;
+        handleCrossTabSwipe(1);
+        setTimeout(() => {
+          tabAdvanceCooldownRef.current = false;
+        }, 500);
+        touchStateRef.current = null;
+        return;
+      }
+
+      // Dragging right past the left boundary => go to previous tab.
+      if (touchState.atMin && deltaX < -SWIPE_THRESHOLD) {
+        tabAdvanceCooldownRef.current = true;
+        handleCrossTabSwipe(-1);
+        setTimeout(() => {
+          tabAdvanceCooldownRef.current = false;
+        }, 500);
+        touchStateRef.current = null;
+      }
+    },
+    [handleCrossTabSwipe]
+  );
+
+  const handlePromptTouchEnd = useCallback(() => {
+    touchStateRef.current = null;
+  }, []);
 
   const handleTabKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -362,6 +457,9 @@ export default function VerticalsSection() {
               aria-label="Prompts"
               display={{ base: "flex", md: "block" }}
               overflowX={{ base: "auto", md: "visible" }}
+              onTouchStart={handlePromptTouchStart}
+              onTouchMove={handlePromptTouchMove}
+              onTouchEnd={handlePromptTouchEnd}
               css={{
                 scrollSnapType: "x mandatory",
                 scrollbarWidth: "none",
@@ -444,6 +542,8 @@ export default function VerticalsSection() {
                 role="button"
                 display="inline-flex"
                 alignItems="center"
+                justifyContent="center"
+                w={{ base: "full", md: "auto" }}
                 bg="surface.page"
                 color="ink.primary"
                 px={{ base: 4, md: 6 }}
@@ -460,7 +560,7 @@ export default function VerticalsSection() {
                   textDecoration: "none",
                 }}
               >
-                Get a personalised live demo &rarr;
+                Get a personalised demo &rarr;
               </Link>
             </Box>
           </Box>
