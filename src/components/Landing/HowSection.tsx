@@ -116,7 +116,10 @@ export default function HowSection() {
                   w={{ base: "100%", md: "50%" }}
                   position="relative"
 
-                  p={{ base: 2, md: 10, lg: 12 }}
+                  /* Phones have no wireframe grid behind the card, so no
+                     decorative inset either — the card spans the same width
+                     as the text column (page margins only). */
+                  p={{ base: 0, md: 10, lg: 12 }}
                   borderRadius="20px"
                 >
                   {/* Neat animated gradient behind card */}
