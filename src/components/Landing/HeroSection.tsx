@@ -22,7 +22,9 @@ export default function HeroSection() {
   return (
     <Box
       position="relative"
-      minH={{ base: "auto", lg: "100vh" }}
+      /* svh = small viewport height: stable when mobile browser chrome
+         collapses, so the hero fills the first fold on any device */
+      minH={{ base: "100svh", md: "auto", lg: "100vh" }}
       bg="transparent"
       overflow="hidden"
     >
@@ -67,16 +69,29 @@ export default function HeroSection() {
           background="linear-gradient(to top, #F8F7F4 0%, transparent 100%)"
         />
       </Box>
-      <Container maxW="container.xl" h="full" position="relative" px={{ base: 4, sm: 6, md: 8, lg: 12 }} zIndex={2}>
+      <Container
+        maxW="container.xl"
+        h="full"
+        position="relative"
+        px={{ base: 4, sm: 6, md: 8, lg: 12 }}
+        zIndex={2}
+        /* Phones: flex column filling the fold — content centers, SCROLL
+           indicator pins to the bottom. md+ keeps the original block flow. */
+        display={{ base: "flex", md: "block" }}
+        flexDirection="column"
+        minH={{ base: "100svh", md: "auto" }}
+      >
         {/* 12-column grid layout */}
         <Grid
           data-testid="hero-grid"
           templateColumns={{ base: "1fr", lg: "repeat(12, 1fr)" }}
           gap={{ base: 10, lg: 8 }}
           alignItems="center"
-          pt={{ base: 28, md: 32 }}
-          pb={{ base: 16, md: 32 }}
+          pt={{ base: 24, md: 32 }}
+          pb={{ base: 8, md: 32 }}
           minH={{ base: "auto", lg: "100vh" }}
+          flex={{ base: "1", md: "0 1 auto" }}
+          alignContent={{ base: "center", md: "stretch" }}
         >
           {/* Left side - Text content (7 columns) */}
           <Box
@@ -159,8 +174,8 @@ export default function HeroSection() {
 
         {/* Scroll indicator — fades out on scroll */}
         <Box
-          mt={{ base: 10, md: "-6rem", lg: "-8rem" }}
-          mb={{ base: 8, lg: 0 }}
+          mt={{ base: "auto", md: "-6rem", lg: "-8rem" }}
+          mb={{ base: 6, lg: 0 }}
           opacity={scrolled ? 0 : 1}
           transition="opacity 0.3s ease"
           pointerEvents={scrolled ? "none" : "auto"}

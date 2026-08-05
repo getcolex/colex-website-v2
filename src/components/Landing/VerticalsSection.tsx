@@ -88,7 +88,6 @@ export default function VerticalsSection() {
   // debounces so one gesture only ever advances one tab.
   const touchStateRef = useRef<{ startX: number; atMax: boolean; atMin: boolean } | null>(null);
   const tabAdvanceCooldownRef = useRef(false);
-  const EDGE_EPSILON = 4; // px tolerance for "already at boundary"
   const SWIPE_THRESHOLD = 40; // px of further drag past the boundary to count as intent
 
   // Advance to next prompt, wrapping to next vertical when exhausted
@@ -241,16 +240,22 @@ export default function VerticalsSection() {
     [activeTab, handleUserInteraction]
   );
 
-  const handlePromptTouchStart = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
-    const scroller = promptScrollerRef.current;
-    if (!scroller) return;
-    const maxScrollLeft = scroller.scrollWidth - scroller.clientWidth;
-    touchStateRef.current = {
-      startX: e.touches[0].clientX,
-      atMax: scroller.scrollLeft >= maxScrollLeft - EDGE_EPSILON,
-      atMin: scroller.scrollLeft <= EDGE_EPSILON,
-    };
-  }, []);
+  // "At the boundary" means the SELECTED card is the first/last one — not a
+  // raw scrollLeft comparison: with 88%-wide snap cards and their trailing
+  // margins, the last card's snap position is not the scroller's absolute
+  // max, so a scrollLeft check never fires on a real device.
+  const handlePromptTouchStart = useCallback(
+    (e: React.TouchEvent<HTMLDivElement>) => {
+      const count = PROMPTS[activeTab].length;
+      const idx = promptSelections[activeTab];
+      touchStateRef.current = {
+        startX: e.touches[0].clientX,
+        atMax: idx >= count - 1,
+        atMin: idx <= 0,
+      };
+    },
+    [activeTab, promptSelections]
+  );
 
   const handlePromptTouchMove = useCallback(
     (e: React.TouchEvent<HTMLDivElement>) => {
@@ -421,8 +426,9 @@ export default function VerticalsSection() {
           />
         </Box>
 
-        {/* Separator */}
+        {/* Separator — desktop only; on phones the pills sit right above the cards */}
         <Box
+          display={{ base: "none", md: "block" }}
           borderTop="1px solid"
           borderColor="rgba(255,255,255,0.15)"
           mb={{ base: 4, md: 6 }}
