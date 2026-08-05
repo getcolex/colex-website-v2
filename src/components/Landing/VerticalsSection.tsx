@@ -2,7 +2,7 @@
 
 import { Box, Container, Flex, Heading } from "@chakra-ui/react";
 import { getEarlyAccess } from "@/lib/utils";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import VerticalDemo from "./VerticalDemo";
 import dynamic from "next/dynamic";
 
@@ -44,6 +44,16 @@ const PROMPTS: Record<VerticalKey, string[]> = {
 
 const CYCLE_INTERVAL = 4000;
 
+type FlatPrompt = {
+  tabKey: VerticalKey;
+  tabIdx: number;
+  promptIdx: number;
+  text: string;
+  // Index of the FIRST flat entry belonging to this tab — used when a pill
+  // tap should scroll the carousel to the start of that tab.
+  firstOfTabFlatIdx: number;
+};
+
 export default function VerticalsSection() {
   const [activeTab, setActiveTab] = useState<VerticalKey>("freight");
   const [promptSelections, setPromptSelections] = useState<
@@ -62,36 +72,39 @@ export default function VerticalsSection() {
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const panelId = "verticals-tabpanel";
 
-  // Mobile pill row: single swipeable row (no programmatic scrolling — see
-  // below, the page must never be scrolled by this section).
-  const tabScrollerRef = useRef<HTMLDivElement | null>(null);
-
-  // Mobile prompt carousel: scroll-snap track + per-card refs. Each card
-  // hosts its own text + demo animation. An IntersectionObserver watches
-  // which card is snapped into view and uses that to drive activeTab /
-  // selectedIdx on mobile — swipes are the sole source of truth there.
-  // IMPORTANT: this section must never programmatically scroll anything —
-  // no element.scrollIntoView (it walks up and scrolls ALL scrollable
-  // ancestors, including the document, which was previously yanking the
-  // whole page down to this section whenever the demo auto-cycle advanced).
-  // There is intentionally no auto-scroll-to-selection effect below.
+  // Mobile flat carousel: one row of ALL prompts across ALL tabs. The active
+  // tab + selected prompt are DERIVED from which card is snapped into view
+  // (IntersectionObserver). There is intentionally no cross-tab shim, no
+  // scrollLeft resetting between tabs, and no per-tab sub-carousel — swipe
+  // just keeps going and the pill row above rerenders to match.
+  //
+  // IMPORTANT: this section must never scroll the page programmatically.
+  // Tapping a pill scrolls the CAROUSEL container only, and only in direct
+  // response to a click (a user gesture). No scrollIntoView anywhere.
   const promptScrollerRef = useRef<HTMLDivElement | null>(null);
   const promptCardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // Cross-tab swipe: swiping past the last card of a tab advances to the
-  // next tab's first card (and, mirrored, swiping past the first card goes
-  // to the previous tab's last card). Detected via touch delta rather than
-  // scroll position alone — an onScroll-only check fires spuriously (e.g.
-  // rubber-band bounce). We track the touch start X + the scroller's
-  // scrollLeft at touchstart, and on touchend look at whether the user was
-  // already at (or within a few px of) the scroll boundary AND dragged
-  // further past it by more than a small threshold. A ref-based cooldown
-  // debounces so one gesture only ever advances one tab.
-  const touchStateRef = useRef<{ startX: number; atMax: boolean; atMin: boolean } | null>(null);
-  const tabAdvanceCooldownRef = useRef(false);
-  const SWIPE_THRESHOLD = 40; // px of further drag past the boundary to count as intent
+  // Flattened prompts list for the mobile carousel.
+  const flatPrompts: FlatPrompt[] = useMemo(() => {
+    const out: FlatPrompt[] = [];
+    // First-of-tab flat indices, computed as we go.
+    const firstOfTab: Record<string, number> = {};
+    TAB_ITEMS.forEach((item, tabIdx) => {
+      firstOfTab[item.key] = out.length;
+      PROMPTS[item.key].forEach((text, promptIdx) => {
+        out.push({
+          tabKey: item.key,
+          tabIdx,
+          promptIdx,
+          text,
+          firstOfTabFlatIdx: firstOfTab[item.key],
+        });
+      });
+    });
+    return out;
+  }, []);
 
-  // Advance to next prompt, wrapping to next vertical when exhausted
+  // Advance to next prompt, wrapping to next vertical when exhausted (desktop)
   const advance = useCallback(() => {
     setActiveTab((prevTab) => {
       const tabIdx = TAB_ITEMS.findIndex((t) => t.key === prevTab);
@@ -117,9 +130,7 @@ export default function VerticalsSection() {
   }, [promptSelections]);
 
   // Mobile: the swipe carousel owns the selection, so the auto-cycle must
-  // not run there — advancing the selection unmounts the demo inside the
-  // card the user is looking at (it goes blank while the next card starts).
-  // The visible card's demo just keeps looping instead.
+  // not run there.
   const [isMobileViewport, setIsMobileViewport] = useState(false);
   useEffect(() => {
     if (typeof window === "undefined" || typeof window.matchMedia !== "function") return;
@@ -165,19 +176,20 @@ export default function VerticalsSection() {
     };
   }, []);
 
-  // Each mobile card renders its own VerticalDemo, so only the card the user
-  // has swiped to needs to actually be selected/animating. An
-  // IntersectionObserver watches the cards inside the scroller and, when a
-  // swipe settles a new card into view (>=60% visible), promotes it to the
-  // active prompt. This makes swiping itself the interaction — no click
-  // needed — and naturally wins over auto-cycle because it re-marks
-  // "user scrolled" whenever the observer fires from a real scroll.
+  // Track which flat card is centered — mobile only. This drives both:
+  // (a) which tab pill is highlighted, and (b) which cards are close enough
+  // to be "live" (mount their VerticalDemo). Off-screen cards render a
+  // same-size placeholder so layout doesn't jump.
+  const [centeredFlatIdx, setCenteredFlatIdx] = useState(0);
+
   useEffect(() => {
+    if (!isMobileViewport) return;
     const scroller = promptScrollerRef.current;
     if (!scroller || typeof IntersectionObserver !== "function") return;
 
     const observer = new IntersectionObserver(
       (entries) => {
+        // Pick the entry with the highest intersection ratio as "centered".
         const mostVisible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
@@ -188,11 +200,9 @@ export default function VerticalsSection() {
         );
         if (idx === -1) return;
 
-        setPromptSelections((prev) =>
-          prev[activeTab] === idx ? prev : { ...prev, [activeTab]: idx }
-        );
+        setCenteredFlatIdx(idx);
       },
-      { root: scroller, threshold: [0.6] }
+      { root: scroller, threshold: [0.5, 0.75] }
     );
 
     promptCardRefs.current.forEach((el) => {
@@ -200,17 +210,42 @@ export default function VerticalsSection() {
     });
 
     return () => observer.disconnect();
-    // Re-observe whenever the active vertical changes (card refs get
-    // replaced since each vertical renders its own set of prompt cards).
-  }, [activeTab]);
+  }, [isMobileViewport]);
+
+  // Mirror the centered flat card into the shared activeTab/promptSelections
+  // state so the pill row + a11y stay in sync on mobile.
+  useEffect(() => {
+    if (!isMobileViewport) return;
+    const entry = flatPrompts[centeredFlatIdx];
+    if (!entry) return;
+    setActiveTab((prev) => (prev === entry.tabKey ? prev : entry.tabKey));
+    setPromptSelections((prev) =>
+      prev[entry.tabKey] === entry.promptIdx
+        ? prev
+        : { ...prev, [entry.tabKey]: entry.promptIdx }
+    );
+  }, [centeredFlatIdx, flatPrompts, isMobileViewport]);
 
   const handleTabClick = useCallback(
     (key: VerticalKey) => {
       handleUserInteraction();
       setActiveTab(key);
       setPromptSelections((prev) => ({ ...prev, [key]: 0 }));
+
+      // On mobile, tapping a pill smooth-scrolls the CAROUSEL (not the page)
+      // to that tab's first flat card. Direct user gesture -> smooth scroll
+      // on the carousel container is fine.
+      if (isMobileViewport) {
+        const firstIdx = flatPrompts.findIndex((p) => p.tabKey === key);
+        const target = promptCardRefs.current[firstIdx];
+        const scroller = promptScrollerRef.current;
+        if (target && scroller) {
+          const targetLeft = target.offsetLeft - scroller.offsetLeft;
+          scroller.scrollTo({ left: targetLeft, behavior: "smooth" });
+        }
+      }
     },
-    [handleUserInteraction]
+    [handleUserInteraction, isMobileViewport, flatPrompts]
   );
 
   const handlePromptClick = useCallback(
@@ -220,93 +255,6 @@ export default function VerticalsSection() {
     },
     [handleUserInteraction, activeTab]
   );
-
-  // Advance/retreat the active tab in response to a cross-tab swipe gesture.
-  // Resets the carousel container (only) to its boundary card with an
-  // INSTANT scroll — never smooth, never the page. This is always called
-  // synchronously from a touch handler, i.e. in direct response to user
-  // gesture, so programmatic scroll of the carousel container is allowed.
-  const handleCrossTabSwipe = useCallback(
-    (direction: 1 | -1) => {
-      const tabIdx = TAB_ITEMS.findIndex((t) => t.key === activeTab);
-      const nextTabIdx = tabIdx + direction;
-      if (nextTabIdx < 0 || nextTabIdx >= TAB_ITEMS.length) return; // no wrap-around
-
-      handleUserInteraction();
-      const nextTabKey = TAB_ITEMS[nextTabIdx].key;
-      const nextPrompts = PROMPTS[nextTabKey];
-      const nextIdx = direction === 1 ? 0 : nextPrompts.length - 1;
-
-      setActiveTab(nextTabKey);
-      setPromptSelections((prev) => ({ ...prev, [nextTabKey]: nextIdx }));
-
-      // Reset carousel container scroll instantly (no smooth behavior, no
-      // page scroll) once the new tab's cards have rendered.
-      requestAnimationFrame(() => {
-        const scroller = promptScrollerRef.current;
-        if (!scroller) return;
-        if (direction === 1) {
-          scroller.scrollLeft = 0;
-        } else {
-          scroller.scrollLeft = scroller.scrollWidth - scroller.clientWidth;
-        }
-      });
-    },
-    [activeTab, handleUserInteraction]
-  );
-
-  // "At the boundary" means the SELECTED card is the first/last one — not a
-  // raw scrollLeft comparison: with 88%-wide snap cards and their trailing
-  // margins, the last card's snap position is not the scroller's absolute
-  // max, so a scrollLeft check never fires on a real device.
-  const handlePromptTouchStart = useCallback(
-    (e: React.TouchEvent<HTMLDivElement>) => {
-      const count = PROMPTS[activeTab].length;
-      const idx = promptSelections[activeTab];
-      touchStateRef.current = {
-        startX: e.touches[0].clientX,
-        atMax: idx >= count - 1,
-        atMin: idx <= 0,
-      };
-    },
-    [activeTab, promptSelections]
-  );
-
-  const handlePromptTouchMove = useCallback(
-    (e: React.TouchEvent<HTMLDivElement>) => {
-      const touchState = touchStateRef.current;
-      if (!touchState || tabAdvanceCooldownRef.current) return;
-
-      const deltaX = touchState.startX - e.touches[0].clientX;
-
-      // Dragging left (content moves left, i.e. finger moves left) past the
-      // right boundary => advance to next tab.
-      if (touchState.atMax && deltaX > SWIPE_THRESHOLD) {
-        tabAdvanceCooldownRef.current = true;
-        handleCrossTabSwipe(1);
-        setTimeout(() => {
-          tabAdvanceCooldownRef.current = false;
-        }, 500);
-        touchStateRef.current = null;
-        return;
-      }
-
-      // Dragging right past the left boundary => go to previous tab.
-      if (touchState.atMin && deltaX < -SWIPE_THRESHOLD) {
-        tabAdvanceCooldownRef.current = true;
-        handleCrossTabSwipe(-1);
-        setTimeout(() => {
-          tabAdvanceCooldownRef.current = false;
-        }, 500);
-        touchStateRef.current = null;
-      }
-    },
-    [handleCrossTabSwipe]
-  );
-
-  const handlePromptTouchEnd = useCallback(() => {
-    touchStateRef.current = null;
-  }, []);
 
   const handleTabKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -336,8 +284,18 @@ export default function VerticalsSection() {
     [handleUserInteraction]
   );
 
-  const prompts = PROMPTS[activeTab];
-  const selectedIdx = promptSelections[activeTab];
+  const desktopPrompts = PROMPTS[activeTab];
+  const desktopSelectedIdx = promptSelections[activeTab];
+
+  // Which flat cards are "close enough" to be live (mount their demo). The
+  // centered one + its immediate neighbors, so the demo is already running
+  // as the card snaps in — no pop from placeholder to content.
+  const isLive = (flatIdx: number) => Math.abs(flatIdx - centeredFlatIdx) <= 1;
+
+  // Prompts belonging to the currently-active tab, used to render the dots
+  // (dots count within-tab, not across all flat entries).
+  const activeTabPrompts = PROMPTS[activeTab];
+  const activeTabSelectedIdx = promptSelections[activeTab];
 
   return (
     <Box
@@ -370,21 +328,15 @@ export default function VerticalsSection() {
           For the teams that run a company day to day.
         </Heading>
 
-        {/* Tabs — single swipeable row on mobile, wrapping row on desktop */}
+        {/* Tabs — wrap on mobile too now; the pills are a readout of which
+            tab the carousel is currently on, not a separate scrolling axis. */}
         <Box position="relative" mb={{ base: 4, md: 6 }}>
           <Flex
-            ref={tabScrollerRef}
             role="tablist"
             aria-label="Industry verticals"
-            gap={{ base: 2, md: 2 }}
+            gap={2}
             justifyContent="flex-start"
-            flexWrap={{ base: "nowrap", md: "wrap" }}
-            overflowX="auto"
-            css={{
-              scrollbarWidth: "none",
-              msOverflowStyle: "none",
-              "&::-webkit-scrollbar": { display: "none" },
-            }}
+            flexWrap="wrap"
           >
             {TAB_ITEMS.map((item, idx) => (
               <Box
@@ -416,7 +368,7 @@ export default function VerticalsSection() {
                 cursor="pointer"
                 whiteSpace="nowrap"
                 flexShrink={0}
-                transition="all 0.15s ease"
+                transition="all 0.2s ease"
                 _hover={{ borderColor: "surface.page" }}
                 _focus={{
                   outline: "2px solid",
@@ -428,41 +380,21 @@ export default function VerticalsSection() {
               </Box>
             ))}
           </Flex>
-          {/* Edge fade hints — mobile only, to signal the row scrolls */}
-          <Box
-            display={{ base: "block", md: "none" }}
-            position="absolute"
-            top={0}
-            bottom={0}
-            right={0}
-            w="24px"
-            pointerEvents="none"
-            bgGradient="linear(to-r, transparent, ink.primary)"
-          />
         </Box>
 
-        {/* Separator — desktop only; on phones the pills sit right above the cards */}
-        <Box
-          display={{ base: "none", md: "block" }}
-          borderTop="1px solid"
-          borderColor="rgba(255,255,255,0.15)"
-          mb={{ base: 4, md: 6 }}
-        />
-
-        {/* Tab panel. A single set of prompt options exists in the DOM (one
-            role="listbox"/"option" tree, one CTA link) so accessibility
-            queries and text lookups stay unique — only CSS display/layout
-            changes between breakpoints, not the DOM shape.
+        {/* Tab panel.
 
             Desktop (md+): unchanged two columns — text list on the left,
             one shared demo on the right.
 
-            Mobile (base): each option becomes a full card (flex column)
-            that also hosts its own WireframeGrid + VerticalDemo, laid out
-            as a horizontally swipeable, scroll-snapped row. Only the
-            selected card actually mounts VerticalDemo (others render an
-            empty placeholder box) so we're not running N animation timers
-            for off-screen cards. Dots + CTA sit below the row. */}
+            Mobile (base): one FLAT scroll-snap carousel of every prompt
+            across every tab (5 × 2 = 10 cards). Swipe just keeps going;
+            tabs are a readout above driven by which card is centered. Live
+            cards (the centered one + immediate neighbors) mount their
+            VerticalDemo so the demo is already running when the card snaps
+            in; far-away cards render a same-size placeholder to keep
+            layout stable without running N animation timers. Dots below
+            reflect progress within the CURRENT tab only. */}
         <Flex
           role="tabpanel"
           id={panelId}
@@ -472,91 +404,116 @@ export default function VerticalsSection() {
         >
           {/* Left column (desktop) / whole carousel (mobile) */}
           <Box flex="1">
+            {/* MOBILE: flat carousel across all tabs */}
             <Box
-              ref={promptScrollerRef}
-              role="listbox"
-              aria-label="Prompts"
-              display={{ base: "flex", md: "block" }}
-              overflowX={{ base: "auto", md: "visible" }}
-              onTouchStart={handlePromptTouchStart}
-              onTouchMove={handlePromptTouchMove}
-              onTouchEnd={handlePromptTouchEnd}
-              css={{
-                scrollSnapType: "x mandatory",
-                scrollbarWidth: "none",
-                msOverflowStyle: "none",
-                "&::-webkit-scrollbar": { display: "none" },
-              }}
+              display={{ base: "block", md: "none" }}
             >
-              {prompts.map((prompt, idx) => (
+              <Box
+                ref={promptScrollerRef}
+                role="listbox"
+                aria-label="Prompts"
+                display="flex"
+                overflowX="auto"
+                css={{
+                  scrollSnapType: "x mandatory",
+                  scrollbarWidth: "none",
+                  msOverflowStyle: "none",
+                  "&::-webkit-scrollbar": { display: "none" },
+                }}
+              >
+                {flatPrompts.map((entry, flatIdx) => {
+                  const isCentered = flatIdx === centeredFlatIdx;
+                  return (
+                    <Box
+                      key={`${entry.tabKey}-${entry.promptIdx}`}
+                      ref={(el: HTMLDivElement | null) => {
+                        promptCardRefs.current[flatIdx] = el;
+                      }}
+                      role="option"
+                      aria-selected={isCentered}
+                      flexShrink={0}
+                      w="88%"
+                      mr={4}
+                      css={{ scrollSnapAlign: "start" }}
+                      bg="rgba(255,255,255,0.04)"
+                      border="1px solid"
+                      borderColor={
+                        isCentered
+                          ? "rgba(255,255,255,0.3)"
+                          : "rgba(255,255,255,0.1)"
+                      }
+                      borderRadius="16px"
+                      p={4}
+                      transition="border-color 0.2s ease"
+                    >
+                      <Box
+                        color={isCentered ? "surface.page" : "rgba(255,255,255,0.55)"}
+                        fontWeight={isCentered ? "600" : "400"}
+                        fontSize="lg"
+                        transition="color 0.2s ease"
+                        mb={4}
+                      >
+                        &ldquo;{entry.text}&rdquo;
+                      </Box>
+
+                      <Box position="relative" borderRadius="12px">
+                        {isLive(flatIdx) ? (
+                          <VerticalDemo
+                            activeTab={entry.tabKey}
+                            selectedPromptIdx={entry.promptIdx}
+                          />
+                        ) : (
+                          <Box aspectRatio="3 / 4" w="100%" />
+                        )}
+                      </Box>
+                    </Box>
+                  );
+                })}
+              </Box>
+
+              {/* Dot indicators — within CURRENT tab only */}
+              <Flex justifyContent="center" gap={2} mt={3}>
+                {activeTabPrompts.map((prompt, idx) => (
+                  <Box
+                    key={prompt}
+                    as="span"
+                    w={activeTabSelectedIdx === idx ? "16px" : "6px"}
+                    h="6px"
+                    borderRadius="full"
+                    bg={activeTabSelectedIdx === idx ? "surface.page" : "rgba(255,255,255,0.25)"}
+                    transition="all 0.2s ease"
+                  />
+                ))}
+              </Flex>
+            </Box>
+
+            {/* DESKTOP: text list */}
+            <Box display={{ base: "none", md: "block" }} data-testid="verticals-desktop-list" role="listbox" aria-label="Prompts (desktop)">
+              {desktopPrompts.map((prompt, idx) => (
                 <Box
                   key={prompt}
-                  ref={(el: HTMLDivElement | null) => {
-                    promptCardRefs.current[idx] = el;
-                  }}
                   role="option"
-                  aria-selected={selectedIdx === idx}
+                  aria-selected={desktopSelectedIdx === idx}
                   onClick={() => handlePromptClick(idx)}
                   cursor="pointer"
-                  flexShrink={{ base: 0, md: "initial" }}
-                  w={{ base: "88%", md: "auto" }}
-                  mr={{ base: 4, md: 0 }}
-                  css={{ scrollSnapAlign: "start" }}
-                  bg={{ base: "rgba(255,255,255,0.04)", md: "transparent" }}
-                  border={{ base: "1px solid", md: "none" }}
-                  borderBottom={{ base: "1px solid", md: "1px solid" }}
-                  borderColor={{
-                    base:
-                      selectedIdx === idx
-                        ? "rgba(255,255,255,0.3)"
-                        : "rgba(255,255,255,0.1)",
-                    md: "rgba(255,255,255,0.15)",
-                  }}
-                  borderRadius={{ base: "16px", md: 0 }}
-                  p={{ base: 4, md: 0 }}
-                  py={{ md: 3 }}
+                  borderBottom="1px solid"
+                  borderColor="rgba(255,255,255,0.15)"
+                  py={3}
                 >
                   <Box
-                    color={selectedIdx === idx ? "surface.page" : "rgba(255,255,255,0.5)"}
-                    fontWeight={selectedIdx === idx ? "600" : "400"}
-                    fontSize={{ base: "lg", md: "xl" }}
+                    color={desktopSelectedIdx === idx ? "surface.page" : "rgba(255,255,255,0.5)"}
+                    fontWeight={desktopSelectedIdx === idx ? "600" : "400"}
+                    fontSize="xl"
                     transition="color 0.15s ease"
-                    mb={{ base: 4, md: 0 }}
                     _hover={{ color: "surface.page" }}
                   >
                     &ldquo;{prompt}&rdquo;
-                  </Box>
-
-                  {/* Mobile-only: this card's own demo animation */}
-                  <Box display={{ base: "block", md: "none" }} position="relative" borderRadius="12px">
-                    {selectedIdx === idx ? (
-                      <VerticalDemo activeTab={activeTab} selectedPromptIdx={idx} />
-                    ) : (
-                      <Box aspectRatio="3 / 4" w="100%" />
-                    )}
                   </Box>
                 </Box>
               ))}
             </Box>
 
-            {/* Dot indicators — mobile only, hint that the row swipes */}
-            <Flex display={{ base: "flex", md: "none" }} justifyContent="center" gap={2} mt={3}>
-              {prompts.map((prompt, idx) => (
-                <Box
-                  key={prompt}
-                  as="span"
-                  w={selectedIdx === idx ? "16px" : "6px"}
-                  h="6px"
-                  borderRadius="full"
-                  bg={selectedIdx === idx ? "surface.page" : "rgba(255,255,255,0.25)"}
-                  transition="all 0.2s ease"
-                />
-              ))}
-            </Flex>
-
-            {/* CTA — below the card carousel on mobile, below the text list
-                on desktop (same element, same position in the DOM either
-                way; only the spacing above it differs by breakpoint). */}
+            {/* CTA */}
             <Box mt={{ base: 6, md: 8 }}>
               <Box
                 as="button"
@@ -586,8 +543,7 @@ export default function VerticalsSection() {
             </Box>
           </Box>
 
-          {/* Right column: shared demo — desktop only now (mobile hosts its
-              own demo inside each card above). */}
+          {/* Right column: shared demo — desktop only. */}
           <Box
             display={{ base: "none", md: "block" }}
             flex="1"
@@ -617,7 +573,7 @@ export default function VerticalsSection() {
               }}
             />
             <Box position="relative" zIndex={1} bg="#1A1A1A" borderRadius="12px">
-              <VerticalDemo activeTab={activeTab} selectedPromptIdx={selectedIdx} />
+              <VerticalDemo activeTab={activeTab} selectedPromptIdx={desktopSelectedIdx} />
             </Box>
           </Box>
         </Flex>

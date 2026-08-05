@@ -1,7 +1,13 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { screen, fireEvent, act } from '@testing-library/react'
+import { screen, fireEvent, act, within } from '@testing-library/react'
 import { render } from '@/test/test-utils'
 import VerticalsSection from '../VerticalsSection'
+
+// The mobile flat carousel and the desktop list both render prompt text
+// into the DOM (they are swapped by CSS display, not by mount). All
+// prompt-related assertions therefore scope their queries to the desktop
+// list via this testid so lookups stay unique.
+const desktopList = () => screen.getByTestId('verticals-desktop-list')
 
 describe('VerticalsSection', () => {
   beforeEach(() => {
@@ -38,20 +44,20 @@ describe('VerticalsSection', () => {
     expect(freightTab).toHaveAttribute('aria-selected', 'true')
   })
 
-  it('renders human-written prompts for the active vertical', () => {
+  it('renders human-written prompts for the active vertical in the desktop list', () => {
     render(<VerticalsSection />)
-    expect(screen.getByText(/Book me a shipment with three valid quotes/)).toBeInTheDocument()
-    expect(screen.getByText(/Flag any accessorial charge we didn.t authorize/)).toBeInTheDocument()
+    expect(within(desktopList()).getByText(/Book me a shipment with three valid quotes/)).toBeInTheDocument()
+    expect(within(desktopList()).getByText(/Flag any accessorial charge we didn.t authorize/)).toBeInTheDocument()
   })
 
-  it('renders the vertical demo in the right column', () => {
+  it('renders the vertical demo tab panel', () => {
     render(<VerticalsSection />)
     expect(screen.getByRole('tabpanel')).toBeInTheDocument()
   })
 
-  it('selecting a different prompt highlights it', () => {
+  it('clicking a desktop prompt highlights it', () => {
     render(<VerticalsSection />)
-    const secondPrompt = screen.getByText(/Flag any accessorial charge/)
+    const secondPrompt = within(desktopList()).getByText(/Flag any accessorial charge/)
     fireEvent.click(secondPrompt)
     expect(secondPrompt.closest('[role="option"]')).toHaveAttribute('aria-selected', 'true')
   })
@@ -60,20 +66,20 @@ describe('VerticalsSection', () => {
     render(<VerticalsSection />)
     fireEvent.click(screen.getByRole('tab', { name: /Procurement/i }))
 
-    expect(screen.getByText(/Only pay this invoice if it matches the PO/)).toBeInTheDocument()
-    expect(screen.getByText(/Raise a PO but make sure the budget has room/)).toBeInTheDocument()
+    expect(within(desktopList()).getByText(/Only pay this invoice if it matches the PO/)).toBeInTheDocument()
+    expect(within(desktopList()).getByText(/Raise a PO but make sure the budget has room/)).toBeInTheDocument()
   })
 
   it('tab click resets to first prompt', () => {
     render(<VerticalsSection />)
-    fireEvent.click(screen.getByText(/Flag any accessorial charge/))
-    const secondOption = screen.getByText(/Flag any accessorial charge/).closest('[role="option"]')
+    fireEvent.click(within(desktopList()).getByText(/Flag any accessorial charge/))
+    const secondOption = within(desktopList()).getByText(/Flag any accessorial charge/).closest('[role="option"]')
     expect(secondOption).toHaveAttribute('aria-selected', 'true')
 
     fireEvent.click(screen.getByRole('tab', { name: /Procurement/i }))
     fireEvent.click(screen.getByRole('tab', { name: /Freight & shipping/i }))
 
-    const firstOption = screen.getByText(/Book me a shipment/).closest('[role="option"]')
+    const firstOption = within(desktopList()).getByText(/Book me a shipment/).closest('[role="option"]')
     expect(firstOption).toHaveAttribute('aria-selected', 'true')
   })
 
@@ -93,9 +99,10 @@ describe('VerticalsSection', () => {
     expect(selectedTab).toHaveAttribute('aria-controls', panelId)
     expect(panel).toHaveAttribute('aria-labelledby', selectedTab.getAttribute('id'))
 
-    const listbox = screen.getByRole('listbox')
-    expect(listbox).toBeInTheDocument()
-    const options = screen.getAllByRole('option')
+    // Both the mobile flat carousel and the desktop list expose role=listbox.
+    const listboxes = screen.getAllByRole('listbox')
+    expect(listboxes.length).toBeGreaterThanOrEqual(1)
+    const options = desktopList().querySelectorAll('[role="option"]')
     expect(options.length).toBeGreaterThanOrEqual(2)
   })
 
@@ -121,15 +128,16 @@ describe('VerticalsSection', () => {
     expect(document.activeElement).toBe(financeTab)
   })
 
-  // Auto-cycling tests
+  // Auto-cycling tests (desktop behavior; useMatchMedia in jsdom defaults
+  // to non-matching, so the component treats itself as desktop here).
 
   it('auto-advances to next prompt after interval', () => {
     render(<VerticalsSection />)
-    const firstOption = screen.getByText(/Book me a shipment/).closest('[role="option"]')
+    const firstOption = within(desktopList()).getByText(/Book me a shipment/).closest('[role="option"]')
     expect(firstOption).toHaveAttribute('aria-selected', 'true')
 
     act(() => { vi.advanceTimersByTime(4000) })
-    const secondOption = screen.getByText(/Flag any accessorial charge/).closest('[role="option"]')
+    const secondOption = within(desktopList()).getByText(/Flag any accessorial charge/).closest('[role="option"]')
     expect(secondOption).toHaveAttribute('aria-selected', 'true')
   })
 
@@ -139,14 +147,14 @@ describe('VerticalsSection', () => {
     act(() => { vi.advanceTimersByTime(4000) }) // procurement prompt 0
 
     expect(screen.getByRole('tab', { name: /Procurement/i })).toHaveAttribute('aria-selected', 'true')
-    expect(screen.getByText(/Only pay this invoice/)).toBeInTheDocument()
+    expect(within(desktopList()).getByText(/Only pay this invoice/)).toBeInTheDocument()
   })
 
   it('stops auto-cycling on user click and resumes after idle', () => {
     render(<VerticalsSection />)
 
-    fireEvent.click(screen.getByText(/Flag any accessorial charge/))
-    const secondOption = screen.getByText(/Flag any accessorial charge/).closest('[role="option"]')
+    fireEvent.click(within(desktopList()).getByText(/Flag any accessorial charge/))
+    const secondOption = within(desktopList()).getByText(/Flag any accessorial charge/).closest('[role="option"]')
     expect(secondOption).toHaveAttribute('aria-selected', 'true')
 
     // Should NOT auto-advance while paused
