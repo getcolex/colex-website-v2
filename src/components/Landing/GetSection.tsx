@@ -116,7 +116,7 @@ export default function GetSection() {
                     borderRadius="12px"
                     overflow="hidden"
                     bg="brand.primary"
-                    aspectRatio={{ base: "16 / 9", md: "4 / 3" }}
+                    aspectRatio={{ base: "4 / 5", md: "4 / 3" }}
                   >
                     <Demo />
                   </Box>

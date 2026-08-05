@@ -1,6 +1,9 @@
 "use client";
 
 import { Box, Container, Text, Flex, Heading } from "@chakra-ui/react";
+import { motion } from "motion/react";
+
+const MotionBox = motion.create(Box);
 
 const rows = [
   {
@@ -195,49 +198,60 @@ export default function MomentsSection() {
           ))}
         </Box>
 
-        {/* ── Mobile layout: 2 columns, no labels ── */}
+        {/* ── Mobile layout: two stacked full-width tables, Colex reveals on scroll ── */}
         <Box display={{ base: "block", md: "none" }}>
-          <Flex gap={4} mb={6}>
-            <Box flex="1">
-              <Text fontSize="xs" fontWeight="700" color="#EF4444" textTransform="uppercase" letterSpacing="0.08em" mb={2}>
-                Automation
-              </Text>
-              <Box h="2px" bg="#EF4444" opacity={0.3} />
-            </Box>
-            <Box flex="1">
-              <Text fontSize="xs" fontWeight="700" color="#10B981" textTransform="uppercase" letterSpacing="0.08em" mb={2}>
-                Colex
-              </Text>
-              <Box h="2px" bg="#10B981" opacity={0.3} />
-            </Box>
-          </Flex>
+          {/* Automation table */}
+          <Box mb={10}>
+            <Text fontSize="xs" fontWeight="700" color="#EF4444" textTransform="uppercase" letterSpacing="0.08em" mb={2}>
+              Automation
+            </Text>
+            <Box h="2px" bg="#EF4444" opacity={0.3} mb={2} />
 
-          {rows.map((row, i) => (
-            <Flex
-              key={i}
-              gap={4}
-              py={4}
-              borderBottom={i < rows.length - 1 ? "1px solid" : "none"}
-              borderColor="rgba(0,0,0,0.06)"
-            >
-              <Box flex="1">
-                <Flex align="flex-start" gap={2}>
+            {rows.map((row, i) => (
+              <Box
+                key={i}
+                py={4}
+                borderBottom={i < rows.length - 1 ? "1px solid" : "none"}
+                borderColor="rgba(0,0,0,0.06)"
+              >
+                <Flex align="flex-start" gap={3}>
                   <Box pt={0.5}><RedX /></Box>
                   <Text fontSize="sm" color="ink.muted" lineHeight="1.5">
                     {row.automation}
                   </Text>
                 </Flex>
               </Box>
-              <Box flex="1">
-                <Flex align="flex-start" gap={2}>
+            ))}
+          </Box>
+
+          {/* Colex table — animates in on scroll */}
+          <MotionBox
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <Text fontSize="xs" fontWeight="700" color="#10B981" textTransform="uppercase" letterSpacing="0.08em" mb={2}>
+              Colex
+            </Text>
+            <Box h="2px" bg="#10B981" opacity={0.3} mb={2} />
+
+            {rows.map((row, i) => (
+              <Box
+                key={i}
+                py={4}
+                borderBottom={i < rows.length - 1 ? "1px solid" : "none"}
+                borderColor="rgba(0,0,0,0.06)"
+              >
+                <Flex align="flex-start" gap={3}>
                   <Box pt={0.5}><GreenCheck /></Box>
                   <Text fontSize="sm" color="ink.primary" fontWeight="600" lineHeight="1.5">
                     {row.colex}
                   </Text>
                 </Flex>
               </Box>
-            </Flex>
-          ))}
+            ))}
+          </MotionBox>
         </Box>
       </Container>
     </Box>

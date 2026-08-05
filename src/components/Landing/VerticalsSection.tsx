@@ -61,6 +61,22 @@ export default function VerticalsSection() {
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const panelId = "verticals-tabpanel";
 
+  // Mobile pill row: single swipeable row (no programmatic scrolling — see
+  // below, the page must never be scrolled by this section).
+  const tabScrollerRef = useRef<HTMLDivElement | null>(null);
+
+  // Mobile prompt carousel: scroll-snap track + per-card refs. Each card
+  // hosts its own text + demo animation. An IntersectionObserver watches
+  // which card is snapped into view and uses that to drive activeTab /
+  // selectedIdx on mobile — swipes are the sole source of truth there.
+  // IMPORTANT: this section must never programmatically scroll anything —
+  // no element.scrollIntoView (it walks up and scrolls ALL scrollable
+  // ancestors, including the document, which was previously yanking the
+  // whole page down to this section whenever the demo auto-cycle advanced).
+  // There is intentionally no auto-scroll-to-selection effect below.
+  const promptScrollerRef = useRef<HTMLDivElement | null>(null);
+  const promptCardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
   // Advance to next prompt, wrapping to next vertical when exhausted
   const advance = useCallback(() => {
     setActiveTab((prevTab) => {
@@ -120,6 +136,45 @@ export default function VerticalsSection() {
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
     };
   }, []);
+
+  // Each mobile card renders its own VerticalDemo, so only the card the user
+  // has swiped to needs to actually be selected/animating. An
+  // IntersectionObserver watches the cards inside the scroller and, when a
+  // swipe settles a new card into view (>=60% visible), promotes it to the
+  // active prompt. This makes swiping itself the interaction — no click
+  // needed — and naturally wins over auto-cycle because it re-marks
+  // "user scrolled" whenever the observer fires from a real scroll.
+  useEffect(() => {
+    const scroller = promptScrollerRef.current;
+    if (!scroller || typeof IntersectionObserver !== "function") return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const mostVisible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!mostVisible) return;
+
+        const idx = promptCardRefs.current.findIndex(
+          (el) => el === mostVisible.target
+        );
+        if (idx === -1) return;
+
+        setPromptSelections((prev) =>
+          prev[activeTab] === idx ? prev : { ...prev, [activeTab]: idx }
+        );
+      },
+      { root: scroller, threshold: [0.6] }
+    );
+
+    promptCardRefs.current.forEach((el) => {
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+    // Re-observe whenever the active vertical changes (card refs get
+    // replaced since each vertical renders its own set of prompt cards).
+  }, [activeTab]);
 
   const handleTabClick = useCallback(
     (key: VerticalKey) => {
@@ -200,57 +255,76 @@ export default function VerticalsSection() {
           For the teams that run a company day to day.
         </Heading>
 
-        {/* Tabs — left-aligned */}
-        <Flex
-          role="tablist"
-          aria-label="Industry verticals"
-          gap={{ base: 1, md: 2 }}
-          justifyContent="flex-start"
-          flexWrap="wrap"
-          mb={{ base: 4, md: 6 }}
-          overflowX="auto"
-        >
-          {TAB_ITEMS.map((item, idx) => (
-            <Box
-              as="button"
-              key={item.key}
-              role="tab"
-              id={`vertical-tab-${item.key}`}
-              aria-selected={activeTab === item.key}
-              aria-controls={panelId}
-              tabIndex={activeTab === item.key ? 0 : -1}
-              ref={(el: HTMLButtonElement | null) => {
-                tabRefs.current[idx] = el;
-              }}
-              onClick={() => handleTabClick(item.key)}
-              onKeyDown={handleTabKeyDown}
-              px={{ base: 3, md: 5 }}
-              py={{ base: 2, md: 2.5 }}
-              borderRadius="full"
-              border="1px solid"
-              borderColor={
-                activeTab === item.key ? "surface.page" : "rgba(255,255,255,0.2)"
-              }
-              bg={activeTab === item.key ? "surface.page" : "transparent"}
-              color={
-                activeTab === item.key ? "ink.primary" : "surface.page"
-              }
-              fontSize={{ base: "xs", md: "sm" }}
-              fontWeight="500"
-              cursor="pointer"
-              whiteSpace="nowrap"
-              transition="all 0.15s ease"
-              _hover={{ borderColor: "surface.page" }}
-              _focus={{
-                outline: "2px solid",
-                outlineColor: "surface.page",
-                outlineOffset: "2px",
-              }}
-            >
-              {item.label}
-            </Box>
-          ))}
-        </Flex>
+        {/* Tabs — single swipeable row on mobile, wrapping row on desktop */}
+        <Box position="relative" mb={{ base: 4, md: 6 }}>
+          <Flex
+            ref={tabScrollerRef}
+            role="tablist"
+            aria-label="Industry verticals"
+            gap={{ base: 2, md: 2 }}
+            justifyContent="flex-start"
+            flexWrap={{ base: "nowrap", md: "wrap" }}
+            overflowX="auto"
+            css={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+              "&::-webkit-scrollbar": { display: "none" },
+            }}
+          >
+            {TAB_ITEMS.map((item, idx) => (
+              <Box
+                as="button"
+                key={item.key}
+                role="tab"
+                id={`vertical-tab-${item.key}`}
+                aria-selected={activeTab === item.key}
+                aria-controls={panelId}
+                tabIndex={activeTab === item.key ? 0 : -1}
+                ref={(el: HTMLButtonElement | null) => {
+                  tabRefs.current[idx] = el;
+                }}
+                onClick={() => handleTabClick(item.key)}
+                onKeyDown={handleTabKeyDown}
+                px={{ base: 3, md: 5 }}
+                py={{ base: 2, md: 2.5 }}
+                borderRadius="full"
+                border="1px solid"
+                borderColor={
+                  activeTab === item.key ? "surface.page" : "rgba(255,255,255,0.2)"
+                }
+                bg={activeTab === item.key ? "surface.page" : "transparent"}
+                color={
+                  activeTab === item.key ? "ink.primary" : "surface.page"
+                }
+                fontSize={{ base: "xs", md: "sm" }}
+                fontWeight="500"
+                cursor="pointer"
+                whiteSpace="nowrap"
+                flexShrink={0}
+                transition="all 0.15s ease"
+                _hover={{ borderColor: "surface.page" }}
+                _focus={{
+                  outline: "2px solid",
+                  outlineColor: "surface.page",
+                  outlineOffset: "2px",
+                }}
+              >
+                {item.label}
+              </Box>
+            ))}
+          </Flex>
+          {/* Edge fade hints — mobile only, to signal the row scrolls */}
+          <Box
+            display={{ base: "block", md: "none" }}
+            position="absolute"
+            top={0}
+            bottom={0}
+            right={0}
+            w="24px"
+            pointerEvents="none"
+            bgGradient="linear(to-r, transparent, ink.primary)"
+          />
+        </Box>
 
         {/* Separator */}
         <Box
@@ -259,7 +333,20 @@ export default function VerticalsSection() {
           mb={{ base: 4, md: 6 }}
         />
 
-        {/* Tab panel — two columns */}
+        {/* Tab panel. A single set of prompt options exists in the DOM (one
+            role="listbox"/"option" tree, one CTA link) so accessibility
+            queries and text lookups stay unique — only CSS display/layout
+            changes between breakpoints, not the DOM shape.
+
+            Desktop (md+): unchanged two columns — text list on the left,
+            one shared demo on the right.
+
+            Mobile (base): each option becomes a full card (flex column)
+            that also hosts its own WireframeGrid + VerticalDemo, laid out
+            as a horizontally swipeable, scroll-snapped row. Only the
+            selected card actually mounts VerticalDemo (others render an
+            empty placeholder box) so we're not running N animation timers
+            for off-screen cards. Dots + CTA sit below the row. */}
         <Flex
           role="tabpanel"
           id={panelId}
@@ -267,33 +354,90 @@ export default function VerticalsSection() {
           direction={{ base: "column", md: "row" }}
           gap={{ base: 6, md: 10 }}
         >
-          {/* Left column: Human-written prompts */}
-          <Box
-            flex="1"
-            role="listbox"
-            aria-label="Prompts"
-          >
-            {prompts.map((prompt, idx) => (
-              <Box
-                key={prompt}
-                role="option"
-                aria-selected={selectedIdx === idx}
-                onClick={() => handlePromptClick(idx)}
-                cursor="pointer"
-                py={3}
-                borderBottom="1px solid"
-                borderColor="rgba(255,255,255,0.15)"
-                transition="color 0.15s ease"
-                color={selectedIdx === idx ? "surface.page" : "rgba(255,255,255,0.5)"}
-                fontWeight={selectedIdx === idx ? "600" : "400"}
-                fontSize={{ base: "lg", md: "xl" }}
-                _hover={{ color: "surface.page" }}
-              >
-                &ldquo;{prompt}&rdquo;
-              </Box>
-            ))}
+          {/* Left column (desktop) / whole carousel (mobile) */}
+          <Box flex="1">
+            <Box
+              ref={promptScrollerRef}
+              role="listbox"
+              aria-label="Prompts"
+              display={{ base: "flex", md: "block" }}
+              overflowX={{ base: "auto", md: "visible" }}
+              css={{
+                scrollSnapType: "x mandatory",
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+                "&::-webkit-scrollbar": { display: "none" },
+              }}
+            >
+              {prompts.map((prompt, idx) => (
+                <Box
+                  key={prompt}
+                  ref={(el: HTMLDivElement | null) => {
+                    promptCardRefs.current[idx] = el;
+                  }}
+                  role="option"
+                  aria-selected={selectedIdx === idx}
+                  onClick={() => handlePromptClick(idx)}
+                  cursor="pointer"
+                  flexShrink={{ base: 0, md: "initial" }}
+                  w={{ base: "88%", md: "auto" }}
+                  mr={{ base: 4, md: 0 }}
+                  css={{ scrollSnapAlign: "start" }}
+                  bg={{ base: "rgba(255,255,255,0.04)", md: "transparent" }}
+                  border={{ base: "1px solid", md: "none" }}
+                  borderBottom={{ base: "1px solid", md: "1px solid" }}
+                  borderColor={{
+                    base:
+                      selectedIdx === idx
+                        ? "rgba(255,255,255,0.3)"
+                        : "rgba(255,255,255,0.1)",
+                    md: "rgba(255,255,255,0.15)",
+                  }}
+                  borderRadius={{ base: "16px", md: 0 }}
+                  p={{ base: 4, md: 0 }}
+                  py={{ md: 3 }}
+                >
+                  <Box
+                    color={selectedIdx === idx ? "surface.page" : "rgba(255,255,255,0.5)"}
+                    fontWeight={selectedIdx === idx ? "600" : "400"}
+                    fontSize={{ base: "lg", md: "xl" }}
+                    transition="color 0.15s ease"
+                    mb={{ base: 4, md: 0 }}
+                    _hover={{ color: "surface.page" }}
+                  >
+                    &ldquo;{prompt}&rdquo;
+                  </Box>
 
-            {/* CTA */}
+                  {/* Mobile-only: this card's own demo animation */}
+                  <Box display={{ base: "block", md: "none" }} position="relative" borderRadius="12px">
+                    {selectedIdx === idx ? (
+                      <VerticalDemo activeTab={activeTab} selectedPromptIdx={idx} />
+                    ) : (
+                      <Box aspectRatio="3 / 4" w="100%" />
+                    )}
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+
+            {/* Dot indicators — mobile only, hint that the row swipes */}
+            <Flex display={{ base: "flex", md: "none" }} justifyContent="center" gap={2} mt={3}>
+              {prompts.map((prompt, idx) => (
+                <Box
+                  key={prompt}
+                  as="span"
+                  w={selectedIdx === idx ? "16px" : "6px"}
+                  h="6px"
+                  borderRadius="full"
+                  bg={selectedIdx === idx ? "surface.page" : "rgba(255,255,255,0.25)"}
+                  transition="all 0.2s ease"
+                />
+              ))}
+            </Flex>
+
+            {/* CTA — below the card carousel on mobile, below the text list
+                on desktop (same element, same position in the DOM either
+                way; only the spacing above it differs by breakpoint). */}
             <Box mt={{ base: 6, md: 8 }}>
               <Link
                 href="#book-demo"
@@ -321,8 +465,15 @@ export default function VerticalsSection() {
             </Box>
           </Box>
 
-          {/* Right column: Animated demo with wireframe grid behind */}
-          <Box flex="1" position="relative" p={{ base: 4, md: 8, lg: 10 }} borderRadius="20px">
+          {/* Right column: shared demo — desktop only now (mobile hosts its
+              own demo inside each card above). */}
+          <Box
+            display={{ base: "none", md: "block" }}
+            flex="1"
+            position="relative"
+            p={{ md: 8, lg: 10 }}
+            borderRadius="20px"
+          >
             <WireframeGrid preset="verticals" lineColor="#F8F7F4" />
             {/* Feather edges into section bg */}
             <Box

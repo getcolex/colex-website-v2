@@ -222,7 +222,7 @@ export function DemoContainer({
 }: {
   children: React.ReactNode;
   variant?: "light" | "dark" | "maroon";
-  aspectRatio?: string;
+  aspectRatio?: string | Record<string, string>;
   flush?: boolean;
 }) {
   const styles = {

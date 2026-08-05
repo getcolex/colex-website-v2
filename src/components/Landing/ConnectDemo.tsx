@@ -25,7 +25,6 @@ const INTER_CARD_GAP = 400;
 const ACTIVITY_DELAY = 800;
 const ACTIVITY_STAGGER = 500;
 const END_PAUSE = 1200;
-const FADE_OUT_DURATION = 600;
 
 type IntegrationStatus = "hidden" | "connecting" | "connected";
 
@@ -34,8 +33,8 @@ type IntegrationStatus = "hidden" | "connecting" | "connected";
 function IntegrationIcon({ letter, bg }: { letter: string; bg: string }) {
   return (
     <Flex
-      w={{ base: "24px", md: "28px" }}
-      h={{ base: "24px", md: "28px" }}
+      w="28px"
+      h="28px"
       borderRadius="8px"
       bg={bg}
       align="center"
@@ -94,7 +93,7 @@ function IntegrationRow({
       border="1px solid rgba(255,255,255,0.12)"
       borderRadius="8px"
       px={3}
-      py={{ base: 1.5, md: 2.5 }}
+      py={2.5}
     >
       <IntegrationIcon letter={letter} bg={iconColor} />
       <Text fontSize="sm" color="#F8F7F4" fontWeight="500" flex="1">
@@ -148,7 +147,7 @@ function ActivityItem({
       display="flex"
       alignItems="center"
       gap={2}
-      py={{ base: 0.5, md: 1 }}
+      py={1}
     >
       <Box
         w="5px"
@@ -176,7 +175,6 @@ export function ConnectDemo() {
     "hidden",
   ]);
   const [showActivity, setShowActivity] = useState(false);
-  const [visible, setVisible] = useState(true);
   const [cycle, setCycle] = useState(0);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
@@ -193,7 +191,6 @@ export function ConnectDemo() {
     clearTimers();
     setStatuses(["hidden", "hidden", "hidden"]);
     setShowActivity(false);
-    setVisible(true);
 
     const t = 0;
 
@@ -232,7 +229,9 @@ export function ConnectDemo() {
       setShowActivity(true);
     }, allConnectedAt + ACTIVITY_DELAY);
 
-    // Fade out and restart cycle
+    // Restart cycle — changing the `cycle` key on the MotionBox below drives
+    // an exit/enter crossfade through AnimatePresence directly, so there's
+    // no separate "hidden" gap where the panel would render fully empty.
     const totalDuration =
       allConnectedAt +
       ACTIVITY_DELAY +
@@ -240,12 +239,8 @@ export function ConnectDemo() {
       END_PAUSE;
 
     addTimer(() => {
-      setVisible(false);
-    }, totalDuration);
-
-    addTimer(() => {
       setCycle((c) => c + 1);
-    }, totalDuration + FADE_OUT_DURATION);
+    }, totalDuration);
 
     return clearTimers;
   }, [cycle, clearTimers, addTimer]);
@@ -255,106 +250,92 @@ export function ConnectDemo() {
   return (
     <DemoContainer variant="maroon" flush>
       <AnimatePresence mode="wait">
-        {visible && (
-          <MotionBox
-            key={cycle}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            display="flex"
-            flexDirection="column"
-            h="100%"
-          >
-            {/* Header */}
-            <Flex align="center" justify="space-between" mb={{ base: 2.5, md: 4 }}>
-              <Text
-                fontSize="xs"
-                fontWeight="700"
-                color="rgba(255,255,255,0.5)"
-                textTransform="uppercase"
-                letterSpacing="0.08em"
-              >
-                Connections
-              </Text>
-              <Text fontSize="xs" color="rgba(255,255,255,0.5)" fontWeight="500">
-                {connectedCount} active
-              </Text>
-            </Flex>
+        <MotionBox
+          key={cycle}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          display="flex"
+          flexDirection="column"
+          h="100%"
+        >
+          {/* Header */}
+          <Flex align="center" justify="space-between" mb={4}>
+            <Text
+              fontSize="xs"
+              fontWeight="700"
+              color="rgba(255,255,255,0.5)"
+              textTransform="uppercase"
+              letterSpacing="0.08em"
+            >
+              Connections
+            </Text>
+            <Text fontSize="xs" color="rgba(255,255,255,0.5)" fontWeight="500">
+              {connectedCount} active
+            </Text>
+          </Flex>
 
-            {/* Integration rows */}
-            <Flex direction="column" gap={{ base: 1.5, md: 2 }} mb={{ base: 2.5, md: 4 }}>
-              <AnimatePresence>
-                {INTEGRATIONS.map((intg, i) =>
-                  statuses[i] !== "hidden" ? (
-                    <IntegrationRow
-                      key={intg.key}
-                      letter={intg.letter}
-                      name={intg.name}
-                      iconColor={intg.color}
-                      status={statuses[i]}
-                    />
-                  ) : null,
-                )}
-              </AnimatePresence>
-            </Flex>
-
-            {/* Activity feed */}
+          {/* Integration rows */}
+          <Flex direction="column" gap={2} mb={4}>
             <AnimatePresence>
-              {showActivity && (
-                <MotionBox
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  mt="auto"
-                >
-                  <Flex align="center" gap={1.5} mb={{ base: 1, md: 2 }}>
-                    <PulsingDot color="#10B981" />
-                    <Text
-                      fontSize="xs"
-                      fontWeight="600"
-                      color="#10B981"
-                      letterSpacing="0.04em"
-                    >
-                      Data flowing
-                    </Text>
-                  </Flex>
-                  <Box
-                    bg="rgba(255,255,255,0.04)"
-                    borderRadius="8px"
-                    px={3}
-                    py={{ base: 1, md: 2 }}
-                    border="1px solid rgba(255,255,255,0.08)"
-                  >
-                    {ACTIVITY_ITEMS.map((item, i) => (
-                      <ActivityItem
-                        key={item.text}
-                        text={item.text}
-                        dot={item.dot}
-                        time={item.time}
-                        delay={i * 0.4}
-                      />
-                    ))}
-                  </Box>
-                </MotionBox>
+              {INTEGRATIONS.map((intg, i) =>
+                statuses[i] !== "hidden" ? (
+                  <IntegrationRow
+                    key={intg.key}
+                    letter={intg.letter}
+                    name={intg.name}
+                    iconColor={intg.color}
+                    status={statuses[i]}
+                  />
+                ) : null,
               )}
             </AnimatePresence>
-          </MotionBox>
-        )}
-      </AnimatePresence>
+          </Flex>
 
-      {/* Bottom fade — safety net if content ever exceeds the mobile panel height */}
-      <Box
-        display={{ base: "block", md: "none" }}
-        position="absolute"
-        left={0}
-        right={0}
-        bottom={0}
-        h="28px"
-        bgGradient="linear(to-b, transparent, rgba(58,6,36,0.9))"
-        pointerEvents="none"
-      />
+          {/* Activity feed */}
+          <AnimatePresence>
+            {showActivity && (
+              <MotionBox
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                mt="auto"
+              >
+                <Flex align="center" gap={1.5} mb={2}>
+                  <PulsingDot color="#10B981" />
+                  <Text
+                    fontSize="xs"
+                    fontWeight="600"
+                    color="#10B981"
+                    letterSpacing="0.04em"
+                  >
+                    Data flowing
+                  </Text>
+                </Flex>
+                <Box
+                  bg="rgba(255,255,255,0.04)"
+                  borderRadius="8px"
+                  px={3}
+                  py={2}
+                  border="1px solid rgba(255,255,255,0.08)"
+                >
+                  {ACTIVITY_ITEMS.map((item, i) => (
+                    <ActivityItem
+                      key={item.text}
+                      text={item.text}
+                      dot={item.dot}
+                      time={item.time}
+                      delay={i * 0.4}
+                    />
+                  ))}
+                </Box>
+              </MotionBox>
+            )}
+          </AnimatePresence>
+        </MotionBox>
+      </AnimatePresence>
     </DemoContainer>
   );
 }

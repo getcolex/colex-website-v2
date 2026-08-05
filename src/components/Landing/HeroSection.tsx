@@ -143,11 +143,11 @@ export default function HeroSection() {
             </Box>
           </Box>
 
-          {/* Right side - Demo (cols 8-12 on desktop, stacked below CTAs on mobile) */}
+          {/* Right side - Demo (cols 8-12, desktop only) */}
           <Box
             data-testid="hero-demo-col"
             gridColumn={{ base: "1", lg: "8 / 13" }}
-            display="flex"
+            display={{ base: "none", lg: "flex" }}
             w="full"
             maxW="100%"
             overflow="hidden"

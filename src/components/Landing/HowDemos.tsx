@@ -984,7 +984,11 @@ export function UpdateDemo() {
 
   return (
     <DemoContainer variant="maroon" flush>
+      {/* Base: center+distribute so sparse early phases don't leave a dead
+          gap under the rule box; md+: natural top-anchored stack (unchanged). */}
+      <Flex direction="column" flex="1" justifyContent={{ base: "center", md: "flex-start" }} gap={{ base: 4, md: 0 }}>
       {/* Rule section */}
+      <Box>
       <SectionHeader dark>Rule updated</SectionHeader>
       <Box
         bg="rgba(255,255,255,0.06)"
@@ -992,8 +996,8 @@ export function UpdateDemo() {
         borderColor={phase >= 1 && phase <= 2 ? "#3B82F6" : phase >= 6 ? "#10B981" : "rgba(255,255,255,0.12)"}
         borderRadius="8px"
         px={3}
-        py={2}
-        mb={2}
+        py={{ base: 3, md: 2 }}
+        mb={{ base: 0, md: 2 }}
         transition="border-color 0.3s"
         boxShadow={phase >= 1 && phase <= 2 ? "0 0 0 2px rgba(59,130,246,0.2)" : "none"}
       >
@@ -1008,6 +1012,7 @@ export function UpdateDemo() {
           )}
         </Flex>
       </Box>
+      </Box>
 
       {/* Propagation */}
       <AnimatePresence>
@@ -1019,7 +1024,7 @@ export function UpdateDemo() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             textAlign="center"
-            mb={2}
+            mb={{ base: 0, md: 2 }}
           >
             <Text fontSize="sm" color="rgba(255,255,255,0.5)">↓</Text>
           </MotionBox>
@@ -1034,7 +1039,7 @@ export function UpdateDemo() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            mb={2}
+            mb={{ base: 0, md: 2 }}
           >
             <SectionHeader dark>Task redeployed</SectionHeader>
             <Box
@@ -1043,7 +1048,7 @@ export function UpdateDemo() {
               borderColor={phase >= 6 ? "#10B981" : "rgba(255,255,255,0.12)"}
               borderRadius="8px"
               px={3}
-              py={2}
+              py={{ base: 3, md: 2 }}
               transition="border-color 0.3s"
             >
               <Flex align="center" gap={2}>
@@ -1073,7 +1078,7 @@ export function UpdateDemo() {
               borderColor="rgba(255,255,255,0.12)"
               borderRadius="8px"
               px={3}
-              py={2}
+              py={{ base: 3, md: 2 }}
             >
               {/* Existing fields */}
               <Flex align="center" gap={2} mb={1.5}>
@@ -1100,6 +1105,7 @@ export function UpdateDemo() {
           </MotionBox>
         )}
       </AnimatePresence>
+      </Flex>
     </DemoContainer>
   );
 }

@@ -145,14 +145,12 @@ function resetPreset(preset: GridPreset) {
 
 /* --- The animated grid mesh --- */
 
-// Presets were tuned on desktop aspect ratios; on narrow viewports the same
-// cell count reads as fog. Crop the camera in on mobile so the grid stays legible.
-const MOBILE_ZOOM_BOOST = 1.5;
+// Grids are desktop-only: below this width the component renders nothing.
 const MOBILE_BREAKPOINT_PX = 640;
 
 function WaveGrid({ preset, color }: { preset: GridPreset; color: string }) {
   const matRef = useRef<THREE.MeshBasicMaterial>(null);
-  const { camera, size } = useThree();
+  const { camera } = useThree();
 
   // Re-render (and rebuild geometry) when geometry-shaping params change
   useSyncExternalStore(subscribe, getVersion, getVersion);
@@ -206,8 +204,7 @@ function WaveGrid({ preset, color }: { preset: GridPreset; color: string }) {
     if (matRef.current) matRef.current.opacity = params.opacity;
 
     const cam = camera as THREE.PerspectiveCamera;
-    const boost = size.width < MOBILE_BREAKPOINT_PX ? MOBILE_ZOOM_BOOST : 1;
-    const z = (params.zoom || 1) * boost;
+    const z = params.zoom || 1;
     cam.position.set(0, params.cameraY, params.cameraZ / z);
     cam.fov = params.fov / z;
     cam.updateProjectionMatrix();
@@ -239,12 +236,19 @@ export default function WireframeGrid({
   lineColor = "#49082D",
 }: WireframeGridProps) {
   const p = store[preset];
-  // Match the per-frame mobile boost so the first frame doesn't pop.
-  const initialBoost =
-    typeof window !== "undefined" && window.innerWidth < MOBILE_BREAKPOINT_PX
-      ? MOBILE_ZOOM_BOOST
-      : 1;
-  const initialZoom = (p.zoom || 1) * initialBoost;
+  // No grids on phones: skip the WebGL canvas entirely below the breakpoint
+  // (a display:none canvas would still burn GPU per instance).
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth < MOBILE_BREAKPOINT_PX
+  );
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT_PX - 1}px)`);
+    const onChange = () => setIsMobile(mq.matches);
+    onChange();
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+  if (isMobile) return null;
   return (
     <Box
       position="absolute"
@@ -255,8 +259,8 @@ export default function WireframeGrid({
     >
       <Canvas
         camera={{
-          position: [0, p.cameraY, p.cameraZ / initialZoom],
-          fov: p.fov / initialZoom,
+          position: [0, p.cameraY, p.cameraZ / (p.zoom || 1)],
+          fov: p.fov / (p.zoom || 1),
         }}
         style={{ background: "transparent" }}
         gl={{ antialias: true, alpha: true }}

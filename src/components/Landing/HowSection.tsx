@@ -108,7 +108,7 @@ export default function HowSection() {
                   w={{ base: "100%", md: "50%" }}
                   position="relative"
 
-                  p={{ base: 6, md: 10, lg: 12 }}
+                  p={{ base: 2, md: 10, lg: 12 }}
                   borderRadius="20px"
                 >
                   {/* Neat animated gradient behind card */}
