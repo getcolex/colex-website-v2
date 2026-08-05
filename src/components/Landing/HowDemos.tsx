@@ -431,7 +431,7 @@ export function ViewDemo() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              mb={3}
+              mb={{ base: 2, md: 3 }}
             >
               <Flex align="center" gap={2}>
                 <Box w="8px" h="8px" borderRadius="full" bg="#3B82F6" flexShrink={0} />
@@ -454,7 +454,7 @@ export function ViewDemo() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.2 }}
-              mb={2}
+              mb={{ base: 1, md: 2 }}
             >
               <Text
                 fontSize="xs"
@@ -462,6 +462,7 @@ export function ViewDemo() {
                 color="#71717A"
                 textTransform="uppercase"
                 letterSpacing="0.04em"
+                display={{ base: "none", md: "block" }}
               >
                 Carrier Quote Form
               </Text>
@@ -480,7 +481,7 @@ export function ViewDemo() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.25 }}
-                mb={2}
+                mb={{ base: 1, md: 2 }}
               >
                 {/* Field label */}
                 <Text
@@ -489,7 +490,7 @@ export function ViewDemo() {
                   color="#71717A"
                   textTransform="uppercase"
                   letterSpacing="0.04em"
-                  mb={1}
+                  mb={{ base: 0.5, md: 1 }}
                 >
                   {field.label}
                 </Text>
@@ -500,7 +501,7 @@ export function ViewDemo() {
                   borderColor="#E7E5E4"
                   borderRadius="8px"
                   px={3}
-                  py={1.5}
+                  py={{ base: 1, md: 1.5 }}
                 >
                   <Flex align="center" justify="space-between">
                     <Text
@@ -528,7 +529,7 @@ export function ViewDemo() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              mb={2}
+              mb={{ base: 1, md: 2 }}
             >
               <Box
                 bg="white"
@@ -541,7 +542,7 @@ export function ViewDemo() {
                 <Flex
                   bg="#F5F5F4"
                   px={3}
-                  py={1.5}
+                  py={{ base: 1, md: 1.5 }}
                   borderBottom="1px solid"
                   borderColor="#E7E5E4"
                 >
@@ -561,7 +562,7 @@ export function ViewDemo() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.2, delay: 0.1 }}
                 >
-                  <Flex px={3} py={1.5}>
+                  <Flex px={3} py={{ base: 1, md: 1.5 }}>
                     <Text flex={1} fontSize="sm" fontWeight="500" color="#1A1A1A">
                       MSC
                     </Text>
@@ -690,9 +691,9 @@ export function RunDemo() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              mb={3}
+              mb={{ base: 2, md: 3 }}
             >
-              <Flex align="center" justify="space-between" mb={1.5}>
+              <Flex align="center" justify="space-between" mb={{ base: 1, md: 1.5 }}>
                 <Flex align="center" gap={2}>
                   <Box
                     w="14px"
@@ -737,7 +738,7 @@ export function RunDemo() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.25 }}
-              mb={2}
+              mb={{ base: 1, md: 2 }}
             >
               <Box
                 bg="white"
@@ -750,7 +751,7 @@ export function RunDemo() {
                 <Flex
                   bg="#F5F5F4"
                   px={3}
-                  py={1.5}
+                  py={{ base: 1, md: 1.5 }}
                   borderBottom="1px solid"
                   borderColor="#E7E5E4"
                 >
@@ -783,7 +784,7 @@ export function RunDemo() {
                     >
                       <Flex
                         px={3}
-                        py={1.5}
+                        py={{ base: 1, md: 1.5 }}
                         borderBottom={i < RUN_RATE_ROWS.length - 1 ? "1px solid" : "none"}
                         borderColor="#F3F4F6"
                         bg={isBest ? "rgba(73,8,45,0.04)" : "transparent"}
@@ -892,7 +893,7 @@ export function RunDemo() {
                 borderColor={phase >= 9 ? "#10B981" : "#E7E5E4"}
                 borderRadius="8px"
                 px={3}
-                py={1.5}
+                py={{ base: 1, md: 1.5 }}
                 transition="border-color 0.3s"
               >
                 <Flex align="center" gap={1.5}>

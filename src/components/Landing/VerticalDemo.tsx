@@ -1015,95 +1015,115 @@ export default function VerticalDemo({
       : 0;
 
   return (
-    <DemoContainer variant="dark" aspectRatio="4 / 3">
-      <AnimatePresence mode="wait">
-        <MotionBox
-          key={animKey}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: ANIM.fadeIn }}
-          display="flex"
-          flexDirection="column"
-          h="100%"
-        >
-          {/* Progress bar */}
-          <ProgressBar
-            completed={anim.completedGoals}
-            total={totalGoals}
-            needsYou={needsYou}
-          />
-
-          {/* Goal cards */}
-          <Box flex="1" overflow="hidden">
-            {demo.goals.map((goal, gi) => {
-              const goalState: "active" | "done" | "waiting" =
-                gi < anim.completedGoals
-                  ? "done"
-                  : gi === anim.activeGoalIdx && gi >= anim.completedGoals
-                    ? "active"
-                    : "waiting";
-
-              return (
-                <GoalCard
-                  key={`${animKey}-goal-${gi}`}
-                  goal={goal}
-                  state={goalState}
-                  activeCheckViz={
-                    goalState === "active" ? renderActiveViz() : null
-                  }
-                />
-              );
-            })}
-          </Box>
-
-          {/* Footer */}
-          <Flex
-            align="center"
-            justify="space-between"
-            mt={2}
-            pt={2}
-            borderTop="1px solid"
-            borderColor="rgba(255,255,255,0.08)"
+    // Mobile content (fixed px font sizes) needs more height per unit width
+    // than desktop, where the demo column is much wider. DemoContainer sizes
+    // itself from its own `aspectRatio` prop (a plain string, no JS
+    // media-query hook), so we can't hand it a responsive value directly —
+    // instead this wrapper carries the responsive ratio (a native Chakra
+    // responsive prop, safe under jsdom/SSR) and DemoContainer's h="100%"
+    // simply fills whatever height the wrapper resolves to. Desktop ratio
+    // (4:3) is unchanged from before; only base gets taller.
+    <Box aspectRatio={{ base: "3 / 4", md: "4 / 3" }} w="100%">
+      <DemoContainer variant="dark">
+        <AnimatePresence mode="wait">
+          <MotionBox
+            key={animKey}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: ANIM.fadeIn }}
+            display="flex"
+            flexDirection="column"
+            h="100%"
           >
-            <Text fontSize="sm" color={C.muted} fontWeight="500">
-              {anim.completedGoals}/{totalGoals} goals
-            </Text>
-            {anim.allDone ? (
-              <Flex align="center" gap={1}>
-                <Box
-                  w="6px"
-                  h="6px"
-                  borderRadius="full"
-                  bg={C.green}
-                />
-                <Text fontSize="sm" color={C.green} fontWeight="500">
-                  Complete
-                </Text>
-              </Flex>
-            ) : (
-              <Flex align="center" gap={1}>
-                <Box
-                  w="6px"
-                  h="6px"
-                  borderRadius="full"
-                  bg={C.blue}
-                  css={{
-                    animation: "vd-pulse 1.5s infinite",
-                    "@keyframes vd-pulse": {
-                      "0%, 100%": { opacity: 1 },
-                      "50%": { opacity: 0.3 },
-                    },
-                  }}
-                />
-                <Text fontSize="sm" color={C.muted} fontWeight="500">
-                  Running
-                </Text>
-              </Flex>
-            )}
-          </Flex>
-        </MotionBox>
-      </AnimatePresence>
-    </DemoContainer>
+            {/* Progress bar */}
+            <ProgressBar
+              completed={anim.completedGoals}
+              total={totalGoals}
+              needsYou={needsYou}
+            />
+
+            {/* Goal cards — masked fade at the bottom edge instead of a hard
+                clip, so if content ever runs slightly taller than the box
+                (long labels, more fields) it reads as an intentional fade
+                rather than a mid-row cut. */}
+            <Box
+              flex="1"
+              overflow="hidden"
+              css={{
+                maskImage: "linear-gradient(to bottom, black 88%, transparent 100%)",
+                WebkitMaskImage: "linear-gradient(to bottom, black 88%, transparent 100%)",
+              }}
+            >
+              {demo.goals.map((goal, gi) => {
+                const goalState: "active" | "done" | "waiting" =
+                  gi < anim.completedGoals
+                    ? "done"
+                    : gi === anim.activeGoalIdx && gi >= anim.completedGoals
+                      ? "active"
+                      : "waiting";
+
+                return (
+                  <GoalCard
+                    key={`${animKey}-goal-${gi}`}
+                    goal={goal}
+                    state={goalState}
+                    activeCheckViz={
+                      goalState === "active" ? renderActiveViz() : null
+                    }
+                  />
+                );
+              })}
+            </Box>
+
+            {/* Footer */}
+            <Flex
+              align="center"
+              justify="space-between"
+              mt={2}
+              pt={2}
+              borderTop="1px solid"
+              borderColor="rgba(255,255,255,0.08)"
+            >
+              <Text fontSize="sm" color={C.muted} fontWeight="500">
+                {anim.completedGoals}/{totalGoals} goals
+              </Text>
+              {anim.allDone ? (
+                <Flex align="center" gap={1}>
+                  <Box
+                    w="6px"
+                    h="6px"
+                    borderRadius="full"
+                    bg={C.green}
+                  />
+                  <Text fontSize="sm" color={C.green} fontWeight="500">
+                    Complete
+                  </Text>
+                </Flex>
+              ) : (
+                <Flex align="center" gap={1}>
+                  <Box
+                    w="6px"
+                    h="6px"
+                    borderRadius="full"
+                    bg={C.blue}
+                    css={{
+                      animation: "vd-pulse 1.5s infinite",
+                      "@keyframes vd-pulse": {
+                        "0%, 100%": { opacity: 1 },
+                        "50%": { opacity: 0.3 },
+                      },
+                    }}
+                  />
+                  <Text fontSize="sm" color={C.muted} fontWeight="500">
+                    Running
+                  </Text>
+                </Flex>
+              )}
+            </Flex>
+          </MotionBox>
+        </AnimatePresence>
+      </DemoContainer>
+    </Box>
   );
 }

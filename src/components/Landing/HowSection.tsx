@@ -141,7 +141,7 @@ export default function HowSection() {
                     overflow="hidden"
                     bg="surface.raised"
                     boxShadow="0 8px 32px rgba(0,0,0,0.08)"
-                    aspectRatio={{ base: "16 / 9", md: "4 / 3" }}
+                    aspectRatio={{ base: "4 / 5", md: "4 / 3" }}
                     zIndex={1}
                   >
                     {step.id === 1 && <CreateDemo />}

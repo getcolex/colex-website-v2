@@ -291,7 +291,7 @@ export function RewindDemo() {
     <DemoContainer variant="maroon" flush>
       <Flex direction="column" h="100%" gap={0}>
         {/* Goal header with count */}
-        <Flex justify="space-between" align="center" mb={3}>
+        <Flex justify="space-between" align="center" mb={{ base: 2, md: 3 }}>
           <Flex align="center" gap={2}>
             <Box w="8px" h="8px" borderRadius="full" bg={C.blue} />
             <Text fontSize="sm" fontWeight="600" color={C.text}>
@@ -331,9 +331,9 @@ export function RewindDemo() {
           {/* Vertical connector line */}
           <Box
             position="absolute"
-            left="10px"
-            top="20px"
-            bottom="20px"
+            left={{ base: "8px", md: "10px" }}
+            top={{ base: "16px", md: "20px" }}
+            bottom={{ base: "16px", md: "20px" }}
             w="1.5px"
             bg={C.border}
           />
@@ -349,7 +349,7 @@ export function RewindDemo() {
                 <Flex
                   align="center"
                   gap={2.5}
-                  py={2.5}
+                  py={{ base: 1.5, md: 2.5 }}
                   px={0}
                   bg={isReverted ? "rgba(245,158,11,0.08)" : "transparent"}
                   transition="background 0.3s"
@@ -358,8 +358,8 @@ export function RewindDemo() {
                 >
                   {/* Check icon */}
                   <Box
-                    w="22px"
-                    h="22px"
+                    w={{ base: "18px", md: "22px" }}
+                    h={{ base: "18px", md: "22px" }}
                     borderRadius="8px"
                     bg={
                       isDone ? C.green : isReverted ? C.amber : "transparent"
@@ -468,6 +468,18 @@ export function RewindDemo() {
           )}
         </AnimatePresence>
       </Flex>
+
+      {/* Bottom fade — safety net if content ever exceeds the mobile panel height */}
+      <Box
+        display={{ base: "block", md: "none" }}
+        position="absolute"
+        left={0}
+        right={0}
+        bottom={0}
+        h="28px"
+        bgGradient="linear(to-b, transparent, rgba(58,6,36,0.9))"
+        pointerEvents="none"
+      />
     </DemoContainer>
   );
 }

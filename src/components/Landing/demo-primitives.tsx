@@ -265,7 +265,7 @@ export function DemoContainer({
       <Box
         position="absolute"
         inset={0}
-        p={{ base: 5, md: 6 }}
+        p={{ base: 4, md: 6 }}
         overflow="hidden"
         display="flex"
         flexDirection="column"

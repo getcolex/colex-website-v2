@@ -166,6 +166,14 @@ export default function HeroDemo() {
         flexDirection="column"
         flex={1}
         overflow="hidden"
+        // During the typing-only phase the card holds just the request
+        // field — on mobile that reads as a mostly-empty box pinned to the
+        // top, so center it in the available height instead. Desktop keeps
+        // the original top-aligned layout unchanged.
+        justifyContent={{
+          base: phase === "typing" ? "center" : "flex-start",
+          md: "flex-start",
+        }}
       >
         {/* ── Request field ── */}
         <Box mb={4}>

@@ -34,8 +34,8 @@ type IntegrationStatus = "hidden" | "connecting" | "connected";
 function IntegrationIcon({ letter, bg }: { letter: string; bg: string }) {
   return (
     <Flex
-      w="28px"
-      h="28px"
+      w={{ base: "24px", md: "28px" }}
+      h={{ base: "24px", md: "28px" }}
       borderRadius="8px"
       bg={bg}
       align="center"
@@ -94,7 +94,7 @@ function IntegrationRow({
       border="1px solid rgba(255,255,255,0.12)"
       borderRadius="8px"
       px={3}
-      py={2.5}
+      py={{ base: 1.5, md: 2.5 }}
     >
       <IntegrationIcon letter={letter} bg={iconColor} />
       <Text fontSize="sm" color="#F8F7F4" fontWeight="500" flex="1">
@@ -148,7 +148,7 @@ function ActivityItem({
       display="flex"
       alignItems="center"
       gap={2}
-      py={1}
+      py={{ base: 0.5, md: 1 }}
     >
       <Box
         w="5px"
@@ -267,7 +267,7 @@ export function ConnectDemo() {
             h="100%"
           >
             {/* Header */}
-            <Flex align="center" justify="space-between" mb={4}>
+            <Flex align="center" justify="space-between" mb={{ base: 2.5, md: 4 }}>
               <Text
                 fontSize="xs"
                 fontWeight="700"
@@ -283,7 +283,7 @@ export function ConnectDemo() {
             </Flex>
 
             {/* Integration rows */}
-            <Flex direction="column" gap={2} mb={4}>
+            <Flex direction="column" gap={{ base: 1.5, md: 2 }} mb={{ base: 2.5, md: 4 }}>
               <AnimatePresence>
                 {INTEGRATIONS.map((intg, i) =>
                   statuses[i] !== "hidden" ? (
@@ -309,7 +309,7 @@ export function ConnectDemo() {
                   transition={{ duration: 0.3 }}
                   mt="auto"
                 >
-                  <Flex align="center" gap={1.5} mb={2}>
+                  <Flex align="center" gap={1.5} mb={{ base: 1, md: 2 }}>
                     <PulsingDot color="#10B981" />
                     <Text
                       fontSize="xs"
@@ -324,7 +324,7 @@ export function ConnectDemo() {
                     bg="rgba(255,255,255,0.04)"
                     borderRadius="8px"
                     px={3}
-                    py={2}
+                    py={{ base: 1, md: 2 }}
                     border="1px solid rgba(255,255,255,0.08)"
                   >
                     {ACTIVITY_ITEMS.map((item, i) => (
@@ -343,6 +343,18 @@ export function ConnectDemo() {
           </MotionBox>
         )}
       </AnimatePresence>
+
+      {/* Bottom fade — safety net if content ever exceeds the mobile panel height */}
+      <Box
+        display={{ base: "block", md: "none" }}
+        position="absolute"
+        left={0}
+        right={0}
+        bottom={0}
+        h="28px"
+        bgGradient="linear(to-b, transparent, rgba(58,6,36,0.9))"
+        pointerEvents="none"
+      />
     </DemoContainer>
   );
 }
