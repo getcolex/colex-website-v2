@@ -35,8 +35,10 @@ describe('HowSection', () => {
     expect(placeholders).toHaveLength(3)
   })
 
-  it('renders a CTA link to /demo', () => {
-    const { container } = render(<HowSection />)
-    expect(container.querySelector('a[href="/demo"]')).toBeInTheDocument()
+  it('renders a demo CTA button', () => {
+    render(<HowSection />)
+    expect(
+      screen.getByRole('button', { name: /get a personalised demo/i })
+    ).toBeInTheDocument()
   })
 })

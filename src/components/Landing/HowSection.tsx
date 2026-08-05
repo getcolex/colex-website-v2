@@ -1,6 +1,7 @@
 "use client";
 
-import { Box, Container, Text, Flex, Heading, Link } from "@chakra-ui/react";
+import { Box, Container, Text, Flex, Heading } from "@chakra-ui/react";
+import { getEarlyAccess } from "@/lib/utils";
 import { CreateDemo, ViewDemo, RunDemo } from "./HowDemos";
 import dynamic from "next/dynamic";
 
@@ -62,11 +63,13 @@ export default function HowSection() {
               lineHeight={1.15}
               maxW="900px"
             >
-              You decide how it&rsquo;s done. Colex makes sure it is done.
+              You decide how it&rsquo;s done. Colex makes sure it gets done.
             </Heading>
           </Box>
-          <Link
-            href="/demo"
+          <Box
+            as="button"
+            onClick={() => getEarlyAccess("how_section")}
+            cursor="pointer"
             display="inline-flex"
             alignItems="center"
             justifyContent="center"
@@ -89,7 +92,7 @@ export default function HowSection() {
             }}
           >
             Get a personalised demo &rarr;
-          </Link>
+          </Box>
         </Flex>
 
         {/* Alternating rows — text on bg, demo in bordered card */}

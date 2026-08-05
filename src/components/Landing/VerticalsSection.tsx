@@ -1,6 +1,7 @@
 "use client";
 
-import { Box, Container, Flex, Link, Heading } from "@chakra-ui/react";
+import { Box, Container, Flex, Heading } from "@chakra-ui/react";
+import { getEarlyAccess } from "@/lib/utils";
 import { useState, useRef, useCallback, useEffect } from "react";
 import VerticalDemo from "./VerticalDemo";
 import dynamic from "next/dynamic";
@@ -115,9 +116,23 @@ export default function VerticalsSection() {
     });
   }, [promptSelections]);
 
-  // Auto-cycle effect
+  // Mobile: the swipe carousel owns the selection, so the auto-cycle must
+  // not run there — advancing the selection unmounts the demo inside the
+  // card the user is looking at (it goes blank while the next card starts).
+  // The visible card's demo just keeps looping instead.
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
   useEffect(() => {
-    if (!cycling) {
+    if (typeof window === "undefined" || typeof window.matchMedia !== "function") return;
+    const mq = window.matchMedia("(max-width: 767px)");
+    const onChange = () => setIsMobileViewport(mq.matches);
+    onChange();
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  // Auto-cycle effect (desktop only)
+  useEffect(() => {
+    if (!cycling || isMobileViewport) {
       if (cycleTimerRef.current) {
         clearInterval(cycleTimerRef.current);
         cycleTimerRef.current = null;
@@ -132,7 +147,7 @@ export default function VerticalsSection() {
         cycleTimerRef.current = null;
       }
     };
-  }, [cycling, advance]);
+  }, [cycling, advance, isMobileViewport]);
 
   // User interaction: stop cycling, resume after idle
   const handleUserInteraction = useCallback(() => {
@@ -543,9 +558,9 @@ export default function VerticalsSection() {
                 on desktop (same element, same position in the DOM either
                 way; only the spacing above it differs by breakpoint). */}
             <Box mt={{ base: 6, md: 8 }}>
-              <Link
-                href="#book-demo"
-                role="button"
+              <Box
+                as="button"
+                onClick={() => getEarlyAccess("verticals_section")}
                 display="inline-flex"
                 alignItems="center"
                 justifyContent="center"
@@ -567,7 +582,7 @@ export default function VerticalsSection() {
                 }}
               >
                 Get a personalised demo &rarr;
-              </Link>
+              </Box>
             </Box>
           </Box>
 
