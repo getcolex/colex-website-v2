@@ -195,7 +195,7 @@ export function ConnectDemo() {
     setShowActivity(false);
     setVisible(true);
 
-    let t = 0;
+    const t = 0;
 
     // For each integration: appear as connecting, then switch to connected
     INTEGRATIONS.forEach((_, i) => {
