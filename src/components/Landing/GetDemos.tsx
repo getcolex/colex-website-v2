@@ -288,7 +288,7 @@ export function RewindDemo() {
   }
 
   return (
-    <DemoContainer variant="maroon" aspectRatio="4 / 3">
+    <DemoContainer variant="maroon" flush>
       <Flex direction="column" h="100%" gap={0}>
         {/* Goal header with count */}
         <Flex justify="space-between" align="center" mb={3}>
@@ -489,7 +489,7 @@ export function AuditDemo() {
   );
 
   return (
-    <DemoContainer variant="maroon" aspectRatio="4 / 3">
+    <DemoContainer variant="maroon" flush>
       <Flex direction="column" h="100%" gap={0}>
         {/* Section header — check editor style */}
         <Flex justify="space-between" align="center" mb={3}>

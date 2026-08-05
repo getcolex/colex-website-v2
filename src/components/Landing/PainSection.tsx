@@ -27,10 +27,10 @@ const cards = [
     ],
   },
   {
-    title: "Every change is expensive",
+    title: "Change is expensive and slow",
     lines: [
-      "A new policy shouldn’t take months to reach production.",
-      "Instead it means updating documents, rebuilding workflows, retraining teams, and hoping everyone switches at the same time.",
+      "One rule change touches five systems.",
+      "By the time it’s live, the process has moved on.",
     ],
   },
 ];

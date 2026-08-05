@@ -7,7 +7,7 @@ import { getEarlyAccess } from "@/lib/utils";
 import HeroDemo from "./HeroDemo";
 import dynamic from "next/dynamic";
 
-const NeatBackground = dynamic(() => import("./NeatBackground"), { ssr: false });
+const WireframeGrid = dynamic(() => import("./WireframeGrid"), { ssr: false });
 
 const MotionBox = motion.create(Box);
 
@@ -35,7 +35,7 @@ export default function HeroSection() {
         w={{ base: "0%", lg: "55%" }}
         display={{ base: "none", lg: "block" }}
       >
-        <NeatBackground zoom={4} />
+        <WireframeGrid preset="hero" />
         {/* Left edge gradient to merge into page bg */}
         <Box
           position="absolute"

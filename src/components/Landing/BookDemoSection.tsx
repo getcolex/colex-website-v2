@@ -5,7 +5,7 @@ import { getEarlyAccess } from "@/lib/utils";
 
 export default function BookDemoSection() {
   return (
-    <Box as="section" py={{ base: 20, md: 28 }} bg="brand.primary">
+    <Box as="section" py={{ base: 20, md: 28 }}>
       <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
         <Heading
           as="h2"

@@ -1,10 +1,10 @@
 "use client";
 
 import { Box, Container, Text, Flex, Heading, Link } from "@chakra-ui/react";
-import { CreateDemo, EditDemo, RunDemo } from "./HowDemos";
+import { CreateDemo, ViewDemo, RunDemo } from "./HowDemos";
 import dynamic from "next/dynamic";
 
-const NeatBackground = dynamic(() => import("./NeatBackground"), { ssr: false });
+const WireframeGrid = dynamic(() => import("./WireframeGrid"), { ssr: false });
 
 const steps = [
   {
@@ -15,15 +15,15 @@ const steps = [
   },
   {
     id: 2,
-    title: "Review and get the rules how you want them",
+    title: "Your team gets an interface built from the rules",
     description:
-      "Edit until they're your standard. Just ask the in-Colex AI or change the rules yourself.",
+      "Colex generates forms, tables, and views from the checks you defined. Your team works in a clean interface, not a spreadsheet.",
   },
   {
     id: 3,
-    title: "Colex builds an auditable, human-first workflow",
+    title: "People do the work, review the results, and approve",
     description:
-      "It does the work, then checks every result against your rules the same way every time. And if you want to change anything, it's editable inline.",
+      "Data fills in as Colex works. Your team edits what needs editing, and approves when it looks right.",
   },
 ];
 
@@ -118,7 +118,7 @@ export default function HowSection() {
                   borderRadius="20px"
                 >
                   {/* Neat animated gradient behind card */}
-                  <NeatBackground />
+                  <WireframeGrid preset="how" />
                   {/* Feather edges into page bg */}
                   <Box
                     position="absolute"
@@ -151,7 +151,7 @@ export default function HowSection() {
                     zIndex={1}
                   >
                     {step.id === 1 && <CreateDemo />}
-                    {step.id === 2 && <EditDemo />}
+                    {step.id === 2 && <ViewDemo />}
                     {step.id === 3 && <RunDemo />}
                   </Box>
                 </Box>
@@ -170,7 +170,7 @@ export default function HowSection() {
                     textTransform="uppercase"
                     mb={3}
                   >
-                    {["Create", "Edit", "Run"][step.id - 1]}
+                    {["Create", "View", "Run"][step.id - 1]}
                   </Text>
 
                   <Heading

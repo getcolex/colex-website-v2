@@ -20,9 +20,9 @@ const FOOTER_LINKS = [
   { label: "Contact", href: "#", onClick: () => getEarlyAccess("footer") },
 ];
 
-export default function Footer() {
+export default function Footer({ transparentBg = false }: { transparentBg?: boolean }) {
   return (
-    <Box as="footer" bg="brand.primary" pt={20} pb={4}>
+    <Box as="footer" bg={transparentBg ? "transparent" : "brand.primary"} pt={20} pb={4}>
       <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
         {/* Mobile + Tablet layout */}
         <VStack gap={4} align="center" display={{ base: "flex", lg: "none" }}>

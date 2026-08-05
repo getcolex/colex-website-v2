@@ -14,7 +14,16 @@ import MomentsSection from "@/components/Landing/MomentsSection";
 import BookDemoSection from "@/components/Landing/BookDemoSection";
 import Footer from "@/components/Landing/Footer";
 import DevGridOverlay from "@/components/DevGridOverlay";
+import dynamic from "next/dynamic";
 import { useEffect } from "react";
+
+const GridTuner = dynamic(
+  () => import("@/components/Landing/WireframeGrid").then((m) => m.GridTuner),
+  { ssr: false }
+);
+const WireframeGrid = dynamic(() => import("@/components/Landing/WireframeGrid"), {
+  ssr: false,
+});
 import { trackLandingPageView } from "@/lib/gtag";
 
 export default function LandingPage() {
@@ -25,6 +34,7 @@ export default function LandingPage() {
   return (
     <Box bg="surface.page" minH="100vh">
       <DevGridOverlay />
+      <GridTuner />
       <LandingNavbar />
       <HeroSection />
       <PainSection />
@@ -33,8 +43,32 @@ export default function LandingPage() {
       <MomentsSection />
       {/* <ShiftSection /> — hidden for now */}
       <VerticalsSection />
-      <BookDemoSection />
-      <Footer />
+      {/* CTA + footer share one continuous wireframe grid */}
+      <Box position="relative" bg="brand.primary">
+        <WireframeGrid preset="footer" lineColor="rgba(248,247,244,0.35)" />
+        {/* Feather grid edges into the maroon bg on all 4 sides */}
+        <Box
+          position="absolute"
+          inset={0}
+          pointerEvents="none"
+          _before={{
+            content: '""',
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(to right, #49082D 0%, transparent 20%, transparent 80%, #49082D 100%)",
+          }}
+          _after={{
+            content: '""',
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(to bottom, #49082D 0%, transparent 20%, transparent 80%, #49082D 100%)",
+          }}
+        />
+        <Box position="relative" zIndex={1}>
+          <BookDemoSection />
+          <Footer transparentBg />
+        </Box>
+      </Box>
     </Box>
   );
 }

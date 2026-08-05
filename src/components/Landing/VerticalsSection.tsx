@@ -3,6 +3,9 @@
 import { Box, Container, Flex, Link, Heading } from "@chakra-ui/react";
 import { useState, useRef, useCallback, useEffect } from "react";
 import VerticalDemo from "./VerticalDemo";
+import dynamic from "next/dynamic";
+
+const WireframeGrid = dynamic(() => import("./WireframeGrid"), { ssr: false });
 
 type VerticalKey = "freight" | "procurement" | "vendor" | "hr" | "finance";
 
@@ -317,9 +320,32 @@ export default function VerticalsSection() {
             </Box>
           </Box>
 
-          {/* Right column: Animated demo */}
-          <Box flex="1">
-            <VerticalDemo activeTab={activeTab} selectedPromptIdx={selectedIdx} />
+          {/* Right column: Animated demo with wireframe grid behind */}
+          <Box flex="1" position="relative" p={{ base: 4, md: 8, lg: 10 }} borderRadius="20px">
+            <WireframeGrid preset="verticals" lineColor="#F8F7F4" />
+            {/* Feather edges into section bg */}
+            <Box
+              position="absolute"
+              inset={0}
+              borderRadius="inherit"
+              pointerEvents="none"
+              zIndex={0}
+              _before={{
+                content: '""',
+                position: "absolute",
+                inset: 0,
+                background: "linear-gradient(to right, #1A1A1A 0%, transparent 25%, transparent 75%, #1A1A1A 100%)",
+              }}
+              _after={{
+                content: '""',
+                position: "absolute",
+                inset: 0,
+                background: "linear-gradient(to bottom, #1A1A1A 0%, transparent 25%, transparent 75%, #1A1A1A 100%)",
+              }}
+            />
+            <Box position="relative" zIndex={1} bg="#1A1A1A" borderRadius="12px">
+              <VerticalDemo activeTab={activeTab} selectedPromptIdx={selectedIdx} />
+            </Box>
           </Box>
         </Flex>
       </Container>

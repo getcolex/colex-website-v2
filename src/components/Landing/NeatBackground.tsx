@@ -3,14 +3,7 @@
 import { useEffect, useRef } from "react";
 import { Box } from "@chakra-ui/react";
 
-const NEAT_CONFIG = {
-  colors: [
-    { color: "#4A072D", enabled: true },
-    { color: "#ffc8dd", enabled: false },
-    { color: "#ffafcc", enabled: false },
-    { color: "#C5E2FF", enabled: false },
-    { color: "#00B3FF", enabled: false },
-  ],
+const SHARED_CONFIG = {
   speed: 1,
   horizontalPressure: 6,
   verticalPressure: 6,
@@ -24,8 +17,6 @@ const NEAT_CONFIG = {
   wireframe: true,
   antialias: true,
   colorBlending: 6,
-  backgroundColor: "#F7F6F3",
-  backgroundAlpha: 1,
   grainScale: 0,
   grainSparsity: 0,
   grainIntensity: 0,
@@ -98,7 +89,38 @@ const NEAT_CONFIG = {
   cameraZoom: 2.8,
 };
 
-export default function NeatBackground({ zoom = 2.8 }: { zoom?: number }) {
+const VARIANT_OVERRIDES = {
+  light: {
+    colors: [
+      { color: "#4A072D", enabled: true },
+      { color: "#ffc8dd", enabled: false },
+      { color: "#ffafcc", enabled: false },
+      { color: "#C5E2FF", enabled: false },
+      { color: "#00B3FF", enabled: false },
+    ],
+    backgroundColor: "#F7F6F3",
+    backgroundAlpha: 1,
+  },
+  maroon: {
+    colors: [
+      { color: "#F7F6F3", enabled: true },
+      { color: "#ffc8dd", enabled: false },
+      { color: "#ffafcc", enabled: false },
+      { color: "#C5E2FF", enabled: false },
+      { color: "#00B3FF", enabled: false },
+    ],
+    backgroundColor: "#4A072D",
+    backgroundAlpha: 1,
+  },
+};
+
+export default function NeatBackground({
+  zoom = 2.8,
+  variant = "light",
+}: {
+  zoom?: number;
+  variant?: "light" | "maroon";
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gradientRef = useRef<any>(null);
 
@@ -110,7 +132,8 @@ export default function NeatBackground({ zoom = 2.8 }: { zoom?: number }) {
 
       gradientRef.current = new mod.NeatGradient({
         ref: canvasRef.current,
-        ...NEAT_CONFIG,
+        ...SHARED_CONFIG,
+        ...VARIANT_OVERRIDES[variant],
         cameraZoom: zoom,
       });
     });
@@ -119,7 +142,7 @@ export default function NeatBackground({ zoom = 2.8 }: { zoom?: number }) {
       gradientRef.current?.destroy();
       gradientRef.current = null;
     };
-  }, []);
+  }, [zoom, variant]);
 
   return (
     <Box
