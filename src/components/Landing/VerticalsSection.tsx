@@ -172,6 +172,7 @@ export default function VerticalsSection() {
   return (
     <Box
       as="section"
+      id="use-cases"
       py={{ base: 20, md: 28 }}
       bg="ink.primary"
       position="relative"

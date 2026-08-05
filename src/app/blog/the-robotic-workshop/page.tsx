@@ -69,7 +69,8 @@ export default function TheRoboticWorkshopPage() {
     <Box bg="#F8F7F4" minH="100vh">
       <LandingNavbar />
 
-      <Container maxW="900px" pt={{ base: 32, md: 40 }} pb={24} px={{ base: 4, md: 8 }}>
+      <Container maxW="container.xl" pt={{ base: 32, md: 40 }} pb={24} px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
+        <Box maxW="900px">
         {/* Header */}
         <Box as="header" pb={8} mb={10} borderBottom="1px solid" borderColor="ui.border">
           <Text
@@ -261,13 +262,10 @@ export default function TheRoboticWorkshopPage() {
         </Box>
 
         <PostFooterNav slug="the-robotic-workshop" />
+        </Box>
       </Container>
 
-      {/* The shared footer bleeds its logo to the page bottom, which reads as
-          design on the landing page and as a cut-off page under an article. */}
-      <Box pb={{ base: 10, md: 16 }}>
-        <Footer />
-      </Box>
+      <Footer />
     </Box>
   );
 }

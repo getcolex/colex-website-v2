@@ -45,7 +45,7 @@ export default function LandingNavbar() {
             {["Use cases", "Why Colex", "Blog"].map((label) => (
               <Link
                 key={label}
-                href={label === "Blog" ? "/blog" : `#${label.toLowerCase().replace(/ /g, "-")}`}
+                href={label === "Blog" ? "/blog" : `/#${label.toLowerCase().replace(/ /g, "-")}`}
               >
                 <Box
                   as="span"

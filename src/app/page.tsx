@@ -17,10 +17,6 @@ import DevGridOverlay from "@/components/DevGridOverlay";
 import dynamic from "next/dynamic";
 import { useEffect } from "react";
 
-const GridTuner = dynamic(
-  () => import("@/components/Landing/WireframeGrid").then((m) => m.GridTuner),
-  { ssr: false }
-);
 const WireframeGrid = dynamic(() => import("@/components/Landing/WireframeGrid"), {
   ssr: false,
 });
@@ -34,7 +30,6 @@ export default function LandingPage() {
   return (
     <Box bg="surface.page" minH="100vh">
       <DevGridOverlay />
-      <GridTuner />
       <LandingNavbar />
       <HeroSection />
       <PainSection />

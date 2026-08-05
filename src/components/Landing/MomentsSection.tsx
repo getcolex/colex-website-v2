@@ -71,6 +71,7 @@ export default function MomentsSection() {
   return (
     <Box
       as="section"
+      id="thesis"
       py={{ base: 20, md: 28 }}
       bg="#EDE9E3"
       position="relative"

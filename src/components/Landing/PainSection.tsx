@@ -39,6 +39,7 @@ export default function PainSection() {
   return (
     <Box
       as="section"
+      id="why-colex"
       py={{ base: 20, md: 28 }}
       bg="ink.primary"
       position="relative"

@@ -450,8 +450,6 @@ function GoalCard({
   state: "active" | "done" | "waiting";
   activeCheckViz: React.ReactNode | null;
 }) {
-  const borderColor =
-    state === "done" ? C.green : state === "active" ? C.blue : "transparent";
   const checkStatusColor =
     state === "done" ? C.green : state === "active" ? C.text : C.muted;
   const checkStatusText =
@@ -464,13 +462,10 @@ function GoalCard({
   return (
     <Box
       bg={C.cardBg}
-      borderLeft="2px solid"
-      borderColor={borderColor}
       borderRadius="8px"
       px={3}
       py={2.5}
       mb={3}
-      transition="border-color 0.3s"
     >
       <Flex
         align="center"

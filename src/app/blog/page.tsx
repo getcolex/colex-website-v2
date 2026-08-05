@@ -20,9 +20,10 @@ function formatDate(iso: string): string {
 
 export default function BlogIndexPage() {
   return (
-    <Box bg="#F8F7F4" minH="100vh">
+    <Box bg="#F8F7F4" minH="100vh" display="flex" flexDirection="column">
       <LandingNavbar />
-      <Container maxW="container.md" pt={{ base: 32, md: 40 }} pb={20} px={{ base: 4, md: 8 }}>
+      <Container maxW="container.xl" pt={{ base: 32, md: 40 }} pb={20} px={{ base: 4, sm: 6, md: 8, lg: 12 }} flex="1">
+        <Box maxW="768px">
         <VStack gap={2} align="flex-start" mb={12}>
           <Text
             fontFamily="mono, monospace"
@@ -84,12 +85,9 @@ export default function BlogIndexPage() {
             </Link>
           ))}
         </VStack>
+        </Box>
       </Container>
-      {/* The shared footer bleeds its logo to the page bottom, which reads as
-          design on the landing page and as a cut-off page under an article. */}
-      <Box pb={{ base: 10, md: 16 }}>
-        <Footer />
-      </Box>
+      <Footer />
     </Box>
   );
 }

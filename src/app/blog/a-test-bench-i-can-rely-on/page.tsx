@@ -69,7 +69,8 @@ export default function TestBenchPage() {
     <Box bg="#F8F7F4" minH="100vh">
       <LandingNavbar />
 
-      <Container maxW="900px" pt={{ base: 32, md: 40 }} pb={24} px={{ base: 4, md: 8 }}>
+      <Container maxW="container.xl" pt={{ base: 32, md: 40 }} pb={24} px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
+        <Box maxW="900px">
         <Box as="header" maxW="700px" mb={12}>
           <Text
             fontFamily="mono"
@@ -424,13 +425,10 @@ export default function TestBenchPage() {
         </Box>
 
         <PostFooterNav slug="a-test-bench-i-can-rely-on" />
+        </Box>
       </Container>
 
-      {/* The shared footer bleeds its logo to the page bottom, which reads as
-          design on the landing page and as a cut-off page under an article. */}
-      <Box pb={{ base: 10, md: 16 }}>
-        <Footer />
-      </Box>
+      <Footer />
     </Box>
   );
 }

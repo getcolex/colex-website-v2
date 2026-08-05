@@ -8,7 +8,7 @@ import { createNoise3D } from "simplex-noise";
 
 const noise3D = createNoise3D();
 
-export type GridPreset = "hero" | "how" | "get" | "verticals" | "footer";
+export type GridPreset = "hero" | "how" | "get" | "verticals" | "footer" | "blog";
 
 interface GridParams {
   segments: number;
@@ -55,7 +55,8 @@ const DEFAULTS: Record<GridPreset, GridParams> = {
   how: { ...BASE, zoom: 2 },
   get: { ...BASE, zoom: 2 },
   verticals: { ...BASE, zoom: 2 },
-  footer: { ...BASE, segments: 196, planeSize: 5.5, opacity: 0.31, fov: 20 },
+  footer: { ...BASE, segments: 56, planeSize: 5.5, opacity: 0.31, fov: 20 },
+  blog: { ...BASE, segments: 56, planeSize: 5.5, opacity: 0.31, fov: 20 },
 };
 
 /* --- Mutable per-preset store with change notification --- */
@@ -79,6 +80,7 @@ const store: Record<GridPreset, GridParams> = {
   get: loadPreset("get"),
   verticals: loadPreset("verticals"),
   footer: loadPreset("footer"),
+  blog: loadPreset("blog"),
 };
 
 let version = 0;
@@ -246,7 +248,7 @@ const SLIDERS: { label: string; param: keyof GridParams; min: number; max: numbe
   { label: "FOV", param: "fov", min: 20, max: 80, step: 1 },
 ];
 
-const PRESETS: GridPreset[] = ["hero", "how", "get", "verticals", "footer"];
+const PRESETS: GridPreset[] = ["hero", "how", "get", "verticals", "footer", "blog"];
 
 export function GridTuner() {
   const [open, setOpen] = useState(false);
