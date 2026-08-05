@@ -50,13 +50,38 @@ const BASE: GridParams = {
   zoom: 1,
 };
 
+// Frozen per-section configs (tuned 2026-08-05)
 const DEFAULTS: Record<GridPreset, GridParams> = {
-  hero: { ...BASE, segments: 196, planeSize: 5.5, opacity: 0.31, fov: 20 },
-  how: { ...BASE, zoom: 2 },
-  get: { ...BASE, zoom: 2 },
-  verticals: { ...BASE, zoom: 2 },
-  footer: { ...BASE, segments: 56, planeSize: 5.5, opacity: 0.31, fov: 20 },
-  blog: { ...BASE, segments: 56, planeSize: 5.5, opacity: 0.31, fov: 20 },
+  hero: {
+    ...BASE,
+    segments: 196, planeSize: 5.5, fov: 20, opacity: 0.31, zoom: 1,
+  },
+  how: {
+    ...BASE,
+    segments: 116, planeSize: 4.5, fov: 43, waveAmpY: 0.6,
+    noiseAmpX: 0.08, noiseAmpY: 0.1, noiseScaleX: 0.6, noiseScaleY: 0.6,
+    speed: 0.01, opacity: 0.51, zoom: 2,
+  },
+  get: {
+    ...BASE,
+    segments: 140, planeSize: 6.5, fov: 20, opacity: 0.6, zoom: 1,
+  },
+  verticals: {
+    ...BASE,
+    segments: 80, planeSize: 6, tiltX: 0.5, fov: 48,
+    noiseAmpX: 0.23, noiseAmpY: 0.22, speed: 0.07, opacity: 0.6, zoom: 1.5,
+  },
+  footer: {
+    ...BASE,
+    segments: 260, planeSize: 12, cameraY: 3.8, cameraZ: 2.4, fov: 20,
+    waveFreqY: 5.8, waveAmpX: 0.26, waveAmpY: 0.24, noiseScaleY: 1.3,
+    speed: 0.03, opacity: 0.06, zoom: 0.9,
+  },
+  blog: {
+    ...BASE,
+    segments: 96, planeSize: 13.5, fov: 23, noiseAmpY: 0.32,
+    opacity: 0.04, zoom: 0.9,
+  },
 };
 
 /* --- Mutable per-preset store with change notification --- */
