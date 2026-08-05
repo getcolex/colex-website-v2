@@ -29,7 +29,7 @@ const FOOTER_LINKS = [
 
 export default function Footer({ transparentBg = false }: { transparentBg?: boolean }) {
   return (
-    <Box as="footer" bg={transparentBg ? "transparent" : "brand.primary"} pt={20} position="relative">
+    <Box as="footer" bg={transparentBg ? "transparent" : "brand.primary"} pt={{ base: 12, lg: 20 }} position="relative">
       {/* Dev-only tuner; renders nothing in production builds */}
       <GridTuner />
       {/* When the footer owns its background (e.g. blog pages), it also owns

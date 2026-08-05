@@ -5,7 +5,7 @@ import { getEarlyAccess } from "@/lib/utils";
 
 export default function BookDemoSection() {
   return (
-    <Box as="section" id="book-demo" py={{ base: 20, md: 28 }}>
+    <Box as="section" id="book-demo" py={{ base: 14, md: 28 }}>
       <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
         <Heading
           as="h2"
@@ -22,7 +22,7 @@ export default function BookDemoSection() {
           fontSize={{ base: "md", md: "lg" }}
           color="rgba(255,255,255,0.7)"
           maxW="640px"
-          mb={{ base: 10, md: 14 }}
+          mb={{ base: 8, md: 14 }}
         >
           We&apos;re pre-launch, working with a handful of AI first teams who
           see this problem now. Show us the one that breaks most and we&apos;ll

@@ -22,7 +22,7 @@ export default function HeroSection() {
   return (
     <Box
       position="relative"
-      minH="100vh"
+      minH={{ base: "auto", lg: "100vh" }}
       bg="transparent"
       overflow="hidden"
     >
@@ -74,8 +74,8 @@ export default function HeroSection() {
           templateColumns={{ base: "1fr", lg: "repeat(12, 1fr)" }}
           gap={{ base: 10, lg: 8 }}
           alignItems="center"
-          py={{ base: 24, md: 32 }}
-          minH="100vh"
+          py={{ base: 16, md: 32 }}
+          minH={{ base: "auto", lg: "100vh" }}
         >
           {/* Left side - Text content (7 columns) */}
           <Box
@@ -143,12 +143,14 @@ export default function HeroSection() {
             </Box>
           </Box>
 
-          {/* Right side - Demo (cols 8-12, hidden on mobile) */}
+          {/* Right side - Demo (cols 8-12 on desktop, stacked below CTAs on mobile) */}
           <Box
             data-testid="hero-demo-col"
             gridColumn={{ base: "1", lg: "8 / 13" }}
-            display={{ base: "none", lg: "flex" }}
+            display="flex"
             w="full"
+            maxW="100%"
+            overflow="hidden"
           >
             <HeroDemo />
           </Box>
@@ -156,7 +158,8 @@ export default function HeroSection() {
 
         {/* Scroll indicator — fades out on scroll */}
         <Box
-          mt={{ base: "-4rem", md: "-6rem", lg: "-8rem" }}
+          mt={{ base: 10, md: "-6rem", lg: "-8rem" }}
+          mb={{ base: 8, lg: 0 }}
           opacity={scrolled ? 0 : 1}
           transition="opacity 0.3s ease"
           pointerEvents={scrolled ? "none" : "auto"}

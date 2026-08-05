@@ -119,15 +119,17 @@ export default function WorkshopChart() {
   // any viewport width without hardcoding the Container's max-width.
   const alignRef = useRef<HTMLDivElement | null>(null);
   const [gutter, setGutter] = useState(0);
+  // Scale factor for the SVG on narrow viewports. Read by rebuild() via ref
+  // (no re-render needed) but rebuild is re-triggered when it crosses the
+  // breakpoint, since that changes the chart's drawn size.
+  const scaleRef = useRef(1);
 
   useEffect(() => {
     const measure = () => {
       // The width the chart bleeds to. documentElement.clientWidth excludes the
       // scrollbar, which 100vw would wrongly include and overflow the page by.
-      document.documentElement.style.setProperty(
-        "--bleed-w",
-        `${document.documentElement.clientWidth}px`
-      );
+      const bleedW = document.documentElement.clientWidth;
+      document.documentElement.style.setProperty("--bleed-w", `${bleedW}px`);
 
       const marker = alignRef.current;
       const canvas = canvasRef.current;
@@ -137,6 +139,12 @@ export default function WorkshopChart() {
       const delta =
         marker.getBoundingClientRect().left - canvas.getBoundingClientRect().left;
       setGutter(Math.max(0, Math.round(delta)));
+
+      const nextScale = bleedW < 640 ? 0.7 : 1;
+      if (nextScale !== scaleRef.current) {
+        scaleRef.current = nextScale;
+        rebuildRef.current();
+      }
     };
     measure();
     window.addEventListener("resize", measure);
@@ -490,8 +498,14 @@ export default function WorkshopChart() {
       const vy = hasExtent ? top - pad : 0;
       const vh = hasExtent ? bottom - top + pad * 2 : H;
 
-      svg.setAttribute("width", String(W));
-      svg.setAttribute("height", String(vh));
+      // On narrow viewports, scale the drawn SVG down so more of the chart
+      // fits in view at once. The viewBox stays at the full logical size —
+      // only width/height (the rendered box) shrink, so the browser scales
+      // the drawing for free and pointer/pan math (which reads clientWidth
+      // via scroll offsets) keeps working unchanged.
+      const s = scaleRef.current;
+      svg.setAttribute("width", String(W * s));
+      svg.setAttribute("height", String(vh * s));
       svg.setAttribute("viewBox", `0 ${vy} ${W} ${vh}`);
 
       const defs = el("defs", {});
@@ -682,7 +696,7 @@ export default function WorkshopChart() {
           color="text.muted"
           marginLeft="auto"
         >
-          Drag to pan &middot; hover a node for detail
+          Drag to pan &middot; tap a stage to open
         </Text>
       </Flex>
 
@@ -727,7 +741,7 @@ export default function WorkshopChart() {
         touchAction="pan-y pinch-zoom"
         backgroundImage="radial-gradient(circle at 1px 1px, rgba(26,26,26,.10) 1px, transparent 0)"
         backgroundSize="22px 22px"
-        h={{ base: "460px", md: "620px" }}
+        h={{ base: "260px", md: "620px" }}
         /* Break out of the article's text column to the full viewport width.
            Widths come from the root element, not 100vw, because vw counts the
            scrollbar while the page content box does not, and the difference
