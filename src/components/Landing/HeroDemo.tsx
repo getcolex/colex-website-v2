@@ -7,7 +7,7 @@ import { MotionBox, StatusBadge, TypingCursor } from "./demo-primitives";
 
 // ── Constants ──
 const REQUEST_TEXT = "Every new shipping inquiry needs three carrier quotes, the cheapest flagged, and an RFQ sent to the client";
-const TYPING_SPEED = 35; // ms per character
+const TYPING_SPEED = 10; // ms per character
 const CHECKS = [
   "At least 3 carrier quotes collected",
   "Lowest rate identified and flagged",
@@ -38,8 +38,12 @@ type Phase =
   | "fade-out";
 
 export default function HeroDemo() {
-  const [phase, setPhase] = useState<Phase>("typing");
-  const [typedChars, setTypedChars] = useState(0);
+  // Mid-story start: the first visible frame is "complete" — the goal card
+  // is already fully populated (all checks ticked, status Processed) —
+  // rather than an empty card waiting for typing. The request field types
+  // out on top of/above that still-visible prior result each loop.
+  const [phase, setPhase] = useState<Phase>("complete");
+  const [typedChars, setTypedChars] = useState(REQUEST_TEXT.length);
 
   const schedule = useCallback(
     (timeouts: NodeJS.Timeout[], fn: () => void, delay: number) => {
@@ -66,7 +70,7 @@ export default function HeroDemo() {
 
     if (phase === "typing" && typedChars >= REQUEST_TEXT.length) {
       // Typing done -> show goal card
-      schedule(timeouts, () => setPhase("goal-appear"), 600);
+      schedule(timeouts, () => setPhase("goal-appear"), 350);
     } else if (phase === "goal-appear") {
       // Goal visible -> expand first check with task
       schedule(timeouts, () => setPhase("expand-task"), 1200);
@@ -100,21 +104,24 @@ export default function HeroDemo() {
       // Mark complete
       schedule(timeouts, () => setPhase("complete"), 400);
     } else if (phase === "complete") {
-      // Pause then fade out
-      schedule(timeouts, () => setPhase("fade-out"), 1500);
-    } else if (phase === "fade-out") {
-      // Reset and loop
+      // Pause then start the next cycle's request typing (goal card stays
+      // visible, dimmed, underneath — never unmounts to empty).
       schedule(timeouts, () => {
         setTypedChars(0);
         setPhase("typing");
-      }, 800);
+      }, 1500);
     }
 
     return () => timeouts.forEach(clearTimeout);
   }, [phase, typedChars, schedule]);
 
   // Derived state
-  const showGoal = phase !== "typing" && phase !== "fade-out";
+  // The goal card stays mounted through the typing phase (dimmed) instead
+  // of unmounting to an empty card — it only ever hides on true first mount
+  // before any cycle has completed, which never happens since we start
+  // mid-story at "complete".
+  const showGoal = true;
+  const isTyping = phase === "typing";
   const isExpanded =
     phase === "expand-task" ||
     phase === "rate-1" ||
@@ -133,11 +140,11 @@ export default function HeroDemo() {
   const showApproval = phase === "approval-show" || phase === "approved";
   const isApproved = phase === "approved";
   const checksChecked = [
-    ["check-1", "check-2", "check-3", "complete", "fade-out"].includes(phase),
-    ["check-2", "check-3", "complete", "fade-out"].includes(phase),
-    ["check-3", "complete", "fade-out"].includes(phase),
+    ["check-1", "check-2", "check-3", "complete", "typing"].includes(phase),
+    ["check-2", "check-3", "complete", "typing"].includes(phase),
+    ["check-3", "complete", "typing"].includes(phase),
   ];
-  const isComplete = phase === "complete" || phase === "fade-out";
+  const isComplete = phase === "complete" || phase === "typing";
   const goalTitle = isComplete ? "Processed" : "Process inquiry";
 
 
@@ -158,22 +165,14 @@ export default function HeroDemo() {
       flexDirection="column"
       overflow="hidden"
     >
-      {/* Outer fade for reset */}
+      {/* Content wrapper — always fully populated, never fades to empty.
+          Layout stays top-aligned in every phase since the goal card is
+          always present (dimmed while retyping the next request). */}
       <MotionBox
-        animate={{ opacity: phase === "fade-out" ? 0 : 1 }}
-        transition={{ duration: 0.6 }}
         display="flex"
         flexDirection="column"
         flex={1}
         overflow="hidden"
-        // During the typing-only phase the card holds just the request
-        // field — on mobile that reads as a mostly-empty box pinned to the
-        // top, so center it in the available height instead. Desktop keeps
-        // the original top-aligned layout unchanged.
-        justifyContent={{
-          base: phase === "typing" ? "center" : "flex-start",
-          md: "flex-start",
-        }}
       >
         {/* ── Request field ── */}
         <Box mb={4}>
@@ -190,7 +189,7 @@ export default function HeroDemo() {
           >
             <Text fontSize="sm" color="ink.primary" lineHeight="1.5">
               {REQUEST_TEXT.slice(0, typedChars)}
-              {phase === "typing" && <TypingCursor />}
+              {isTyping && <TypingCursor />}
             </Text>
           </Box>
         </Box>
@@ -201,7 +200,7 @@ export default function HeroDemo() {
             <MotionBox
               key="goal-card"
               initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
+              animate={{ opacity: isTyping ? 0.35 : 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.35 }}
               flex={1}
@@ -412,6 +411,7 @@ export default function HeroDemo() {
                                                   : "500"
                                               }
                                               textAlign="right"
+                                              fontVariantNumeric="tabular-nums"
                                             >
                                               {rate.price}
                                             </Text>

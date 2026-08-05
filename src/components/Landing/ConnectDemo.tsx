@@ -9,12 +9,12 @@ import { MotionBox, DemoContainer } from "./demo-primitives";
 
 const INTEGRATIONS = [
   { key: "slack", letter: "S", name: "Slack", color: "#E01E5A" },
-  { key: "email", letter: "E", name: "Email (SMTP)", color: "#3B82F6" },
+  { key: "email", letter: "E", name: "Email (SMTP)", color: "#DFAEC0" },
   { key: "sheets", letter: "G", name: "Google Sheets", color: "#34A853" },
 ] as const;
 
 const ACTIVITY_ITEMS = [
-  { text: "Quote received from MSC", dot: "#3B82F6", time: "just now" },
+  { text: "Quote received from MSC", dot: "#DFAEC0", time: "just now" },
   { text: "Slack alert sent to #freight", dot: "#E01E5A", time: "2s ago" },
 ];
 
@@ -27,6 +27,12 @@ const ACTIVITY_STAGGER = 500;
 const END_PAUSE = 1200;
 
 type IntegrationStatus = "hidden" | "connecting" | "connected";
+
+// The panel must never open on a bare box: the first mounted frame (and every
+// loop reset, since resets crossfade back to this same state) already shows
+// the CONNECTIONS header with Slack connected, so there's always a populated
+// row on screen while Email/Sheets stage in behind it.
+const INITIAL_STATUSES: IntegrationStatus[] = ["connected", "hidden", "hidden"];
 
 // ── Sub-components ──
 
@@ -91,12 +97,12 @@ function IntegrationRow({
       gap={3}
       bg="rgba(255,255,255,0.06)"
       border="1px solid rgba(255,255,255,0.12)"
-      borderRadius="8px"
-      px={3}
-      py={2.5}
+      borderRadius="10px"
+      px={4}
+      py={{ base: 4, md: 2.5 }}
     >
       <IntegrationIcon letter={letter} bg={iconColor} />
-      <Text fontSize="sm" color="#F8F7F4" fontWeight="500" flex="1">
+      <Text fontSize="sm" fontFamily="heading" color="#F8F7F4" fontWeight="600" flex="1">
         {name}
       </Text>
       {status === "connecting" && (
@@ -169,11 +175,7 @@ function ActivityItem({
 // ── Main component ──
 
 export function ConnectDemo() {
-  const [statuses, setStatuses] = useState<IntegrationStatus[]>([
-    "hidden",
-    "hidden",
-    "hidden",
-  ]);
+  const [statuses, setStatuses] = useState<IntegrationStatus[]>(INITIAL_STATUSES);
   const [showActivity, setShowActivity] = useState(false);
   const [cycle, setCycle] = useState(0);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -189,14 +191,18 @@ export function ConnectDemo() {
 
   useEffect(() => {
     clearTimers();
-    setStatuses(["hidden", "hidden", "hidden"]);
+    // Slack starts pre-connected (see INITIAL_STATUSES) so the very first
+    // frame already has a populated row — only Email and Sheets animate in.
+    setStatuses(INITIAL_STATUSES);
     setShowActivity(false);
 
     const t = 0;
+    const remaining = INTEGRATIONS.slice(1);
 
-    // For each integration: appear as connecting, then switch to connected
-    INTEGRATIONS.forEach((_, i) => {
-      const appearAt = t + i * (CONNECTING_DURATION + INTER_CARD_GAP) + CARD_APPEAR_DELAY;
+    // For each remaining integration: appear as connecting, then switch to connected
+    remaining.forEach((_, ri) => {
+      const i = ri + 1;
+      const appearAt = t + ri * (CONNECTING_DURATION + INTER_CARD_GAP) + CARD_APPEAR_DELAY;
 
       // Show as connecting
       addTimer(() => {
@@ -220,7 +226,7 @@ export function ConnectDemo() {
     // Calculate when all integrations are connected
     const allConnectedAt =
       CARD_APPEAR_DELAY +
-      INTEGRATIONS.length * (CONNECTING_DURATION + INTER_CARD_GAP) -
+      remaining.length * (CONNECTING_DURATION + INTER_CARD_GAP) -
       INTER_CARD_GAP +
       CONNECTING_DURATION;
 
@@ -258,6 +264,7 @@ export function ConnectDemo() {
           transition={{ duration: 0.3 }}
           display="flex"
           flexDirection="column"
+          justifyContent="center"
           h="100%"
         >
           {/* Header */}
@@ -271,13 +278,18 @@ export function ConnectDemo() {
             >
               Connections
             </Text>
-            <Text fontSize="xs" color="rgba(255,255,255,0.5)" fontWeight="500">
+            <Text
+              fontSize="xs"
+              color="rgba(255,255,255,0.5)"
+              fontWeight="500"
+              fontVariantNumeric="tabular-nums"
+            >
               {connectedCount} active
             </Text>
           </Flex>
 
           {/* Integration rows */}
-          <Flex direction="column" gap={2} mb={4}>
+          <Flex direction="column" gap={{ base: 4, md: 2 }} mb={4}>
             <AnimatePresence>
               {INTEGRATIONS.map((intg, i) =>
                 statuses[i] !== "hidden" ? (
@@ -293,7 +305,10 @@ export function ConnectDemo() {
             </AnimatePresence>
           </Flex>
 
-          {/* Activity feed */}
+          {/* Activity feed — the whole column is vertically centered (see
+              justifyContent="center" above), so this no longer needs to pin
+              itself to the bottom with mt="auto"; that avoided a stranded
+              void between the rows and a bottom-pinned feed. */}
           <AnimatePresence>
             {showActivity && (
               <MotionBox
@@ -301,7 +316,6 @@ export function ConnectDemo() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                mt="auto"
               >
                 <Flex align="center" gap={1.5} mb={2}>
                   <PulsingDot color="#10B981" />

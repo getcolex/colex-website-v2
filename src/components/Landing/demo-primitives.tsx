@@ -93,7 +93,7 @@ export function StatusBadge({
   status: "running" | "review" | "done";
 }) {
   const config = {
-    running: { bg: "#3B82F6", label: "RUNNING" },
+    running: { bg: "#49082D", label: "RUNNING" },
     review: { bg: "#F59E0B", label: "REVIEW" },
     done: { bg: "#10B981", label: "DONE" },
   };
