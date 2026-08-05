@@ -18,28 +18,34 @@ const C = {
   pillText: "rgba(255,255,255,0.8)",
   green: "#10B981",
   amber: "#F59E0B",
-  blue: "#3B82F6",
+  accent: "#DFAEC0", // dusty rose brand accent (replaces generic SaaS blue on dark grounds)
   cardBg: "rgba(255,255,255,0.06)",
 };
 
-/** Hook: phase-based animation loop with cleanup */
+/**
+ * Hook: phase-based animation loop with cleanup.
+ * `initialPhase` is the phase the panel mounts in AND the phase a loop
+ * reset falls back to — it should already be a populated mid-story frame
+ * so the card is never caught empty (first paint or reset alike).
+ */
 function usePhaseLoop(
   schedule: Array<{ ms: number; phase: number }>,
-  resetMs: number
+  resetMs: number,
+  initialPhase = 0
 ) {
-  const [phase, setPhase] = useState(0);
+  const [phase, setPhase] = useState(initialPhase);
   const [cycle, setCycle] = useState(0);
 
   useEffect(() => {
     const timeouts: ReturnType<typeof setTimeout>[] = [];
-    setPhase(0);
+    setPhase(initialPhase);
 
     for (const s of schedule) {
       timeouts.push(setTimeout(() => setPhase(s.phase), s.ms));
     }
     timeouts.push(
       setTimeout(() => {
-        setPhase(0);
+        setPhase(initialPhase);
         setCycle((c) => c + 1);
       }, resetMs)
     );
@@ -60,18 +66,19 @@ const formFields = [
 ];
 
 export function SimpleInterfaceDemo() {
-  // 0=empty, 1=progress+goal, 2=field1, 3=field2, 4=field3, 5=button, 6=progress-update, 7=pause
+  // 0=empty (unused — never mounted), 1=progress+goal, 2=field1, 3=field2, 4=field3, 5=button, 6=progress-update, 7=pause
+  // Mounts (and loop-resets) at phase 2: progress bar + first field already on screen,
+  // so the panel is never caught as a bare box.
   const phase = usePhaseLoop(
     [
-      { ms: 300, phase: 1 },
-      { ms: 900, phase: 2 },
-      { ms: 1500, phase: 3 },
-      { ms: 2100, phase: 4 },
-      { ms: 3000, phase: 5 },
-      { ms: 4200, phase: 6 },
-      { ms: 5800, phase: 7 },
+      { ms: 600, phase: 3 },
+      { ms: 1200, phase: 4 },
+      { ms: 2100, phase: 5 },
+      { ms: 3300, phase: 6 },
+      { ms: 4900, phase: 7 },
     ],
-    7500
+    6400,
+    2
   );
 
   return (
@@ -90,12 +97,12 @@ export function SimpleInterfaceDemo() {
             >
               <Flex align="center" justify="space-between" mb={2}>
                 <Flex align="center" gap={2}>
-                  <Box w="8px" h="8px" borderRadius="full" bg={C.blue} />
-                  <Text fontSize="md" fontWeight="600" color={C.text}>
+                  <Box w="8px" h="8px" borderRadius="full" bg={C.accent} />
+                  <Text fontSize="md" fontFamily="heading" fontWeight="600" color={C.text}>
                     Lane Defined
                   </Text>
                 </Flex>
-                <Text fontSize="xs" color={C.muted} fontWeight="600">
+                <Text fontSize="xs" color={C.muted} fontWeight="600" fontVariantNumeric="tabular-nums">
                   {phase >= 6 ? "1/2" : "0/2"}
                 </Text>
               </Flex>
@@ -281,6 +288,9 @@ export function RewindDemo() {
       return "pending";
     }
     if (key === "bol") {
+      // The cascade un-does downstream work too — a later step can never
+      // stay "done" while an earlier one has been reopened.
+      if (phase >= 5) return "pending";
       if (phase >= 3) return "done";
       return "pending";
     }
@@ -289,12 +299,12 @@ export function RewindDemo() {
 
   return (
     <DemoContainer variant="maroon" flush>
-      <Flex direction="column" h="100%" gap={0}>
+      <Flex direction="column" h="100%" gap={0} justify="center">
         {/* Goal header with count */}
         <Flex justify="space-between" align="center" mb={3}>
           <Flex align="center" gap={2}>
-            <Box w="8px" h="8px" borderRadius="full" bg={C.blue} />
-            <Text fontSize="sm" fontWeight="600" color={C.text}>
+            <Box w="8px" h="8px" borderRadius="full" bg={C.accent} />
+            <Text fontSize="sm" fontFamily="heading" fontWeight="600" color={C.text}>
               Shipment Cleared
             </Text>
           </Flex>
@@ -307,8 +317,8 @@ export function RewindDemo() {
                 exit={{ opacity: 0 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
               >
-                <Text fontSize="xs" color={C.amber} fontWeight="600">
-                  {phase >= 5 ? "1/3" : "2/3"}
+                <Text fontSize="xs" color={C.amber} fontWeight="600" fontVariantNumeric="tabular-nums">
+                  {phase >= 5 ? "0/3" : "2/3"}
                 </Text>
               </MotionBox>
             ) : (
@@ -318,7 +328,7 @@ export function RewindDemo() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                <Text fontSize="xs" color={C.muted} fontWeight="600">
+                <Text fontSize="xs" color={C.muted} fontWeight="600" fontVariantNumeric="tabular-nums">
                   {phase >= 3 ? "3/3" : phase >= 2 ? "2/3" : phase >= 1 ? "1/3" : "0/3"}
                 </Text>
               </MotionBox>
@@ -326,8 +336,10 @@ export function RewindDemo() {
           </AnimatePresence>
         </Flex>
 
-        {/* Check tree with vertical connectors */}
-        <Box flex="1" position="relative">
+        {/* Check tree with vertical connectors — no flex-grow: growing this
+            box pushed the cascade toast to the panel bottom and opened a
+            dead gap under the three-item tree on desktop heights. */}
+        <Box position="relative">
           {/* Vertical connector line */}
           <Box
             position="absolute"
@@ -490,7 +502,11 @@ export function AuditDemo() {
 
   return (
     <DemoContainer variant="maroon" flush>
-      <Flex direction="column" h="100%" gap={0}>
+      {/* justify="center" keeps this small, fixed-content demo (header + 2
+          rules, occasionally + version badge/audit line) as one centered
+          mass in the panel instead of pinned to the top with a growing void
+          below it. */}
+      <Flex direction="column" justify="center" h="100%" gap={0}>
         {/* Section header — check editor style */}
         <Flex justify="space-between" align="center" mb={3}>
           <Text
@@ -513,7 +529,7 @@ export function AuditDemo() {
         </Flex>
 
         {/* Rule 1: pill tokens */}
-        <Box flex="1">
+        <Box>
           <Box
             mb={3}
             px={3}
@@ -542,12 +558,12 @@ export function AuditDemo() {
             py={2.5}
             bg={C.cardBg}
             border="1px solid"
-            borderColor={phase >= 1 ? "rgba(59,130,246,0.4)" : C.border}
+            borderColor={phase >= 1 ? "rgba(223,174,192,0.5)" : C.border}
             borderRadius="8px"
             transition="border-color 0.3s"
             boxShadow={
               phase >= 1 && phase < 3
-                ? "0 0 0 1px rgba(59,130,246,0.2)"
+                ? "0 0 0 1px rgba(223,174,192,0.25)"
                 : "none"
             }
           >
@@ -669,18 +685,18 @@ export function AuditDemo() {
 const autoSteps = ["Parse input", "Fetch rates", "Score match"];
 
 export function HumanJudgementDemo() {
-  // 0=idle, 1=step1, 2=step2, 3=step3-done, 4=approval-section, 5=reviewing, 6=approved, 7=pause
+  // 0-2=idle/step1/step2 (unused — never mounted), 3=step3-done, 4=approval-section, 5=reviewing, 6=approved, 7=pause
+  // Mounts (and loop-resets) at phase 3: all three auto steps already complete,
+  // so the panel opens with real content rather than an empty box.
   const phase = usePhaseLoop(
     [
-      { ms: 300, phase: 1 },
-      { ms: 800, phase: 2 },
-      { ms: 1300, phase: 3 },
-      { ms: 2200, phase: 4 },
-      { ms: 3400, phase: 5 },
-      { ms: 5000, phase: 6 },
-      { ms: 6200, phase: 7 },
+      { ms: 900, phase: 4 },
+      { ms: 2100, phase: 5 },
+      { ms: 3700, phase: 6 },
+      { ms: 4900, phase: 7 },
     ],
-    7800
+    6300,
+    3
   );
 
   return (

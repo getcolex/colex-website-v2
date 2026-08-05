@@ -17,7 +17,7 @@ const C = {
   border: "rgba(255,255,255,0.1)",
   cardBg: "rgba(255,255,255,0.05)",
   green: "#10B981",
-  blue: "#3B82F6",
+  accent: "#C9909F", // dusty rose brand accent (replaces generic SaaS blue on dark grounds)
   amber: "#F59E0B",
   trackBg: "rgba(255,255,255,0.1)",
   fieldBg: "rgba(255,255,255,0.06)",
@@ -416,11 +416,11 @@ function ProgressBar({
   return (
     <Box mb={3}>
       <Flex align="center" justify="space-between" mb={2}>
-        <Text fontSize="sm" fontWeight="600" color={C.text}>
+        <Text fontSize="sm" fontWeight="600" color={C.text} fontVariantNumeric="tabular-nums">
           {completed}/{total}
         </Text>
         {needsYou > 0 && (
-          <Text fontSize="sm" color={C.blue} fontWeight="500">
+          <Text fontSize="sm" color={C.accent} fontWeight="500">
             {needsYou} needs you &rarr;
           </Text>
         )}
@@ -430,7 +430,7 @@ function ProgressBar({
       </Flex>
       <Box bg={C.trackBg} borderRadius="2px" h="5px" overflow="hidden">
         <Box
-          bg={allDone ? C.green : C.blue}
+          bg={allDone ? C.green : C.accent}
           h="100%"
           borderRadius="2px"
           w={`${pct}%`}
@@ -473,7 +473,7 @@ function GoalCard({
         mb={state === "active" && activeCheckViz ? 2 : 0}
       >
         <Box>
-          <Text fontSize="sm" fontWeight="600" color={C.text} mb={0.5}>
+          <Text fontSize="sm" fontFamily="heading" fontWeight="600" color={C.text} mb={0.5}>
             {goal.name}
           </Text>
           <Text fontSize="xs" color={checkStatusColor} fontWeight="500">
@@ -508,7 +508,7 @@ function GoalCard({
             w="6px"
             h="6px"
             borderRadius="full"
-            bg={C.blue}
+            bg={C.accent}
             flexShrink={0}
             css={{
               animation: "goal-pulse 1.5s infinite",
@@ -572,7 +572,7 @@ function FormViz({
                 {f.label}
               </Text>
               {f.required && (
-                <Text fontSize="xs" color={C.blue} fontWeight="600">
+                <Text fontSize="xs" color={C.accent} fontWeight="600">
                   *
                 </Text>
               )}
@@ -1050,6 +1050,12 @@ export default function VerticalDemo({
             <Box
               flex="1"
               overflow="hidden"
+              // Center the goal stack vertically — in end-of-cycle states
+              // (all goals collapsed to their compact "done" form) a
+              // top-anchored stack left a large dead gap above the footer.
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
               css={{
                 maskImage: "linear-gradient(to bottom, black 88%, transparent 100%)",
                 WebkitMaskImage: "linear-gradient(to bottom, black 88%, transparent 100%)",
@@ -1085,7 +1091,7 @@ export default function VerticalDemo({
               borderTop="1px solid"
               borderColor="rgba(255,255,255,0.08)"
             >
-              <Text fontSize="sm" color={C.muted} fontWeight="500">
+              <Text fontSize="sm" color={C.muted} fontWeight="500" fontVariantNumeric="tabular-nums">
                 {anim.completedGoals}/{totalGoals} goals
               </Text>
               {anim.allDone ? (
@@ -1106,7 +1112,7 @@ export default function VerticalDemo({
                     w="6px"
                     h="6px"
                     borderRadius="full"
-                    bg={C.blue}
+                    bg={C.accent}
                     css={{
                       animation: "vd-pulse 1.5s infinite",
                       "@keyframes vd-pulse": {
