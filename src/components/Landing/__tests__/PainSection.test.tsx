@@ -3,41 +3,30 @@ import { screen } from '@testing-library/react'
 import { render } from '@/test/test-utils'
 import PainSection from '../PainSection'
 
+// Structural assertions only: copy changes freely, structure is the contract.
 describe('PainSection', () => {
-  it('renders the section heading', () => {
+  it('renders a non-empty section heading', () => {
     render(<PainSection />)
-    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
-      'You wrote the process. It still isn’t being followed.'
-    )
+    const h2 = screen.getByRole('heading', { level: 2 })
+    expect(h2.textContent?.trim().length).toBeGreaterThan(0)
   })
 
-  it('renders the lede', () => {
-    render(<PainSection />)
-    expect(
-      screen.getByText(/You documented the workflow/)
-    ).toBeInTheDocument()
+  it('anchors the why-colex nav target', () => {
+    const { container } = render(<PainSection />)
+    expect(container.querySelector('#why-colex')).toBeInTheDocument()
   })
 
-  it('renders four pain cards', () => {
+  it('renders four pain cards, each with a title and two body lines', () => {
     render(<PainSection />)
     const h3s = screen.getAllByRole('heading', { level: 3 })
     expect(h3s).toHaveLength(4)
-    expect(h3s[0]).toHaveTextContent('The automation only covered the easy path')
-    expect(h3s[1]).toHaveTextContent('The document isn’t the process')
-    expect(h3s[2]).toHaveTextContent('When something breaks, no one knows where')
-    expect(h3s[3]).toHaveTextContent('Every change is expensive')
+    for (const h3 of h3s) {
+      expect(h3.textContent?.trim().length).toBeGreaterThan(0)
+      const card = h3.parentElement!
+      const bodyLines = Array.from(card.querySelectorAll('p')).filter(
+        (p) => !h3.contains(p)
+      )
+      expect(bodyLines.length).toBeGreaterThanOrEqual(2)
+    }
   })
-
-  it('renders each card with two paragraphs', () => {
-    render(<PainSection />)
-    expect(screen.getByText(/Every exception came back to people/)).toBeInTheDocument()
-    expect(screen.getByText(/Every rule change meant rewriting workflows/)).toBeInTheDocument()
-    expect(screen.getByText(/It lives in a file written months ago/)).toBeInTheDocument()
-    expect(screen.getByText(/The real process lives in dozens of decisions/)).toBeInTheDocument()
-    expect(screen.getByText(/You can see the outcome was wrong/)).toBeInTheDocument()
-    expect(screen.getByText(/Finding the answer means asking five people/)).toBeInTheDocument()
-    expect(screen.getByText(/A new policy shouldn’t take months/)).toBeInTheDocument()
-    expect(screen.getByText(/Instead it means updating documents/)).toBeInTheDocument()
-  })
-
 })

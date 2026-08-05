@@ -3,69 +3,40 @@ import { screen } from '@testing-library/react'
 import { render } from '@/test/test-utils'
 import HowSection from '../HowSection'
 
+// Structural assertions only: copy changes freely, structure is the contract.
 describe('HowSection', () => {
-  it('renders the section heading', () => {
+  it('renders a non-empty section heading', () => {
     render(<HowSection />)
-    expect(
-      screen.getByRole('heading', { level: 2, name: 'This is how Colex works for you' })
-    ).toBeInTheDocument()
+    const h2 = screen.getByRole('heading', { level: 2 })
+    expect(h2.textContent?.trim().length).toBeGreaterThan(0)
   })
 
-  it('renders the subtitle', () => {
+  it('renders three steps, each with a title and a description', () => {
     render(<HowSection />)
-    expect(
-      screen.getByText(/your process becomes the system/)
-    ).toBeInTheDocument()
+    const h3s = screen.getAllByRole('heading', { level: 3 })
+    expect(h3s).toHaveLength(3)
+    for (const h3 of h3s) {
+      expect(h3.textContent?.trim().length).toBeGreaterThan(0)
+      const step = h3.parentElement!
+      expect(step.querySelectorAll('p').length).toBeGreaterThanOrEqual(1)
+    }
   })
 
-  it('renders 4 cards with h3 headings', () => {
-    render(<HowSection />)
-    expect(
-      screen.getByRole('heading', { level: 3, name: 'Ask Colex to draft the rules for your process' })
-    ).toBeInTheDocument()
-    expect(
-      screen.getByRole('heading', { level: 3, name: 'Review and get the rules how you want them' })
-    ).toBeInTheDocument()
-    expect(
-      screen.getByRole('heading', { level: 3, name: 'Colex builds an auditable, human-first workflow' })
-    ).toBeInTheDocument()
-    expect(
-      screen.getByRole('heading', { level: 3, name: 'If things change, just update the rules and the workflow evolves' })
-    ).toBeInTheDocument()
-  })
-
-  it('renders step labels for each card', () => {
+  it('renders the Create / View / Run step labels', () => {
     render(<HowSection />)
     expect(screen.getByText('Create')).toBeInTheDocument()
-    expect(screen.getByText('Edit')).toBeInTheDocument()
+    expect(screen.getByText('View')).toBeInTheDocument()
     expect(screen.getByText('Run')).toBeInTheDocument()
-    expect(screen.getByText('Update')).toBeInTheDocument()
   })
 
-  it('renders description paragraphs for each card', () => {
-    render(<HowSection />)
-    expect(
-      screen.getByText('Describe the job in plain language. Colex turns it into rules over the evidence your process already produces.')
-    ).toBeInTheDocument()
-    expect(
-      screen.getByText(/Edit until they.re your standard\. Just ask the in-Colex AI or change the rules yourself\./)
-    ).toBeInTheDocument()
-    expect(
-      screen.getByText(/It does the work, then checks every result against your rules the same way every time\. And if you want to change anything, it.s editable inline\./)
-    ).toBeInTheDocument()
-    expect(
-      screen.getByText('You edit a rule. The workflow gets updated automatically and the team has it in seconds.')
-    ).toBeInTheDocument()
-  })
-
-  it('renders an image placeholder per card with correct aspect ratio', () => {
+  it('renders a demo card per step', () => {
     const { container } = render(<HowSection />)
     const placeholders = container.querySelectorAll('[data-testid="how-card-image"]')
-    expect(placeholders).toHaveLength(4)
+    expect(placeholders).toHaveLength(3)
   })
 
-  it('renders a CTA link', () => {
-    render(<HowSection />)
-    expect(screen.getByText(/Get to a personalised demo/)).toBeInTheDocument()
+  it('renders a CTA link to /demo', () => {
+    const { container } = render(<HowSection />)
+    expect(container.querySelector('a[href="/demo"]')).toBeInTheDocument()
   })
 })

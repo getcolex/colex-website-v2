@@ -10,10 +10,11 @@ describe('HeroSection', () => {
     expect(screen.getByText('extra hands')).toBeInTheDocument()
   })
 
-  it('renders the lede', () => {
-    render(<HeroSection />)
-    expect(screen.getByText(/Colex turns your business processes into rules/)).toBeInTheDocument()
-    expect(screen.getByText(/It gets sharper every time you use it/)).toBeInTheDocument()
+  it('renders a non-empty lede under the headline', () => {
+    const { container } = render(<HeroSection />)
+    const textCol = container.querySelector('[data-testid="hero-text-col"]')!
+    const paragraphs = textCol.querySelectorAll('p')
+    expect(paragraphs.length).toBeGreaterThanOrEqual(1)
   })
 
   it('renders the primary CTA', () => {
