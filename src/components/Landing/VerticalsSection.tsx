@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Container, Flex, Heading } from "@chakra-ui/react";
+import { Box, Container, Flex, Heading, Text } from "@chakra-ui/react";
 import { getEarlyAccess } from "@/lib/utils";
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import VerticalDemo from "./VerticalDemo";
@@ -40,6 +40,14 @@ const PROMPTS: Record<VerticalKey, string[]> = {
   ],
 };
 
+const DESCRIPTIONS: Record<VerticalKey, string> = {
+  freight: "Book carriers, chase quotes and catch surprise charges before they ever reach your invoice queue.",
+  procurement: "Raise POs and pay invoices only when the budget, the goods and the paperwork all agree.",
+  vendor: "Onboard new suppliers and confirm every bank-detail change on a second channel before money moves.",
+  hr: "Get new hires ready on day one and revoke every account the moment someone leaves.",
+  finance: "Close the month faster with automatic accruals, matched bank lines and variance flags you can trust.",
+};
+
 const CYCLE_INTERVAL = 4000;
 
 type FlatPrompt = {
@@ -68,6 +76,7 @@ export default function VerticalsSection() {
   const cycleTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const tabScrollerRef = useRef<HTMLDivElement | null>(null);
   const panelId = "verticals-tabpanel";
 
   // Mobile flat carousel: one row of ALL prompts across ALL tabs. The active
@@ -224,6 +233,21 @@ export default function VerticalsSection() {
     );
   }, [centeredFlatIdx, flatPrompts, isMobileViewport]);
 
+  // Keep the active pill scrolled into view within the pill row itself as
+  // the active tab changes (via swipe or pill tap). Never scrollIntoView —
+  // that would walk up and scroll the page too.
+  useEffect(() => {
+    if (!isMobileViewport) return;
+    const scroller = tabScrollerRef.current;
+    const idx = TAB_ITEMS.findIndex((t) => t.key === activeTab);
+    const btn = tabRefs.current[idx];
+    if (!scroller || !btn) return;
+    // Center the active pill in the scroller viewport when possible.
+    const target = btn.offsetLeft - (scroller.clientWidth - btn.clientWidth) / 2;
+    const clamped = Math.max(0, Math.min(target, scroller.scrollWidth - scroller.clientWidth));
+    scroller.scrollTo({ left: clamped, behavior: "smooth" });
+  }, [activeTab, isMobileViewport]);
+
   const handleTabClick = useCallback(
     (key: VerticalKey) => {
       handleUserInteraction();
@@ -333,17 +357,25 @@ export default function VerticalsSection() {
           Built for ops teams who want to be AI-first, not eventually.
         </Heading>
 
-        {/* Tabs — wrap on mobile too now; the pills are a readout of which
-            tab the carousel is currently on, not a separate scrolling axis.
-            zIndex bumped so the desktop ledger's outset halo (which pokes
-            leftward from the demo column) can't paint over the pills. */}
+        {/* Tabs — single swipeable row on mobile, wrapping row on desktop.
+            The pill row also mirrors which tab the carousel is currently
+            on: when the active tab changes (swipe or tap), the active pill
+            smooth-scrolls into view WITHIN this row only. zIndex bumped so
+            the desktop ledger's outset halo can't paint over the pills. */}
         <Box position="relative" zIndex={2} mb={{ base: 8, md: 14 }}>
           <Flex
+            ref={tabScrollerRef}
             role="tablist"
             aria-label="Industry verticals"
             gap={2}
             justifyContent="flex-start"
-            flexWrap="wrap"
+            flexWrap={{ base: "nowrap", md: "wrap" }}
+            overflowX={{ base: "auto", md: "visible" }}
+            css={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+              "&::-webkit-scrollbar": { display: "none" },
+            }}
           >
             {TAB_ITEMS.map((item, idx) => (
               <Box
@@ -387,6 +419,17 @@ export default function VerticalsSection() {
               </Box>
             ))}
           </Flex>
+          {/* Edge fade hint — mobile only, to signal the row scrolls */}
+          <Box
+            display={{ base: "block", md: "none" }}
+            position="absolute"
+            top={0}
+            bottom={0}
+            right={0}
+            w="24px"
+            pointerEvents="none"
+            bgGradient="linear(to-r, transparent, ink.primary)"
+          />
         </Box>
 
         {/* Tab panel.
@@ -415,6 +458,15 @@ export default function VerticalsSection() {
             <Box
               display={{ base: "block", md: "none" }}
             >
+              <Text
+                color="rgba(255,255,255,0.7)"
+                fontSize={{ base: "md", md: "lg" }}
+                lineHeight="1.5"
+                fontWeight="400"
+                mb={4}
+              >
+                {DESCRIPTIONS[activeTab]}
+              </Text>
               <Box
                 ref={promptScrollerRef}
                 role="listbox"
@@ -496,6 +548,15 @@ export default function VerticalsSection() {
 
             {/* DESKTOP: text list */}
             <Box display={{ base: "none", md: "block" }} data-testid="verticals-desktop-list" role="listbox" aria-label="Prompts (desktop)">
+              <Text
+                color="rgba(255,255,255,0.7)"
+                fontSize={{ base: "md", md: "lg" }}
+                lineHeight="1.5"
+                fontWeight="400"
+                mb={4}
+              >
+                {DESCRIPTIONS[activeTab]}
+              </Text>
               {desktopPrompts.map((prompt, idx) => (
                 <Box
                   key={prompt}
