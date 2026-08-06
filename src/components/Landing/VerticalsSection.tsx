@@ -330,12 +330,14 @@ export default function VerticalsSection() {
           textAlign="left"
           mb={{ base: 4, md: 6 }}
         >
-          For the teams that run a company day to day.
+          Built for ops teams who want to be AI-first, not eventually.
         </Heading>
 
         {/* Tabs — wrap on mobile too now; the pills are a readout of which
-            tab the carousel is currently on, not a separate scrolling axis. */}
-        <Box position="relative" mb={{ base: 4, md: 6 }}>
+            tab the carousel is currently on, not a separate scrolling axis.
+            zIndex bumped so the desktop ledger's outset halo (which pokes
+            leftward from the demo column) can't paint over the pills. */}
+        <Box position="relative" zIndex={2} mb={{ base: 8, md: 14 }}>
           <Flex
             role="tablist"
             aria-label="Industry verticals"

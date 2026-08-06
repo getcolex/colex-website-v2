@@ -100,7 +100,7 @@ export default function MomentsSection() {
         <Text
           color="ink.muted"
           fontSize={{ base: "md", md: "lg" }}
-          mb={{ base: 10, md: 14 }}
+          mb={{ base: 8, md: 14 }}
           maxW="640px"
         >
           Other automation tools leave you with rigid workflows which decay. Colex grows with you continuously.
