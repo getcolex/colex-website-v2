@@ -311,6 +311,9 @@ export default function VerticalsSection() {
         pointerEvents: "none",
       }}
     >
+      {/* Section-wide ledger, matches the Pain section treatment. */}
+      <LedgerScatter preset="verticals" />
+      <Box position="absolute" inset={0} pointerEvents="none" bg="rgba(0,0,0,0.35)" />
       <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }} position="relative">
         {/* Heading */}
         <Heading
@@ -549,29 +552,6 @@ export default function VerticalsSection() {
             p={{ md: 8, lg: 10 }}
             borderRadius="20px"
           >
-            <LedgerScatter preset="verticals" />
-            {/* Dulling overlay — black on the near-black ink ground. */}
-            <Box position="absolute" inset={0} borderRadius="inherit" pointerEvents="none" bg="rgba(0,0,0,0.35)" />
-            {/* Feather edges into section bg */}
-            <Box
-              position="absolute"
-              inset={0}
-              borderRadius="inherit"
-              pointerEvents="none"
-              zIndex={0}
-              _before={{
-                content: '""',
-                position: "absolute",
-                inset: 0,
-                background: "linear-gradient(to right, #1A1A1A 0%, transparent 25%, transparent 75%, #1A1A1A 100%)",
-              }}
-              _after={{
-                content: '""',
-                position: "absolute",
-                inset: 0,
-                background: "linear-gradient(to bottom, #1A1A1A 0%, transparent 25%, transparent 75%, #1A1A1A 100%)",
-              }}
-            />
             <Box position="relative" zIndex={1} bg="#1A1A1A" borderRadius="12px">
               <VerticalDemo activeTab={activeTab} selectedPromptIdx={desktopSelectedIdx} />
             </Box>
