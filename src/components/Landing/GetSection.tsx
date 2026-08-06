@@ -79,7 +79,7 @@ export default function GetSection() {
                 <Box
                   position="absolute"
                   inset={0}
-                  bg="rgba(73,8,45,0.88)"
+                  bg="rgba(73,8,45,0.65)"
                   pointerEvents="none"
                   zIndex={0}
                 />
