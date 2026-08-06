@@ -14,7 +14,7 @@ const cards = [
     ],
   },
   {
-    title: ["Automating it is expensive. Updating it? ", "Double", "."],
+    title: ["Automating is expensive. Change is a ", "headache", "."],
     lines: [
       "You put the process in a tool. The work changes, and you pay the engineering bill again to make the tool match.",
     ],
@@ -85,7 +85,7 @@ export default function PainSection() {
           letterSpacing="-0.02em"
           mb={{ base: 10, md: 14 }}
         >
-          You wrote the process. It still isn&rsquo;t being followed.
+          Running ops is difficult. Automating, doubly so.
         </Heading>
 
         <Grid

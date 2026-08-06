@@ -11,27 +11,27 @@ import LedgerScatter from "./LedgerScatter";
 
 const cards = [
   {
-    title: "Plug into the tools you already use",
+    title: "Works with the tools you already use.",
     description:
-      "Email, Slack, ERPs, spreadsheets. Colex connects where your data already lives.",
+      "Email, Slack, ERPs, spreadsheets. Colex reads from and writes to whatever your process already touches.",
     Demo: ConnectDemo,
   },
   {
-    title: "Change the rules, the workflow follows",
+    title: "Change a rule, the workflow catches up.",
     description:
-      "Edit a rule and the running workflow updates in seconds. No rebuild, no retraining.",
+      "Edit any rule and the running workflow updates in seconds. No rebuild, no retraining.",
     Demo: UpdateDemo,
   },
   {
-    title: "Work that rewinds when things change",
+    title: "Take back a decision.",
     description:
-      "Customs rejects an entry on Thursday. Monday’s “done” reopens and goes back into review.",
+      "You approved something on Monday. On Thursday you realise it shouldn’t have been. Undo it, and everything that followed goes back into review. Most automation tools don’t let you do that.",
     Demo: RewindDemo,
   },
   {
-    title: "All your rules written down, all action auditable",
+    title: "Every rule and every action, written down.",
     description:
-      "Versioned, inspectable, and yours to reason over, not buried inside a workflow where nobody can find them.",
+      "Every rule change, every decision, every run, kept in one place your team can open and read. Not buried inside a workflow nobody can get into.",
     Demo: AuditDemo,
   },
 ];
