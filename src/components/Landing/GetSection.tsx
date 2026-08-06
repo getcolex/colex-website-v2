@@ -25,7 +25,7 @@ const cards = [
   {
     title: "Take back a decision.",
     description:
-      "You approved something on Monday. On Thursday you realise it shouldn’t have been. Undo it, and everything that followed goes back into review. Most automation tools don’t let you do that.",
+      "You approved something on Monday. On Thursday you realise it shouldn’t have been. Undo it, and everything that followed goes back into review.",
     Demo: RewindDemo,
   },
   {
