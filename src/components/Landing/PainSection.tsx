@@ -1,9 +1,7 @@
 "use client";
 
 import { Box, Container, Text, Grid, Heading } from "@chakra-ui/react";
-import dynamic from "next/dynamic";
-
-const LedgerScatter = dynamic(() => import("./LedgerScatter"), { ssr: false });
+import LedgerScatter from "./LedgerScatter";
 
 const NOISE_SVG = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")`;
 
@@ -60,7 +58,7 @@ export default function PainSection() {
       <LedgerScatter preset="pain" />
       {/* Dulling overlay — black on the near-black ink ground darkens it
           straight without pulling the hue toward maroon. */}
-      <Box position="absolute" inset={0} pointerEvents="none" bg="rgba(0,0,0,0.55)" />
+      <Box position="absolute" inset={0} pointerEvents="none" bg="rgba(0,0,0,0.35)" />
       {/* Feather grid edges into the ink bg on all 4 sides */}
       <Box
         position="absolute"
