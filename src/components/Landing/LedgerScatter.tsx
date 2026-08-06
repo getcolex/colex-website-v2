@@ -72,12 +72,12 @@ function paletteInks(p: Palette) {
     p === "light" ? [26, 26, 26] : [248, 247, 244];
   // Hot ink (cell ember):
   //  - light (paper): dark maroon — cells DARKEN the paper
-  //  - dark (near-black): pure black — cells get DARKER (greyscale push)
+  //  - dark (near-black): cream — cells LIGHTEN the near-black
   //  - oxblood: dusty rose — the only surface where a warm tint reads right
   const hot: [number, number, number] =
     p === "light" ? [73, 8, 45]
     : p === "oxblood" ? [223, 174, 192]
-    : [0, 0, 0];
+    : [248, 247, 244];
   const bg =
     p === "light" ? "#F8F7F4" : p === "oxblood" ? "#49082D" : "#1A1A1A";
   // Tuned per ground:
@@ -88,7 +88,7 @@ function paletteInks(p: Palette) {
   //  - oxblood (Get cards + Footer): also dulled DOWN for the same reason.
   const baseLineAlpha = p === "light" ? 0.28 : p === "oxblood" ? 0.18 : 0.14;
   const baseBandAlpha = p === "light" ? 0.08 : p === "oxblood" ? 0.06 : 0.04;
-  const maxStrengthBase = p === "light" ? 0.22 : 0.32;
+  const maxStrengthBase = p === "light" ? 0.22 : p === "oxblood" ? 0.32 : 0.14;
   const numeralColor = p === "light" ? "rgba(26,26,26,0.22)" : "rgba(248,247,244,0.18)";
   const stampColor = p === "light" ? "#49082D" : "#DFAEC0";
   return { hair, hot, bg, baseLineAlpha, baseBandAlpha, maxStrengthBase, numeralColor, stampColor };
@@ -304,8 +304,6 @@ export default function LedgerScatter({ preset = "hero", groundColor }: LedgerSc
     };
   }, [preset, groundColor]);
 
-  const inks = paletteInks(PRESET_PALETTE[preset]);
-
   return (
     <div
       ref={containerRef}
@@ -318,32 +316,6 @@ export default function LedgerScatter({ preset = "hero", groundColor }: LedgerSc
       aria-hidden
     >
       <canvas ref={canvasRef} style={{ display: "block", pointerEvents: "none" }} />
-      {/* Ledger's numeral column + corner stamp — stay put on top of the
-          reactive ruling so the whole thing reads as a printed document. */}
-      <div
-        style={{
-          position: "absolute",
-          left: 6,
-          top: 6,
-          bottom: 6,
-          width: 22,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          fontFamily:
-            'ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace',
-          fontSize: 8,
-          lineHeight: 1,
-          color: inks.numeralColor,
-          fontVariantNumeric: "tabular-nums",
-          padding: "8px 0",
-          pointerEvents: "none",
-        }}
-      >
-        {["01","02","03","04","05","06","07","08"].map((n) => (
-          <span key={n}>{n}</span>
-        ))}
-      </div>
     </div>
   );
 }
