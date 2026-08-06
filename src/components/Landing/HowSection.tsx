@@ -68,21 +68,21 @@ export default function HowSection() {
             as="button"
             onClick={() => getEarlyAccess("how_section")}
             cursor="pointer"
-            display="inline-flex"
+            display={{ base: "none", md: "inline-flex" }}
             alignItems="center"
             justifyContent="center"
-            w={{ base: "full", md: "auto" }}
+            w="auto"
             bg="brand.primary"
             color="white"
-            px={{ base: 4, md: 6 }}
+            px={6}
             py={3}
             borderRadius="8px"
             fontWeight="600"
-            fontSize={{ base: "sm", md: "md" }}
+            fontSize="md"
             textDecoration="none"
             transition="all 0.2s"
             whiteSpace="nowrap"
-            mt={{ base: 0, md: 2 }}
+            mt={2}
             _hover={{
               opacity: 0.9,
               transform: "translateY(-2px)",
@@ -210,6 +210,36 @@ export default function HowSection() {
             );
           })}
         </Flex>
+
+        {/* Mobile-only CTA — the desktop CTA sits in the header row.
+            On phones we surface it below the cards so the reader ends
+            on the action rather than scrolling past a header button. */}
+        <Box
+          as="button"
+          onClick={() => getEarlyAccess("how_section_mobile")}
+          cursor="pointer"
+          display={{ base: "inline-flex", md: "none" }}
+          alignItems="center"
+          justifyContent="center"
+          w="full"
+          bg="brand.primary"
+          color="white"
+          px={4}
+          py={3}
+          mt={10}
+          borderRadius="8px"
+          fontWeight="600"
+          fontSize="sm"
+          textDecoration="none"
+          transition="all 0.2s"
+          _hover={{
+            opacity: 0.9,
+            transform: "translateY(-2px)",
+            textDecoration: "none",
+          }}
+        >
+          Get a personalised demo &rarr;
+        </Box>
       </Container>
     </Box>
   );
