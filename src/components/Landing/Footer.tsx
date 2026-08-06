@@ -12,9 +12,7 @@ import {
 import NextLink from "next/link";
 import Image from "next/image";
 import { getEarlyAccess } from "@/lib/utils";
-import dynamic from "next/dynamic";
-
-const LedgerScatter = dynamic(() => import("./LedgerScatter"), { ssr: false });
+import LedgerScatter from "./LedgerScatter";
 
 const FOOTER_LINKS = [
   { label: "Blog", href: "/blog" },

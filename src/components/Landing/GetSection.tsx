@@ -7,9 +7,7 @@ import {
 } from "./GetDemos";
 import { UpdateDemo } from "./HowDemos";
 import { ConnectDemo } from "./ConnectDemo";
-import dynamic from "next/dynamic";
-
-const LedgerScatter = dynamic(() => import("./LedgerScatter"), { ssr: false });
+import LedgerScatter from "./LedgerScatter";
 
 const cards = [
   {

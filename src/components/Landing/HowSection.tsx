@@ -3,9 +3,7 @@
 import { Box, Container, Text, Flex, Heading } from "@chakra-ui/react";
 import { getEarlyAccess } from "@/lib/utils";
 import { CreateDemo, ViewDemo, RunDemo } from "./HowDemos";
-import dynamic from "next/dynamic";
-
-const LedgerScatter = dynamic(() => import("./LedgerScatter"), { ssr: false });
+import LedgerScatter from "./LedgerScatter";
 
 const steps = [
   {

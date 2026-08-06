@@ -5,9 +5,7 @@ import { motion } from "motion/react";
 import { useState, useEffect } from "react";
 import { getEarlyAccess } from "@/lib/utils";
 import HeroDemo from "./HeroDemo";
-import dynamic from "next/dynamic";
-
-const LedgerScatter = dynamic(() => import("./LedgerScatter"), { ssr: false });
+import LedgerScatter from "./LedgerScatter";
 
 const MotionBox = motion.create(Box);
 
