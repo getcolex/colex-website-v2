@@ -94,7 +94,7 @@ export default function MomentsSection() {
           letterSpacing="-0.02em"
           mb={{ base: 4, md: 6 }}
         >
-          Six months in, you own something.
+          Your business changes. Your software should too.
         </Heading>
 
         <Text
@@ -103,7 +103,7 @@ export default function MomentsSection() {
           mb={{ base: 8, md: 14 }}
           maxW="640px"
         >
-          Other automation tools leave you with rigid workflows which decay. Colex grows with you continuously.
+          Rules shift, teams grow, priorities move. Colex changes with all of it, without a rebuild.
         </Text>
 
         {/* ── Desktop layout ── */}
