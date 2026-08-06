@@ -25,10 +25,10 @@ const FOOTER_LINKS = [
 
 export default function Footer({ transparentBg = false }: { transparentBg?: boolean }) {
   return (
-    <Box as="footer" bg={transparentBg ? "transparent" : "brand.primary"} pt={{ base: 12, lg: 20 }} position="relative">
+    <Box as="footer" bg={transparentBg ? "transparent" : "brand.primary"} pt={{ base: 20, lg: 32 }} position="relative">
       {/* When the footer owns its background, it also owns the reactive
-          ledger — feathered into the maroon ground on all four sides, same
-          treatment we've always had here. */}
+          ledger — feathered top and bottom into the maroon ground so the
+          seam with the CTA above reads as one continuous surface. */}
       {!transparentBg && (
         <>
           <LedgerScatter preset="blog" />
@@ -36,18 +36,7 @@ export default function Footer({ transparentBg = false }: { transparentBg?: bool
             position="absolute"
             inset={0}
             pointerEvents="none"
-            _before={{
-              content: '""',
-              position: "absolute",
-              inset: 0,
-              background: "linear-gradient(to right, #49082D 0%, transparent 20%, transparent 80%, #49082D 100%)",
-            }}
-            _after={{
-              content: '""',
-              position: "absolute",
-              inset: 0,
-              background: "linear-gradient(to bottom, #49082D 0%, transparent 55%, transparent 85%, #49082D 100%)",
-            }}
+            background="linear-gradient(to bottom, #49082D 0%, transparent 35%, transparent 80%, #49082D 100%)"
           />
         </>
       )}
