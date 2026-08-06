@@ -8,21 +8,21 @@ import LedgerScatter from "./LedgerScatter";
 const steps = [
   {
     id: 1,
-    title: "Ask Colex to draft the rules in plain English",
+    title: "Describe the process. Colex writes the rules.",
     description:
-      "Colex turns it into rules over the evidence your process already produces.",
+      "Colex turns your process into simple computer rules. Things like “at least three quotes collected,” “invoice matches the order,” “customs approved.”",
   },
   {
     id: 2,
-    title: "Colex builds the interface from the rules for your team",
+    title: "Colex builds the screens your team works in.",
     description:
-      "Colex generates forms, tables, and views from the checks you defined. Your team can edit anything in it, and it updates when the rules change.",
+      "Forms to fill in, tables to review, buttons to approve, built from the same rules. Your team edits any value directly, and the screens change when the rules do.",
   },
   {
     id: 3,
-    title: "Colex does the work, your team verifies",
+    title: "Colex does the work, your team verifies.",
     description:
-      "Data fills in as Colex works. Your team reviews it, edits what needs editing, and approves when it looks right.",
+      "Colex uses agents and integrations to get the data ready for your team to review or edit, and waits for approval when needed.",
   },
 ];
 
@@ -61,7 +61,7 @@ export default function HowSection() {
               lineHeight={1.15}
               maxW="900px"
             >
-              You decide how it&rsquo;s done. Colex makes sure it gets done.
+              You decide the rules. Colex gets it done.
             </Heading>
           </Box>
           <Box

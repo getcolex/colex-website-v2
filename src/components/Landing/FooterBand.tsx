@@ -13,10 +13,12 @@ import Footer from "./Footer";
 export default function FooterBand() {
   return (
     <>
-      <Box bg="brand.primary">
+      <Box bg="brand.primary" data-selection="inverse">
         <BookDemoSection />
       </Box>
-      <Footer />
+      <Box data-selection="inverse">
+        <Footer />
+      </Box>
     </>
   );
 }

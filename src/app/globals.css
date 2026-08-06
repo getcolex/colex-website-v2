@@ -4,3 +4,23 @@
 h1, h2, h3, h4, h5, h6 {
   font-variation-settings: "WONK" 0, "opsz" 144;
 }
+
+/* Text selection uses the brand color everywhere */
+::selection {
+  background: #49082D;
+  color: #F8F7F4;
+}
+::-moz-selection {
+  background: #49082D;
+  color: #F8F7F4;
+}
+
+/* On maroon-bg sections, invert: cream highlight, maroon text */
+[data-selection="inverse"] ::selection {
+  background: #F8F7F4;
+  color: #49082D;
+}
+[data-selection="inverse"] ::-moz-selection {
+  background: #F8F7F4;
+  color: #49082D;
+}
