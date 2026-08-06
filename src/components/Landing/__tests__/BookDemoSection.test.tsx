@@ -32,10 +32,10 @@ describe('BookDemoSection', () => {
     ).toBeInTheDocument()
   })
 
-  it('renders the secondary CTA link', () => {
+  it('does not render a thesis link while the thesis page is unpublished', () => {
     render(<BookDemoSection />)
     expect(
-      screen.getByRole('link', { name: /Read the thesis first →/i })
-    ).toBeInTheDocument()
+      screen.queryByRole('link', { name: /Read the thesis first/i })
+    ).not.toBeInTheDocument()
   })
 })

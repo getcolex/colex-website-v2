@@ -1,11 +1,11 @@
 "use client";
 
-import { Box, Container, Text, Flex, Button, Link, Heading } from "@chakra-ui/react";
+import { Box, Container, Text, Flex, Button, Heading } from "@chakra-ui/react";
 import { getEarlyAccess } from "@/lib/utils";
 
 export default function BookDemoSection() {
   return (
-    <Box as="section" id="book-demo" pt={{ base: 14, md: 28 }} pb={{ base: 6, md: 10 }}>
+    <Box as="section" id="book-demo" pt={{ base: 14, md: 28 }} pb={{ base: 2, md: 4 }}>
       <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }}>
         <Heading
           as="h2"
@@ -51,16 +51,6 @@ export default function BookDemoSection() {
           >
             Become a design partner
           </Button>
-          <Link
-            href="/thesis"
-            color="surface.page"
-            fontWeight="600"
-            fontSize={{ base: "sm", md: "md" }}
-            _hover={{ textDecoration: "underline" }}
-            transition="all 0.2s"
-          >
-            Read the thesis first →
-          </Link>
         </Flex>
       </Container>
     </Box>

@@ -7,9 +7,7 @@ import {
 } from "./GetDemos";
 import { UpdateDemo } from "./HowDemos";
 import { ConnectDemo } from "./ConnectDemo";
-import dynamic from "next/dynamic";
-
-const LedgerScatter = dynamic(() => import("./LedgerScatter"), { ssr: false });
+import LedgerScatter from "./LedgerScatter";
 
 const cards = [
   {
@@ -81,7 +79,7 @@ export default function GetSection() {
                 <Box
                   position="absolute"
                   inset={0}
-                  bg="rgba(73,8,45,0.88)"
+                  bg="rgba(73,8,45,0.65)"
                   pointerEvents="none"
                   zIndex={0}
                 />

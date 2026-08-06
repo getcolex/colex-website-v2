@@ -3,9 +3,7 @@
 import { Box, Container, Text, Flex, Heading } from "@chakra-ui/react";
 import { getEarlyAccess } from "@/lib/utils";
 import { CreateDemo, ViewDemo, RunDemo } from "./HowDemos";
-import dynamic from "next/dynamic";
-
-const LedgerScatter = dynamic(() => import("./LedgerScatter"), { ssr: false });
+import LedgerScatter from "./LedgerScatter";
 
 const steps = [
   {
@@ -122,28 +120,39 @@ export default function HowSection() {
                   p={{ base: 0, md: 10, lg: 12 }}
                   borderRadius="20px"
                 >
-                  {/* Neat animated gradient behind card */}
-                  <LedgerScatter preset="how" />
-                  {/* Feather edges into page bg */}
+                  {/* Ledger + feather, outset beyond the padded card wrapper
+                      so a wider halo of ruling is visible without shrinking
+                      the demo card itself. Hidden on phones where the card
+                      spans full width and there is no room to outset. */}
                   <Box
+                    display={{ base: "none", md: "block" }}
                     position="absolute"
-                    inset={0}
-                    borderRadius="inherit"
+                    top={{ md: "-24px", lg: "-32px" }}
+                    bottom={{ md: "-24px", lg: "-32px" }}
+                    left={{ md: "-48px", lg: "-64px" }}
+                    right={{ md: "-48px", lg: "-64px" }}
                     pointerEvents="none"
                     zIndex={0}
-                    _before={{
-                      content: '""',
-                      position: "absolute",
-                      inset: 0,
-                      background: "linear-gradient(to right, #F8F7F4 0%, transparent 25%, transparent 75%, #F8F7F4 100%)",
-                    }}
-                    _after={{
-                      content: '""',
-                      position: "absolute",
-                      inset: 0,
-                      background: "linear-gradient(to bottom, #F8F7F4 0%, transparent 25%, transparent 75%, #F8F7F4 100%)",
-                    }}
-                  />
+                  >
+                    <LedgerScatter preset="how" />
+                    <Box
+                      position="absolute"
+                      inset={0}
+                      pointerEvents="none"
+                      _before={{
+                        content: '""',
+                        position: "absolute",
+                        inset: 0,
+                        background: "linear-gradient(to right, #F8F7F4 0%, transparent 18%, transparent 82%, #F8F7F4 100%)",
+                      }}
+                      _after={{
+                        content: '""',
+                        position: "absolute",
+                        inset: 0,
+                        background: "linear-gradient(to bottom, #F8F7F4 0%, transparent 18%, transparent 82%, #F8F7F4 100%)",
+                      }}
+                    />
+                  </Box>
                   <Box
                     position="relative"
                     border="2px solid"
