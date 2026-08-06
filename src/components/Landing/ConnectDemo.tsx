@@ -4,6 +4,7 @@ import { Box, Text, Flex } from "@chakra-ui/react";
 import { AnimatePresence } from "motion/react";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { MotionBox, DemoContainer } from "./demo-primitives";
+import { useIsVisible } from "@/lib/useIsVisible";
 
 // ── Constants ──
 
@@ -179,6 +180,8 @@ export function ConnectDemo() {
   const [showActivity, setShowActivity] = useState(false);
   const [cycle, setCycle] = useState(0);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const active = useIsVisible(rootRef);
 
   const clearTimers = useCallback(() => {
     timers.current.forEach(clearTimeout);
@@ -190,6 +193,7 @@ export function ConnectDemo() {
   }, []);
 
   useEffect(() => {
+    if (!active) return;
     clearTimers();
     // Slack starts pre-connected (see INITIAL_STATUSES) so the very first
     // frame already has a populated row — only Email and Sheets animate in.
@@ -249,12 +253,12 @@ export function ConnectDemo() {
     }, totalDuration);
 
     return clearTimers;
-  }, [cycle, clearTimers, addTimer]);
+  }, [cycle, clearTimers, addTimer, active]);
 
   const connectedCount = statuses.filter((s) => s === "connected").length;
 
   return (
-    <DemoContainer variant="maroon" flush>
+    <DemoContainer containerRef={rootRef} variant="maroon" flush>
       <AnimatePresence mode="wait">
         <MotionBox
           key={cycle}
