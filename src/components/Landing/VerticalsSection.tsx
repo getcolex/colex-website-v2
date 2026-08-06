@@ -311,9 +311,13 @@ export default function VerticalsSection() {
         pointerEvents: "none",
       }}
     >
-      {/* Section-wide ledger, matches the Pain section treatment. */}
-      <LedgerScatter preset="verticals" />
-      <Box position="absolute" inset={0} pointerEvents="none" bg="rgba(0,0,0,0.35)" />
+      {/* Mobile only: section-wide ledger behind the tabs + card carousel.
+          On desktop the ledger moves down into the demo column so the tabs
+          and prompt list read clean, matching the How section. */}
+      <Box display={{ base: "block", md: "none" }} position="absolute" inset={0} pointerEvents="none">
+        <LedgerScatter preset="verticals" />
+        <Box position="absolute" inset={0} pointerEvents="none" bg="rgba(0,0,0,0.35)" />
+      </Box>
       <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }} position="relative">
         {/* Heading */}
         <Heading
@@ -436,7 +440,7 @@ export default function VerticalsSection() {
                       w="88%"
                       mr={4}
                       css={{ scrollSnapAlign: "start" }}
-                      bg="rgba(255,255,255,0.04)"
+                      bg="#242424"
                       border="1px solid"
                       borderColor={
                         isCentered
@@ -544,7 +548,10 @@ export default function VerticalsSection() {
             </Box>
           </Box>
 
-          {/* Right column: shared demo — desktop only. */}
+          {/* Right column: shared demo — desktop only. Ledger sits behind
+              the demo card (outset beyond the wrapper's padding so a wider
+              halo shows without shrinking the card), with a black dulling
+              overlay and feather back into the ink ground. */}
           <Box
             display={{ base: "none", md: "block" }}
             flex="1"
@@ -552,6 +559,35 @@ export default function VerticalsSection() {
             p={{ md: 8, lg: 10 }}
             borderRadius="20px"
           >
+            <Box
+              position="absolute"
+              top={{ md: "-24px", lg: "-32px" }}
+              bottom={{ md: "-24px", lg: "-32px" }}
+              left={{ md: "-48px", lg: "-64px" }}
+              right={{ md: "-48px", lg: "-64px" }}
+              pointerEvents="none"
+              zIndex={0}
+            >
+              <LedgerScatter preset="verticals" />
+              <Box position="absolute" inset={0} pointerEvents="none" bg="rgba(0,0,0,0.35)" />
+              <Box
+                position="absolute"
+                inset={0}
+                pointerEvents="none"
+                _before={{
+                  content: '""',
+                  position: "absolute",
+                  inset: 0,
+                  background: "linear-gradient(to right, #1A1A1A 0%, transparent 18%, transparent 82%, #1A1A1A 100%)",
+                }}
+                _after={{
+                  content: '""',
+                  position: "absolute",
+                  inset: 0,
+                  background: "linear-gradient(to bottom, #1A1A1A 0%, transparent 18%, transparent 82%, #1A1A1A 100%)",
+                }}
+              />
+            </Box>
             <Box position="relative" zIndex={1} bg="#1A1A1A" borderRadius="12px">
               <VerticalDemo activeTab={activeTab} selectedPromptIdx={desktopSelectedIdx} />
             </Box>
