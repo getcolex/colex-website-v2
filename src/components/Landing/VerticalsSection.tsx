@@ -595,7 +595,7 @@ export default function VerticalsSection() {
           >
             <LedgerScatter preset="verticals" />
             {/* Dulling overlay — black on the near-black ink ground. */}
-            <Box position="absolute" inset={0} borderRadius="inherit" pointerEvents="none" bg="rgba(0,0,0,0.55)" />
+            <Box position="absolute" inset={0} borderRadius="inherit" pointerEvents="none" bg="rgba(0,0,0,0.35)" />
             {/* Feather edges into section bg */}
             <Box
               position="absolute"
