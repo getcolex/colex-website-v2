@@ -9,6 +9,7 @@ import {
   DemoContainer,
   StatusBadge,
 } from "./demo-primitives";
+import { useIsVisible } from "@/lib/useIsVisible";
 
 /* ── Color tokens (dark bg) ── */
 const C = {
@@ -839,6 +840,8 @@ export default function VerticalDemo({
 }) {
   const [anim, setAnim] = useState<AnimState>(INITIAL_STATE);
   const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const active = useIsVisible(rootRef);
 
   const demo =
     DEMO_DATA[activeTab]?.[selectedPromptIdx] ?? DEMO_DATA.freight[0];
@@ -952,10 +955,11 @@ export default function VerticalDemo({
   );
 
   useEffect(() => {
+    if (!active) return;
     clearTimeouts();
     runAnimation(demo);
     return clearTimeouts;
-  }, [activeTab, selectedPromptIdx, anim.cycle, clearTimeouts, runAnimation, demo]);
+  }, [activeTab, selectedPromptIdx, anim.cycle, clearTimeouts, runAnimation, demo, active]);
 
   // Reset fully on prop change
   useEffect(() => {
@@ -1024,7 +1028,7 @@ export default function VerticalDemo({
     // simply fills whatever height the wrapper resolves to. Desktop ratio
     // (4:3) is unchanged from before; only base gets taller.
     <Box aspectRatio={{ base: "3 / 4", md: "4 / 3" }} w="100%">
-      <DemoContainer variant="dark">
+      <DemoContainer containerRef={rootRef} variant="dark">
         <AnimatePresence mode="wait">
           <MotionBox
             key={animKey}

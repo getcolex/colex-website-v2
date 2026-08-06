@@ -170,11 +170,14 @@ export default function HowSection() {
                   </Box>
                 </Box>
 
-                {/* Text content — sits on section bg */}
+                {/* Text content — sits on section bg. position+zIndex so
+                    the demo card's outset ledger halo can't paint over it. */}
                 <Flex
                   direction="column"
                   justify="center"
                   flex="1"
+                  position="relative"
+                  zIndex={1}
                 >
                   <Text
                     fontSize="xs"

@@ -219,11 +219,15 @@ export function DemoContainer({
   variant = "light",
   aspectRatio,
   flush = false,
+  containerRef,
 }: {
   children: React.ReactNode;
   variant?: "light" | "dark" | "maroon";
   aspectRatio?: string | Record<string, string>;
   flush?: boolean;
+  // Attach to the outer Box so demos can gate their timers on the
+  // container's IntersectionObserver-derived visibility.
+  containerRef?: React.RefObject<HTMLDivElement | null>;
 }) {
   const styles = {
     light: {
@@ -249,6 +253,7 @@ export function DemoContainer({
 
   return (
     <Box
+      ref={containerRef}
       bg={flush ? s.innerBg : s.bg}
       border={flush ? "none" : "1px solid"}
       borderColor={flush ? "transparent" : s.border}

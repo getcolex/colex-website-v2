@@ -2,11 +2,12 @@
 
 import { Box, Text, Flex } from "@chakra-ui/react";
 import { AnimatePresence } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   MotionBox,
   DemoContainer,
 } from "./demo-primitives";
+import { useIsVisible } from "@/lib/useIsVisible";
 
 // ── Shared colors for maroon variant ──
 const C = {
@@ -31,12 +32,14 @@ const C = {
 function usePhaseLoop(
   schedule: Array<{ ms: number; phase: number }>,
   resetMs: number,
-  initialPhase = 0
+  initialPhase = 0,
+  active = true,
 ) {
   const [phase, setPhase] = useState(initialPhase);
   const [cycle, setCycle] = useState(0);
 
   useEffect(() => {
+    if (!active) return;
     const timeouts: ReturnType<typeof setTimeout>[] = [];
     setPhase(initialPhase);
 
@@ -51,7 +54,7 @@ function usePhaseLoop(
     );
 
     return () => timeouts.forEach(clearTimeout);
-  }, [cycle]);
+  }, [cycle, active]);
 
   return phase;
 }
@@ -69,6 +72,8 @@ export function SimpleInterfaceDemo() {
   // 0=empty (unused — never mounted), 1=progress+goal, 2=field1, 3=field2, 4=field3, 5=button, 6=progress-update, 7=pause
   // Mounts (and loop-resets) at phase 2: progress bar + first field already on screen,
   // so the panel is never caught as a bare box.
+  const ref = useRef<HTMLDivElement | null>(null);
+  const visible = useIsVisible(ref);
   const phase = usePhaseLoop(
     [
       { ms: 600, phase: 3 },
@@ -78,11 +83,12 @@ export function SimpleInterfaceDemo() {
       { ms: 4900, phase: 7 },
     ],
     6400,
-    2
+    2,
+    visible,
   );
 
   return (
-    <DemoContainer variant="maroon" aspectRatio={{ base: "4 / 5", md: "4 / 3" }}>
+    <DemoContainer containerRef={ref} variant="maroon" aspectRatio={{ base: "4 / 5", md: "4 / 3" }}>
       <Flex direction="column" h="100%" gap={0}>
         {/* Progress bar */}
         <AnimatePresence>
@@ -263,6 +269,8 @@ const checkItems = [
 
 export function RewindDemo() {
   // 0=empty, 1=item1-done, 2=item2-done, 3=all-done, 4=customs-reverts, 5=cascade, 6=reason, 7=pause
+  const ref = useRef<HTMLDivElement | null>(null);
+  const visible = useIsVisible(ref);
   const phase = usePhaseLoop(
     [
       { ms: 500, phase: 1 },
@@ -273,7 +281,9 @@ export function RewindDemo() {
       { ms: 5200, phase: 6 },
       { ms: 6200, phase: 7 },
     ],
-    8000
+    8000,
+    0,
+    visible,
   );
 
   function getCheckState(key: string) {
@@ -298,7 +308,7 @@ export function RewindDemo() {
   }
 
   return (
-    <DemoContainer variant="maroon" flush>
+    <DemoContainer containerRef={ref} variant="maroon" flush>
       <Flex direction="column" h="100%" gap={0} justify="center">
         {/* Goal header with count */}
         <Flex justify="space-between" align="center" mb={3}>
@@ -489,6 +499,8 @@ export function RewindDemo() {
 // ═══════════════════════════════════════════════════════════════
 export function AuditDemo() {
   // 0=rules visible, 1=highlight-rule2, 2=value-change, 3=version-badge, 4=audit-line, 5=pause
+  const ref = useRef<HTMLDivElement | null>(null);
+  const visible = useIsVisible(ref);
   const phase = usePhaseLoop(
     [
       { ms: 800, phase: 1 },
@@ -497,11 +509,13 @@ export function AuditDemo() {
       { ms: 4400, phase: 4 },
       { ms: 5600, phase: 5 },
     ],
-    7500
+    7500,
+    0,
+    visible,
   );
 
   return (
-    <DemoContainer variant="maroon" flush>
+    <DemoContainer containerRef={ref} variant="maroon" flush>
       {/* justify="center" keeps this small, fixed-content demo (header + 2
           rules, occasionally + version badge/audit line) as one centered
           mass in the panel instead of pinned to the top with a growing void
@@ -688,6 +702,8 @@ export function HumanJudgementDemo() {
   // 0-2=idle/step1/step2 (unused — never mounted), 3=step3-done, 4=approval-section, 5=reviewing, 6=approved, 7=pause
   // Mounts (and loop-resets) at phase 3: all three auto steps already complete,
   // so the panel opens with real content rather than an empty box.
+  const ref = useRef<HTMLDivElement | null>(null);
+  const visible = useIsVisible(ref);
   const phase = usePhaseLoop(
     [
       { ms: 900, phase: 4 },
@@ -696,11 +712,12 @@ export function HumanJudgementDemo() {
       { ms: 4900, phase: 7 },
     ],
     6300,
-    3
+    3,
+    visible,
   );
 
   return (
-    <DemoContainer variant="maroon" aspectRatio={{ base: "4 / 5", md: "4 / 3" }}>
+    <DemoContainer containerRef={ref} variant="maroon" aspectRatio={{ base: "4 / 5", md: "4 / 3" }}>
       <Flex direction="column" h="100%" gap={0}>
         {/* Auto steps — fast completing with green checks */}
         <Box mb={3}>

@@ -3,6 +3,7 @@
 import { Box, Text, Flex } from "@chakra-ui/react";
 import { AnimatePresence } from "motion/react";
 import { useEffect, useState, useRef } from "react";
+import { useIsVisible } from "@/lib/useIsVisible";
 import {
   MotionBox,
   TypingCursor,
@@ -140,8 +141,11 @@ export function CreateDemo() {
   const [checksVisible, setChecksVisible] = useState(CREATE_CHECKS.length);
   const [cycle, setCycle] = useState(0);
   const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const visible = useIsVisible(rootRef);
 
   useEffect(() => {
+    if (!visible) return;
     const ts: NodeJS.Timeout[] = [];
     timeoutsRef.current = ts;
 
@@ -159,12 +163,12 @@ export function CreateDemo() {
     ts.push(setTimeout(() => setCycle((c) => c + 1), 6800));
 
     return () => ts.forEach(clearTimeout);
-  }, [cycle]);
+  }, [cycle, visible]);
 
   const isTyping = userChars > 0 && userChars < CREATE_USER_MSG.length;
 
   return (
-    <DemoContainer variant="light" flush>
+    <DemoContainer containerRef={rootRef} variant="light" flush>
       <MotionBox display="flex" flexDirection="column" h="100%">
         {/* Main area */}
         <Box flex="1" overflow="hidden">
@@ -399,8 +403,11 @@ export function ViewDemo() {
   const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
   const feedViewportRef = useRef<HTMLDivElement>(null);
   const feedInnerRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const active = useIsVisible(rootRef);
 
   useEffect(() => {
+    if (!active) return;
     const ts: NodeJS.Timeout[] = [];
     timeoutsRef.current = ts;
 
@@ -423,7 +430,7 @@ export function ViewDemo() {
     ts.push(setTimeout(() => setCycle((c) => c + 1), 8400));
 
     return () => ts.forEach(clearTimeout);
-  }, [cycle]);
+  }, [cycle, active]);
 
   const visibleFields = VIEW_FORM_FIELDS.length;
   const fieldsFilled = phase >= 6;
@@ -455,7 +462,7 @@ export function ViewDemo() {
   const y = feedY;
 
   return (
-    <DemoContainer variant="light" flush>
+    <DemoContainer containerRef={rootRef} variant="light" flush>
       <MotionBox display="flex" flexDirection="column" h="100%">
         {/* Check header — counter reflects how many checks are visible */}
         <AnimatePresence>
@@ -774,8 +781,11 @@ export function RunDemo() {
   const [typedCarrier, setTypedCarrier] = useState(0);
   const [typedRate, setTypedRate] = useState(0);
   const [typedTransit, setTypedTransit] = useState(0);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const active = useIsVisible(rootRef);
 
   useEffect(() => {
+    if (!active) return;
     const ts: NodeJS.Timeout[] = [];
 
     // Loop seam: no fade at all. Resetting to phase 5 unwinds the story in
@@ -826,7 +836,7 @@ export function RunDemo() {
     ts.push(setTimeout(() => setCycle((c) => c + 1), rowDoneAt + 3400));
 
     return () => ts.forEach(clearTimeout);
-  }, [cycle]);
+  }, [cycle, active]);
 
   const visibleRows = RUN_RATE_ROWS.length;
   const bestHighlighted = phase >= 5;
@@ -844,7 +854,7 @@ export function RunDemo() {
   const rowCount = row4Complete ? 4 : 3;
 
   return (
-    <DemoContainer variant="light" flush>
+    <DemoContainer containerRef={rootRef} variant="light" flush>
       <MotionBox
         display="flex"
         flexDirection="column"
@@ -1229,8 +1239,11 @@ export function UpdateDemo() {
   const [phase, setPhase] = useState(0);
   const [cycle, setCycle] = useState(0);
   const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const active = useIsVisible(rootRef);
 
   useEffect(() => {
+    if (!active) return;
     const ts: NodeJS.Timeout[] = [];
     timeoutsRef.current = ts;
     setPhase(0);
@@ -1244,10 +1257,10 @@ export function UpdateDemo() {
     ts.push(setTimeout(() => setCycle((c) => c + 1), 8000));
 
     return () => ts.forEach(clearTimeout);
-  }, [cycle]);
+  }, [cycle, active]);
 
   return (
-    <DemoContainer variant="maroon" flush>
+    <DemoContainer containerRef={rootRef} variant="maroon" flush>
       {/* Center+distribute at every width — top-anchoring left a dead gap
           under the form box on desktop panel heights too. */}
       <Flex direction="column" flex="1" justifyContent="center" gap={{ base: 4, md: 3 }}>

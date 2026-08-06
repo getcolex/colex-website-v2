@@ -2,8 +2,9 @@
 
 import { Box, Text, Flex } from "@chakra-ui/react";
 import { AnimatePresence } from "motion/react";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { MotionBox, StatusBadge, TypingCursor } from "./demo-primitives";
+import { useIsVisible } from "@/lib/useIsVisible";
 
 // ── Constants ──
 const REQUEST_TEXT = "Every new shipping inquiry needs three carrier quotes, the cheapest flagged, and an RFQ sent to the client";
@@ -44,6 +45,11 @@ export default function HeroDemo() {
   // out on top of/above that still-visible prior result each loop.
   const [phase, setPhase] = useState<Phase>("complete");
   const [typedChars, setTypedChars] = useState(REQUEST_TEXT.length);
+  // Pause every timer when the card is off-screen (or hidden via
+  // display:none on mobile). setState churn on a hidden Chakra subtree
+  // starves the main thread and cuts inertial scroll on mobile Safari.
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const visible = useIsVisible(rootRef);
 
   const schedule = useCallback(
     (timeouts: NodeJS.Timeout[], fn: () => void, delay: number) => {
@@ -54,6 +60,7 @@ export default function HeroDemo() {
 
   // Typing effect
   useEffect(() => {
+    if (!visible) return;
     if (phase !== "typing") return;
     if (typedChars >= REQUEST_TEXT.length) return;
 
@@ -62,10 +69,11 @@ export default function HeroDemo() {
       TYPING_SPEED
     );
     return () => clearTimeout(t);
-  }, [phase, typedChars]);
+  }, [phase, typedChars, visible]);
 
   // Phase sequencing
   useEffect(() => {
+    if (!visible) return;
     const timeouts: NodeJS.Timeout[] = [];
 
     if (phase === "typing" && typedChars >= REQUEST_TEXT.length) {
@@ -113,7 +121,7 @@ export default function HeroDemo() {
     }
 
     return () => timeouts.forEach(clearTimeout);
-  }, [phase, typedChars, schedule]);
+  }, [phase, typedChars, schedule, visible]);
 
   // Derived state
   // The goal card stays mounted through the typing phase (dimmed) instead
@@ -150,6 +158,7 @@ export default function HeroDemo() {
 
   return (
     <Box
+      ref={rootRef}
       bg="white"
       borderRadius="12px"
       border="1px solid"

@@ -1,9 +1,6 @@
 "use client";
 
 import { Box, Container, Text, Flex, Heading } from "@chakra-ui/react";
-import { motion } from "motion/react";
-
-const MotionBox = motion.create(Box);
 
 const rows = [
   {
@@ -224,13 +221,8 @@ export default function MomentsSection() {
             ))}
           </Box>
 
-          {/* Colex table — animates in on scroll */}
-          <MotionBox
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
+          {/* Colex table */}
+          <Box>
             <Text fontSize="xs" fontWeight="700" color="#10B981" textTransform="uppercase" letterSpacing="0.08em" mb={2}>
               Colex
             </Text>
@@ -251,7 +243,7 @@ export default function MomentsSection() {
                 </Flex>
               </Box>
             ))}
-          </MotionBox>
+          </Box>
         </Box>
       </Container>
     </Box>
