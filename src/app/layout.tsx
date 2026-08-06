@@ -6,13 +6,13 @@ import Providers from "./providers";
 import LayoutClient from "./LayoutClient";
 
 export const metadata = {
-  title: "Colex | Simple workflows",
+  title: "Colex — Ops automation that grows with your business",
   description:
-    "Give your teams extra hands. Purpose-built to automate your team reliably.",
+    "Describe your process. Colex turns it into rules, runs it, and writes down every decision.",
   openGraph: {
-    title: "Colex | Simple workflows",
+    title: "Colex — Ops automation that grows with your business",
     description:
-      "Give your teams extra hands. Purpose-built to automate your team reliably.",
+      "Describe your process. Colex turns it into rules, runs it, and writes down every decision.",
     url: "https://getcolex.com/",
     siteName: "Colex",
     locale: "en_US",
@@ -20,9 +20,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary",
-    title: "Colex | Simple workflows",
+    title: "Colex — Ops automation that grows with your business",
     description:
-      "Give your teams extra hands. Purpose-built to automate your team reliably.",
+      "Describe your process. Colex turns it into rules, runs it, and writes down every decision.",
   },
   metadataBase: new URL("https://getcolex.com"),
 };
