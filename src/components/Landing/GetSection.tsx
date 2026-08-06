@@ -42,6 +42,7 @@ export default function GetSection() {
       as="section"
       py={{ base: 20, md: 28 }}
       bg="brand.primary"
+      data-selection="inverse"
     >
       <Container maxW="container.xl" px={{ base: 4, sm: 6, md: 8, lg: 12 }} position="relative">
         <Heading

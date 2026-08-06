@@ -8,31 +8,27 @@ const NOISE_SVG = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='h
 // Title split so one load-bearing word carries the accent italic
 const cards = [
   {
-    title: ["Exceptions taught it ", "nothing", ""],
+    title: ["People end up doing it their ", "own way", "."],
     lines: [
-      "Every edge case went to a person and got handled in chat.",
-      "Next month the same exception showed up, and nobody remembered.",
+      "You wrote the process. Getting the team (or the agents) to follow it is the hard part.",
     ],
   },
   {
-    title: ["The document isn’t the ", "process", ""],
+    title: ["Automating it is expensive. Updating it? ", "Double", "."],
     lines: [
-      "It lives in a file written months ago.",
-      "The real process lives in dozens of decisions people make every day.",
+      "You put the process in a tool. The work changes, and you pay the engineering bill again to make the tool match.",
     ],
   },
   {
-    title: ["When something breaks, no one knows ", "where", ""],
+    title: ["You can’t see what ", "actually", " happened."],
     lines: [
-      "You can see the outcome was wrong.",
-      "Finding the answer means asking five people who each remember the process differently.",
+      "When something goes wrong, you have the outcome but not the run. To find out, you ask whoever touched it what they remember.",
     ],
   },
   {
-    title: ["Change is ", "expensive", " and slow"],
+    title: ["You are your team’s ", "memory", "."],
     lines: [
-      "One rule change touches five systems.",
-      "By the time it’s live, the process has moved on.",
+      "Docs hold the process, logs hold the data. The reasoning is in your head.",
     ],
   },
 ];
