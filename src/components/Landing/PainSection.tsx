@@ -7,6 +7,9 @@ import LedgerScatter from "./LedgerScatter";
 
 const MotionBox = motion.create(Box);
 
+const AUTOPLAY_MS = 5000;
+const BRAND_MAROON = "#49082D";
+
 // Load-bearing word gets the accent color (upright, not italic).
 const cards = [
   {
@@ -59,51 +62,39 @@ function useIsDesktop(bp = 768) {
 
 export default function PainSection() {
   const [activeIdx, setActiveIdx] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [inView, setInView] = useState(false);
   const wrapRef = useRef<HTMLDivElement | null>(null);
-  const hoveringRef = useRef(false);
-  const inViewRef = useRef(false);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isDesktop = useIsDesktop();
 
   const advance = useCallback(() => setActiveIdx((i) => (i + 1) % cards.length), []);
 
-  const stopTimer = useCallback(() => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-  }, []);
-  const startTimer = useCallback(() => {
-    if (timerRef.current) return;
-    if (!inViewRef.current || hoveringRef.current) return;
-    timerRef.current = setInterval(() => {
-      setActiveIdx((i) => (i + 1) % cards.length);
-    }, 7000);
-  }, []);
+  // Autoplay timer. Restarts (via the useEffect dep list) whenever activeIdx
+  // changes, or when paused/inView flip, so the visible progress fill and the
+  // actual advance stay locked together.
+  useEffect(() => {
+    if (paused || !inView) return;
+    const t = setTimeout(advance, AUTOPLAY_MS);
+    return () => clearTimeout(t);
+  }, [activeIdx, paused, inView, advance]);
 
-  // Autoplay on visibility, pause on hover.
+  // Visibility gate.
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
     const io = new IntersectionObserver(
       (entries) => {
-        for (const ent of entries) {
-          inViewRef.current = ent.isIntersecting;
-          if (ent.isIntersecting) startTimer();
-          else stopTimer();
-        }
+        for (const ent of entries) setInView(ent.isIntersecting);
       },
       { threshold: 0.4 }
     );
     io.observe(el);
-    return () => {
-      io.disconnect();
-      stopTimer();
-    };
-  }, [startTimer, stopTimer]);
+    return () => io.disconnect();
+  }, []);
 
   const positions = isDesktop ? desktopPositions : mobilePositions;
   const counter = String(activeIdx + 1).padStart(2, "0");
+  const progressPlaying = inView && !paused;
 
   return (
     <Box
@@ -125,14 +116,8 @@ export default function PainSection() {
           role="group"
           aria-label="Four things ops teams tell us after they have tried to automate"
           onClick={advance}
-          onMouseEnter={() => {
-            hoveringRef.current = true;
-            stopTimer();
-          }}
-          onMouseLeave={() => {
-            hoveringRef.current = false;
-            startTimer();
-          }}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
           onKeyDown={(e) => {
             if (e.key === "ArrowRight" || e.key === "ArrowLeft" || e.key === " " || e.key === "Enter") {
               e.preventDefault();
@@ -182,18 +167,45 @@ export default function PainSection() {
             >
               Running ops is difficult. Automating, doubly so.
             </Heading>
-            <Text
-              as="span"
-              fontFamily="mono"
-              fontSize="11px"
-              letterSpacing="0.16em"
-              textTransform="uppercase"
-              color="surface.page"
+            {/* Counter with a maroon fill sweeping behind the text over
+                AUTOPLAY_MS. Restarts on advance; pauses on hover/off-screen. */}
+            <Box
+              position="relative"
+              display="inline-block"
+              alignSelf="flex-start"
+              overflow="hidden"
+              px="6px"
+              py="3px"
               mt={2}
-              style={{ fontVariantNumeric: "tabular-nums" }}
             >
-              {counter} / 04
-            </Text>
+              <MotionBox
+                key={`${activeIdx}-${progressPlaying}`}
+                position="absolute"
+                top={0}
+                left={0}
+                bottom={0}
+                bg={BRAND_MAROON}
+                initial={{ width: "0%" }}
+                animate={{ width: progressPlaying ? "100%" : "0%" }}
+                transition={{
+                  duration: progressPlaying ? AUTOPLAY_MS / 1000 : 0,
+                  ease: "linear",
+                }}
+                style={{ zIndex: 0 }}
+              />
+              <Text
+                as="span"
+                position="relative"
+                fontFamily="mono"
+                fontSize="11px"
+                letterSpacing="0.16em"
+                textTransform="uppercase"
+                color="surface.page"
+                style={{ fontVariantNumeric: "tabular-nums", zIndex: 1 }}
+              >
+                {counter} / 04
+              </Text>
+            </Box>
           </Box>
 
           {/* Right column — perspective / deck */}
