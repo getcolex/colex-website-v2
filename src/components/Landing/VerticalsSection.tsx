@@ -4,9 +4,7 @@ import { Box, Container, Flex, Heading } from "@chakra-ui/react";
 import { getEarlyAccess } from "@/lib/utils";
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import VerticalDemo from "./VerticalDemo";
-import dynamic from "next/dynamic";
-
-const LedgerScatter = dynamic(() => import("./LedgerScatter"), { ssr: false });
+import LedgerScatter from "./LedgerScatter";
 
 type VerticalKey = "freight" | "procurement" | "vendor" | "hr" | "finance";
 
