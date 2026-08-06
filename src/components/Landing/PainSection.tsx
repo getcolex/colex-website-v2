@@ -58,7 +58,7 @@ export default function PainSection() {
       <LedgerScatter preset="pain" />
       {/* Dulling overlay — black on the near-black ink ground darkens it
           straight without pulling the hue toward maroon. */}
-      <Box position="absolute" inset={0} pointerEvents="none" bg="rgba(0,0,0,0.55)" />
+      <Box position="absolute" inset={0} pointerEvents="none" bg="rgba(0,0,0,0.35)" />
       {/* Feather grid edges into the ink bg on all 4 sides */}
       <Box
         position="absolute"
