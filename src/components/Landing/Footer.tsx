@@ -14,11 +14,7 @@ import Image from "next/image";
 import { getEarlyAccess } from "@/lib/utils";
 import dynamic from "next/dynamic";
 
-const WireframeGrid = dynamic(() => import("./WireframeGrid"), { ssr: false });
-const GridTuner = dynamic(
-  () => import("./WireframeGrid").then((m) => m.GridTuner),
-  { ssr: false }
-);
+const LedgerScatter = dynamic(() => import("./LedgerScatter"), { ssr: false });
 
 const FOOTER_LINKS = [
   { label: "Blog", href: "/blog" },
@@ -30,14 +26,12 @@ const FOOTER_LINKS = [
 export default function Footer({ transparentBg = false }: { transparentBg?: boolean }) {
   return (
     <Box as="footer" bg={transparentBg ? "transparent" : "brand.primary"} pt={{ base: 12, lg: 20 }} position="relative">
-      {/* Dev-only tuner; renders nothing in production builds */}
-      <GridTuner />
-      {/* When the footer owns its background (e.g. blog pages), it also owns
-          the wireframe grid; on the landing page the parent wrapper provides
-          one continuous grid across CTA + footer instead. */}
+      {/* When the footer owns its background, it also owns the reactive
+          ledger — feathered into the maroon ground on all four sides, same
+          treatment we've always had here. */}
       {!transparentBg && (
         <>
-          <WireframeGrid preset="blog" lineColor="rgba(248,247,244,0.35)" />
+          <LedgerScatter preset="blog" />
           <Box
             position="absolute"
             inset={0}
@@ -52,7 +46,7 @@ export default function Footer({ transparentBg = false }: { transparentBg?: bool
               content: '""',
               position: "absolute",
               inset: 0,
-              background: "linear-gradient(to bottom, #49082D 0%, transparent 20%, transparent 80%, #49082D 100%)",
+              background: "linear-gradient(to bottom, #49082D 0%, transparent 55%, transparent 85%, #49082D 100%)",
             }}
           />
         </>

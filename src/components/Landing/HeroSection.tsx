@@ -7,7 +7,7 @@ import { getEarlyAccess } from "@/lib/utils";
 import HeroDemo from "./HeroDemo";
 import dynamic from "next/dynamic";
 
-const WireframeGrid = dynamic(() => import("./WireframeGrid"), { ssr: false });
+const LedgerScatter = dynamic(() => import("./LedgerScatter"), { ssr: false });
 
 const MotionBox = motion.create(Box);
 
@@ -37,7 +37,7 @@ export default function HeroSection() {
         w={{ base: "0%", lg: "55%" }}
         display={{ base: "none", lg: "block" }}
       >
-        <WireframeGrid preset="hero" />
+        <LedgerScatter preset="hero" />
         {/* Left edge gradient to merge into page bg */}
         <Box
           position="absolute"

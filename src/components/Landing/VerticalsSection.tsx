@@ -6,7 +6,7 @@ import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import VerticalDemo from "./VerticalDemo";
 import dynamic from "next/dynamic";
 
-const WireframeGrid = dynamic(() => import("./WireframeGrid"), { ssr: false });
+const LedgerScatter = dynamic(() => import("./LedgerScatter"), { ssr: false });
 
 type VerticalKey = "freight" | "procurement" | "vendor" | "hr" | "finance";
 
@@ -551,7 +551,9 @@ export default function VerticalsSection() {
             p={{ md: 8, lg: 10 }}
             borderRadius="20px"
           >
-            <WireframeGrid preset="verticals" lineColor="#F8F7F4" />
+            <LedgerScatter preset="verticals" />
+            {/* Dulling overlay — black on the near-black ink ground. */}
+            <Box position="absolute" inset={0} borderRadius="inherit" pointerEvents="none" bg="rgba(0,0,0,0.55)" />
             {/* Feather edges into section bg */}
             <Box
               position="absolute"

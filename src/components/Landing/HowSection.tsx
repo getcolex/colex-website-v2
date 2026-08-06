@@ -5,7 +5,7 @@ import { getEarlyAccess } from "@/lib/utils";
 import { CreateDemo, ViewDemo, RunDemo } from "./HowDemos";
 import dynamic from "next/dynamic";
 
-const WireframeGrid = dynamic(() => import("./WireframeGrid"), { ssr: false });
+const LedgerScatter = dynamic(() => import("./LedgerScatter"), { ssr: false });
 
 const steps = [
   {
@@ -123,7 +123,7 @@ export default function HowSection() {
                   borderRadius="20px"
                 >
                   {/* Neat animated gradient behind card */}
-                  <WireframeGrid preset="how" />
+                  <LedgerScatter preset="how" />
                   {/* Feather edges into page bg */}
                   <Box
                     position="absolute"
