@@ -34,7 +34,7 @@ export default function Footer({ transparentBg = false }: { transparentBg?: bool
             position="absolute"
             inset={0}
             pointerEvents="none"
-            background="linear-gradient(to bottom, #49082D 0%, rgba(73,8,45,0.4) 50%, #49082D 100%)"
+            background="linear-gradient(to bottom, #49082D 0%, transparent 100%)"
           />
         </>
       )}
