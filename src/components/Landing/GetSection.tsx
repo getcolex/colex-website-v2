@@ -9,7 +9,7 @@ import { UpdateDemo } from "./HowDemos";
 import { ConnectDemo } from "./ConnectDemo";
 import dynamic from "next/dynamic";
 
-const WireframeGrid = dynamic(() => import("./WireframeGrid"), { ssr: false });
+const LedgerScatter = dynamic(() => import("./LedgerScatter"), { ssr: false });
 
 const cards = [
   {
@@ -75,7 +75,7 @@ export default function GetSection() {
                 overflow="hidden"
               >
                 {/* Neat wireframe */}
-                <WireframeGrid preset="get" lineColor="rgba(248,247,244,0.12)" />
+                <LedgerScatter preset="get" />
 
                 {/* Maroon dim overlay on top of Neat */}
                 <Box
