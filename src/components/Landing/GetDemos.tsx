@@ -309,7 +309,7 @@ export function RewindDemo() {
 
   return (
     <DemoContainer containerRef={ref} variant="maroon" flush>
-      <Flex direction="column" h="100%" gap={0} justify="center">
+      <Flex direction="column" h="100%" gap={0} justify="flex-start">
         {/* Goal header with count */}
         <Flex justify="space-between" align="center" mb={3}>
           <Flex align="center" gap={2}>
@@ -516,11 +516,9 @@ export function AuditDemo() {
 
   return (
     <DemoContainer containerRef={ref} variant="maroon" flush>
-      {/* justify="center" keeps this small, fixed-content demo (header + 2
-          rules, occasionally + version badge/audit line) as one centered
-          mass in the panel instead of pinned to the top with a growing void
-          below it. */}
-      <Flex direction="column" justify="center" h="100%" gap={0}>
+      {/* Top-anchored so new items (version badge / audit line) appear
+          below existing content instead of pushing everything center-out. */}
+      <Flex direction="column" justify="flex-start" h="100%" gap={0}>
         {/* Section header — check editor style */}
         <Flex justify="space-between" align="center" mb={3}>
           <Text

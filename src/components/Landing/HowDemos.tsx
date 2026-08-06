@@ -1261,9 +1261,9 @@ export function UpdateDemo() {
 
   return (
     <DemoContainer containerRef={rootRef} variant="maroon" flush>
-      {/* Center+distribute at every width — top-anchoring left a dead gap
-          under the form box on desktop panel heights too. */}
-      <Flex direction="column" flex="1" justifyContent="center" gap={{ base: 4, md: 3 }}>
+      {/* Top-anchored so newly-appearing task/form sections stack downward
+          instead of expanding around the vertical midpoint. */}
+      <Flex direction="column" flex="1" justifyContent="flex-start" gap={{ base: 4, md: 3 }}>
       {/* Rule section */}
       <Box>
       <SectionHeader dark>Rule updated</SectionHeader>

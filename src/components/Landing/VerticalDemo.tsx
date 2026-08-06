@@ -1054,12 +1054,11 @@ export default function VerticalDemo({
             <Box
               flex="1"
               overflow="hidden"
-              // Center the goal stack vertically — in end-of-cycle states
-              // (all goals collapsed to their compact "done" form) a
-              // top-anchored stack left a large dead gap above the footer.
+              // Top-anchored so new goals stack downward instead of the whole
+              // list expanding from the middle.
               display="flex"
               flexDirection="column"
-              justifyContent="center"
+              justifyContent="flex-start"
               css={{
                 maskImage: "linear-gradient(to bottom, black 88%, transparent 100%)",
                 WebkitMaskImage: "linear-gradient(to bottom, black 88%, transparent 100%)",
